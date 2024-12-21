@@ -1,0 +1,53 @@
+{
+  "name": "dentalbio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@googlemaps/js-api-loader": "^1.16.8",
+    "@headlessui/react": "^2.1.8",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.3",
+    "@phosphor-icons/react": "^2.1.5-alpha.3",
+    "@supabase/ssr": "^0.5.1",
+    "@supabase/supabase-js": "^2.45.4",
+    "@types/js-cookie": "^3.0.6",
+    "@types/qs": "^6.9.15",
+    "@types/uuid": "^10.0.0",
+    "bootstrap": "^5.3.3",
+    "contentful": "^10.15.1",
+    "fabric": "^5.3.0",
+    "framer-motion": "^11.5.4",
+    "mapbox-gl": "^3.9.0",
+    "next": "14.2.8",
+    "nodemailer": "^6.9.15",
+    "phosphor-react": "^1.4.1",
+    "react": "^18",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18",
+    "react-easy-crop": "^5.1.0",
+    "react-hot-toast": "^2.4.1",
+    "react-scroll-parallax": "^3.4.5",
+    "resend": "^4.0.0",
+    "stripe": "^16.11.0",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/fabric": "^5.3.9",
+    "@types/mapbox__mapbox-gl-geocoder": "^5.0.0",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

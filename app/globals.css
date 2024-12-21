@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.blured-bg {
+  background-image: linear-gradient(225deg, #7878ec, #9a59f5 51%, #ef753a 64%);
+  opacity: 0.8;
+  -webkit-filter: blur(120px); /* Safari specific */
+  filter: blur(120px);
+  border-radius: 400px;
+  width: 700px;
+  z-index: 342;
+  height: 700px;
+  position: absolute;
+  pointer-events: none; /* Prevents interaction */
+  backface-visibility: hidden; /* Improve rendering on Safari */
+  -webkit-backface-visibility: hidden; /* For Safari */
+  will-change: transform, filter; /* Performance optimization */
+}
+
+.blured-bg-cta {
+  background-image: linear-gradient(225deg, #7878ec, #9a59f5 51%, #ef753a 64%);
+  opacity: 0.6;
+  -webkit-filter: blur(120px); /* Safari specific */
+  filter: blur(120px);
+  border-radius: 400px;
+  width: 700px;
+  z-index: 324;
+  height: 700px;
+  position: absolute;
+  pointer-events: none; /* Prevents interaction */
+  backface-visibility: hidden; /* Improve rendering on Safari */
+  -webkit-backface-visibility: hidden; /* For Safari */
+  will-change: transform, filter; /* Performance optimization */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.blured-bg-1 {
+  background-image: linear-gradient(225deg, #7878ec, #9a59f5 51%, #ef753a 64%);
+  opacity: 0.9;
+  -webkit-filter: blur(120px); /* Safari specific */
+  filter: blur(120px);
+  border-radius: 400px;
+  width: 1284px;
+  height: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 532;
+  pointer-events: none; /* Prevents interaction */
+  backface-visibility: hidden; /* Improve rendering on Safari */
+  -webkit-backface-visibility: hidden; /* For Safari */
+  will-change: transform, filter; /* Performance optimization */
+}
+
+/* Below tablet size (768px and below) */
+@media (max-width: 768px) {
+  .blured-bg-1 {
+    max-width: 500px;
+    width: 100%;
+    height: 700px;
+    bottom: 0;
+    -webkit-filter: blur(80px); /* Reduced blur for smaller screens */
+    filter: blur(80px);
+  }
+}
+
+
+/* Loader animation */
+.loader {
+  border: 8px solid rgba(0, 0, 0, 0.1); /* Light grey */
+  border-top: 8px solid var(--primary-2); /* Primary-2 color */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
