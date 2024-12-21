@@ -18,6 +18,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   const [city, setCity] = useState<string>("");
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
+  const [isFocused, setIsFocused] = useState(false);
 
   // console.log(defaultAddress);
 
@@ -112,23 +113,46 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
     return null; // No city found
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    if (inputAddress === '') {
+      setIsFocused(false);
+    }
+  };
+
   return (
     <>
       <div className="relative w-full mb-3">
-        <MapPin
-          size={24}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
-        />
-        <input
-          ref={inputRef}
-          type="text"
-          name="full_address"
-          className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-          placeholder="Enter your address"
-          defaultValue={defaultAddress}
-          value={inputAddress}
-          onChange={(e) => setInputAddress(e.target.value)} // Update input state for manual entry
-        />
+        <div className='rounded-[26px] bg-white pt-[20px] pb-2 px-4 h-[50px]'>
+          <label
+            htmlFor="full_address"
+            className={`absolute top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || inputAddress ? '-translate-y-[7px] text-xs' : 'scale-100'} pl-5`}
+          >
+            Enter your address
+          </label>
+          <MapPin
+            size={24}
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
+          />
+          <input
+            ref={inputRef}
+            type="text"
+            id="full_address"
+            name="full_address"
+            className="w-full pl-5 text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
+            // placeholder="Enter your address"
+            defaultValue={defaultAddress}
+            value={inputAddress}
+            onChange={(e) => setInputAddress(e.target.value)} // Update input state for manual entry
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+        </div>
+
+
         <input type="hidden" name="full_address" value={inputAddress} />
         <input type="hidden" name="city" value={city} />
         <input
@@ -141,7 +165,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
           name="longitude"
           value={longitude ? longitude.toString() : ""}
         />
-      </div>
+      </div >
 
       <div className="my-4 text-neutral-700">
         <strong>Full Address:</strong> {inputAddress}

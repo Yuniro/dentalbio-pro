@@ -1,9 +1,9 @@
 // components/AboutText.tsx
 'use client'
 
-import React, { useState } from 'react';
+import React, { InputHTMLAttributes, useState } from 'react';
 
-type LimitedTextAreaProp = {
+interface LimitedTextAreaProp extends InputHTMLAttributes<HTMLTextAreaElement> {
   name: string;
   defaultText?: string;
   placeholder?: string;
@@ -12,11 +12,11 @@ type LimitedTextAreaProp = {
 
 const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
   name,
-  defaultText,
   placeholder,
-  required,
+  ...props
 }) => {
-  const [aboutTextContent, setAboutTextContent] = useState(defaultText || ""); // Track the textarea content
+  const [aboutTextContent, setAboutTextContent] = useState(props?.defaultText || ""); // Track the textarea content
+  const [isFocused, setIsFocused] = useState(false);
   const maxLimit = 200;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -26,18 +26,37 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
     }
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    if (aboutTextContent === '') {
+      setIsFocused(false);
+    }
+  };
+
   return (
     <>
       <div className="mb-3">
-        <textarea
-          name={name}
-          className="w-full resize-none p-2 focus:outline-none rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
-          placeholder={placeholder}
-          defaultValue={defaultText || ""}
-          value={aboutTextContent}
-          onChange={handleChange}
-          required={required && true}
-        />
+        <div className='relative rounded-[26px] bg-white pt-[20px] pb-2 px-4'>
+          <label
+            htmlFor={name}
+            className={`absolute top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || aboutTextContent ? '-translate-y-[7px] text-xs' : 'scale-100'}`}
+          >
+            {placeholder}
+          </label>
+          <textarea
+            name={name}
+            className="w-full resize-none focus:outline-none text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
+            // placeholder={placeholder}
+            value={aboutTextContent}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            {...props}
+          />
+        </div>
         <div className='text-right text-gray-500'>{aboutTextContent.length}/{maxLimit}</div>
       </div>
     </>

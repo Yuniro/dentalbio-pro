@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import SaveButton from "../components/SaveButton";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import LabeledInput from "../components/LabeledInput";
+import LimitedTextArea from "../components/LimitedTextArea";
 
 // Function for Captical First
 function toCapitalFirst(sentence: string): string {
@@ -13,6 +15,7 @@ function toCapitalFirst(sentence: string): string {
 export default function AddTreatmentForm({ dentistryId }: { dentistryId: string }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
   const router = useRouter(); // Next.js router for refresh
 
   const maxLimit = 200;
@@ -24,6 +27,16 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
       setDescription(e.target.value);
     }
   }
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    if (description === '') {
+      setIsFocused(false);
+    }
+  };
 
   // Function to handle the form submission
   const handleSubmit = async (event: React.FormEvent) => {
@@ -89,22 +102,33 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
     <form onSubmit={handleSubmit} className="mb-6 mt-10">
       <h2 className="text-lg font-semibold mb-3">Add new treatment</h2>
       <div className="mb-3">
-        <input
+        <LabeledInput
+          id='title'
+          label="Treatment Title"
           name="title"
-          className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-          placeholder="Treatment Title"
+          className="w-ful text-base"
+          // placeholder="Treatment Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
       </div>
-      <div className="mb-3">
+      <div className="relative w-full mb-3 bg-white rounded-[26px] pt-[20px] pb-2 px-4 ">
+        <label
+          htmlFor="description"
+          className={`absolute top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || description ? '-translate-y-[7px] text-xs' : 'scale-100'}`}
+        >
+          Treatment Description
+        </label>
         <textarea
           name="description"
-          className="w-full p-2 resize-none focus:outline-none rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
-          placeholder="Treatment Description"
+          id="description"
+          className="w-full resize-none focus:outline-none text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
+          // placeholder="Treatment Description"
           value={description}
           onChange={handleTextChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           required
         />
         <div className='text-right text-gray-500'>{description.length}/{maxLimit}</div>

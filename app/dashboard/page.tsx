@@ -370,6 +370,7 @@ import ProfilePictureUploader from "./ProfilePictureUploader";
 import ProfileNameInput from "./components/ProfileNameInput";
 import LimitedTextArea from "./components/LimitedTextArea";
 import ImageEditor from "./ImageEditor";
+import LabeledInput from "./components/LabeledInput";
 
 // Fetch the authenticated user ID
 async function getUserId() {
@@ -636,56 +637,64 @@ export default async function Profile() {
           method="post"
           className="mb-6 mt-10"
         >
-          <ProfileNameInput
-            defaultName={dentistry?.about_title || ""}
+          <h2 className="text-lg font-semibold mb-3">Name</h2>
+          <LabeledInput
+            // id="about_title"
+            label="Profile Title"
+            defaultValue={dentistry?.about_title || ""}
+            name="about_title"
+            // placeholder="Profile Title"
+            className="w-full text-base"
           />
 
           <h2 className="text-lg font-semibold mb-3">Bio</h2>
           <LimitedTextArea
-            name="about_text"
+            name="About text"
             defaultText={dentistry?.about_text || ""}
             placeholder="About text"
           />
 
-          <div className="mb-3 relative">
+
+
+          <LabeledInput
+            // id="phone"
+            label="Contact Phone (optional)"
+            defaultValue={dentistry?.phone || ""}
+            name="phone"
+            // placeholder="Contact Phone (optional)"
+            className="w-full text-base pl-5">
             <Phone
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              name="phone"
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              defaultValue={dentistry?.phone || ""}
-              placeholder="Contact Phone (optional)"
-            />
-          </div>
+          </LabeledInput>
 
-          <div className="mb-3 relative">
+          <LabeledInput
+            // id="email"
+            label="Contact Email (optional)"
+            defaultValue={dentistry?.contact_email || ""}
+            name="contact_email"
+            type="email"
+            // placeholder="Contact Email (optional)"
+            className="w-full text-base pl-5">
             <At
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              name="contact_email"
-              type="email"
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              defaultValue={dentistry?.contact_email || ""}
-              placeholder="Contact Email (optional)"
-            />
-          </div>
+          </LabeledInput>
 
-          <div className="mb-3 relative">
+          <LabeledInput
+            label="Booking Link (optional)"
+            className="w-full text-base pl-5"
+            name="booking_link"
+            defaultValue={dentistry?.booking_link || ""}
+            // placeholder="Booking Link (optional)"
+            >
             <CalendarPlus
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              name="booking_link"
-              defaultValue={dentistry?.booking_link || ""}
-              placeholder="Booking Link (optional)"
-            />
-          </div>
+          </LabeledInput>
 
           {/* Save Button for Dentistry */}
           <div className="w-full flex items-end justify-end">
@@ -697,66 +706,72 @@ export default async function Profile() {
         <form action={saveSocialLinks} method="post" className="mb-6 mt-10">
           <h2 className="text-lg font-semibold mb-3">Social Links</h2>
 
-          <div className="mb-3 relative">
+
+          <LabeledInput
+            label="Twitter Link"
+            className="w-full text-base pl-5"
+            name="twitter_link"
+            defaultValue={extractUsername(socialLinks?.twitter_link, 'twitter') || ""}
+            // placeholder="/username"
+            >
             <TwitterLogo
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              name="twitter_link"
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              defaultValue={extractUsername(socialLinks?.twitter_link, 'twitter') || ""}
-              placeholder="/username"
-            />
-          </div>
-          <div className="mb-3 relative">
+          </LabeledInput>
+
+          <LabeledInput
+            label="Instagram Link"
+            className="w-full text-base pl-5"
+            name="instagram_link"
+            defaultValue={extractUsername(socialLinks?.instagram_link, 'instagram') || ""}
+            // placeholder="/username"
+            >
             <InstagramLogo
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              name="instagram_link"
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              defaultValue={extractUsername(socialLinks?.instagram_link, 'instagram') || ""}
-              placeholder="/username"
-            />
-          </div>
-          <div className="mb-3 relative">
+          </LabeledInput>
+
+          <LabeledInput
+            label="Facebook Link"
+            className="w-full text-base pl-5"
+            name="facebook_link"
+            defaultValue={extractUsername(socialLinks?.facebook_link, 'facebook') || ""}
+            // placeholder="/username"
+            >
             <FacebookLogo
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              name="facebook_link"
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              defaultValue={extractUsername(socialLinks?.facebook_link, 'facebook') || ""}
-              placeholder="/username"
-            />
-          </div>
-          <div className="mb-3 relative">
+          </LabeledInput>
+
+          <LabeledInput
+            label="Tiktok Link"
+            className="w-full text-base pl-5"
+            name="tiktok_link"
+            defaultValue={extractUsername(socialLinks?.tiktok_link, 'tiktok') || ""}
+            // placeholder="/username"
+            >
             <TiktokLogo
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              name="tiktok_link"
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              defaultValue={extractUsername(socialLinks?.tiktok_link, 'tiktok') || ""}
-              placeholder="/username"
-            />
-          </div>
-          <div className="mb-3 relative">
+          </LabeledInput>
+
+
+          <LabeledInput
+            label="Other Link"
+            className="w-full text-base pl-5"
+            name="other_link"
+            defaultValue={socialLinks?.other_link || ""}
+            // placeholder="Other Link"
+            >
             <LinkSimple
               size={24}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
             />
-            <input
-              name="other_link"
-              className="w-full pl-11 rounded-[26px] py-2 text-base pr-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-              defaultValue={socialLinks?.other_link || ""}
-              placeholder="Other Link"
-            />
-          </div>
+          </LabeledInput>
 
           {/* Save Button for Social Links */}
           <div className="w-full flex items-end justify-end">
