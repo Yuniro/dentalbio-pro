@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import SaveButton from "../components/SaveButton"; // Your existing SaveButton
 import AddressAutocomplete from "./MapboxMapAutocomplete";
+import GoogleMapAutocomplete from "./GoogleMapAutocomplete";
 
 // Fetch the authenticated user ID
 async function getUserId() {
@@ -161,7 +162,8 @@ export default async function Location() {
       <div id="columns">
         <form action={saveLocation} method="post" className="mb-6 mt-10">
           <h2 className="text-lg font-semibold mb-3">Location</h2>
-          <AddressAutocomplete defaultAddress={location?.full_address || ""} />
+          {/* <AddressAutocomplete defaultAddress={location?.full_address || ""} /> */}
+          <GoogleMapAutocomplete defaultAddress={location?.full_address || ""} />    
 
           {/* Removed manual input fields */}
 

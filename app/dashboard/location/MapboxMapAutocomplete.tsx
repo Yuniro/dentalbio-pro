@@ -78,7 +78,7 @@ const AddressAutoComplete: React.FC<AddressAutoCompleteProps> = ({
         const latitude = data.features[0].geometry.coordinates[1];
         const longitude = data.features[0].geometry.coordinates[0];
 
-        console.log(latitude, longitude);
+        // console.log(latitude, longitude);
 
         mapRef.current?.flyTo({
           center: [longitude, latitude],
