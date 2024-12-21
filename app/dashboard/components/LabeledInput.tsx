@@ -37,8 +37,6 @@ const LabeledInput: React.FC<AboutTextProps> = ({
     }
   };
 
-  console.log(name);
-
   return (
     <div className="mb-3 relative">
       <div className='rounded-[26px] bg-white pt-[20px] pb-2 px-4 h-[50px]'>

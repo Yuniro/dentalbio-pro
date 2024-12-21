@@ -369,7 +369,7 @@ import {
 import ProfilePictureUploader from "./ProfilePictureUploader";
 import ProfileNameInput from "./components/ProfileNameInput";
 import LimitedTextArea from "./components/LimitedTextArea";
-import ImageEditor from "./ImageEditor";
+import ImageEditor from "./components/ImageEditor";
 import LabeledInput from "./components/LabeledInput";
 
 // Fetch the authenticated user ID
@@ -649,7 +649,7 @@ export default async function Profile() {
 
           <h2 className="text-lg font-semibold mb-3">Bio</h2>
           <LimitedTextArea
-            name="About text"
+            name="about_text"
             defaultText={dentistry?.about_text || ""}
             placeholder="About text"
           />

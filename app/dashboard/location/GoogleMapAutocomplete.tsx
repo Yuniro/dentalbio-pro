@@ -81,7 +81,6 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
           setLongitude(location.lng);
 
           const cityName = extractCityName(results[0]);
-          console.log(cityName);
           setCity(cityName || "");
 
           map.setCenter(location);
@@ -96,7 +95,6 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   // Function to extract city name from address components
   const extractCityName = (place: google.maps.places.PlaceResult | google.maps.GeocoderResult): string | null => {
     const addressComponents = place.address_components;
-    console.log(addressComponents);
     if (addressComponents) {
       for (const component of addressComponents) {
         if (component.types.includes('locality')) {
@@ -143,7 +141,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
             id="full_address"
             name="full_address"
             className="w-full pl-5 text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
-            // placeholder="Enter your address"
+            placeholder=""
             defaultValue={defaultAddress}
             value={inputAddress}
             onChange={(e) => setInputAddress(e.target.value)} // Update input state for manual entry
