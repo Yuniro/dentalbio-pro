@@ -23,24 +23,24 @@ const ImageEditor: React.FC = () => {
     };
   }, []);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file && canvasInstance.current) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const imgElement = new Image();
-        imgElement.src = e.target?.result as string;
-        imgElement.onload = () => {
-          const img = new fabric.Image(imgElement);
-          canvasInstance.current?.clear();
-          canvasInstance.current?.add(img);
-          canvasInstance.current?.setActiveObject(img);
-          setOriginalImage(img.clone()); // Store original image state
-        };
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file && canvasInstance.current) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       const imgElement = new Image();
+  //       imgElement.src = e.target?.result as string;
+  //       imgElement.onload = () => {
+  //         const img = new fabric.Image(imgElement);
+  //         canvasInstance.current?.clear();
+  //         canvasInstance.current?.add(img);
+  //         canvasInstance.current?.setActiveObject(img);
+  //         setOriginalImage(img.clone()); // Store original image state
+  //       };
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const resetFilters = () => {
     const activeObject = canvasInstance.current?.getActiveObject();
@@ -118,7 +118,7 @@ const ImageEditor: React.FC = () => {
 
   return (
     <div>
-      <input type="file" onChange={handleImageUpload} />
+      {/* <input type="file" onChange={handleImageUpload} /> */}
       <canvas ref={canvasRef}></canvas>
 
       <div>
