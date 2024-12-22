@@ -369,8 +369,8 @@ import {
 import ProfilePictureUploader from "./ProfilePictureUploader";
 import ProfileNameInput from "./components/ProfileNameInput";
 import LimitedTextArea from "./components/LimitedTextArea";
-import ImageEditor from "./components/ImageEditor";
 import LabeledInput from "./components/LabeledInput";
+import CustomizedImageUploader from "./components/CustomizedImageUploader";
 
 // Fetch the authenticated user ID
 async function getUserId() {
@@ -628,9 +628,9 @@ export default async function Profile() {
         {/* <h2 className="text-lg font-semibold text-[#808F99]">Profile Title</h2>
         <h2 className="text-lg font-semibold mb-3">{dentistry?.about_title || ""}</h2> */}
         {/* Dentistry Form */}
-        {/* <ImageEditor /> */}
 
         <ProfilePictureUploader dentistryId={dentistry.dentistry_id} />
+        {/* <CustomizedImageUploader dentistryId={dentistry.dentistry_id} /> */}
 
         <form
           action={saveDentistryDetails}
@@ -650,7 +650,7 @@ export default async function Profile() {
           <h2 className="text-lg font-semibold mb-3">Bio</h2>
           <LimitedTextArea
             name="about_text"
-            defaultText={dentistry?.about_text || ""}
+            defaultValue={dentistry?.about_text || ""}
             placeholder="About text"
           />
 

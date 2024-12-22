@@ -211,7 +211,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
   const handleSubscribe = async (priceId: string) => {
     try {
       const res = await fetch("/api/checkout", {
-        method: "POST",
+        method: "post",
         headers: {
           "Content-Type": "application/json",
         },

@@ -4,7 +4,11 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { TrashSimple, UploadSimple } from "@phosphor-icons/react";
 import Cropper from "react-easy-crop";
+import { fabric } from "fabric";
 import { v4 as uuidv4 } from "uuid"; // Import UUID
+import IconButton from "./components/IconButton";
+import { CircleHalf, Crop, Drop, PlusMinus, Sun } from "@phosphor-icons/react/dist/ssr";
+import { ExposureFilter } from "./filter/ExposureFilter";
 
 export default function ProfilePictureUploader({
   dentistryId,
@@ -17,12 +21,16 @@ export default function ProfilePictureUploader({
 
   // State variables for cropping functionality
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [imageObj, setImageObj] = useState<fabric.Image | null>(null);
+  const [filterId, setFilterId] = useState<number>(0);
+  const [filterValueArr, setFilterValueArr] = useState([1, 0, 0, 0, 0]);
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState<number>(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
   const [showCropModal, setShowCropModal] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const sliderRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<fabric.Canvas | null>(null);
 
   useEffect(() => {
     if (dentistryId) {
@@ -63,6 +71,12 @@ export default function ProfilePictureUploader({
 
   // Handle file selection and open crop modal
   function handleProfilePicUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const canvas = new fabric.Canvas('canvas', {
+      width: 600,
+      height: 400,
+    });
+    canvasRef.current = canvas;
+
     const file = event.target.files?.[0];
     if (!file || !dentistryId) return;
 
@@ -71,7 +85,17 @@ export default function ProfilePictureUploader({
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImageSrc(reader.result as string);
+      setFilterId(0);
+      setFilterValueArr([1, 0, 0, 0]);
       setShowCropModal(true);
+
+      const imgElement = new Image();
+      imgElement.src = reader.result as string;
+      imgElement.onload = () => {
+        setImageObj(new fabric.Image(imgElement));
+        // const fabricImage = new fabric.Image(imgElement);
+        // canvas.add(new fabric.Image(imgElement));
+      }
     };
   }
 
@@ -197,6 +221,73 @@ export default function ProfilePictureUploader({
     }
   }
 
+  const applyFilters = () => {
+    if (!(filterValueArr[1] || filterValueArr[2] || filterValueArr[3]))
+      return;
+
+    const fabricImage = new fabric.Image(imageObj?.getElement()!);
+
+    if (filterValueArr[1] !== 0) {
+      const brightnessFilter = new fabric.Image.filters.Brightness({ brightness: filterValueArr[1] });
+      fabricImage?.filters!.push(brightnessFilter);
+    }
+    if (filterValueArr[2] !== 0) {
+      const contrastFilter = new fabric.Image.filters.Contrast({ contrast: filterValueArr[2] });
+      fabricImage?.filters!.push(contrastFilter);
+    }
+    if (filterValueArr[3] !== 0) {
+      const saturationFilter = new fabric.Image.filters.Saturation({ saturation: filterValueArr[3] });
+      fabricImage?.filters!.push(saturationFilter);
+    }
+    fabricImage?.applyFilters();
+    // // fabricImage.setCoords();
+    setImageSrc(getImageFromFabricObject(fabricImage!)!);
+    // applyFilters();
+  }
+
+  const getImageFromFabricObject = (imageObj: fabric.Image) => {
+    if (imageObj) {
+      // Get the underlying HTML <img> element from the fabric.Image object
+      const imgElement = imageObj.getElement();
+
+      // Optionally, you can convert the image to a data URL
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        canvas.width = imgElement.width;
+        canvas.height = imgElement.height;
+        ctx.drawImage(imgElement, 0, 0);
+        const dataURL = canvas.toDataURL();
+        return dataURL;
+      }
+    }
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, [filterValueArr])
+
+  const setFilterValue = (id: number, newValue: number) => {
+    setFilterValueArr((prevState) => {
+      const updatedArr = prevState.map((oriValue, index) => (index === id ? newValue : oriValue));
+      return updatedArr;
+    });
+
+  }
+
+  const filterIdChangeHandle = (id: number) => {
+    if (sliderRef.current)
+      if (id === 0) {
+        sliderRef.current.min = "1";
+        sliderRef.current.max = "3";
+      } else {
+        sliderRef.current.min = "-1";
+        sliderRef.current.max = "1";
+      }
+
+    setFilterId(id);
+  }
+
   return (
     <div className="profile-pic-uploader text-center">
       <h2 className="text-lg font-semibold mb-3">Profile Picture</h2>
@@ -261,69 +352,93 @@ export default function ProfilePictureUploader({
       {/* Modal for cropping */}
       {showCropModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-md relative w-96">
-            {/* Close button */}
-            <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-              onClick={() => {
-                setShowCropModal(false);
-                setImageSrc(null);
-                // Reset the file input
-                if (fileInputRef.current) {
-                  fileInputRef.current.value = "";
-                }
-              }}
-            >
-              &#10005; {/* This is the 'X' character */}
-            </button>
-            <div
-              className="crop-container"
-              style={{ position: "relative", width: "100%", height: "400px" }}
-            >
-              <Cropper
-                image={imageSrc!}
-                crop={crop}
-                zoom={zoom}
-                aspect={1}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={onCropComplete}
-              />
-            </div>
-            <div className="mt-4 flex flex-col items-center">
-              <input
-                type="range"
-                min={1}
-                max={3}
-                step={0.1}
-                value={zoom}
-                onChange={(e) => setZoom(Number(e.target.value))}
-                className="w-full"
-                style={{ accentColor: "#5046db" }}
-              />
-              <div className="mt-4 flex justify-between w-full">
-                <button
-                  onClick={() => {
-                    setShowCropModal(false);
-                    setImageSrc(null);
-                    // Reset the file input
-                    if (fileInputRef.current) {
-                      fileInputRef.current.value = "";
-                    }
-                  }}
-                  className="border border-neutral-400 rounded-full text-neutral-700 px-4 py-2 font-bold"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleCropAndUpload}
-                  className="bg-[#5046db] rounded-full text-white px-4 py-2 font-bold"
-                  disabled={uploading}
-                >
-                  Crop and Upload
-                </button>
+          <div className="rounded-lg">
+            <div className="bg-[#313338] rounded-t-lg p-4 relative w-[640px]">
+              <div
+                className="relative w-full h-[400px] rounded-md"
+              >
+                <canvas id="canvas" />
+                <Cropper
+                  image={imageSrc!}
+                  crop={crop}
+                  zoom={filterValueArr[0]}
+                  aspect={1}
+                  onCropChange={setCrop}
+                  onZoomChange={(zoom) => setFilterValue(0, zoom)}
+                  onCropComplete={onCropComplete}
+                />
+              </div>
+              <div className="mt-4 flex flex-col items-center">
+                <input
+                  ref={sliderRef}
+                  type="range"
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  value={filterValueArr[filterId]}
+                  onChange={(e) => setFilterValue(filterId, Number(e.target.value))}
+                  className="w-full"
+                  style={{ accentColor: "#5046db" }}
+                />
+
+                <div className="w-full my-2 flex justify-around">
+                  <IconButton name="Crop" onClick={() => filterIdChangeHandle(0)} actived={filterId === 0}>
+                    <Crop
+                      size={28}
+                      color="white"
+                    />
+                  </IconButton>
+                  <IconButton name="Brightness" onClick={() => filterIdChangeHandle(1)} actived={filterId === 1}>
+                    <Sun
+                      size={28}
+                      color="white"
+                    />
+                  </IconButton>
+                  <IconButton name="Contrast" onClick={() => filterIdChangeHandle(2)} actived={filterId === 2}>
+                    <Drop
+                      size={28}
+                      color="white"
+                    />
+                  </IconButton>
+                  <IconButton name="Saturation" onClick={() => filterIdChangeHandle(3)} actived={filterId === 3}>
+                    <CircleHalf
+                      size={28}
+                      color="white"
+                    />
+                  </IconButton>
+                  {/* <IconButton name="Exposure" onClick={() => filterIdChangeHandle(4)} actived={filterId === 4}>
+                    <PlusMinus
+                      size={28}
+                      color="white"
+                    />
+                  </IconButton> */}
+                </div>
               </div>
             </div>
+            <div className="flex justify-end gap-4 rounded-b-lg p-4 w-full bg-[#2B2D31]">
+              <button
+                onClick={() => {
+                  setShowCropModal(false);
+                  setImageSrc(null);
+                  // Reset the file input
+                  if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                  }
+                }}
+                className="text-white px-4 py-2 font-bold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCropAndUpload}
+                className="bg-[#5046db] rounded-full text-white px-4 py-2 font-bold"
+                disabled={uploading}
+              >
+                Apply
+              </button>
+            </div>
+
+
           </div>
         </div>
       )}

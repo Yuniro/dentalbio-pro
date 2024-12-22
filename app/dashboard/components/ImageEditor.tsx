@@ -1,169 +1,139 @@
 'use client'
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { fabric } from 'fabric';
 
-const ImageEditor: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasInstance = useRef<fabric.Canvas | null>(null);
-  const [originalImage, setOriginalImage] = useState<fabric.Image | null>(null); // Store original image
-  const [zoomLevel, setZoomLevel] = useState(1); // Track zoom level
+const ImageCropper: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const [zoom, setZoom] = useState<number>(1);
+  const [minZoom, setMinZoom] = useState<number>(0.1);
+  const [imageObject, setImageObject] = useState<fabric.Image | null>(null);
+  const croppingAreaRef = useRef<fabric.Rect | null>(null);
 
   useEffect(() => {
     if (canvasRef.current) {
-      canvasInstance.current = new fabric.Canvas(canvasRef.current, {
-        width: 600,
-        height: 400,
+      const fabricCanvas = new fabric.Canvas(canvasRef.current, {
+        selection: false,
       });
+      setCanvas(fabricCanvas);
+
+      // Create a cropping area (border)
+      const cropArea = new fabric.Rect({
+        left: 100,
+        top: 100,
+        width: 300,
+        height: 300,
+        fill: 'transparent',
+        stroke: 'red',
+        selectable: false,
+        evented: false,
+      });
+      fabricCanvas.add(cropArea);
+
+      return () => {
+        fabricCanvas.dispose();
+      };
     }
+  }, [canvasRef]);
 
-    return () => {
-      if (canvasInstance.current) {
-        canvasInstance.current.dispose();
-      }
-    };
-  }, []);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageUrl = event.target?.result as string;
+        if (canvas) {
+          fabric.Image.fromURL(imageUrl, (img) => {
+            const canvasWidth = canvas.getWidth();
+            const canvasHeight = canvas.getHeight();
+            const croppingWidth = 300;
+            const croppingHeight = 300;
 
-  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (file && canvasInstance.current) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const imgElement = new Image();
-  //       imgElement.src = e.target?.result as string;
-  //       imgElement.onload = () => {
-  //         const img = new fabric.Image(imgElement);
-  //         canvasInstance.current?.clear();
-  //         canvasInstance.current?.add(img);
-  //         canvasInstance.current?.setActiveObject(img);
-  //         setOriginalImage(img.clone()); // Store original image state
-  //       };
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
+            // Scale image to fit canvas
+            const scaleX = canvasWidth / (img.width || 1);
+            const scaleY = canvasHeight / (img.height || 1);
+            const initialScale = Math.max(scaleX, scaleY);
 
-  const resetFilters = () => {
-    const activeObject = canvasInstance.current?.getActiveObject();
-    if (activeObject instanceof fabric.Image) {
-      // Remove all filters
-      activeObject.filters = [];
-      activeObject.applyFilters();
-      canvasInstance.current?.renderAll();
+            img.set({
+              left: (canvasWidth - (img.width || 0) * initialScale) / 2,
+              top: (canvasHeight - (img.height || 0) * initialScale) / 2,
+              scaleX: initialScale,
+              scaleY: initialScale,
+              hasControls: false,
+              lockRotation: true,
+            });
+            canvas.clear();
+            canvas.add(img);
+            setImageObject(img);
+            canvas.setActiveObject(img);
+
+            // Create cropping area on top of the image
+            const croppingArea = new fabric.Rect({
+              left: (canvasWidth - croppingWidth) / 2,
+              top: (canvasHeight - croppingHeight) / 2,
+              width: croppingWidth,
+              height: croppingHeight,
+              fill: 'rgba(255, 255, 255, 0.3)', // Semi-transparent overlay
+              stroke: 'red', // Border color
+              strokeWidth: 2,
+              selectable: false,
+              evented: false,
+            });
+            canvas.add(croppingArea);
+            croppingAreaRef.current = croppingArea;
+
+            canvas.renderAll();
+            setZoom(initialScale);
+          });
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const applyFilter = (filterType: string, value: number) => {
-    const activeObject = canvasInstance.current?.getActiveObject();
-    if (activeObject instanceof fabric.Image) {
-      // Remove all previous filters
-      activeObject.filters = [];
-
-      // Apply the selected filter
-      switch (filterType) {
-        case 'brightness':
-          activeObject.filters.push(new fabric.Image.filters.Brightness({ brightness: value }));
-          break;
-        case 'contrast':
-          activeObject.filters.push(new fabric.Image.filters.Contrast({ contrast: value }));
-          break;
-        case 'saturation':
-          activeObject.filters.push(new fabric.Image.filters.Saturation({ saturation: value }));
-          break;
-        default:
-          break;
-      }
-
-      activeObject.applyFilters();
-      canvasInstance.current?.renderAll();
-    }
-  };
-
-  const handleBrightnessChange = (value: number) => {
-    applyFilter('brightness', value);
-  };
-
-  const handleContrastChange = (value: number) => {
-    applyFilter('contrast', value);
-  };
-
-  const handleSaturationChange = (value: number) => {
-    applyFilter('saturation', value);
-  };
-
-  // Zoom feature with centering
   const handleZoomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newZoom = parseFloat(e.target.value);
-    setZoomLevel(newZoom);
+    const zoomValue = parseFloat(e.target.value) < minZoom ? minZoom : parseFloat(e.target.value);
 
-    if (canvasInstance.current) {
-      const canvas = canvasInstance.current;
-      const center = canvas.getCenter(); // Get canvas center
-
-      if (canvas.viewportTransform) {
-        // Get the current scroll position to prevent zoom from shifting the canvas
-        const scrollLeft = canvas.viewportTransform[4];
-        const scrollTop = canvas.viewportTransform[5];
-
-        // Set zoom level
-        canvas.setZoom(newZoom);
-
-        // Calculate the offset to center the zoom on the canvas center
-        canvas.viewportTransform[4] = scrollLeft - (center.left * (newZoom - zoomLevel));
-        canvas.viewportTransform[5] = scrollTop - (center.top * (newZoom - zoomLevel));
-      }
-
-      canvas.renderAll(); // Re-render the canvas after zoom
+    setZoom(zoomValue);
+    if (imageObject) {
+      imageObject.set({
+        scaleX: zoomValue,
+        scaleY: zoomValue,
+      });
+      canvas?.renderAll();
     }
   };
 
   return (
     <div>
-      {/* <input type="file" onChange={handleImageUpload} /> */}
-      <canvas ref={canvasRef}></canvas>
-
-      <div>
-        <button onClick={resetFilters}>Reset Filters</button>
+      <div className="mb-4">
+        <label htmlFor="fileUpload" className="block text-sm font-medium mb-2">
+          Upload an Image:
+        </label>
         <input
-          type="range"
-          min="-1"
-          max="1"
-          step="0.1"
-          onChange={(e) => handleBrightnessChange(parseFloat(e.target.value))}
-          placeholder="Brightness"
-        />
-        <input
-          type="range"
-          min="-1"
-          max="1"
-          step="0.1"
-          onChange={(e) => handleContrastChange(parseFloat(e.target.value))}
-          placeholder="Contrast"
-        />
-        <input
-          type="range"
-          min="-1"
-          max="1"
-          step="0.1"
-          onChange={(e) => handleSaturationChange(parseFloat(e.target.value))}
-          placeholder="Saturation"
+          id="fileUpload"
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          className="block"
         />
       </div>
-
-      <div>
-        <label htmlFor="zoom">Zoom: </label>
+      <canvas ref={canvasRef} width={600} height={600} className="border" />
+      <div className="mt-4">
+        <label htmlFor="zoom" className="mr-2">Zoom:</label>
         <input
-          type="range"
           id="zoom"
-          min="0.5"
-          max="3"
-          step="0.1"
-          value={zoomLevel}
+          type="range"
+          min="0.1"
+          max="2"
+          step="0.01"
+          value={zoom}
           onChange={handleZoomChange}
+          className="w-64"
         />
-        <span>{(zoomLevel * 100).toFixed(0)}%</span>
       </div>
     </div>
   );
 };
 
-export default ImageEditor;
+export default ImageCropper;

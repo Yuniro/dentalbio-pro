@@ -61,7 +61,7 @@ export default function SendEmailConfirmation({
       };
 
       const emailResponse = await fetch("/api/send", {
-        method: "POST",
+        method: "post",
         body: JSON.stringify(emailData),
         headers: {
           "Content-Type": "application/json",
