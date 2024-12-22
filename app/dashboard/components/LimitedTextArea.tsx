@@ -6,7 +6,6 @@ import React, { InputHTMLAttributes, useState } from 'react';
 interface LimitedTextAreaProp extends InputHTMLAttributes<HTMLTextAreaElement> {
   name: string;
   defaultText?: string;
-  placeholder?: string;
   required?: boolean;
 }
 
@@ -15,7 +14,7 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
   placeholder,
   ...props
 }) => {
-  const [aboutTextContent, setAboutTextContent] = useState(props?.defaultText || ""); // Track the textarea content
+  const [aboutTextContent, setAboutTextContent] = useState(props?.defaultValue as string || ""); // Track the textarea content
   const [isFocused, setIsFocused] = useState(false);
   const maxLimit = 200;
 
