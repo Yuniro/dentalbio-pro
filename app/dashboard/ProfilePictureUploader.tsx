@@ -21,6 +21,7 @@ export default function ProfilePictureUploader({
 
   // State variables for cropping functionality
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [originalImageSrc, setOriginalImageSrc] = useState<string | null>(null);
   const [imageObj, setImageObj] = useState<fabric.Image | null>(null);
   const [filterId, setFilterId] = useState<number>(0);
   const [filterValueArr, setFilterValueArr] = useState([1, 0, 0, 0, 0]);
@@ -85,8 +86,9 @@ export default function ProfilePictureUploader({
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImageSrc(reader.result as string);
+      setOriginalImageSrc(reader.result as string);
       setFilterId(0);
-      setFilterValueArr([1, 0, 0, 0]);
+      setFilterValueArr([1, 0, 0, 0, 0]);
       setShowCropModal(true);
 
       const imgElement = new Image();
@@ -222,8 +224,10 @@ export default function ProfilePictureUploader({
   }
 
   const applyFilters = () => {
-    if (!(filterValueArr[1] || filterValueArr[2] || filterValueArr[3]))
+    if (!(filterValueArr[1] || filterValueArr[2] || filterValueArr[3] || filterValueArr[4])) {
+      setImageSrc(originalImageSrc);
       return;
+    }
 
     const fabricImage = new fabric.Image(imageObj?.getElement()!);
 
@@ -238,6 +242,13 @@ export default function ProfilePictureUploader({
     if (filterValueArr[3] !== 0) {
       const saturationFilter = new fabric.Image.filters.Saturation({ saturation: filterValueArr[3] });
       fabricImage?.filters!.push(saturationFilter);
+    }
+    if (filterValueArr[4] !== 0) {
+      const brightnessFilter = new fabric.Image.filters.Brightness({ brightness: filterValueArr[4] * 0.2 });
+      const contrastFilter = new fabric.Image.filters.Contrast({ contrast: (filterValueArr[4] * 0.05) });
+
+      fabricImage?.filters!.push(brightnessFilter);
+      fabricImage?.filters!.push(contrastFilter);
     }
     fabricImage?.applyFilters();
     // // fabricImage.setCoords();
@@ -406,12 +417,12 @@ export default function ProfilePictureUploader({
                       color="white"
                     />
                   </IconButton>
-                  {/* <IconButton name="Exposure" onClick={() => filterIdChangeHandle(4)} actived={filterId === 4}>
+                  <IconButton name="Exposure" onClick={() => filterIdChangeHandle(4)} actived={filterId === 4}>
                     <PlusMinus
                       size={28}
                       color="white"
                     />
-                  </IconButton> */}
+                  </IconButton>
                 </div>
               </div>
             </div>
