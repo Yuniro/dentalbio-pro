@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Plus, Minus } from "phosphor-react"; // Import Phosphor Icons
 import { createClient } from "@/utils/supabase/client";
+import Collapse from "./Collapse";
 
 export default function Treatments({ dentistryId }: { dentistryId: string }) {
   const [treatments, setTreatments] = useState<any[]>([]);
@@ -64,50 +65,17 @@ export default function Treatments({ dentistryId }: { dentistryId: string }) {
           className="accordion custom-accoradion-wrapper"
           id="accordionExample"
         >
+          
+
           {treatments.map((treatment, index) => (
-            <div className="accordion-item" key={treatment.treatment_id}>
-              <h2 className="accordion-header flex justify-between items-start">
-                {/* Wrapper for both text and icon */}
-                <button
-                  className={`accordion-button flex-1 text-left ${
-                    openItem === index ? "" : "collapsed"
-                  }`}
-                  type="button"
-                  aria-expanded={openItem === index}
-                  onClick={() => toggleItem(index)}
-                  aria-controls={`collapse${index}`}
-                >
-                  <span>{treatment.title || "Untitled Treatment"}</span>
-                </button>
-                {/* Plus/Minus Icons */}
-                <button
-                  className="ml-2"
-                  onClick={() => toggleItem(index)}
-                  aria-expanded={openItem === index}
-                >
-                  {openItem === index ? (
-                    <Minus size={20} />
-                  ) : (
-                    <Plus size={20} />
-                  )}
-                </button>
-              </h2>
-              <div
-                id={`collapse${index}`}
-                className={`accordion-collapse transition-all ${
-                  openItem === index
-                    ? "max-h-[500px] ease-in"
-                    : "max-h-0 ease-out"
-                } overflow-hidden duration-300`}
-                data-bs-parent="#accordionExample"
-              >
-                <div className="accordion-body text-start">
-                  <h6>
-                    {treatment.description || "No description available."}
-                  </h6>
-                </div>
-              </div>
-            </div>
+            <Collapse
+              title={treatment.title || "Untitled treatment"}
+              key={index}
+              isOpen={openItem === index}
+              onToggle={() => toggleItem(index)}
+            >
+              <span>{treatment.description || "No description available."}</span>
+            </Collapse>
           ))}
         </div>
       </div>

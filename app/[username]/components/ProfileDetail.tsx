@@ -125,55 +125,59 @@ export default function ProfileDetail({
               {socialLinks.instagram_link && (
                 <a
                   href={socialLinks.instagram_link}
-                  className="no-underline"
+                  className="no-underline bg-neutral-800 rounded-full p-1"
                   target="_blank"
                 >
                   <InstagramLogo
-                    size={26}
-                    className="text-neutral-800"
+                    size={18}
+                    weight="bold"
+                    className="text-white font-black"
                   />
                 </a>
               )}
               {socialLinks.tiktok_link && (
                 <a
                   href={socialLinks.tiktok_link}
-                  className="no-underline"
+                  className="no-underline bg-neutral-800 rounded-full p-1"
                   target="_blank"
                 >
                   <TiktokLogo
-                    size={26}
-                    className="text-neutral-800"
+                    size={18}
+                    weight="bold"
+                    className="text-white font-black"
                   />
                 </a>
               )}
               {socialLinks.twitter_link && (
                 <a
                   href={socialLinks.twitter_link}
-                  className="no-underline"
+                  className="no-underline bg-neutral-800 rounded-full p-1"
                   target="_blank"
                 >
                   <TwitterLogo
-                    size={26}
-                    className="text-neutral-800"
+                    size={18}
+                    weight="bold"
+                    className="text-white font-black"
                   />
                 </a>
               )}
               {socialLinks.facebook_link && (
                 <a
                   href={socialLinks.facebook_link}
-                  className="no-underline"
+                  className="no-underline bg-neutral-800 rounded-full p-[2px]"
                   target="_blank"
                 >
                   <FacebookLogo
-                    size={26}
-                    className="text-neutral-800"
+                    size={22}
+                    weight="bold"
+                    className="text-white font-black"
                   />
                 </a>
               )}
               {socialLinks.other_link && (
                 <a
                   href={socialLinks.other_link}
-                  className="no-underline"
+                  className="no-underline bg-neutral-800 rounded-full p-1"
                   target="_blank"
                 >
                   <svg
@@ -218,7 +222,7 @@ export default function ProfileDetail({
         <h5>{description}</h5>
         <p className="profile-address">
           {position} <br />
-          {location && location.full_address && location?.full_address}
+          {/* {location && location.full_address && location?.full_address} */}
         </p>
       </div>
     </>

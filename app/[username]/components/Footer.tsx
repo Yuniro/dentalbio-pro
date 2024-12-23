@@ -7,6 +7,7 @@ import ShareModal from "./ShareModal";
 export default function Footer({
   dentistryId,
   bookingLink,
+  contact_email,
   userTitle,
   userFirstName,
   userLastName,
@@ -14,6 +15,7 @@ export default function Footer({
 }: {
   dentistryId: string;
   bookingLink: string;
+  contact_email: string;
   userTitle: string;
   userFirstName: string;
   userLastName: string;
@@ -50,7 +52,7 @@ export default function Footer({
         <div className="row section-wrapper-contact">
           <div className="col-12 text-center">
             {bookingLink && (
-              <a href={bookingLink}>
+              <a href={`mailto:${contact_email}`}>
                 <button className="custom-outline-btn contact-btn">
                   Contact me
                 </button>

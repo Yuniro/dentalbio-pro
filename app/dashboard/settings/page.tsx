@@ -67,7 +67,7 @@ export default async function SettingsPage() {
   return (
     <div className="memberpanel-details-wrapper">
       <div id="columns">
-        <h2 className="text-lg font-semibold text-dark">Profile settings</h2>
+        <h2 className="text-lg font-semibold text-dark">Settings</h2>
 
         {/* Form to update user details */}
         <form action={updateUserDetails} method="post" className="mb-10 ml-2">

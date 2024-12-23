@@ -654,8 +654,6 @@ export default async function Profile() {
             placeholder="About text"
           />
 
-
-
           <LabeledInput
             // id="phone"
             label="Contact Phone (optional)"

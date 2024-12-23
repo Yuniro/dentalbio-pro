@@ -1,0 +1,37 @@
+import { Minus, Plus } from '@phosphor-icons/react/dist/ssr';
+import { useState } from 'react';
+
+interface CollapseProps {
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}
+
+const Collapse: React.FC<CollapseProps> = ({ title, isOpen, onToggle, children }) => {
+  return (
+    <div className="w-full">
+      <button
+        onClick={onToggle}
+        className="w-full text-left p-1 focus:outline-none"
+      >
+        <div className="flex items-center justify-between">
+          <span className=' text-[20px] text-[#5046DD]'>{title}</span>
+          <span>
+            {isOpen ? <Minus size={20} /> : <Plus size={20} />}
+          </span>
+        </div>
+      </button>
+
+      <div
+        className={`overflow-hidden transition-all duration-500 ${isOpen ? 'max-h-96 ease-in' : 'max-h-0 ease-out'}`}
+      >
+        <div className="p-1 text-left">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Collapse;

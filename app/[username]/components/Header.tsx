@@ -12,9 +12,11 @@ import ShareModal from "./ShareModal";
 export default function Header({
   username,
   dentistry_id,
+  contact_email,
 }: {
   username: string;
   dentistry_id: string;
+  contact_email: string;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
@@ -67,9 +69,8 @@ export default function Header({
       {/* Desktop View */}
       <div className="desktopview-header">
         <div
-          className={`d-flex align-items-center justify-content-between ${
-            scrolled ? "scrolled-header bg-neutral-200" : ""
-          } transition-all`}
+          className={`flex items-center align-items-center justify-content-between w-[600px] ${scrolled ? "scrolled-header bg-neutral-200" : ""
+            } transition-all`}
           id="onscroll-header"
         >
           {/* Profile image shown on scroll */}
@@ -97,9 +98,14 @@ export default function Header({
           </div>
 
           {/* Dots icon for modal trigger */}
-          <div>
-          <ShareModal username={username} />
+          <div className="flex items-center">
+            <a href={`mailto:${contact_email}`} id="onscroll-hide-contact-btn">
+              <button className="contact-me-btn whitespace-nowrap">
+                Contact me
+              </button>
+            </a>
 
+            <ShareModal username={username} />
           </div>
         </div>
       </div>
@@ -107,9 +113,8 @@ export default function Header({
       {/* Mobile View */}
       <div className="mobileview-header">
         <div
-          className={`d-flex align-items-center justify-content-between ${
-            scrolled ? "scrolled-header bg-neutral-200" : ""
-          } transition-all`}
+          className={`d-flex align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200" : ""
+            } transition-all`}
           id="onscroll-header-mobile"
         >
           {/* Logo disappears on scroll */}
@@ -135,7 +140,7 @@ export default function Header({
           {/* Contact and modal button */}
           <div className="d-flex align-items-center gap-2">
             {!scrolled && (
-              <a href="#location" id="onscroll-hide-contact-btn">
+              <a href={`mailto:${contact_email}`} id="onscroll-hide-contact-btn">
                 <button className="contact-me-btn whitespace-nowrap">
                   Contact me
                 </button>

@@ -116,7 +116,11 @@ export default async function HomePage({ params }: PageProps) {
     <>
       <div className="wrapper">
         <div className="profile-wrapper">
-          <Header username={username} dentistry_id={dentistry.dentistry_id} />
+          <Header
+            username={username}
+            dentistry_id={dentistry.dentistry_id}
+            contact_email={dentistry.contact_email}
+          />
 
           {dentistry.about_title && (
             <ProfileDetail
@@ -133,6 +137,7 @@ export default async function HomePage({ params }: PageProps) {
           <Footer
             dentistryId={dentistry.dentistry_id}
             bookingLink={dentistry.booking_link}
+            contact_email={dentistry.contact_email}
             userTitle={user.title}
             username={username}
             userFirstName={user.first_name}
