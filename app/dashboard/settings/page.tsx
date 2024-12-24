@@ -1,10 +1,10 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { positions, titles } from "./options";
 import SaveButton from "../components/SaveButton";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
+import { titles } from "@/utils/global_constants";
 
 // Fetch authenticated user details
 async function getUserDetails() {
@@ -47,7 +47,6 @@ async function updateUserDetails(formData: FormData) {
     first_name: formData.get("first_name") as string,
     last_name: formData.get("last_name") as string,
     title: formData.get("title") as string,
-    position: formData.get("position") as string,
   };
 
   const { error: updateError } = await supabase
@@ -125,29 +124,6 @@ export default async function SettingsPage() {
               defaultValue={user?.last_name || ""}
               placeholder="Last Name"
             />
-          </div>
-
-          {/* Position Dropdown */}
-          <div className="mb-3 relative">
-            <h2 className="text-base text-dark">Position</h2>
-            <div className="relative">
-              <select
-                name="position"
-                className="w-full appearance-none p-2 rounded-[26px] py-2 text-base px-3 text-neutral-800 pr-10"
-                defaultValue={user?.position || ""}
-              >
-                {positions.map((position) => (
-                  <option key={position} value={position}>
-                    {position}
-                  </option>
-                ))}
-              </select>
-              <CaretDown
-                size={20}
-                weight="bold"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-500 pointer-events-none"
-              />
-            </div>
           </div>
 
           {/* Save Button */}

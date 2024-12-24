@@ -1,7 +1,7 @@
 'use client';
 import { loadGoogleMapsScript } from '@/utils/loadScript';
-import { MapPin } from 'phosphor-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { MapPin, ToggleLeft, ToggleRight } from '@phosphor-icons/react/dist/ssr'
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 
 type GoogleMapAutocompleteProps = {
   defaultAddress: string;
@@ -19,6 +19,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [showMap, toggleShowMap] = useReducer((oriValue) => !oriValue, false);
 
   // console.log(defaultAddress);
 
@@ -168,11 +169,16 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
       <div className="my-4 text-neutral-700">
         <strong>Full Address:</strong> {inputAddress}
       </div>
-      <div className="mt-2 mb-4 text-neutral-700">
-        <strong>City:</strong> {city}
+      <div className="flex justify-between items-center mt-2 mb-4 text-neutral-700">
+        <span>
+          <strong>City:</strong> {city}
+        </span>
+        <button type='button' onClick={toggleShowMap}>
+          {showMap ? <ToggleRight size={26}/> : <ToggleLeft size={26}/>}
+        </button>
       </div>
 
-      <div id="google-map" className='w-full h-[400px] mb-3'></div>
+      <div id="google-map" className={`w-full h-[400px] mb-3 ${showMap ? 'block' : 'hidden'}`} />
     </>
   );
 };

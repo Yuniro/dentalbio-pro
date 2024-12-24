@@ -27,7 +27,7 @@ export default async function HomePage({ params }: PageProps) {
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select("id, position, first_name, last_name, title")
+    .select("id, position, first_name, last_name, title, gdc_no, qualification")
     .eq("username", username)
     .single();
 
@@ -126,6 +126,8 @@ export default async function HomePage({ params }: PageProps) {
             <ProfileDetail
               username={username}
               position={user.position}
+              gdc_no={user.gdc_no}
+              qualification={user.qualification}
               title={dentistry.about_title}
               description={dentistry.about_text}
               dentistry_id={dentistry.dentistry_id}

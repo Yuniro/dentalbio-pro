@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { DotsThreeCircle } from "phosphor-react";
 import { createClient } from "@/utils/supabase/client";
 import ShareModal from "./ShareModal";
+import SocialLinks from "./SocialLinks";
 
 export default function Footer({
   dentistryId,
@@ -58,35 +59,9 @@ export default function Footer({
                 </button>
               </a>
             )}
-            <div className="d-flex align-items-center justify-content-center gap-2 pt-1">
-              {socialLinks?.instagram_link && (
-                <a
-                  href={socialLinks.instagram_link}
-                  className="user-social-icon"
-                >
-                  <i className="fa-brands fa-instagram"></i>
-                </a>
-              )}
-              {socialLinks?.tiktok_link && (
-                <a href={socialLinks.tiktok_link} className="user-social-icon">
-                  <i className="fa-brands fa-tiktok"></i>
-                </a>
-              )}
-              {socialLinks?.twitter_link && (
-                <a href={socialLinks.twitter_link} className="user-social-icon">
-                  <i className="fa-brands fa-x-twitter"></i>
-                </a>
-              )}
-              {socialLinks?.facebook_link && (
-                <a
-                  href={socialLinks.facebook_link}
-                  className="user-social-icon"
-                >
-                  <i className="fa-brands fa-facebook"></i>
-                </a>
-              )}
-            </div>
+            <SocialLinks {...socialLinks} />
           </div>
+
         </div>
 
         <div className="relative align-items-center">

@@ -4,16 +4,21 @@ import Link from "next/link";
 import Navbar from "./Navbar";
 import { createClient } from "@/utils/supabase/client";
 import { FacebookLogo, InstagramLogo, TiktokLogo, TwitterLogo } from "@phosphor-icons/react/dist/ssr";
+import SocialLinks from "./SocialLinks";
 
 export default function ProfileDetail({
   username,
   position,
+  gdc_no,
+  qualification,
   title,
   description,
   dentistry_id,
 }: {
   username: string;
   position: string;
+  gdc_no: string;
+  qualification: string;
   title: string;
   description: string;
   dentistry_id: string;
@@ -120,7 +125,7 @@ export default function ProfileDetail({
           </div>
 
           {/* Social Links */}
-          {socialLinks && (
+          {/* {socialLinks && (
             <div className="d-flex align-items-center justify-content-center gap-2">
               {socialLinks.instagram_link && (
                 <a
@@ -192,7 +197,8 @@ export default function ProfileDetail({
                 </a>
               )}
             </div>
-          )}
+          )} */}
+          <SocialLinks {...socialLinks} />
         </div>
       </div>
 
@@ -222,6 +228,8 @@ export default function ProfileDetail({
         <h5>{description}</h5>
         <p className="profile-address">
           {position} <br />
+          GDC No. {gdc_no} <br />
+          {qualification} <br />
           {/* {location && location.full_address && location?.full_address} */}
         </p>
       </div>

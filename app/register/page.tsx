@@ -297,11 +297,11 @@ import CustomButton from "./CustomButton";
 import { createClient } from "@supabase/supabase-js";
 import ClaimForm from "../components/home-page/ClaimForm";
 import Country from "./Country";
-import { countries, positions, titles } from "./options";
 import Image from "next/image";
 import Link from "next/link";
 import ErrorMessage from "../components/ErrorMessage";
 import Navbar from "../components/Navbar";
+import { countries, positions, titles } from "@/utils/global_constants";
 
 const manrope = Manrope({ subsets: ["latin"] });
 
