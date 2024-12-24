@@ -339,7 +339,7 @@ export default async function Profile() {
 
         <form
           action={onSaveUserAndDentistryData}
-          method="post"
+          method="POST"
           className="mb-6 mt-10"
         >
           <h2 className="text-lg font-semibold mb-3">Name</h2>
@@ -451,7 +451,7 @@ export default async function Profile() {
         </form>
 
         {/* Social Links Form */}
-        <form action={saveSocialLinks} method="post" className="mb-6 mt-10">
+        <form action={saveSocialLinks} method="POST" className="mb-6 mt-10">
           <h2 className="text-lg font-semibold mb-3">Social Links</h2>
 
 

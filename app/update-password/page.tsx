@@ -15,7 +15,7 @@ export default function UpdatePasswordPage() {
         Update Password
       </h1>
 
-      <form action={updatePasswordAction} method="post" className="space-y-5 w-full max-w-xl">
+      <form action={updatePasswordAction} method="POST" className="space-y-5 w-full max-w-xl">
         {/* Email Field */}
         <div className="relative z-50 font-semibold left-1/2 top-5 transform -translate-x-1/2 max-w-xl w-full px-5 mt-5">
           <div className="max-w-xl w-full rounded-[40px] border-[0.6px] shadow-sm bg-white bg-opacity-90 backdrop-blur-lg border-neutral-300 py-4 px-3 flex items-center justify-between transition-all duration-300 ease-in-out">

@@ -2,97 +2,77 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import SaveButton from "../components/SaveButton"; // Your existing SaveButton
-import AddressAutocomplete from "./MapboxMapAutocomplete";
 import GoogleMapAutocomplete from "./GoogleMapAutocomplete";
+import AddressItem from "../components/AddressItem";
+import MapLoader from "./MapLoader";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
-// Fetch the authenticated user ID
-async function getUserId() {
+// Utility function to fetch authenticated user, user ID, and dentistry ID
+async function fetchUserAndDentistry() {
   "use server";
   const supabase = createClient();
-  const { data: userData, error: authError } = await supabase.auth.getUser();
 
+  // Fetch authenticated user
+  const { data: userData, error: authError } = await supabase.auth.getUser();
   if (authError || !userData?.user) {
-    return redirect(
-      "/login?error=User authentication failed, redirecting to login."
-    );
+    redirect("/login?error=User authentication failed, redirecting to login.");
   }
 
   const userEmail = userData.user.email;
 
-  // Fetch the correct user_id from the users table based on the email
+  // Fetch user ID
   const { data: userRecord, error: userError } = await supabase
     .from("users")
     .select("id")
     .eq("email", userEmail)
     .single();
-
   if (userError || !userRecord) {
-    return redirect("/error?message=user_not_found_in_users_table");
+    redirect("/error?message=user_not_found_in_users_table");
   }
 
-  return userRecord.id; // The correct user ID from the users table
-}
+  const userId = userRecord.id;
 
-// Fetch the Dentistry ID (assuming it's already created)
-async function getDentistryId(userId: string) {
-  "use server";
-  const supabase = createClient();
-
-  // Fetch the existing dentistry associated with the user
-  const { data: dentistry, error } = await supabase
+  // Fetch Dentistry ID
+  const { data: dentistry, error: dentistryError } = await supabase
     .from("dentistries")
     .select("dentistry_id")
     .eq("user_id", userId)
     .single();
-
-  if (!dentistry || error) {
-    return redirect("/error?message=dentistry_not_found");
+  if (dentistryError || !dentistry) {
+    redirect("/error?message=dentistry_not_found");
   }
 
-  return dentistry.dentistry_id;
+  return { userId, dentistryId: dentistry.dentistry_id };
 }
 
-// Fetch or update the existing Location for the Dentistry
-async function getLocation(dentistryId: string) {
+// Fetch existing location data
+async function fetchLocation(dentistryId: string) {
   "use server";
   const supabase = createClient();
 
-  // Fetch location_id from the dentistry_locations join table using dentistry_id
-  const { data: dentistryLocation, error: joinTableError } = await supabase
+  const { data: dentistryLocation, error: joinError } = await supabase
     .from("dentistry_locations")
     .select("location_id")
     .eq("dentistry_id", dentistryId)
-    .single();
 
-  if (joinTableError || !dentistryLocation) {
-    return null; // No location linked yet
-  }
+  if (joinError || !dentistryLocation) return null;
 
-  const locationId = dentistryLocation.location_id;
+  const locationIdList = dentistryLocation.map((location) => location.location_id);
 
-  // Fetch the actual location data from the locations table using the location_id
-  const { data: location, error: locationError } = await supabase
+  const { data: locations, error: locationError } = await supabase
     .from("locations")
     .select("*")
-    .eq("location_id", locationId)
-    .single();
+    .in("location_id", locationIdList)
 
-  if (locationError || !location) {
-    return null; // Return null if no location exists
-  }
-
-  return location; // Return the existing location data
+  return locationError ? null : locations;
 }
 
-// Server Action to update or create the Location for the Dentistry
+// Save or update location data
 async function saveLocation(formData: FormData) {
   "use server";
   const supabase = createClient();
-  const userId = await getUserId();
-  const dentistryId = await getDentistryId(userId); // Fetch existing dentistry
+  const { userId, dentistryId } = await fetchUserAndDentistry();
 
-  // Prepare the new location data
   const newLocation = {
     full_address: formData.get("full_address") as string,
     city: formData.get("city") as string,
@@ -100,78 +80,88 @@ async function saveLocation(formData: FormData) {
     longitude: parseFloat(formData.get("longitude") as string),
   };
 
-  // Check if a location is already linked to the dentistry
-  const { data: dentistryLocation, error: joinTableError } = await supabase
+  const { data: dentistryLocation, error: joinError } = await supabase
     .from("dentistry_locations")
     .select("location_id")
     .eq("dentistry_id", dentistryId)
     .single();
 
-  if (joinTableError || !dentistryLocation) {
-    // If no location exists, create a new location and link it
-    const { data: insertedLocation, error: insertLocationError } =
-      await supabase
-        .from("locations")
-        .insert([newLocation])
-        .select("location_id")
-        .single();
+  if (joinError || !dentistryLocation) {
+    const { data: insertedLocation, error: insertError } = await supabase
+      .from("locations")
+      .insert([newLocation])
+      .select("location_id")
+      .single();
 
-    if (insertLocationError) {
-      return redirect("/location?error=Failed to create location");
+    if (insertError) {
+      redirect("/location?error=Failed to create location");
     }
 
-    // Link the new location to the dentistry in the dentistry_locations join table
-    const { error: dentistryLocationError } = await supabase
+    const { error: linkError } = await supabase
       .from("dentistry_locations")
-      .insert([
-        {
-          dentistry_id: dentistryId,
-          location_id: insertedLocation.location_id,
-        },
-      ]);
+      .insert([{ dentistry_id: dentistryId, location_id: insertedLocation.location_id }]);
 
-    if (dentistryLocationError) {
-      return redirect("/location?error=Failed to link location to dentistry");
+    if (linkError) {
+      redirect("/location?error=Failed to link location to dentistry");
+    }
+  } else {
+    const { data: userRecord, error: userError } = await supabase
+    .from("users")
+    .select("username, subscription_status, first_name")
+    .eq("id", userId)
+    .single();
+
+    if (userRecord?.subscription_status === "trialing" || !userRecord?.subscription_status) {
+      return;
     }
 
-    return; // Return without redirecting (success is handled by the SaveButton)
-  } else {
-    // If a location already exists, update it
-    const locationId = dentistryLocation.location_id;
-    const { error: updateLocationError } = await supabase
+    const { error: updateError } = await supabase
       .from("locations")
       .update(newLocation)
-      .eq("location_id", locationId);
+      .eq("location_id", dentistryLocation.location_id);
 
-    if (updateLocationError) {
-      return redirect("/location?error=Error updating location");
+    if (updateError) {
+      redirect("/location?error=Error updating location");
     }
-
-    return; // Return without redirecting (success is handled by the SaveButton)
   }
 }
 
-// Main component to display and manage the location data
+// Save or update location data
+async function updateLocation(locationData: LocationType, location_id: string) {
+  "use server";
+  const supabase = createClient();
+  const { userId, dentistryId } = await fetchUserAndDentistry();
+
+  const { error: updateError } = await supabase
+    .from("locations")
+    .update(locationData)
+    .eq("location_id", location_id);
+
+  if (updateError) {
+    redirect("/location?error=Error updating location");
+  }
+}
+
+// Main component
 export default async function Location() {
-  const userId = await getUserId();
-  const dentistryId = await getDentistryId(userId); // Get the Dentistry ID
-  const location = await getLocation(dentistryId); // Fetch existing location, if any
+  const { dentistryId } = await fetchUserAndDentistry();
+  const locations = await fetchLocation(dentistryId);
 
   return (
     <div className="memberpanel-details-wrapper">
+      <MapLoader />
       <div id="columns">
-        <form action={saveLocation} method="post" className="mb-6 mt-10">
+        <form action={saveLocation} method="POST" className="mb-6 mt-10">
           <h2 className="text-lg font-semibold mb-3">Location</h2>
-          {/* <AddressAutocomplete defaultAddress={location?.full_address || ""} /> */}
-          <GoogleMapAutocomplete defaultAddress={location?.full_address || ""} />    
-
-          {/* Removed manual input fields */}
-
-          <div className="w-full flex items-end justify-end">
+          <GoogleMapAutocomplete defaultAddress="" id="full_address"/>
+          {/* <div className="w-full flex items-end justify-end">
             <SaveButton />
-          </div>
+          </div> */}
         </form>
       </div>
+      {locations && locations.map((location, index) => (
+        <AddressItem {...location} key={index} onAddressChange={updateLocation}/>
+      ))}
     </div>
   );
 }

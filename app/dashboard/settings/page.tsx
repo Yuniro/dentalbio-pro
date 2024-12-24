@@ -69,7 +69,7 @@ export default async function SettingsPage() {
         <h2 className="text-lg font-semibold text-dark">Settings</h2>
 
         {/* Form to update user details */}
-        <form action={updateUserDetails} method="post" className="mb-10 ml-2">
+        <form action={updateUserDetails} method="POST" className="mb-10 ml-2">
           {/* Title Dropdown */}
           <div className="mb-3 relative">
             <h2 className="text-base text-dark">Title</h2>

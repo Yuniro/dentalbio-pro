@@ -78,7 +78,7 @@ export default async function DashboardPage() {
       <div className="px-3 py-3 h-screen flex flex-col items-center justify-between">
         <div className="flex flex-col items-start justify-center">
           <div className="w-full flex justify-between items-center px-3">
-            <form action="/api/create-portal-session" method="post">
+            <form action="/api/create-portal-session" method="POST">
               <button
                 type="submit"
                 className="hover:bg-gray-200 text-dark px-3 py-2 rounded-lg text-sm font-light transition-all"

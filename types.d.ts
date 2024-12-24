@@ -7,3 +7,10 @@ interface HeroData {
 interface HomePageData {
   hero_section: HeroData[];
 }
+
+type LocationType = {
+  full_address: string;
+  city: string;
+  latitude: number;
+  longitude: number;
+}

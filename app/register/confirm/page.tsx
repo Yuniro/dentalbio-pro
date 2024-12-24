@@ -134,7 +134,7 @@
 //         };
 
 //         await fetch("/api/send", {
-//           method: "post",
+//           method: "POST",
 //           body: JSON.stringify(emailData),
 //           headers: {
 //             "Content-Type": "application/json",
@@ -266,7 +266,7 @@ export default async function ConfirmPage() {
     };
 
     const emailResponse = await fetch("/api/send", {
-      method: "post",
+      method: "POST",
       body: JSON.stringify(emailData),
       headers: {
         "Content-Type": "application/json",
