@@ -226,12 +226,12 @@ export default function ProfileDetail({
       {/* Description */}
       <div className="profile-contents text-center">
         <h5>{description}</h5>
-        <p className="profile-address">
-          {position} <br />
-          GDC No. {gdc_no} <br />
-          {qualification} <br />
+        <div className="profile-address">
+          {position !== "Other" && <div>{position}</div>}
+          {gdc_no && <div>GDC No. {gdc_no}</div>}
+          {qualification && <div>{qualification}</div>}
           {/* {location && location.full_address && location?.full_address} */}
-        </p>
+        </div>
       </div>
     </>
   );

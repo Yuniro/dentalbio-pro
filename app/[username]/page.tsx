@@ -14,6 +14,7 @@ import Links from "./components/Links";
 import Image from "next/image";
 import Link from "next/link";
 import { unstable_noStore } from "next/cache"; // Import noStore to prevent caching
+import { loadGoogleMapsScript } from "@/utils/loadScript";
 
 type PageProps = {
   params: { username: string };

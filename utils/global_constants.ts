@@ -12,6 +12,7 @@ export const titles = [
 ];
 
 export const positions = [
+  "Other",
   "Associate",
   "Dental Assistant",
   "Dental Hygienist",
@@ -35,7 +36,6 @@ export const positions = [
   "Student",
   "Therapist",
   "TCO (Treatment Coordinator)",
-  "Other",
 ];
 
 export const countries = [

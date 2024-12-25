@@ -2,6 +2,8 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import "../../globals.css";
+import MapComponent from "./MapComponent";
 
 export default function WorkLocation({ dentistry }: { dentistry: any }) {
   const [location, setLocation] = useState<any>(null);
@@ -50,16 +52,21 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
         <h1 className="text-center section-heading-work">Where I work</h1>
         <div className="col-12 map-wrapper">
           {/* Google Maps Iframe with dynamic latitude and longitude */}
-          <iframe
+          <MapComponent
+            id="work"
+            latitude={location.latitude}
+            longitude={location.longitude}
+          />
+          {/* <iframe
             className="bg-black"
             width="100%"
             height={200}
             style={{ border: 0 }}
-            src={`https://www.google.com/maps?q=${location.latitude},${location.longitude}&z=15&output=embed`} // Dynamically set the map location
+            src={`https://www.google.com/maps?q=${encodeURIComponent(location.full_address)}&z=15&output=embed`} // Dynamically set address
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          /> */}
 
           <div className="d-flex align-items-center justify-content-center map-button">
             {dentistry.booking_link && (
@@ -87,7 +94,7 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
               </Link>
             )}
           </div>
-          
+
           {/* Dynamically display the address */}
           <p className="text-decoration-none text-center map-detail">
             {location.full_address}

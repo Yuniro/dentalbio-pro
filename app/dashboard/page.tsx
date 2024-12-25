@@ -383,7 +383,7 @@ export default async function Profile() {
           </div>
 
           <LabeledInput
-            label="GDC / Professional Body Reg No."
+            label="GDC / Professional Body Reg No. (optional)"
             defaultValue={user?.gdc_no || ""}
             name="gdc_no"
             className="w-full text-base pl-5">
@@ -394,7 +394,7 @@ export default async function Profile() {
           </LabeledInput>
 
           <LabeledInput
-            label="Qualification"
+            label="Qualification (optional)"
             defaultValue={user?.qualification || ""}
             name="qualification"
             className="w-full text-base pl-5">
@@ -456,7 +456,7 @@ export default async function Profile() {
 
 
           <LabeledInput
-            label="Twitter Link"
+            label="Twitter Name"
             className="w-full text-base pl-5"
             name="twitter_link"
             defaultValue={extractUsername(socialLinks?.twitter_link, 'twitter') || ""}
@@ -469,7 +469,7 @@ export default async function Profile() {
           </LabeledInput>
 
           <LabeledInput
-            label="Instagram Link"
+            label="Instagram Name"
             className="w-full text-base pl-5"
             name="instagram_link"
             defaultValue={extractUsername(socialLinks?.instagram_link, 'instagram') || ""}
@@ -482,7 +482,7 @@ export default async function Profile() {
           </LabeledInput>
 
           <LabeledInput
-            label="Facebook Link"
+            label="Facebook Name"
             className="w-full text-base pl-5"
             name="facebook_link"
             defaultValue={extractUsername(socialLinks?.facebook_link, 'facebook') || ""}
@@ -495,7 +495,7 @@ export default async function Profile() {
           </LabeledInput>
 
           <LabeledInput
-            label="Tiktok Link"
+            label="Tiktok Name"
             className="w-full text-base pl-5"
             name="tiktok_link"
             defaultValue={extractUsername(socialLinks?.tiktok_link, 'tiktok') || ""}
@@ -509,11 +509,11 @@ export default async function Profile() {
 
 
           <LabeledInput
-            label="Other Link"
+            label="Other Name"
             className="w-full text-base pl-5"
             name="other_link"
             defaultValue={socialLinks?.other_link || ""}
-          // placeholder="Other Link"
+          // placeholder="Other Name"
           >
             <LinkSimple
               size={24}
