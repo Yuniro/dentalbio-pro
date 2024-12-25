@@ -87,7 +87,7 @@ export default function Header({
           </div>
 
           {/* Username and verification */}
-          <div className="d-flex align-items-center gap-2 mt-1 justify-content-center">
+          <div className="d-flex align-items-center gap-2 justify-content-center">
             <h6 className="fw-medium">@{username}</h6>
             {/* Verification icon - uncomment if needed */}
             {/* <Image
@@ -133,7 +133,7 @@ export default function Header({
           {/* Username visible on scroll */}
           <div className={`${scrolled ? "d-block" : "d-none"}`}>
             <div className="d-flex align-items-center gap-2 justify-content-center">
-              <h6 className="fw-medium mt-1.5">@{username}</h6>
+              <h6 className="fw-medium">@{username}</h6>
             </div>
           </div>
 

@@ -71,8 +71,8 @@
     }
     #onscroll-header,
     #onscroll-header-mobile {
-        width: calc(100% - 100px);
-        left: 50px;
+        width: calc(100% - 120px);
+        left: 60px;
     }
 }
 
@@ -241,6 +241,8 @@
     }
     #onscroll-header {
         min-height: 3.3rem;
+        width: calc(100% - 80px);
+        left: 40px;
     }
     .blog-detail-img {
         height: 200px;
@@ -453,6 +455,7 @@
     #onscroll-header,
     #onscroll-header-mobile {
         width: calc(100% - 46px);
+        left: 23px;
     }
 
     .section-heading-top-links,
