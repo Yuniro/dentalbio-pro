@@ -72,7 +72,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
           weight="fill"
           fill="#BFBFBF"
           size={40}
-          className="header-modal-icon"
+          className="header-modal-icon md:mt-1"
         />
       </button>
 

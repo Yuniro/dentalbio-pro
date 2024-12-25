@@ -743,8 +743,7 @@ p {
   /* width: calc(661px - 160px); */
   z-index: 9;
   min-height: 4rem;
-  left: 50%;
-  transform: translateX(-50%);
+  left: calc(50% - 300px);
 }
 
 .onscroll-profile img {
