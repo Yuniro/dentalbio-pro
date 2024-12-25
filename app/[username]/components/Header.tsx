@@ -69,7 +69,7 @@ export default function Header({
       {/* Desktop View */}
       <div className="desktopview-header">
         <div
-          className={`flex items-center align-items-center justify-content-between w-[600px] ${scrolled ? "scrolled-header bg-neutral-200" : ""
+          className={`flex items-center align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200" : ""
             } transition-all`}
           id="onscroll-header"
         >

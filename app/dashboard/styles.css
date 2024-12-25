@@ -738,7 +738,7 @@ p {
     padding: 5px 10px;
     border-radius: 40px;
     position: fixed;
-    /* width: calc(661px - 160px); */
+    width: calc(661px - 160px);
     z-index: 9;
     min-height: 4rem;
     left: 50%;

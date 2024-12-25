@@ -741,9 +741,10 @@ p {
   border-radius: 40px;
   position: fixed;
   /* width: calc(661px - 160px); */
+  width: 600px;
+  left: calc(50% - 300px);
   z-index: 9;
   min-height: 4rem;
-  left: calc(50% - 300px);
 }
 
 .onscroll-profile img {
