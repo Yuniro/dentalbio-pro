@@ -18,7 +18,7 @@ const LabeledInput: React.FC<AboutTextProps> = ({
   onChange,
   ...props
 }) => {
-  const [value, setValue] = useState<string>(props?.defaultValue as string || "");
+  const [value, setValue] = useState<string>(props.value ? props.value as string : props?.defaultValue as string || "");
   const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

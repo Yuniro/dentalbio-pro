@@ -5,23 +5,26 @@ import React, { InputHTMLAttributes, useState } from 'react';
 
 interface LimitedTextAreaProp extends InputHTMLAttributes<HTMLTextAreaElement> {
   name: string;
-  defaultText?: string;
   required?: boolean;
+  limit?: number;
 }
 
 const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
   name,
   placeholder,
+  limit = 200,
   ...props
 }) => {
-  const [aboutTextContent, setAboutTextContent] = useState(props?.defaultValue as string || ""); // Track the textarea content
+  const [aboutTextContent, setAboutTextContent] = useState(props.value ? props.value as string : props?.defaultValue as string || ""); // Track the textarea content
   const [isFocused, setIsFocused] = useState(false);
-  const maxLimit = 200;
+  const maxLimit = limit;
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // Prevent input beyond the max limit
     if (e.target.value.length <= maxLimit) {
       setAboutTextContent(e.target.value);
+      if (props.onChange)
+        props.onChange(e);
     }
   };
 
@@ -46,14 +49,15 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
             {placeholder}
           </label>
           <textarea
+            id={name}
             name={name}
             className="w-full resize-none focus:outline-none text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
             // placeholder={placeholder}
             value={aboutTextContent}
-            onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
             {...props}
+            onChange={handleChange}
           />
         </div>
         <div className='text-right text-gray-500'>{aboutTextContent.length}/{maxLimit}</div>

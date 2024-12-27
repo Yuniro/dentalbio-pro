@@ -8,7 +8,7 @@ import LimitedTextArea from "../components/LimitedTextArea";
 
 // Function for Captical First
 function toCapitalFirst(sentence: string): string {
-  return sentence.replace(/\b\w/g, (match) => match.toUpperCase()).toLowerCase();
+  return sentence.toLowerCase().replace(/\b\w/g, (match) => match.toUpperCase());
 }
 
 // Client-side component to add a treatment
