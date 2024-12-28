@@ -57,7 +57,7 @@ const EditBlogModal: React.FC<ModalProps> = ({
       {isOpen && (
         <div className="modal-overlay fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center" onClick={onClose}>
           <div className="w-[600px] rounded-[26px] bg-[#F3F3F1] p-10" onClick={(e) => e.stopPropagation()}>
-            <h4 className="mb-4">Add New Blog</h4>
+            <h4 className="mb-4">Edit Blog</h4>
             <form onSubmit={handleSubmit}>
               <LabeledInput
                 label="Title"

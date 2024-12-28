@@ -20,7 +20,8 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
   const maxLimit = limit;
 
   useEffect(() => {
-    setAboutTextContent(props.value as string);
+    if (props.value)
+      setAboutTextContent(props.value as string);
   }, [props])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -64,7 +65,7 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
             onChange={handleChange}
           />
         </div>
-        <div className='text-right text-gray-500'>{aboutTextContent.length}/{maxLimit}</div>
+        <div className='text-right text-gray-500'>{aboutTextContent?.length || 0}/{maxLimit}</div>
       </div>
     </>
   );

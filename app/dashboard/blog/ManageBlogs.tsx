@@ -1,13 +1,66 @@
 'use client'
-import SkeletonLoader from '@/app/components/Loader/Loader';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import BlogCard from '../components/BlogCard';
 import AddNewBlog from './AddNewBlog';
 import EditBlogModal from '../components/EditBlogModal';
+import SkeletonLoader from '@/app/components/Loader/Loader';
+import { arraysAreEqual } from '@/utils/function_utils';
+
+const ItemType = {
+  BLOG: "BLOG"
+}
+
+function DraggableBlogCard({
+  blog,
+  index,
+  onDelete,
+  onEditItem,
+  moveBlog
+}: {
+  blog: BlogType,
+  index: number;
+  onDelete: any;
+  onEditItem: any;
+  moveBlog: any;
+}) {
+  const [, ref] = useDrag({
+    type: ItemType.BLOG,
+    item: { index },
+  });
+
+  const [, drop] = useDrop({
+    accept: ItemType.BLOG,
+    hover: (draggedItem: any) => {
+      if (draggedItem.index !== index) {
+        moveBlog(draggedItem.index, index);
+        draggedItem.index = index;
+      }
+    },
+  });
+
+  return (
+    <div
+      ref={(node) => {
+        if (node) ref(node);
+        drop(node);
+      }}
+    >
+      <BlogCard
+        onDelete={onDelete}
+        onEditItem={onEditItem}
+        {...blog}
+      />
+    </div>
+  );
+}
+
 
 const ManageBlogs = () => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [blogs, setBlogs] = useState<any[] | null>(null);
+  const [initialBlogs, setInitialBlogs] = useState<any[] | null>(null);
   const [editingBlog, setEditingBlog] = useState<BlogType>({
     id: "",
     writer_id: "",
@@ -27,6 +80,7 @@ const ManageBlogs = () => {
       });
       const data = await response.json();
       setBlogs(data.data);
+      setInitialBlogs(data.data);
     };
 
     fetchBlogs();
@@ -105,22 +159,62 @@ const ManageBlogs = () => {
     }
   }
 
+  const updateOrder = async (updatedBlogs: any[]) => {
+    const orderList = updatedBlogs.map((blog, index) => ({
+      id: blog.id,
+      rank: index,
+    }));
+
+    // console.log(orderList);
+
+    const response = await fetch('/api/blogs-manage', {
+      method: 'POST',
+      body: JSON.stringify(orderList)
+    })
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log('update orders');
+    } else {
+      console.log(`Error: ${result.error}`)
+    }
+  }
+
+  // Move treatment in the list
+  const moveBlog = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      const updatedBlogs = Array.from(blogs!);
+      const [movedBlog] = updatedBlogs.splice(fromIndex, 1);
+      updatedBlogs.splice(toIndex, 0, movedBlog);
+      setBlogs(updatedBlogs);
+
+      // Check if the new order is different from the initial order
+      if (!arraysAreEqual(updatedBlogs, initialBlogs!)) {
+        updateOrder(updatedBlogs);
+      }
+    }, [blogs]);
+
   return (
     <div>
       <h4 className='mb-6'>My Blogs</h4>
 
-      {blogs ?
-        blogs.length > 0 ?
-          blogs.map((blog, index) => (
-            <BlogCard
-              key={index}
-              onDelete={handleDelete}
-              onEditItem={handleEditItem}
-              {...blog}
-            />
-          )) :
-          <div className='py-10 text-lg text-gray-400 text-center'>There is no blog to show</div> :
-        <SkeletonLoader />}
+      <DndProvider backend={HTML5Backend}>
+        {blogs ?
+          blogs.length > 0 ?
+            blogs.map((blog, index) => (
+              <DraggableBlogCard
+                key={index}
+                index={index}
+                blog={blog}
+                onDelete={handleDelete}
+                onEditItem={handleEditItem}
+                moveBlog={moveBlog}
+              />
+            )) :
+            <div className='py-10 text-lg text-gray-400 text-center'>There is no blog to show</div> :
+          <SkeletonLoader />}
+      </DndProvider>
 
       <div className="flex justify-end mt-6">
         <AddNewBlog onAdd={handleAdd} />

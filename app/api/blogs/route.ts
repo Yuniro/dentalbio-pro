@@ -9,7 +9,8 @@ export async function GET(request: Request) {
     const { data, error } = await supabase
       .from('blogs')
       .select('*')
-      .eq('writer_id', userData.id);
+      .eq('writer_id', userData.id)
+      .order('rank', { ascending: true });
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });

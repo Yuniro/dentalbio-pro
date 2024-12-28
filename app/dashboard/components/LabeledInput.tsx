@@ -22,7 +22,8 @@ const LabeledInput: React.FC<AboutTextProps> = ({
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    setValue(props.value as string);
+    if (props.value)
+      setValue(props.value as string);
   }, [props])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

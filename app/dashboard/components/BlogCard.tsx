@@ -48,7 +48,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
             <div className="text-[#5046db] font-bold truncate">{title}</div>
             <PencilSimple
               size={18}
-              className="cursor-pointer flex-shrink-0"
+              className="cursor-pointer flex-shrink-0 hover:text-[#5046db]"
               onClick={() => onEditItem(id)}
             />
           </div>
@@ -60,7 +60,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
         {/* Trash Button */}
         <div>
           <div onClick={() => setIsOpenConfirmMessage(true)}>
-            <Trash size={20} className="cursor-pointer" />
+            <Trash size={20} className="cursor-pointer hover:text-red-700" />
           </div>
         </div>
       </div>
