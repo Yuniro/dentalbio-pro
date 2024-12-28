@@ -1,7 +1,7 @@
 // components/AboutText.tsx
 'use client'
 
-import React, { InputHTMLAttributes, useState } from 'react';
+import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 
 interface LimitedTextAreaProp extends InputHTMLAttributes<HTMLTextAreaElement> {
   name: string;
@@ -18,6 +18,10 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
   const [aboutTextContent, setAboutTextContent] = useState(props.value ? props.value as string : props?.defaultValue as string || ""); // Track the textarea content
   const [isFocused, setIsFocused] = useState(false);
   const maxLimit = limit;
+
+  useEffect(() => {
+    setAboutTextContent(props.value as string);
+  }, [props])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // Prevent input beyond the max limit

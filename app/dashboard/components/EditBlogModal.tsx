@@ -6,30 +6,28 @@ import LimitedTextArea from "./LimitedTextArea";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ImageUploader from "./ImageUploader";
 
-interface ModalProps {
+interface ModalProps extends BlogType {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (formData: { title: string; content: string; image?: File; meta_title: string; meta_description: string }) => void;
+  onSubmit: (blog: BlogType, image: File | null) => void;
 }
 
-const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    meta_title: "",
-    meta_description: "",
-  });
+const EditBlogModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  ...props
+}) => {
+  const [formData, setFormData] = useState<BlogType>(props);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [currentImage, setCurrentImage] = useState<string | null>(props.image_url);
 
   useEffect(() => {
-    setFormData({
-      title: "",
-      content: "",
-      meta_title: "",
-      meta_description: "",
-    });
+    setCurrentImage(isOpen ? props.image_url : null);
+    
     setIsUploading(false);
+    setFormData(props);
   }, [isOpen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -43,7 +41,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsUploading(true);
-    onSubmit(formData);
+    onSubmit(formData, selectedImage);
   };
 
   const handleFileChange = (image: File) => {
@@ -76,8 +74,9 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                 limit={5000}
                 required
               />
-              <ImageUploader 
+              <ImageUploader
                 onFileChange={handleFileChange}
+                image_url={currentImage!}
               />
               <LabeledInput
                 label="Meta Title"
@@ -93,7 +92,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
               />
               <div className="flex justify-end gap-2">
                 {/* <SaveButton text="Add Blog" /> */}
-                <FullRoundedButton isLoading={isUploading} type="submit">Add Blog</FullRoundedButton>
+                <FullRoundedButton isLoading={isUploading} type="submit">Update Blog</FullRoundedButton>
                 <FullRoundedButton type="button" buttonType="danger" onClick={onClose}>Close</FullRoundedButton>
               </div>
             </form>
@@ -104,4 +103,4 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
   );
 };
 
-export default AddBlogModal;
+export default EditBlogModal;

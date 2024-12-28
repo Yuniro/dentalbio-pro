@@ -1,6 +1,6 @@
 // components/LabeledInput.tsx
 'use client'
-import React, { InputHTMLAttributes, useState } from 'react';
+import React, { InputHTMLAttributes, useEffect, useState } from 'react';
 
 interface AboutTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -20,6 +20,10 @@ const LabeledInput: React.FC<AboutTextProps> = ({
 }) => {
   const [value, setValue] = useState<string>(props.value ? props.value as string : props?.defaultValue as string || "");
   const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    setValue(props.value as string);
+  }, [props])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

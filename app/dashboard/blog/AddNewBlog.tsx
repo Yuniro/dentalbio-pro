@@ -3,7 +3,13 @@ import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import React, { useReducer, useState } from "react"
 import AddBlogModal from "../components/AddBlogModal";
 
-const AddNewBlog = () => {
+type AddNewBlogProps = {
+  onAdd: (blog: any) => void;
+}
+
+const AddNewBlog: React.FC<AddNewBlogProps> = ({
+  onAdd,
+}: AddNewBlogProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const openModal = () => {
@@ -16,6 +22,7 @@ const AddNewBlog = () => {
 
   const uploadImage = async (image: File) => {
     const formData = new FormData();
+    formData.append('bucket_name', 'blog-images');
     formData.append('image', image);
 
     const response = await fetch('/api/upload', {
@@ -26,7 +33,7 @@ const AddNewBlog = () => {
     const result = await response.json();
 
     if (response.ok) {
-      console.log(`Image uploaded successfully! URL: ${result.publicUrl}`);
+      // console.log(`Image uploaded successfully! URL: ${result.publicUrl}`);
       return result.publicUrl;
     } else {
       console.log(`Error: ${result.error}`);
@@ -39,13 +46,15 @@ const AddNewBlog = () => {
 
     const response = await fetch('/api/blogs', {
       method: 'POST',
-      body: JSON.stringify({...formData, image_url}),
+      body: JSON.stringify({ ...formData, image_url }),
     });
 
     const result = await response.json();
     if (result.error) {
       console.log(result.error);
     } else {
+      onAdd(result);
+
       closeModal();
     }
   };
@@ -54,7 +63,7 @@ const AddNewBlog = () => {
     <>
       <FullRoundedButton onClick={openModal}>Add Blog</FullRoundedButton>
 
-      <AddBlogModal 
+      <AddBlogModal
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={handleSubmit}

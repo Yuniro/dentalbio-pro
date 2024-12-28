@@ -3,7 +3,6 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function GET(request: Request) {
   try {
-    // console.log(request);
     const supabase = createClient();
     const userData = await getUser();
 
@@ -41,8 +40,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    console.log(data);
-
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
@@ -57,7 +54,9 @@ export async function PUT(request: Request) {
     const { data, error } = await supabase
       .from('blogs')
       .update({ title, content, meta_title, meta_description, image_url, order })
-      .eq('id', id);
+      .eq('id', id)
+      .select('*')
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
@@ -83,7 +82,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    return NextResponse.json(data);
+    return NextResponse.json({ status: 'success' });
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
@@ -116,7 +115,6 @@ export async function getUser() {
 
 export async function getMaxRank() {
   try {
-    // console.log(request);
     const supabase = createClient();
     const userData = await getUser();
 

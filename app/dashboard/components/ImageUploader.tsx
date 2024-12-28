@@ -1,14 +1,20 @@
 import { Image, Upload } from '@phosphor-icons/react/dist/ssr';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type ImageUploaderProps = {
   onFileChange: (image: File) => void;
+  image_url?: string;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
   onFileChange,
+  image_url,
 }: ImageUploaderProps) => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(image_url!);
+
+  useEffect(() => {
+    setImagePreview(image_url!);
+  }, [image_url])
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
