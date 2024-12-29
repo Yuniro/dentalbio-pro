@@ -14,7 +14,6 @@ import Links from "./components/Links";
 import Image from "next/image";
 import Link from "next/link";
 import { unstable_noStore } from "next/cache"; // Import noStore to prevent caching
-import { loadGoogleMapsScript } from "@/utils/loadScript";
 import BlogList from "./components/BlogList";
 
 type PageProps = {
@@ -138,6 +137,7 @@ export default async function HomePage({ params }: PageProps) {
           <Treatments dentistryId={dentistry.dentistry_id} />
           <Links dentistryId={dentistry.dentistry_id} />
           <BlogList 
+            userId={user.id}
             username={username}
             userFirstName={user.first_name}
             userTitle={user.title}

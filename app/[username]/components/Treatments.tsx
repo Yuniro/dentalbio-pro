@@ -65,8 +65,6 @@ export default function Treatments({ dentistryId }: { dentistryId: string }) {
           className="accordion custom-accoradion-wrapper"
           id="accordionExample"
         >
-          
-
           {treatments.map((treatment, index) => (
             <Collapse
               title={treatment.title || "Untitled treatment"}

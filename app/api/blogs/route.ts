@@ -5,12 +5,23 @@ import { generateUniqueSlug } from '@/utils/slugGenerator';
 export async function GET(request: Request) {
   try {
     const supabase = createClient();
-    const userData = await getUser();
+
+    // Parse query parameters
+    const { searchParams } = new URL(request.url);
+    const providedUserId = searchParams.get('userId');
+
+    // Get the logged-in user's data if no user ID is provided
+    const userData = providedUserId ? null : await getUser();
+    const userId = providedUserId || userData?.id;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
+    }
 
     const { data, error } = await supabase
       .from('blogs')
       .select('*')
-      .eq('writer_id', userData.id)
+      .eq('writer_id', userId)
       .order('rank', { ascending: true });
 
     if (error) {

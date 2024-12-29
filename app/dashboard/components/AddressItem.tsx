@@ -60,7 +60,7 @@ const AddressItem: React.FC<LocationProps> = ({
       <div
         className={`overflow-hidden transition-all duration-300 ${isEditing ? "max-h-screen" : "max-h-0"}`}
       >
-        <form action={onSaveAction} method="POST">
+        <form action={onSaveAction}>
           <GoogleMapAutocomplete id={location_id!} defaultAddress={address!} />
           {/* <div className="flex justify-end">
             <SaveButton />

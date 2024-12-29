@@ -35,12 +35,12 @@ export default function Sidebar() {
     const storedDentistryId = Cookies.get(COOKIE_DENTISTRY_ID_KEY);
 
     // Check if username and dentistry_id are already in cookies
-    if (storedUsername && storedDentistryId) {
-      setUsername(storedUsername);
-      setDentistryId(storedDentistryId);
-      fetchProfilePicture(storedDentistryId);
-      return;
-    }
+    // if (storedUsername && storedDentistryId) {
+    //   setUsername(storedUsername);
+    //   setDentistryId(storedDentistryId);
+    //   fetchProfilePicture(storedDentistryId);
+    //   return;
+    // }
 
     // Fetch the logged-in user's email
     const { data: authData, error: authError } = await supabase.auth.getUser();

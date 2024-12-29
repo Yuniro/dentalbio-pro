@@ -151,7 +151,7 @@ export default async function Location() {
     <div className="memberpanel-details-wrapper">
       <MapLoader />
       <div id="columns">
-        <form action={saveLocation} method="POST" className="mb-6 mt-10">
+        <form action={saveLocation} className="mb-6 mt-10">
           <h2 className="text-lg font-semibold mb-3">Location</h2>
           <GoogleMapAutocomplete defaultAddress="" id="full_address"/>
           {/* <div className="w-full flex items-end justify-end">

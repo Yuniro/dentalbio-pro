@@ -1,5 +1,4 @@
 'use client';
-import { loadGoogleMapsScript } from '@/utils/loadScript';
 import { Check, MapPin, Spinner } from '@phosphor-icons/react/dist/ssr';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';

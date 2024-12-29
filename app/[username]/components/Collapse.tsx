@@ -13,10 +13,10 @@ const Collapse: React.FC<CollapseProps> = ({ title, isOpen, onToggle, children }
     <div className="w-full">
       <button
         onClick={onToggle}
-        className="w-full text-left p-1 focus:outline-none"
+        className="w-full overflow-hidden text-left p-1 focus:outline-none"
       >
         <div className="flex items-center justify-between">
-          <span className=' text-[20px] text-[#5046DD]'>{title}</span>
+          <span className=' text-[20px] text-[#5046DD] truncate'>{title}</span>
           <span>
             {isOpen ? <Minus size={20} /> : <Plus size={20} />}
           </span>
@@ -26,7 +26,7 @@ const Collapse: React.FC<CollapseProps> = ({ title, isOpen, onToggle, children }
       <div
         className={`overflow-hidden transition-all duration-500 ${isOpen ? 'max-h-96 ease-in' : 'max-h-0 ease-out'}`}
       >
-        <div className="p-1 text-left">
+        <div className="p-1 text-left break-words whitespace-normal">
           {children}
         </div>
       </div>

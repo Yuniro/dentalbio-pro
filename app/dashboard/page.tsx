@@ -339,7 +339,6 @@ export default async function Profile() {
 
         <form
           action={onSaveUserAndDentistryData}
-          method="POST"
           className="mb-6 mt-10"
         >
           <h2 className="text-lg font-semibold mb-3">Name</h2>
@@ -355,7 +354,7 @@ export default async function Profile() {
           <h2 className="text-lg font-semibold mb-3">Bio</h2>
           <LimitedTextArea
             name="about_text"
-            defaultValue={dentistry?.about_text || ""}
+            defaultText={dentistry?.about_text || ""}
             placeholder="About text"
           />
 
@@ -451,7 +450,7 @@ export default async function Profile() {
         </form>
 
         {/* Social Links Form */}
-        <form action={saveSocialLinks} method="POST" className="mb-6 mt-10">
+        <form action={saveSocialLinks} className="mb-6 mt-10">
           <h2 className="text-lg font-semibold mb-3">Social Links</h2>
 
 

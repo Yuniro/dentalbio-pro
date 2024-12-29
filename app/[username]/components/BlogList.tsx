@@ -3,21 +3,24 @@ import LinkTitle from "@/app/components/Link/LinkTitle";
 import React, { useEffect, useState } from "react";
 
 type BlogListProps = {
+  userId: string;
   username: string;
   userFirstName: string;
   userTitle: string;
 }
 
 const BlogList: React.FC<BlogListProps> = ({
+  userId,
   username,
   userFirstName,
   userTitle
 }: BlogListProps) => {
-  const [blogs, setBlogs] = useState<any[] | null>(null);
+  const [blogs, setBlogs] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const response = await fetch('/api/blogs', {
+      const query = userId ? `?userId=${userId}` : '';
+      const response = await fetch(`/api/blogs${query}`, {
         method: 'GET'
       });
       const data = await response.json();
@@ -29,14 +32,17 @@ const BlogList: React.FC<BlogListProps> = ({
 
   return (
     <div className="text-center mb-4">
-      <h1 className="section-heading-treatment text-[23px] font-semibold">{userTitle === 'N/A' ? '' : userTitle} {userFirstName + '\'s Blogs'}</h1>
-      {blogs && blogs.map((blog, index) => (
-        <LinkTitle
-          key={index}
-          link={`${username}/blog/${blog.slug}`}
-          title={blog.title}
-        />
-      ))}
+      {(blogs.length > 0) &&
+        <>
+          <h1 className="section-heading-treatment text-[23px] font-semibold">{userTitle === 'N/A' ? '' : userTitle} {userFirstName + '\'s Blogs'}</h1>
+          {blogs.map((blog, index) => (
+            <LinkTitle
+              key={index}
+              link={`${username}/blog/${blog.slug}`}
+              title={blog.title}
+            />
+          ))}
+        </>}
     </div>
   )
 }

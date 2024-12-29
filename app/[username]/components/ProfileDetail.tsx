@@ -64,15 +64,27 @@ export default function ProfileDetail({
         .select(
           "twitter_link, instagram_link, facebook_link, tiktok_link, other_link"
         )
-        .eq("dentistry_id", dentistry_id)
-        .single();
+        .eq("dentistry_id", dentistry_id);
 
       if (socialsError) {
         console.error("Error fetching social links:", socialsError);
         return;
       }
 
-      setSocialLinks(socials);
+      // Handle multiple rows (if needed)
+      if (socials && socials.length > 0) {
+        socials.forEach((social) => {
+          setSocialLinks(social);
+          return;
+        });
+      } else {
+        console.log("No socials found for the given dentistry_id.");
+      }
+
+      if (socialsError) {
+        console.error("Error fetching social links:", socialsError);
+        return;
+      }
     }
 
     fetchLocation();

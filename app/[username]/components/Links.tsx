@@ -52,48 +52,51 @@ export default function Links({ dentistryId }: { dentistryId: string }) {
   return (
     <section id="links">
       {linkGroups.map((group) => (
-        <div key={group.link_group_id} className="row section-wrapper-meditation">
-          <h1 className="text-center section-heading-meditation text-[23px] font-semibold">
-            {group.heading || "Untitled Group"}
-          </h1>
+        <div key={group.link_group_id}>
+          {(group.dentistry_links.length > 0) &&
+            <div className="row section-wrapper-meditation">
+              <h1 className="text-center section-heading-meditation text-[23px] font-semibold">
+                {group.heading || "Untitled Group"}
+              </h1>
 
-          {/* If no links in this group, show a message */}
-          {group.dentistry_links.length === 0 ? (
-            <p className="text-center">No links in this group</p>
-          ) : (
-            group.dentistry_links
-              // Filter links based on is_active being true or null
-              .filter(
-                (dentistryLink: any) => dentistryLink.links.is_active !== false
-              )
-              // Sort links by rank, with nulls at the end
-              .sort((a: any, b: any) => {
-                const rankA = a.links.rank;
-                const rankB = b.links.rank;
+              {/* If no links in this group, show a message */}
+              {group.dentistry_links.length === 0 ? (
+                <p className="text-center">No links in this group</p>
+              ) : (
+                group.dentistry_links
+                  // Filter links based on is_active being true or null
+                  .filter(
+                    (dentistryLink: any) => dentistryLink.links.is_active !== false
+                  )
+                  // Sort links by rank, with nulls at the end
+                  .sort((a: any, b: any) => {
+                    const rankA = a.links.rank;
+                    const rankB = b.links.rank;
 
-                // Handle null ranks by pushing them to the end
-                if (rankA === null && rankB === null) return 0;
-                if (rankA === null) return 1;
-                if (rankB === null) return -1;
+                    // Handle null ranks by pushing them to the end
+                    if (rankA === null && rankB === null) return 0;
+                    if (rankA === null) return 1;
+                    if (rankB === null) return -1;
 
-                // Compare non-null ranks
-                return rankA - rankB;
-              })
-              .map((dentistryLink: any, linkIndex: number) => (
-                <div key={linkIndex} className="col-12">
-                  <div className="toplinks-main">
-                    <a
-                      href={dentistryLink.links.link || "#"}
-                      className="text-center toplinks-wrapper toplinks-without-image"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span>{dentistryLink.links.title || "Untitled Link"}</span>
-                    </a>
-                  </div>
-                </div>
-              ))
-          )}
+                    // Compare non-null ranks
+                    return rankA - rankB;
+                  })
+                  .map((dentistryLink: any, linkIndex: number) => (
+                    <div key={linkIndex} className="col-12">
+                      <div className="toplinks-main">
+                        <a
+                          href={dentistryLink.links.link || "#"}
+                          className="text-center toplinks-wrapper toplinks-without-image"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>{dentistryLink.links.title || "Untitled Link"}</span>
+                        </a>
+                      </div>
+                    </div>
+                  ))
+              )}
+            </div>}
         </div>
       ))}
     </section>
