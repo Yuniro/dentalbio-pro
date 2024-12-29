@@ -53,7 +53,7 @@ export default function Links({ dentistryId }: { dentistryId: string }) {
     <section id="links">
       {linkGroups.map((group) => (
         <div key={group.link_group_id} className="row section-wrapper-meditation">
-          <h1 className="text-center section-heading-meditation">
+          <h1 className="text-center section-heading-meditation text-[23px] font-semibold">
             {group.heading || "Untitled Group"}
           </h1>
 

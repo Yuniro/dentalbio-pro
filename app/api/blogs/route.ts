@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { generateUniqueSlug } from '@/utils/slugGenerator';
 
 export async function GET(request: Request) {
   try {
@@ -27,13 +28,19 @@ export async function POST(request: Request) {
 
   try {
     const supabase = createClient();
+
+    const slug = await generateUniqueSlug(supabase, title);
+
     const userData = await getUser();
+  
+    if (!(userData.subscription_status === "pro"))
+      return NextResponse.json({ error: "Please upgrade membership!"});
 
     const maxRank = await getMaxRank() + 1;
 
     const { data, error } = await supabase
       .from('blogs')
-      .insert([{ title, content, meta_title, meta_description, image_url, writer_id: userData.id, rank: maxRank }])
+      .insert([{ title, content, meta_title, meta_description, image_url, writer_id: userData.id, rank: maxRank, slug }])
       .select("*")
       .single();;
 

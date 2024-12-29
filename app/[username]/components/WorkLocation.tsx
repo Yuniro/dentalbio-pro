@@ -49,7 +49,7 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
   return (
     <section id="location">
       <div className="row section-wrapper-work">
-        <h1 className="text-center section-heading-work">Where I work</h1>
+        <h1 className="text-center section-heading-work text-[23px] font-semibold">Where I work</h1>
         <div className="col-12 map-wrapper">
           {/* Google Maps Iframe with dynamic latitude and longitude */}
           <MapComponent

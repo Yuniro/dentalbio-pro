@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { User, Gear, MapPin, Heart, LinkSimple, House } from "phosphor-react";
+import { Newspaper } from "@phosphor-icons/react/dist/ssr";
 
 // Constants for storing keys in cookies
 const COOKIE_USERNAME_KEY = "username";
@@ -14,6 +15,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
+  const [userSubscriptionStatus, setUserSubscriptionStatus] = useState<string | null>(null);
   const [dentistryId, setDentistryId] = useState<string | null>(null);
   const pathname = usePathname();
 
@@ -52,7 +54,7 @@ export default function Sidebar() {
     // Fetch the username from the `users` table using the email
     const { data: userRecord, error: userError } = await supabase
       .from("users")
-      .select("username, id")
+      .select("username, id, subscription_status")
       .eq("email", userEmail)
       .single();
 
@@ -67,6 +69,7 @@ export default function Sidebar() {
     // Store the username in cookies for future usage
     Cookies.set(COOKIE_USERNAME_KEY, fetchedUsername, { expires: 7 });
     setUsername(fetchedUsername);
+    setUserSubscriptionStatus(userRecord.subscription_status);
 
     // Fetch the `dentistry_id` using the user ID
     const { data: dentistryRecord, error: dentistryError } = await supabase
@@ -134,9 +137,8 @@ export default function Sidebar() {
 
             {/* Offcanvas Sidebar */}
             <div
-              className={`offcanvas offcanvas-start navbar-collapse custom-memberpanel-navbar ${
-                isOpen ? "show" : ""
-              }`}
+              className={`offcanvas offcanvas-start navbar-collapse custom-memberpanel-navbar ${isOpen ? "show" : ""
+                }`}
               tabIndex={-1}
               id="offcanvasExample"
               aria-labelledby="offcanvasExampleLabel"
@@ -194,6 +196,14 @@ export default function Sidebar() {
                   Icon={Gear}
                   onClick={handleClose}
                 />
+                {userSubscriptionStatus === "pro" &&
+                  <SidebarItem
+                    label="Blog"
+                    link="/dashboard/blog"
+                    isActive={pathname === "/dashboard/blog"}
+                    Icon={Newspaper}
+                    onClick={handleClose}
+                  />}
               </div>
             </div>
           </div>
@@ -256,9 +266,8 @@ const SidebarItem = ({
     >
       <Icon
         size={24}
-        weight={`${
-          isActive ? (link === "/dashboard/links" ? "bold" : "fill") : "regular"
-        }`}
+        weight={`${isActive ? (link === "/dashboard/links" ? "bold" : "fill") : "regular"
+          }`}
         className={isActive ? "text-black" : "text-neutral-900"}
       />
       <span className={`nav-link ${isActive ? "active" : ""} p-0`}>

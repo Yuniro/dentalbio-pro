@@ -86,7 +86,7 @@ export default function Footer({
         <div className="row">
           <div className="col-12 text-center digimax-wrapper">
             <img
-              src="./Perks-logo.svg"
+              src="../../Perks-logo.svg"
               alt="digimax"
               className="img-fluid mx-auto"
             />
