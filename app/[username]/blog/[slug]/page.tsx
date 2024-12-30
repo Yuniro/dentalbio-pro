@@ -12,6 +12,7 @@ import "../../bootstrap.min.css";
 import "../../link-page.css";
 import Link from 'next/link';
 import { formatDate } from '@/utils/formatDate';
+import BlogImage from '@/app/components/Image/BlogImage';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -91,11 +92,11 @@ export default async function BlogPage({ params }: { params: { slug: string } })
           contact_email={dentistry?.contact_email}
         />
 
-        <div className='text-center'>
-          <img
+        <div className='text-center mt-20'>
+          <BlogImage
             src={blog.image_url}
-            alt="preview"
-            className="w-full mt-20 mb-4 rounded-[6px]"
+            alt="Blog Image"
+            className="w-full mb-4 rounded-[6px]"
           />
 
           <h1 className='text-[23px] font-semibold'>{blog.title}</h1>

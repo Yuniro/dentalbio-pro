@@ -43,9 +43,9 @@ export async function POST(request: Request) {
     const slug = await generateUniqueSlug(supabase, title);
 
     const userData = await getUser();
-  
+
     if (!(userData.subscription_status === "pro"))
-      return NextResponse.json({ error: "Please upgrade membership!"});
+      return NextResponse.json({ error: "Please upgrade membership!" });
 
     const maxRank = await getMaxRank() + 1;
 
@@ -92,6 +92,18 @@ export async function DELETE(request: Request) {
 
   try {
     const supabase = createClient();
+
+    const { data: blog, error: getError } = await supabase
+      .from('blogs')
+      .select('image_url')
+      .eq('id', id)
+      .single()
+
+    console.log(blog?.image_url);
+
+    if (blog?.image_url)
+      await deleteFileFromSupabase({ supabase, bucketName: 'blog-images', fileUrl: blog.image_url });
+
     const { data, error } = await supabase
       .from('blogs')
       .delete()
@@ -152,3 +164,32 @@ export async function getMaxRank() {
     return 0;
   }
 }
+
+export const deleteFileFromSupabase = async ({ supabase, bucketName, fileUrl }: { supabase: any, bucketName: string, fileUrl: string }) => {
+  try {
+    // Extract the bucket name and file path from the URL
+    const urlParts = new URL(fileUrl);
+    const filePath = urlParts.pathname.split(`/${bucketName}/`)[1];
+
+    if (!filePath) {
+      throw new Error("Invalid file URL or bucket name mismatch.");
+    }
+
+    console.log(filePath);
+
+    // Remove the file from the bucket
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .remove([filePath]);
+
+    if (error) {
+      throw error;
+    }
+
+    console.log("File successfully deleted:", data);
+    return true;
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    return false;
+  }
+};
