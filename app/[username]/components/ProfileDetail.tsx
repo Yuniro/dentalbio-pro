@@ -23,7 +23,7 @@ export default function ProfileDetail({
   description: string;
   dentistry_id: string;
 }) {
-  const [location, setLocation] = useState<any>(null);
+  const [locations, setLocations] = useState<any[] | null>(null);
   const [socialLinks, setSocialLinks] = useState<any>(null); // State for social links
   const [loading, setLoading] = useState(true);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
@@ -33,7 +33,7 @@ export default function ProfileDetail({
     async function fetchLocation() {
       const supabase = createClient();
 
-      const { data: dentistryLocation, error: dentistryLocationError } =
+      const { data: dentistryLocations, error: dentistryLocationError } =
         await supabase
           .from("dentistry_locations")
           .select(
@@ -43,7 +43,6 @@ export default function ProfileDetail({
         `
           )
           .eq("dentistry_id", dentistry_id)
-          .single(); // Assuming one location per dentistry
 
       if (dentistryLocationError) {
         console.error("Error fetching location:", dentistryLocationError);
@@ -51,7 +50,9 @@ export default function ProfileDetail({
         return;
       }
 
-      setLocation(dentistryLocation.locations); // Store the location data
+      setLocations(dentistryLocations);
+
+      // setLocations(dentistryLocation.locations); // Store the location data
       fetchProfilePicture(dentistry_id);
       setLoading(false);
     }
@@ -135,81 +136,6 @@ export default function ProfileDetail({
               <h5>@{username}</h5>
             </div>
           </div>
-
-          {/* Social Links */}
-          {/* {socialLinks && (
-            <div className="d-flex align-items-center justify-content-center gap-2">
-              {socialLinks.instagram_link && (
-                <a
-                  href={socialLinks.instagram_link}
-                  className="no-underline bg-neutral-800 rounded-full p-1"
-                  target="_blank"
-                >
-                  <InstagramLogo
-                    size={18}
-                    weight="bold"
-                    className="text-white font-black"
-                  />
-                </a>
-              )}
-              {socialLinks.tiktok_link && (
-                <a
-                  href={socialLinks.tiktok_link}
-                  className="no-underline bg-neutral-800 rounded-full p-1"
-                  target="_blank"
-                >
-                  <TiktokLogo
-                    size={18}
-                    weight="bold"
-                    className="text-white font-black"
-                  />
-                </a>
-              )}
-              {socialLinks.twitter_link && (
-                <a
-                  href={socialLinks.twitter_link}
-                  className="no-underline bg-neutral-800 rounded-full p-1"
-                  target="_blank"
-                >
-                  <TwitterLogo
-                    size={18}
-                    weight="bold"
-                    className="text-white font-black"
-                  />
-                </a>
-              )}
-              {socialLinks.facebook_link && (
-                <a
-                  href={socialLinks.facebook_link}
-                  className="no-underline bg-neutral-800 rounded-full p-[2px]"
-                  target="_blank"
-                >
-                  <FacebookLogo
-                    size={22}
-                    weight="bold"
-                    className="text-white font-black"
-                  />
-                </a>
-              )}
-              {socialLinks.other_link && (
-                <a
-                  href={socialLinks.other_link}
-                  className="no-underline bg-neutral-800 rounded-full p-1"
-                  target="_blank"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="#ffff"
-                    viewBox="0 0 256 256"
-                  >
-                    <path d="M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.88a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.33,0H170.71a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.59,42.4A135.28,135.28,0,0,0,85.29,88H49.63A88.29,88.29,0,0,1,107.59,42.4ZM49.63,168H85.29a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.78,45.6a135.28,135.28,0,0,0,22.3-45.6h35.66A88.29,88.29,0,0,1,148.41,213.6Z"></path>
-                  </svg>
-                </a>
-              )}
-            </div>
-          )} */}
           <SocialLinks {...socialLinks} />
         </div>
       </div>
@@ -217,20 +143,20 @@ export default function ProfileDetail({
       <Navbar />
 
       {/* "Based in" Section */}
-      {location && (
+      {locations && (
         <div className="basedin-tabination-wrapper">
           <ul
             className="nav nav-tabs border-0 justify-content-center align-items-center"
             role="tablist"
           >
             <li className="based-in-text">Based in</li>
-            {location.city && (
-              <li className="nav-item">
+            {locations.map((location) => (
+              <li className="nav-item" key={location.location_id}>
                 <button className="nav-link border-0 profile-tab active">
-                  {location.city}
+                  {location.locations.city}
                 </button>
               </li>
-            )}
+            ))}
           </ul>
         </div>
       )}

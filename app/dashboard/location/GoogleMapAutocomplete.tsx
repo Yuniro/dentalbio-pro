@@ -8,6 +8,12 @@ type GoogleMapAutocompleteProps = {
   defaultAddress: string;
 };
 
+type LocationDetails = {
+  city_name: string | null;
+  country_name: string | null;
+  area_name: string | null;
+};
+
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
 
 function waitForGoogleAPI(timeout = 5000) {
@@ -38,6 +44,8 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [geocoder, setGeocoder] = useState<google.maps.Geocoder | null>(null);
   const [inputAddress, setInputAddress] = useState(defaultAddress); // Track input changes
+  const [country, setCountry] = useState<string>("");
+  const [area, setArea] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
@@ -112,8 +120,11 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
           setLatitude(location.lat());
           setLongitude(location.lng());
 
-          const cityName = extractCityName(results[0]);
-          setCity(cityName || "");
+          const { city_name, country_name, area_name } = extractLocationDetails(results[0]);
+          
+          setCity(city_name || "");
+          setCountry(country_name || "");
+          setArea(area_name || "");
 
           map.setCenter(location);
           map.setZoom(19);
@@ -139,22 +150,29 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   }, [status.pending]);
 
   // Function to extract city name from address components
-  const extractCityName = (place: google.maps.places.PlaceResult | google.maps.GeocoderResult): string | null => {
+  const extractLocationDetails = (
+    place: google.maps.places.PlaceResult | google.maps.GeocoderResult
+  ): LocationDetails => {
     const addressComponents = place.address_components;
+    let city_name: string | null = null;
+    let country_name: string | null = null;
+    let area_name: string | null = null;
+
     if (addressComponents) {
       for (const component of addressComponents) {
         if (component.types.includes('locality')) {
-          return component.long_name; // City name
-        }
-        if (component.types.includes('postal_town')) {
-          return component.long_name; // City name
-        }
-        if (component.types.includes('administrative_area_level_2')) {
-          return component.long_name; // Fallback for city name if locality is missing
+          city_name = component.long_name; // City name
+        } else if (component.types.includes('postal_town')) {
+          city_name = city_name || component.long_name; // Fallback for city name
+        } else if (component.types.includes('administrative_area_level_2')) {
+          area_name = component.long_name; // Area (e.g., county or district)
+        } else if (component.types.includes('country')) {
+          country_name = component.long_name; // Country name
         }
       }
     }
-    return null; // No city found
+
+    return { city_name, country_name, area_name };
   };
 
   const handleFocus = () => {
@@ -192,6 +210,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
             onChange={(e) => setInputAddress(e.target.value)} // Update input state for manual entry
             onFocus={handleFocus}
             onBlur={handleBlur}
+            required
           />
           <button type='submit' className='absolute flex justify-center items-center top-0 right-0 w-[60px] h-[50px] rounded-r-[26px] bg-[#5046DB] hover:bg-[#6960e6]'>
             {status.pending ? (
@@ -203,7 +222,9 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
         </div>
 
         <input type="hidden" name="full_address" value={inputAddress} />
+        <input type="hidden" name="country" value={country} />
         <input type="hidden" name="city" value={city} />
+        <input type="hidden" name="area" value={area} />
         <input
           type="hidden"
           name="latitude"

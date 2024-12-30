@@ -10,7 +10,9 @@ interface HomePageData {
 
 type LocationType = {
   full_address: string;
+  country: string;
   city: string;
+  area: string;
   latitude: number;
   longitude: number;
 }

@@ -6,7 +6,7 @@ import "../../globals.css";
 import MapComponent from "./MapComponent";
 
 export default function WorkLocation({ dentistry }: { dentistry: any }) {
-  const [location, setLocation] = useState<any>(null);
+  const [locations, setLocations] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -14,14 +14,13 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
       const supabase = createClient();
 
       // Fetch location based on dentistry_id
-      const { data: dentistryLocation, error: dentistryLocationError } = await supabase
+      const { data: dentistryLocations, error: dentistryLocationError } = await supabase
         .from("dentistry_locations")
         .select(`
           location_id,
           locations (country, city, area, latitude, longitude, full_address)
         `)
-        .eq("dentistry_id", dentistry.dentistry_id)
-        .single(); // Assuming one location per dentistry
+        .eq("dentistry_id", dentistry.dentistry_id) // Assuming one location per dentistry
 
       if (dentistryLocationError) {
         console.error("Error fetching location:", dentistryLocationError);
@@ -29,7 +28,7 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
         return;
       }
 
-      setLocation(dentistryLocation.locations); // Store the location data
+      setLocations(dentistryLocations); // Store the location data
       setLoading(false);
     }
 
@@ -47,17 +46,19 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
   }
 
   return (
-    <section id="location">
+    <div id="location">
       <div className="row section-wrapper-work">
         <h1 className="text-center section-heading-work text-[23px] font-semibold">Where I work</h1>
-        <div className="col-12 map-wrapper">
-          {/* Google Maps Iframe with dynamic latitude and longitude */}
-          <MapComponent
-            id="work"
-            latitude={location.latitude}
-            longitude={location.longitude}
-          />
-          {/* <iframe
+
+        {locations?.map((location) =>
+          <div className="col-12 map-wrapper" key={location.location_id}>
+            {/* Google Maps Iframe with dynamic latitude and longitude */}
+            <MapComponent
+              id={location.location_id}
+              latitude={location.locations.latitude}
+              longitude={location.locations.longitude}
+            />
+            {/* <iframe
             className="bg-black"
             width="100%"
             height={200}
@@ -68,39 +69,39 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
             referrerPolicy="no-referrer-when-downgrade"
           /> */}
 
-          <div className="d-flex align-items-center justify-content-center map-button">
-            {dentistry.booking_link && (
-              <Link
-                href={dentistry.booking_link || ""}
-                className="primary-btn map-primary-btn no-underline"
-              >
-                Book an appointment
-              </Link>
-            )}
-            {dentistry.contact_email && (
-              <Link
-                className="primary-btn map-primary-btn text-white text-decoration-none"
-                href={`mailto:${dentistry.contact_email || ""}`}
-              >
-                Email
-              </Link>
-            )}
-            {dentistry.phone && (
-              <Link
-                className="primary-btn map-primary-btn text-white text-decoration-none"
-                href={`tel:${dentistry.phone || ""}`}
-              >
-                {dentistry.phone}
-              </Link>
-            )}
-          </div>
+            <div className="d-flex align-items-center justify-content-center map-button">
+              {dentistry.booking_link && (
+                <Link
+                  href={dentistry.booking_link || ""}
+                  className="primary-btn map-primary-btn no-underline"
+                >
+                  Book an appointment
+                </Link>
+              )}
+              {dentistry.contact_email && (
+                <Link
+                  className="primary-btn map-primary-btn text-white text-decoration-none"
+                  href={`mailto:${dentistry.contact_email || ""}`}
+                >
+                  Email
+                </Link>
+              )}
+              {dentistry.phone && (
+                <Link
+                  className="primary-btn map-primary-btn text-white text-decoration-none"
+                  href={`tel:${dentistry.phone || ""}`}
+                >
+                  {dentistry.phone}
+                </Link>
+              )}
+            </div>
 
-          {/* Dynamically display the address */}
-          <p className="text-decoration-none text-center map-detail">
-            {location.full_address}
-          </p>
-        </div>
+            {/* Dynamically display the address */}
+            <p className="text-decoration-none text-center map-detail">
+              {location.locations.full_address}
+            </p>
+          </div>)}
       </div>
-    </section>
+    </div>
   );
 }

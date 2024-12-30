@@ -6,6 +6,7 @@ import GoogleMapAutocomplete from "./GoogleMapAutocomplete";
 import AddressItem from "../components/AddressItem";
 import MapLoader from "./MapLoader";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import ManageLocations from "./ManageLocations";
 
 // Utility function to fetch authenticated user, user ID, and dentistry ID
 async function fetchUserAndDentistry() {
@@ -75,18 +76,25 @@ async function saveLocation(formData: FormData) {
 
   const newLocation = {
     full_address: formData.get("full_address") as string,
+    country: formData.get("country") as string,
     city: formData.get("city") as string,
+    area: formData.get("area") as string,
     latitude: parseFloat(formData.get("latitude") as string),
     longitude: parseFloat(formData.get("longitude") as string),
   };
+
+  const { data: userRecord, error: userError } = await supabase
+    .from("users")
+    .select("username, subscription_status, first_name")
+    .eq("id", userId)
+    .single();
 
   const { data: dentistryLocation, error: joinError } = await supabase
     .from("dentistry_locations")
     .select("location_id")
     .eq("dentistry_id", dentistryId)
-    .single();
 
-  if (joinError || !dentistryLocation) {
+  if (joinError || (dentistryLocation.length === 0) || (userRecord?.subscription_status === "pro")) {
     const { data: insertedLocation, error: insertError } = await supabase
       .from("locations")
       .insert([newLocation])
@@ -104,25 +112,8 @@ async function saveLocation(formData: FormData) {
     if (linkError) {
       redirect("/location?error=Failed to link location to dentistry");
     }
-  } else {
-    const { data: userRecord, error: userError } = await supabase
-    .from("users")
-    .select("username, subscription_status, first_name")
-    .eq("id", userId)
-    .single();
 
-    if (!(userRecord?.subscription_status === "pro")) {
-      return;
-    }
-
-    const { error: updateError } = await supabase
-      .from("locations")
-      .update(newLocation)
-      .eq("location_id", dentistryLocation.location_id);
-
-    if (updateError) {
-      redirect("/location?error=Error updating location");
-    }
+    redirect("/dashboard/location");
   }
 }
 
@@ -130,7 +121,6 @@ async function saveLocation(formData: FormData) {
 async function updateLocation(locationData: LocationType, location_id: string) {
   "use server";
   const supabase = createClient();
-  const { userId, dentistryId } = await fetchUserAndDentistry();
 
   const { error: updateError } = await supabase
     .from("locations")
@@ -153,15 +143,13 @@ export default async function Location() {
       <div id="columns">
         <form action={saveLocation} className="mb-6 mt-10">
           <h2 className="text-lg font-semibold mb-3">Location</h2>
-          <GoogleMapAutocomplete defaultAddress="" id="full_address"/>
+          <GoogleMapAutocomplete defaultAddress="" id="full_address" />
           {/* <div className="w-full flex items-end justify-end">
             <SaveButton />
           </div> */}
         </form>
       </div>
-      {locations && locations.map((location, index) => (
-        <AddressItem {...location} key={index} onAddressChange={updateLocation}/>
-      ))}
+      <ManageLocations locations={locations} updateLocation={updateLocation} />
     </div>
   );
 }
