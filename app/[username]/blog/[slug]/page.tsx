@@ -14,6 +14,8 @@ import Link from 'next/link';
 import { formatDate } from '@/utils/formatDate';
 import BlogImage from '@/app/components/Image/BlogImage';
 
+export const dynamic = 'force-dynamic'; // Force dynamic rendering
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -64,8 +66,6 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   }
 
   const user_id = blog.writer_id;
-
-  unstable_noStore();
 
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase

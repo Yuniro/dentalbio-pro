@@ -119,7 +119,7 @@ export async function DELETE(request: Request) {
   }
 }
 
-export async function getUser() {
+async function getUser() {
   try {
     const supabase = createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -144,7 +144,7 @@ export async function getUser() {
   }
 }
 
-export async function getMaxRank() {
+async function getMaxRank() {
   try {
     const supabase = createClient();
     const userData = await getUser();
@@ -165,7 +165,7 @@ export async function getMaxRank() {
   }
 }
 
-export const deleteFileFromSupabase = async ({ supabase, bucketName, fileUrl }: { supabase: any, bucketName: string, fileUrl: string }) => {
+const deleteFileFromSupabase = async ({ supabase, bucketName, fileUrl }: { supabase: any, bucketName: string, fileUrl: string }) => {
   try {
     // Extract the bucket name and file path from the URL
     const urlParts = new URL(fileUrl);
