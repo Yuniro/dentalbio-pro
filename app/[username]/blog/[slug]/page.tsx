@@ -63,104 +63,84 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   }
 
   const user_id = blog.writer_id;
-  
+
   unstable_noStore();
-  
+
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase
-  .from("users")
-  .select("id, position, first_name, last_name, username, title, gdc_no, qualification")
-  .eq("id", user_id)
-  .single();
-  
+    .from("users")
+    .select("id, position, first_name, last_name, username, title, gdc_no, qualification")
+    .eq("id", user_id)
+    .single();
+
   // Fetch the dentistry data using the user's ID
   const { data: dentistry, error: dentistryError } = await supabase
-  .from("dentistries")
-  .select("dentistry_id, about_title, about_text, phone, booking_link, contact_email")
-  .eq("user_id", user?.id)
-  .single();
-  
+    .from("dentistries")
+    .select("dentistry_id, about_title, about_text, phone, booking_link, contact_email")
+    .eq("user_id", user?.id)
+    .single();
+
   const profilePicUrl = await fetchProfilePicture(dentistry?.dentistry_id);
 
   return (
-    <>
-      <Head>
-        <title>{blog?.meta_title}</title>
-        <meta name="description" content={blog.meta_description} />
+    <div className="wrapper">
+      <div className="profile-wrapper">
+        <Header
+          username={user?.username}
+          dentistry_id={dentistry?.dentistry_id}
+          contact_email={dentistry?.contact_email}
+        />
 
-        {/* Open Graph Meta Tags */}
-        <meta property="og:title" content={blog?.meta_title} />
-        <meta property="og:description" content={blog?.meta_description} />
-        <meta property="og:url" content={`https://yourdomain.com/blog/${blog?.slug}`} />
-        <meta property="og:type" content="article" />
-        {/* <meta property="og:image" content="https://yourdomain.com/og-image.jpg" /> */}
-
-        {/* Twitter Meta Tags */}
-        {/* <meta name="twitter:card" content="summary_large_image" /> */}
-        <meta name="twitter:title" content={blog?.meta_title} />
-        <meta name="twitter:description" content={blog?.meta_description} />
-        {/* <meta name="twitter:image" content="https://yourdomain.com/twitter-image.jpg" /> */}
-      </Head>
-
-      <div className="wrapper">
-        <div className="profile-wrapper">
-          <Header
-            username={user?.username}
-            dentistry_id={dentistry?.dentistry_id}
-            contact_email={dentistry?.contact_email}
+        <div className='text-center'>
+          <img
+            src={blog.image_url}
+            alt="preview"
+            className="w-full mt-20 mb-4 rounded-[6px]"
           />
 
-          <div className='text-center'>
-            <img
-              src={blog.image_url}
-              alt="preview"
-              className="w-full mt-20 mb-4 rounded-[6px]"
-            />
+          <h1 className='text-[23px] font-semibold'>{blog.title}</h1>
 
-            <h1 className='text-[23px] font-semibold'>{blog.title}</h1>
-
-            <div className='w-full flex justify-center my-4'>
-              <div className='flex items-center gap-2 text-left'>
-                <div>
-                  <img
-                    src={profilePicUrl || "/placeholder.png"}
-                    alt="user"
-                    className="w-[50px] h-[50px] rounded-full"
-                  />
-                </div>
-                <div>
-                  <div className='text-xs'>{`${user?.title === 'N/A' ? '' : user?.title} ${user?.first_name} ${user?.last_name}`}</div>
-                  <div className='text-[10px] text-[#9D9D9D]'>{formatDate(blog.created_at)}</div>
-                </div>
+          <div className='w-full flex justify-center my-4'>
+            <div className='flex items-center gap-2 text-left'>
+              <div>
+                <img
+                  src={profilePicUrl || "/placeholder.png"}
+                  alt="user"
+                  className="w-[50px] h-[50px] rounded-full"
+                />
+              </div>
+              <div>
+                <div className='text-xs'>{`${user?.title === 'N/A' ? '' : user?.title} ${user?.first_name} ${user?.last_name}`}</div>
+                <div className='text-[10px] text-[#9D9D9D]'>{formatDate(blog.created_at)}</div>
               </div>
             </div>
-
-            <p className='text-[#9d9d9d] text-[14px]'>{blog.content}</p>
           </div>
 
-          <div className='w-full flex justify-center mt-4 mb-6'>
-            <Link
-              href={`/${user?.username}`}
-              className='w-[93px] h-[41px] rounded-[10px] border text-[14px] text-center no-underline text-black px-6 py-2'
-            >
-              <span>Back</span>
-            </Link>
-          </div>
-
-          <WorkLocation dentistry={dentistry} />
-          {dentistry &&
-            <Footer
-              dentistryId={dentistry.dentistry_id}
-              bookingLink={dentistry?.booking_link}
-              contact_email={dentistry?.contact_email}
-              userTitle={user?.title}
-              username={user?.username}
-              userFirstName={user?.first_name}
-              userLastName={user?.last_name}
-            />}
+          <p className='text-[#9d9d9d] text-[14px]'>{blog.content}</p>
         </div>
+
+        <div className='w-full flex justify-center mt-4 mb-6'>
+          <Link
+            href={`/${user?.username}`}
+            className='w-[93px] h-[41px] rounded-[10px] border text-[14px] text-center no-underline text-black px-6 py-2'
+          >
+            <span>Back</span>
+          </Link>
+        </div>
+
+        <WorkLocation dentistry={dentistry} />
+        {dentistry &&
+          <Footer
+            dentistryId={dentistry.dentistry_id}
+            bookingLink={dentistry?.booking_link}
+            contact_email={dentistry?.contact_email}
+            userTitle={user?.title}
+            username={user?.username}
+            userFirstName={user?.first_name}
+            userLastName={user?.last_name}
+          />}
       </div>
-    </>
+    </div>
   );
 }
 

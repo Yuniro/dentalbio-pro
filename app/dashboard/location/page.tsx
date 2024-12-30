@@ -111,7 +111,7 @@ async function saveLocation(formData: FormData) {
     .eq("id", userId)
     .single();
 
-    if (userRecord?.subscription_status === "trialing" || !userRecord?.subscription_status) {
+    if (!(userRecord?.subscription_status === "pro")) {
       return;
     }
 
