@@ -70,10 +70,14 @@ const EditGalleryModal: React.FC<ModalProps> = ({
                   required
                 />
                 <ImageUploader
+                  id="before_image"
+                  text="Add before image"
                   onFileChange={(image) => handleFileChange(image, false)}
                   image_url={beforeImage!}
                 />
                 <ImageUploader
+                  id="after_image"
+                  text="Add after image"
                   onFileChange={(image) => handleFileChange(image, true)}
                   image_url={afterImage!}
                 />
