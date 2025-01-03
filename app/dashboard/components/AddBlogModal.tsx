@@ -53,7 +53,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     setIsUploading(true);
     onSubmit(formData);
   };

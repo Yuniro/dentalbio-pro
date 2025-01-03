@@ -82,7 +82,8 @@ html {
 
 .ql-toolbar.ql-snow {
   background-color: white;
-  border-radius: 8px;
+  border-top-left-radius: 26px;
+  border-top-right-radius: 26px;
 }
 
 @keyframes spin {

@@ -25,26 +25,29 @@ export default function Gallery({ userId }: { userId: string }) {
   // Render treatments
   return (
     <div className="text-center treatment-wrapper" id="gallery">
-      <h1 className="section-heading-treatment text-[23px] font-semibold">Gallery</h1>
-      <div
-        className="accordion custom-accoradion-wrapper"
-        id="accordionExample"
-      >
-        {galleries.map((gallery, index) => (
-          <div key={index} className="flex justify-around mb-4">
-            <GalleryImage
-              src={gallery.before_image_url}
-              title={gallery.title}
-              isAfter={false}
-            />
-            <GalleryImage
-              src={gallery.after_image_url}
-              title={gallery.title}
-              isAfter={true}
-            />
+      {galleries.length > 0 &&
+        <>
+          <h1 className="section-heading-treatment text-[23px] font-semibold">Gallery</h1>
+          <div
+            className="accordion custom-accoradion-wrapper"
+            id="accordionExample"
+          >
+            {galleries.map((gallery, index) => (
+              <div key={index} className="flex justify-center gap-6 mb-4">
+                <GalleryImage
+                  src={gallery.before_image_url}
+                  title={gallery.title}
+                  isAfter={false}
+                />
+                <GalleryImage
+                  src={gallery.after_image_url}
+                  title={gallery.title}
+                  isAfter={true}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>}
     </div>
   );
 }

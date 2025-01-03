@@ -62,13 +62,13 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
               </div>
             </div>
           </div>
-          <div className="flex">
+          <div className="flex justify-around">
             <BlogImage
               src={before_image_url!}
-              className="w-1/2 pr-1 rounded-[6px]" />
+              className="w-2/5 aspect-square rounded-[6px]" />
             <BlogImage
               src={after_image_url!}
-              className="w-1/2 pl-1 rounded-[6px]" />
+              className="w-2/5 aspect-square rounded-[6px]" />
           </div>
         </div>
       </div>

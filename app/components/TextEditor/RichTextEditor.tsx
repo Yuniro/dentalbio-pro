@@ -38,7 +38,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
     }
   }, [value]);
 
-  return <div ref={editorRef} className="border border-gray-300 bg-white rounded-lg p-2 mb-4"></div>;
+  return <div ref={editorRef} className="border border-gray-300 bg-white rounded-bl-[26px] rounded-br-[26px] p-2 mb-4"></div>;
 };
 
 export default RichTextEditor;

@@ -13,15 +13,15 @@ const GalleryImage: React.FC<GalleryImageProps> = ({
 }: GalleryImageProps) => {
   return (
     <div
-      className="w-[45%]">
-      <div className="w-full rounded-lg cursor-pointer overflow-hidden">
+      className="w-[40%]">
+      <div className="w-full rounded-lg cursor-pointer overflow-hidden mb-3">
         <BlogImage
           src={src}
-          className="h-auto hover:scale-150 transition-all"
+          className="aspect-square hover:scale-110 transition-all duration-300"
         />
       </div>
-      <div>{title}</div>
-      <div>{isAfter ? "After" : "Before"}</div>
+      <h5 className="text-[18px] font-medium mb-1">{title}</h5>
+      <h6 className="text-[#989898] text-[16px]">{isAfter ? "After" : "Before"}</h6>
     </div>
   )
 }

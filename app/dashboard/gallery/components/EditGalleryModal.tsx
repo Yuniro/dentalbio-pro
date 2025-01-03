@@ -61,21 +61,23 @@ const EditGalleryModal: React.FC<ModalProps> = ({
           <div className="w-[600px] rounded-[26px] bg-[#F3F3F1] p-10" onClick={(e) => e.stopPropagation()}>
             <h4 className="mb-4">Edit Gallery</h4>
             <form onSubmit={handleSubmit}>
-              <LabeledInput
-                label="Title"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
-              <ImageUploader
-                onFileChange={(image) => handleFileChange(image, false)}
-                image_url={beforeImage!}
-              />
-              <ImageUploader
-                onFileChange={(image) => handleFileChange(image, true)}
-                image_url={afterImage!}
-              />
+              <div className="max-h-[80vh] overflow-y-auto">
+                <LabeledInput
+                  label="Title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                />
+                <ImageUploader
+                  onFileChange={(image) => handleFileChange(image, false)}
+                  image_url={beforeImage!}
+                />
+                <ImageUploader
+                  onFileChange={(image) => handleFileChange(image, true)}
+                  image_url={afterImage!}
+                />
+              </div>
               <div className="flex justify-end gap-2">
                 {/* <SaveButton text="Add Gallery" /> */}
                 <FullRoundedButton isLoading={isUploading} type="submit">Update Gallery</FullRoundedButton>
