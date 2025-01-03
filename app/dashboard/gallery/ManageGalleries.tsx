@@ -15,12 +15,14 @@ const ItemType = {
 function DraggableGalleryCard({
   gallery,
   index,
+  onUpdate,
   onDelete,
   onEditItem,
   moveGallery
 }: {
   gallery: GalleryType,
   index: number;
+  onUpdate: any;
   onDelete: any;
   onEditItem: any;
   moveGallery: any;
@@ -48,6 +50,7 @@ function DraggableGalleryCard({
       }}
     >
       <GalleryCard
+        onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
         {...gallery}
@@ -209,6 +212,7 @@ const ManageGalleries = () => {
                 key={index}
                 index={index}
                 gallery={gallery}
+                onUpdate={handleEdit}
                 onDelete={handleDelete}
                 onEditItem={handleEditItem}
                 moveGallery={moveGallery}

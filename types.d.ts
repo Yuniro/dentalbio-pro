@@ -33,10 +33,11 @@ type BlogType = {
 
 type GalleryType = {
   id: string;
-  user_id: string;
-  title: string;
-  before_image_url: string;
-  after_image_url: string;
-  rank: number;
-  created_at: datetime;
+  user_id?: string;
+  title?: string;
+  before_image_url?: string;
+  after_image_url?: string;
+  rank?: number;
+  created_at?: datetime;
+  enabled?: boolean;
 }

@@ -15,6 +15,7 @@ export async function GET(request: Request) {
     // Get the logged-in user's data if no user ID is provided
     const userData = providedUserId ? null : await getUserInfo({ supabase });
     const userId = providedUserId || userData?.id;
+    const enabledField = providedUserId ? [true] : [true, false];
 
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
@@ -24,6 +25,7 @@ export async function GET(request: Request) {
       .from('galleries')
       .select('*')
       .eq('user_id', userId)
+      .in('enabled', enabledField)
       .order('rank', { ascending: true });
 
     if (error) {
@@ -66,14 +68,14 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const { id, title, before_image_url, after_image_url, rank } = await request.json();
+  const updated_data = await request.json();
 
   try {
     const supabase = createClient();
     const { data, error } = await supabase
       .from('galleries')
-      .update({ title, before_image_url, after_image_url, rank })
-      .eq('id', id)
+      .update(updated_data)
+      .eq('id', updated_data.id)
       .select('*')
       .single();
 

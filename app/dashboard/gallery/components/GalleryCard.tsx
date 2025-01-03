@@ -2,16 +2,18 @@
 import BlogImage from "@/app/components/Image/BlogImage";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import { CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
-import React, { useState } from "react"
+import React, { useEffect, useReducer, useState } from "react"
 
 type GalleryCardProps = {
   id: string;
-  title: string;
+  title?: string;
   before_image_url?: string;
   after_image_url?: string;
   created?: Date;
+  enabled?: boolean;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
+  onUpdate: (gallery: GalleryType, before_image_file: null, after_image_file: null) => void;
 }
 
 const GalleryCard: React.FC<GalleryCardProps> = ({
@@ -19,11 +21,23 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
   title,
   before_image_url,
   after_image_url,
+  enabled,
   created,
+  onUpdate,
   onEditItem,
   onDelete,
 }: GalleryCardProps) => {
   const [isOpenConfirmMessage, setIsOpenConfirmMessage] = useState<boolean>(false);
+  const [isActive, toggleIsActive] = useReducer((prevState) => !prevState, enabled!);
+
+  useEffect(() => {
+    if (enabled !== isActive) {
+      const gallery = {
+        id, enabled: isActive
+      }
+      onUpdate(gallery, null, null);
+    }
+  }, [isActive]);
 
   const handleDelete = () => {
     onDelete(id);
@@ -56,9 +70,20 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
             </div>
 
             {/* Trash Button */}
-            <div>
+            <div className="flex items-center gap-2">
               <div onClick={() => setIsOpenConfirmMessage(true)}>
                 <Trash size={20} className="cursor-pointer hover:text-red-700" />
+              </div>
+
+              <div className="form-check form-switch custom-form-check">
+                <input
+                  className="form-check-input cursor-pointer"
+                  type="checkbox"
+                  role="switch"
+                  // id={`flexSwitchCheckChecked-${link.link_id}`}
+                  checked={isActive}
+                  onChange={toggleIsActive}
+                />
               </div>
             </div>
           </div>
