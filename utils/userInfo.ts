@@ -1,8 +1,4 @@
-export async function getUserInfo({
-  supabase
-}: {
-  supabase: any;
-}) {
+export async function getUserInfo({ supabase }: { supabase: any; }) {
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -35,10 +31,10 @@ export async function getDentistryInfo({
 }) {
   try {
     const { data: dentistry, error: dentistryError } = await supabase
-    .from("dentistries")
-    .select("*")
-    .eq("user_id", user_id)
-    .single();
+      .from("dentistries")
+      .select("*")
+      .eq("user_id", user_id)
+      .single();
 
     if (dentistryError) {
       return null;

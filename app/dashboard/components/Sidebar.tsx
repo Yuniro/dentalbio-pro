@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { User, Gear, MapPin, Heart, LinkSimple, House } from "phosphor-react";
-import { Newspaper } from "@phosphor-icons/react/dist/ssr";
+import { Image, Newspaper } from "@phosphor-icons/react/dist/ssr";
 
 // Constants for storing keys in cookies
 const COOKIE_USERNAME_KEY = "username";
@@ -197,13 +197,22 @@ export default function Sidebar() {
                   onClick={handleClose}
                 />
                 {userSubscriptionStatus === "pro" &&
+                  <>
                   <SidebarItem
                     label="Blog"
                     link="/dashboard/blog"
                     isActive={pathname === "/dashboard/blog"}
                     Icon={Newspaper}
                     onClick={handleClose}
-                  />}
+                  />
+                  <SidebarItem
+                    label="Gallery"
+                    link="/dashboard/gallery"
+                    isActive={pathname === "/dashboard/gallery"}
+                    Icon={Image}
+                    onClick={handleClose}
+                  />
+                  </>}
               </div>
             </div>
           </div>

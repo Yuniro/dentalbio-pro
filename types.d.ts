@@ -19,12 +19,24 @@ type LocationType = {
 
 type BlogType = {
   id: string;
-  writer_id: string;
+  writer_id?: string;
+  title?: string;
+  content?: string;
+  meta_title?: string;
+  meta_description?: string;
+  image_url?: string;
+  created_at?: datetime;
+  rank?: number;
+  enabled?: boolean;
+  slug?: string;
+}
+
+type GalleryType = {
+  id: string;
+  user_id: string;
   title: string;
-  content: string;
-  meta_title: string;
-  meta_description: string;
-  image_url: string;
-  created_at: datetime;
+  before_image_url: string;
+  after_image_url: string;
   rank: number;
+  created_at: datetime;
 }

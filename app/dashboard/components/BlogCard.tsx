@@ -1,32 +1,43 @@
 'use client'
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
-import { CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
-import React, { useState } from "react"
+import { ArrowSquareOut, CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
+import Link from "next/link";
+import React, { useEffect, useReducer, useState } from "react"
 
 type BlogCardProps = {
+  username: string;
   id: string;
-  title: string;
-  content: string;
-  meta_title?: string;
-  meta_description?: string;
-  image_url?: string;
-  created?: Date;
+  title?: string;
+  content?: string;
+  slug?: string;
+  enabled?: boolean;
+  onUpdate: (blog: BlogType, image: null) => void;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({
+  username,
   id,
   title,
   content,
-  meta_title,
-  meta_description,
-  image_url,
-  created,
+  slug,
+  enabled,
+  onUpdate,
   onEditItem,
   onDelete,
 }: BlogCardProps) => {
   const [isOpenConfirmMessage, setIsOpenConfirmMessage] = useState<boolean>(false);
+  const [isActive, toggleIsActive] = useReducer((prevState) => !prevState, enabled!);
+
+  useEffect(() => {
+    if (enabled !== isActive) {
+      const blog = {
+        id, enabled: isActive
+      }
+      onUpdate(blog, null);
+    }
+  }, [isActive]);
 
   const handleDelete = () => {
     onDelete(id);
@@ -54,13 +65,32 @@ const BlogCard: React.FC<BlogCardProps> = ({
           </div>
 
           {/* Content Row */}
-          <div className="truncate">{content}</div>
+          {/* <div className="truncate" dangerouslySetInnerHTML={{__html: content!}} /> */}
         </div>
 
         {/* Trash Button */}
-        <div>
+        <div className="flex items-center">
           <div onClick={() => setIsOpenConfirmMessage(true)}>
             <Trash size={20} className="cursor-pointer hover:text-red-700" />
+          </div>
+
+          <Link
+            href={`/${username}/blog/${slug}`}
+            target="_blank"
+            className="w-8 h-8 p-0.5 hover:bg-neutral-100 hover:text-neutral-700 text-neutral-900 flex items-center justify-center rounded-md transition-all"
+          >
+            <ArrowSquareOut size={20} />
+          </Link>
+
+          <div className="form-check form-switch custom-form-check">
+            <input
+              className="form-check-input cursor-pointer"
+              type="checkbox"
+              role="switch"
+              // id={`flexSwitchCheckChecked-${link.link_id}`}
+              checked={isActive}
+              onChange={toggleIsActive}
+            />
           </div>
         </div>
       </div>

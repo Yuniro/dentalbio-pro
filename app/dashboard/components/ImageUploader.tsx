@@ -4,16 +4,33 @@ import React, { useEffect, useState } from 'react';
 type ImageUploaderProps = {
   onFileChange: (image: File) => void;
   image_url?: string;
+  id?: string;
+  text?: string;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
   onFileChange,
   image_url,
+  id,
+  text,
 }: ImageUploaderProps) => {
   const [imagePreview, setImagePreview] = useState<string | null>(image_url!);
+  const [valid, setValid] = useState<boolean>(true);
+
+  const handleError = () => {
+    setValid(false); // Replace with fallback image
+  };
+
+  const handleLoad = () => {
+    setValid(true); // Replace with fallback image
+  };
 
   useEffect(() => {
-    setImagePreview(image_url!);
+    if (image_url) {
+      setImagePreview(image_url!);
+      setValid(true);
+    } else
+      setValid(false);
   }, [image_url])
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,24 +43,25 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   return (
     <div className='mb-4'>
-      <label htmlFor='uploader' className='w-full cursor-pointer'>
+      <label htmlFor={id || 'uploader'} className='w-full cursor-pointer'>
         {/* <button type="button"> */}
-        {imagePreview ? (
-          <div className="relative bg-black rounded-lg group">
+        <div className={`relative bg-black rounded-lg group ${!valid && "hidden"}`}>
           <img
-            src={imagePreview}
+            src={imagePreview!}
             alt="preview"
             className="w-full transition-all ease-in-out hover:opacity-50 rounded-lg"
+            onError={handleError} // Handle invalid image error
+            onLoad={handleLoad}
           />
         </div>
-        ) : (
-          <div className='w-full h-12 flex justify-center items-center bg-white border-[#BBB] rounded-[26px]'><Image size={22} />&nbsp;&nbsp;Add Image</div>
+        {!valid && (
+          <div className='w-full h-12 flex justify-center items-center bg-white border-[#BBB] rounded-[26px]'><Image size={22} />&nbsp;&nbsp;{text || "Add Image"}</div>
         )}
         {/* </button> */}
       </label>
       <input
         name='uploader'
-        id='uploader'
+        id={id || 'uploader'}
         type="file"
         accept="image/*"
         style={{ display: 'none' }}

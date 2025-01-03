@@ -80,6 +80,11 @@ html {
   animation: spin 1s linear infinite;
 }
 
+.ql-toolbar.ql-snow {
+  background-color: white;
+  border-radius: 8px;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

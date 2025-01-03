@@ -7,20 +7,29 @@ import AddNewBlog from './AddNewBlog';
 import EditBlogModal from '../components/EditBlogModal';
 import SkeletonLoader from '@/app/components/Loader/Loader';
 import { arraysAreEqual } from '@/utils/function_utils';
+import { PencilSimple } from '@phosphor-icons/react/dist/ssr';
+import LabeledInput from '../components/LabeledInput';
+import FullRoundedButton from '@/app/components/Button/FullRoundedButton';
+import { useFormStatus } from 'react-dom';
+import SaveButton from '../components/SaveButton';
 
 const ItemType = {
   BLOG: "BLOG"
 }
 
 function DraggableBlogCard({
+  username,
   blog,
   index,
+  onUpdate,
   onDelete,
   onEditItem,
   moveBlog
 }: {
+  username: string;
   blog: BlogType,
   index: number;
+  onUpdate: any;
   onDelete: any;
   onEditItem: any;
   moveBlog: any;
@@ -48,6 +57,8 @@ function DraggableBlogCard({
       }}
     >
       <BlogCard
+        username={username}
+        onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
         {...blog}
@@ -57,8 +68,10 @@ function DraggableBlogCard({
 }
 
 
-const ManageBlogs = () => {
+const ManageBlogs = ({ username }: { username: string; }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
+  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
+  const [blogTitle, setBlogTitle] = useState<string | null>(null);
   const [blogs, setBlogs] = useState<any[] | null>(null);
   const [initialBlogs, setInitialBlogs] = useState<any[] | null>(null);
   const [editingBlog, setEditingBlog] = useState<BlogType>({
@@ -70,8 +83,25 @@ const ManageBlogs = () => {
     meta_title: "",
     meta_description: "",
     rank: 0,
+    enabled: true,
     created_at: "",
+    slug: "",
   });
+
+  const status = useFormStatus();
+
+  useEffect(() => {
+    const fetchBlogTitle = async () => {
+      const response = await fetch('/api/blog-titles', {
+        method: 'GET'
+      });
+      const data = await response.json();
+
+      setBlogTitle((data.data.length > 0) ? data.data[0].title : `${username}'s Blogs`);
+    };
+
+    fetchBlogTitle();
+  }, []);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -139,6 +169,23 @@ const ManageBlogs = () => {
     setIsEditingOpen(true);
   }
 
+  const handleUpdateTitle = async () => {
+    const formData = { title: blogTitle };
+
+    const response = await fetch('/api/blog-titles', {
+      method: 'POST',
+      body: JSON.stringify(formData)
+    })
+
+    const result = await response.json();
+
+    if (response.ok) {
+      setIsEditingTitle(false);
+    } else {
+      console.log(`Error: ${result.error}`)
+    }
+  }
+
   const uploadImage = async (image: File) => {
     const formData = new FormData();
     formData.append('bucket_name', 'blog-images');
@@ -198,6 +245,37 @@ const ManageBlogs = () => {
   return (
     <div>
       <h4 className='mb-6'>My Blogs</h4>
+      {blogTitle ?
+        <>
+          {isEditingTitle ?
+            <div className='mb-4'>
+              <form action={handleUpdateTitle}>
+                <LabeledInput
+                  label='Blogs Title'
+                  name='title'
+                  value={blogTitle!}
+                  onChange={e => setBlogTitle(e.target.value)}
+                />
+                <div className='flex justify-end gap-2'>
+                  <SaveButton text='Save' />
+                  <FullRoundedButton buttonType="ghost" type='button' onClick={() => setIsEditingTitle(false)}>Cancel</FullRoundedButton>
+                </div>
+              </form>
+            </div> :
+            <div className="member-card-heading">
+              <div className="flex justify-center">
+                <div className="d-flex align-items-center gap-2 member-heading">
+                  <p className="mb-0">{blogTitle}</p>
+                  <PencilSimple
+                    onClick={() => setIsEditingTitle(true)}
+                    className="cursor-pointer"
+                  />
+                </div>
+              </div>
+            </div>}
+        </> :
+        <SkeletonLoader />
+      }
 
       <DndProvider backend={HTML5Backend}>
         {blogs ?
@@ -207,6 +285,8 @@ const ManageBlogs = () => {
                 key={index}
                 index={index}
                 blog={blog}
+                username={username}
+                onUpdate={handleEdit}
                 onDelete={handleDelete}
                 onEditItem={handleEditItem}
                 moveBlog={moveBlog}

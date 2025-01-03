@@ -1,8 +1,9 @@
 export async function generateUniqueSlug(
   supabase: any, // Supabase client instance
-  title: string
+  slug: string,
+  id?: string | null,
 ): Promise<string> {
-  const baseSlug = title
+  const baseSlug = slug
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, '') // Remove special characters
     .replace(/\s+/g, '-');       // Replace spaces with hyphens
@@ -11,7 +12,7 @@ export async function generateUniqueSlug(
   let counter = 1;
 
   // Check if the slug already exists in the database
-  while (await slugExists(supabase, uniqueSlug)) {
+  while (await slugExists(supabase, uniqueSlug, id || null)) {
     uniqueSlug = `${baseSlug}-${counter}`;
     counter++;
   }
@@ -19,7 +20,7 @@ export async function generateUniqueSlug(
   return uniqueSlug;
 }
 
-async function slugExists(supabase: any, slug: string): Promise<boolean> {
+async function slugExists(supabase: any, slug: string, id: string | null): Promise<boolean> {
   const { data, error } = await supabase
     .from('blogs')
     .select('id')
@@ -30,5 +31,7 @@ async function slugExists(supabase: any, slug: string): Promise<boolean> {
     return false;
   }
 
+  if (id)
+    return data.filter((blog: { id: string }) => blog.id !== id).length > 0;
   return data.length > 0;
 }

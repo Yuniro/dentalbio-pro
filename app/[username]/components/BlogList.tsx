@@ -16,6 +16,20 @@ const BlogList: React.FC<BlogListProps> = ({
   userTitle
 }: BlogListProps) => {
   const [blogs, setBlogs] = useState<any[]>([]);
+  const [blogTitle, setBlogTitle] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBlogTitle = async () => {
+      const response = await fetch('/api/blog-titles', {
+        method: 'GET'
+      });
+      const data = await response.json();
+
+      setBlogTitle((data.data.length > 0) ? data.data[0].title : `${username}'s Blogs`);
+    };
+
+    fetchBlogTitle();
+  }, []);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -31,10 +45,10 @@ const BlogList: React.FC<BlogListProps> = ({
   }, []);
 
   return (
-    <div className="text-center mb-4">
+    <div className="text-center mb-4" id="blog">
       {(blogs.length > 0) &&
         <>
-          <h1 className="section-heading-treatment text-[23px] font-semibold">{userTitle === 'N/A' ? '' : userTitle} {userFirstName + '\'s Blogs'}</h1>
+          <h1 className="section-heading-treatment text-[23px] font-semibold">{blogTitle}</h1>
           {blogs.map((blog, index) => (
             <LinkTitle
               key={index}

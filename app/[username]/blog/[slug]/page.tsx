@@ -55,17 +55,17 @@ const fetchProfilePicture = async (dentistryId: string) => {
 export default async function BlogPage({ params }: { params: { slug: string } }) {
   // Fetch the blog data using the slug parameter
   const { slug } = params;
+
   const { data: blog, error } = await supabase
     .from('blogs')
     .select('*')
     .eq('slug', slug)
-    .single();
 
-  if (error || !blog) {
+  if (error || !blog[0]) {
     notFound(); // Shows 404 page if the blog is not found
   }
 
-  const user_id = blog.writer_id;
+  const user_id = blog[0].writer_id;
 
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase
@@ -94,12 +94,12 @@ export default async function BlogPage({ params }: { params: { slug: string } })
 
         <div className='text-center mt-20'>
           <BlogImage
-            src={blog.image_url}
+            src={blog[0].image_url}
             alt="Blog Image"
             className="w-full mb-4 rounded-[6px]"
           />
 
-          <h1 className='text-[23px] font-semibold'>{blog.title}</h1>
+          <h1 className='text-[23px] font-semibold'>{blog[0].title}</h1>
 
           <div className='w-full flex justify-center my-4'>
             <div className='flex items-center gap-2 text-left'>
@@ -112,36 +112,36 @@ export default async function BlogPage({ params }: { params: { slug: string } })
               </div>
               <div>
                 <div className='text-xs'>{`${user?.title === 'N/A' ? '' : user?.title} ${user?.first_name} ${user?.last_name}`}</div>
-                <div className='text-[10px] text-[#9D9D9D]'>{formatDate(blog.created_at)}</div>
+                <div className='text-[10px] text-[#9D9D9D] text-left'>{formatDate(blog[0].created_at)}</div>
               </div>
             </div>
           </div>
 
-          <p className='text-[#9d9d9d] text-[14px]'>{blog.content}</p>
-        </div>
-
-        <div className='w-full flex justify-center mt-4 mb-6'>
-          <Link
-            href={`/${user?.username}`}
-            className='w-[93px] h-[41px] rounded-[10px] border text-[14px] text-center no-underline text-black px-6 py-2'
-          >
-            <span>Back</span>
-          </Link>
-        </div>
-
-        <WorkLocation dentistry={dentistry} />
-        {dentistry &&
-          <Footer
-            dentistryId={dentistry.dentistry_id}
-            bookingLink={dentistry?.booking_link}
-            contact_email={dentistry?.contact_email}
-            userTitle={user?.title}
-            username={user?.username}
-            userFirstName={user?.first_name}
-            userLastName={user?.last_name}
-          />}
+          <div className='text-[#9d9d9d] text-[14px] break-words' dangerouslySetInnerHTML={{ __html: (blog[0].content)}}></div>
       </div>
+
+      <div className='w-full flex justify-center mt-4 mb-6'>
+        <Link
+          href={`/${user?.username}`}
+          className='w-[93px] h-[41px] rounded-[10px] border text-[14px] text-center no-underline text-black px-6 py-2'
+        >
+          <span>Back</span>
+        </Link>
+      </div>
+
+      <WorkLocation dentistry={dentistry} />
+      {dentistry &&
+        <Footer
+          dentistryId={dentistry.dentistry_id}
+          bookingLink={dentistry?.booking_link}
+          contact_email={dentistry?.contact_email}
+          userTitle={user?.title}
+          username={user?.username}
+          userFirstName={user?.first_name}
+          userLastName={user?.last_name}
+        />}
     </div>
+    </div >
   );
 }
 
