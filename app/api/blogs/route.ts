@@ -79,6 +79,17 @@ export async function PUT(request: Request) {
     const supabase = createClient();
     const finalData = updated_data.slug ? { ...updated_data, slug: await generateUniqueSlug(supabase, updated_data.slug, updated_data.id) } : updated_data;
 
+    if (updated_data?.image_url) {
+      const { data: blog, error } = await supabase
+        .from('blogs')
+        .select('*')
+        .eq('id', updated_data.id)
+        .single();
+
+      if (updated_data.image_url !== blog.image_url)
+        await deleteFileFromSupabase({ supabase, bucketName: 'blog-images', fileUrl: blog.image_url });
+    }
+
     const { data, error } = await supabase
       .from('blogs')
       .update(finalData)

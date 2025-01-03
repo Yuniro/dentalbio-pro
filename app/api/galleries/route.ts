@@ -72,6 +72,24 @@ export async function PUT(request: Request) {
 
   try {
     const supabase = createClient();
+
+    // Delete original images if new images uploaded
+
+    const { data: gallery, error: readError } = await supabase
+      .from('galleries')
+      .select('*')
+      .eq('id', updated_data.id)
+      .single();
+
+    if (updated_data.before_image_url !== gallery.before_image_url) {
+      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.before_image_url });
+    }
+    if (updated_data.after_image_url !== gallery.after_image_url) {
+      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.after_image_url });
+    }
+
+    // Update gallery
+
     const { data, error } = await supabase
       .from('galleries')
       .update(updated_data)
@@ -95,16 +113,20 @@ export async function DELETE(request: Request) {
   try {
     const supabase = createClient();
 
-    const { data: blog, error: getError } = await supabase
+    const { data: gallery, error: getError } = await supabase
       .from('galleries')
       .select('before_image_url, after_image_url')
       .eq('id', id)
       .single()
 
-    if (blog) {
-      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: blog.before_image_url });
-      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: blog.after_image_url });
+    // Delete images from bucket
+
+    if (gallery) {
+      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.before_image_url });
+      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.after_image_url });
     }
+
+    // Delete data from table
 
     const { data, error } = await supabase
       .from('galleries')
