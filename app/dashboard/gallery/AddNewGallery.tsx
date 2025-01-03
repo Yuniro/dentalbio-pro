@@ -40,7 +40,7 @@ const AddNewGallery: React.FC<AddNewGalleryProps> = ({
     }
   }
 
-  const handleSubmit = async (formData: { title: string; before_image: File | null; after_image: File | null; }) => {
+  const handleSubmit = async (formData: { title: string; before_image: File | null; after_image: File | null; before_image_label: string; after_image_label: string; }) => {
     const before_image_url = formData.before_image ? await uploadImage(formData.before_image) : "";
     const after_image_url = formData.after_image ? await uploadImage(formData.after_image) : "";
     // const image_url = '';

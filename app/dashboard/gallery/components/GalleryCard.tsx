@@ -9,6 +9,8 @@ type GalleryCardProps = {
   title?: string;
   before_image_url?: string;
   after_image_url?: string;
+  before_image_label?: string;
+  after_image_label?: string;
   created?: Date;
   enabled?: boolean;
   onEditItem: (id: string) => void;
@@ -21,6 +23,8 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
   title,
   before_image_url,
   after_image_url,
+  before_image_label,
+  after_image_label,
   enabled,
   created,
   onUpdate,
@@ -88,12 +92,18 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
             </div>
           </div>
           <div className="flex justify-around">
-            <BlogImage
-              src={before_image_url!}
-              className="w-2/5 aspect-square rounded-[6px]" />
-            <BlogImage
-              src={after_image_url!}
-              className="w-2/5 aspect-square rounded-[6px]" />
+            <div className="w-2/5">
+              <BlogImage
+                src={before_image_url!}
+                className="aspect-square rounded-[6px]" />
+              <h6 className="text-[#989898] text-[16px] text-center mt-2">{before_image_label}</h6>
+            </div>
+            <div className="w-2/5">
+              <BlogImage
+                src={after_image_url!}
+                className="aspect-square rounded-[6px]" />
+              <h6 className="text-[#989898] text-[16px] text-center mt-2">{after_image_label}</h6>
+            </div>
           </div>
         </div>
       </div>

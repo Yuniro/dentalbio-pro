@@ -37,6 +37,8 @@ type GalleryType = {
   title?: string;
   before_image_url?: string;
   after_image_url?: string;
+  before_image_label?: string;
+  after_image_label?: string;
   rank?: number;
   created_at?: datetime;
   enabled?: boolean;

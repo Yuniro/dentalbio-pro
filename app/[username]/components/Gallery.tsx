@@ -37,12 +37,12 @@ export default function Gallery({ userId }: { userId: string }) {
                 <GalleryImage
                   src={gallery.before_image_url}
                   title={gallery.title}
-                  isAfter={false}
+                  subTitle={gallery.before_image_label}
                 />
                 <GalleryImage
                   src={gallery.after_image_url}
                   title={gallery.title}
-                  isAfter={true}
+                  subTitle={gallery.after_image_label}
                 />
               </div>
             ))}

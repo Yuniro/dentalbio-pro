@@ -16,11 +16,12 @@ const BlogList: React.FC<BlogListProps> = ({
   userTitle
 }: BlogListProps) => {
   const [blogs, setBlogs] = useState<any[]>([]);
-  const [blogTitle, setBlogTitle] = useState<string | null>(null);
+  const [blogTitle, setBlogTitle] = useState<string | null>(`${username}'s Blogs`);
 
   useEffect(() => {
     const fetchBlogTitle = async () => {
-      const response = await fetch('/api/blog-titles', {
+      const query = userId ? `?userId=${userId}` : '';
+      const response = await fetch(`/api/blog-titles${query}`, {
         method: 'GET'
       });
       const data = await response.json();

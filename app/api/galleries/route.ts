@@ -39,7 +39,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { title, before_image_url, after_image_url } = await request.json();
+  const { title, before_image_url, after_image_url, before_image_label, after_image_label } = await request.json();
 
   try {
     const supabase = createClient();
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase
       .from('galleries')
-      .insert([{ title, before_image_url, after_image_url, user_id: userData.id, rank: maxRank }])
+      .insert([{ title, before_image_url, after_image_url, user_id: userData.id, rank: maxRank, before_image_label, after_image_label }])
       .select("*")
       .single();;
 

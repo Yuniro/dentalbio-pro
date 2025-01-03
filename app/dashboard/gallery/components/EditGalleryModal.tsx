@@ -29,6 +29,9 @@ const EditGalleryModal: React.FC<ModalProps> = ({
     setBeforeImage(isOpen ? props.before_image_url! : null);
     setAfterImage(isOpen ? props.after_image_url! : null);
 
+    setBeforeImageFile(null);
+    setAfterImageFile(null);
+
     setIsUploading(false);
     setFormData(props);
   }, [isOpen])
@@ -61,11 +64,18 @@ const EditGalleryModal: React.FC<ModalProps> = ({
           <div className="w-[600px] rounded-[26px] bg-[#F3F3F1] p-10" onClick={(e) => e.stopPropagation()}>
             <h4 className="mb-4">Edit Gallery</h4>
             <form onSubmit={handleSubmit}>
-              <div className="max-h-[80vh] overflow-y-auto">
+              <div className="max-h-[70vh] overflow-y-auto">
                 <LabeledInput
                   label="Title"
                   name="title"
                   value={formData.title}
+                  onChange={handleChange}
+                  required
+                />
+                <LabeledInput
+                  label="Before Image Label"
+                  name="before_image_label"
+                  value={formData.before_image_label}
                   onChange={handleChange}
                   required
                 />
@@ -75,6 +85,13 @@ const EditGalleryModal: React.FC<ModalProps> = ({
                   onFileChange={(image) => handleFileChange(image, false)}
                   image_url={beforeImage!}
                 />
+                <LabeledInput
+                  label="After Image Label"
+                  name="after_image_label"
+                  value={formData.after_image_label}
+                  onChange={handleChange}
+                  required
+                />
                 <ImageUploader
                   id="after_image"
                   text="Add after image"
@@ -82,7 +99,7 @@ const EditGalleryModal: React.FC<ModalProps> = ({
                   image_url={afterImage!}
                 />
               </div>
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2 mt-4">
                 {/* <SaveButton text="Add Gallery" /> */}
                 <FullRoundedButton isLoading={isUploading} type="submit">Update Gallery</FullRoundedButton>
                 <FullRoundedButton type="button" buttonType="danger" onClick={onClose}>Close</FullRoundedButton>

@@ -11,16 +11,26 @@ import RichTextEditor from "@/app/components/TextEditor/RichTextEditor";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (formData: { title: string; content: string; image?: File; meta_title: string; meta_description: string }) => void;
+  onSubmit: (formData: { title: string; content: string; image: File | null; meta_title: string; meta_description: string }) => void;
+}
+
+type formDataProps = {
+  title: string;
+  content: string;
+  meta_title: string;
+  meta_description: string;
+  slug: string;
+  image: File | null;
 }
 
 const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<formDataProps>({
     title: "",
     content: "",
     meta_title: "",
     meta_description: "",
     slug: "",
+    image: null,
   });
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -32,7 +42,9 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
       meta_title: "",
       meta_description: "",
       slug: "",
+      image: null
     });
+    setSelectedImage(null);
     setIsUploading(false);
   }, [isOpen])
 

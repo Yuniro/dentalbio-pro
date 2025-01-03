@@ -40,7 +40,7 @@ const AddNewBlog: React.FC<AddNewBlogProps> = ({
     }
   }
 
-  const handleSubmit = async (formData: { title: string; content: string; image?: File; meta_title: string; meta_description: string }) => {
+  const handleSubmit = async (formData: { title: string; content: string; image: File | null; meta_title: string; meta_description: string }) => {
     const image_url = formData.image ? await uploadImage(formData.image) : "";
     // const image_url = '';
 

@@ -129,6 +129,8 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       blog = { ...blog, image_url };
     }
 
+    console.log(blog);
+
     const response = await fetch('/api/blogs', {
       method: 'PUT',
       body: JSON.stringify({ ...blog }),
@@ -142,9 +144,8 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       setBlogs((prevBlogs) => {
         return prevBlogs?.map((blog) => (blog.id === result.id ? result : blog))!;
       })
-
-      setIsEditingOpen(false);
     }
+    setIsEditingOpen(false);
   }
 
   const handleDelete = async (id: string) => {

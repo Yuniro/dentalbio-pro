@@ -15,7 +15,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   text,
 }: ImageUploaderProps) => {
   const [imagePreview, setImagePreview] = useState<string | null>(image_url!);
-  const [valid, setValid] = useState<boolean>(true);
+  const [valid, setValid] = useState<boolean>(false);
 
   const handleError = () => {
     setValid(false); // Replace with fallback image

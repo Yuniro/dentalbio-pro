@@ -73,8 +73,6 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   const updated_data = await request.json();
 
-  console.log(updated_data);
-
   try {
     const supabase = createClient();
     const finalData = updated_data.slug ? { ...updated_data, slug: await generateUniqueSlug(supabase, updated_data.slug, updated_data.id) } : updated_data;
@@ -86,7 +84,7 @@ export async function PUT(request: Request) {
         .eq('id', updated_data.id)
         .single();
 
-      if (updated_data.image_url !== blog.image_url)
+      if (updated_data.image_url !== blog.image_url && blog.image_url.length > 0)
         await deleteFileFromSupabase({ supabase, bucketName: 'blog-images', fileUrl: blog.image_url });
     }
 
@@ -118,8 +116,6 @@ export async function DELETE(request: Request) {
       .select('image_url')
       .eq('id', id)
       .single()
-
-    console.log(blog?.image_url);
 
     if (blog?.image_url)
       await deleteFileFromSupabase({ supabase, bucketName: 'blog-images', fileUrl: blog.image_url });

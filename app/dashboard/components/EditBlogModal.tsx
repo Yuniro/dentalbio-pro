@@ -25,8 +25,9 @@ const EditBlogModal: React.FC<ModalProps> = ({
   const [currentImage, setCurrentImage] = useState<string | null>(props.image_url!);
 
   useEffect(() => {
-    setCurrentImage(isOpen ? props.image_url! : null);
+    setCurrentImage(props.image_url!);
 
+    setSelectedImage(null);
     setIsUploading(false);
     setFormData(props);
   }, [isOpen])
@@ -54,10 +55,6 @@ const EditBlogModal: React.FC<ModalProps> = ({
 
   const handleFileChange = (image: File) => {
     setSelectedImage(image);
-    setFormData((prevState) => ({
-      ...prevState,
-      image
-    }))
   }
 
   return (
