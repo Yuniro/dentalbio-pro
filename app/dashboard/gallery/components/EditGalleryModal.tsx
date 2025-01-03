@@ -22,12 +22,12 @@ const EditGalleryModal: React.FC<ModalProps> = ({
   const [beforeImageFile, setBeforeImageFile] = useState<File | null>(null);
   const [afterImageFile, setAfterImageFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [beforeImage, setBeforeImage] = useState<string | null>(props.before_image_url);
-  const [afterImage, setAfterImage] = useState<string | null>(props.after_image_url);
+  const [beforeImage, setBeforeImage] = useState<string | null>(props.before_image_url!);
+  const [afterImage, setAfterImage] = useState<string | null>(props.after_image_url!);
 
   useEffect(() => {
-    setBeforeImage(isOpen ? props.before_image_url : null);
-    setAfterImage(isOpen ? props.after_image_url : null);
+    setBeforeImage(isOpen ? props.before_image_url! : null);
+    setAfterImage(isOpen ? props.after_image_url! : null);
 
     setIsUploading(false);
     setFormData(props);
