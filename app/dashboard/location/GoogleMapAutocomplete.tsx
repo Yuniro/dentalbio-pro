@@ -43,6 +43,8 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   useEffect(() => {
     const initialize = async () => {
       try {
+        if (typeof window === 'undefined')
+          return;
         // Initialize Geocoder
         const geocoderInstance = new google.maps.Geocoder();
         setGeocoder(geocoderInstance);

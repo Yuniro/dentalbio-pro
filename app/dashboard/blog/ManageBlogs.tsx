@@ -302,6 +302,7 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       </div>
 
       <EditBlogModal
+        username={username}
         isOpen={isEditingOpen}
         onClose={() => setIsEditingOpen(false)}
         onSubmit={handleEdit}

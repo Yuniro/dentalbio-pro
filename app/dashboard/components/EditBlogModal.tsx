@@ -6,19 +6,23 @@ import LimitedTextArea from "./LimitedTextArea";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ImageUploader from "./ImageUploader";
 import RichTextEditor from "@/app/components/TextEditor/RichTextEditor";
+import { convertToSlug } from "@/utils/convertToSlug";
 
 interface ModalProps extends BlogType {
+  username: string;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (blog: BlogType, image: File | null) => void;
 }
 
 const EditBlogModal: React.FC<ModalProps> = ({
+  username,
   isOpen,
   onClose,
   onSubmit,
   ...props
 }) => {
+  const [prefix, setPrefix] = useState<string>(`https://dental.bio/${username}/blog/`);
   const [formData, setFormData] = useState<BlogType>(props);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -41,10 +45,45 @@ const EditBlogModal: React.FC<ModalProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    let updateData = { [name]: value }
+    if (name === "title") {
+      if (value.includes(formData.meta_title!))
+        updateData = {
+          ...updateData,
+          meta_title: value
+        };
+      updateData = {
+        ...updateData,
+        slug: prefix + convertToSlug(value)
+      };
+    } else if (name === "content" && formData.meta_description === "") {
+      updateData = {
+        ...updateData,
+        meta_description: value.slice(0, 200)
+      };
+    }
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      ...updateData
     }));
+
+  };
+
+  const handleChangeSlug = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Ensure the input always starts with the prefix
+    if (!value.startsWith(prefix)) {
+      setFormData((prevState) => ({
+        ...prevState,
+        slug: prefix
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        slug: value
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -105,7 +144,7 @@ const EditBlogModal: React.FC<ModalProps> = ({
                   label="URL"
                   name="slug"
                   value={formData.slug}
-                  onChange={handleChange}
+                  onChange={handleChangeSlug}
                   required
                 />
               </div>

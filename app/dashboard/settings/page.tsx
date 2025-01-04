@@ -20,7 +20,7 @@ async function getUserDetails() {
 
   const { data: userRecord, error: userError } = await supabase
     .from("users")
-    .select("id, email, first_name, last_name, title, position")
+    .select("id, email, first_name, middle_name, last_name, title, position")
     .eq("email", userEmail)
     .single();
 
@@ -45,6 +45,7 @@ async function updateUserDetails(formData: FormData) {
 
   const updatedUserDetails = {
     first_name: formData.get("first_name") as string,
+    middle_name: formData.get("middle_name") as string,
     last_name: formData.get("last_name") as string,
     title: formData.get("title") as string,
   };
@@ -111,7 +112,7 @@ export default async function SettingsPage() {
             <input
               name="middle_name"
               className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
-              defaultValue=""
+              defaultValue={user.middle_name || ""}
               placeholder="Middle Name (optional)"
             />
           </div>

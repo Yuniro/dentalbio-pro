@@ -43,3 +43,16 @@ type GalleryType = {
   created_at?: datetime;
   enabled?: boolean;
 }
+
+type ReviewType = {
+  id: string;
+  user_id?: string;
+  writer_name?: string;
+  description?: string;
+  star?: number;
+  image_url?: string;
+  source_name?: string;
+  review_link?: string;
+  rank?: number;
+  created_at?: datetime;
+}
