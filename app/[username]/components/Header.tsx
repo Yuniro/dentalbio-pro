@@ -105,7 +105,7 @@ export default function Header({
             {isOtherPage &&
                 <Link
                   href={`/${username}`}
-                  className="contact-me-btn whitespace-nowrap"
+                  className="contact-me-btn whitespace-nowrap no-underline"
                 >
                   <span>Back</span>
                 </Link>}

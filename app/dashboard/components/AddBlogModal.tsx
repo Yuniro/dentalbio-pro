@@ -1,13 +1,16 @@
 // components/AddBlogModa.tsx
 
 import { useEffect, useState } from "react";
+import dynamic from 'next/dynamic';
 import LabeledInput from "./LabeledInput";
 import LimitedTextArea from "./LimitedTextArea";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ImageUploader from "./ImageUploader";
 import { Info } from "@phosphor-icons/react/dist/ssr";
-import RichTextEditor from "@/app/components/TextEditor/RichTextEditor";
+// import RichTextEditor from "@/app/components/TextEditor/RichTextEditor";
 import { convertToSlug } from "@/utils/convertToSlug";
+
+const RichTextEditor = dynamic(() => import('@/app/components/TextEditor/RichTextEditor'), { ssr: false });
 
 interface ModalProps {
   username: string;

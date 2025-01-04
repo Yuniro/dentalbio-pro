@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useRef } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; // Import Quill's styles
@@ -6,16 +7,6 @@ interface RichTextEditorProps {
   value: string;
   onChange: (content: string) => void;
 }
-
-// var Link: any = Quill.import('formats/link');
-// class MyLink extends Link {
-//   static create(value: any) {
-//     const node = super.create(value);
-//     node.removeAttribute('target');
-//     return node;
-//   }
-// }
-// Quill.register(MyLink, true);
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
   const editorRef = useRef<HTMLDivElement | null>(null);
