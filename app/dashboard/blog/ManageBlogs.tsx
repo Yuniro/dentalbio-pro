@@ -298,7 +298,7 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       </DndProvider>
 
       <div className="flex justify-end mt-6">
-        <AddNewBlog onAdd={handleAdd} />
+        <AddNewBlog onAdd={handleAdd} username={username}/>
       </div>
 
       <EditBlogModal

@@ -1,12 +1,11 @@
+import { convertToSlug } from "./convertToSlug";
+
 export async function generateUniqueSlug(
   supabase: any, // Supabase client instance
   slug: string,
   id?: string | null,
 ): Promise<string> {
-  const baseSlug = slug
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '') // Remove special characters
-    .replace(/\s+/g, '-');       // Replace spaces with hyphens
+  const baseSlug = convertToSlug(slug);
 
   let uniqueSlug = baseSlug;
   let counter = 1;

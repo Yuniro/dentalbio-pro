@@ -2,6 +2,35 @@ import { createClient } from "@/utils/supabase/server";
 import type { Metadata } from "next";
 import { Author } from "next/dist/lib/metadata/types/metadata-types";
 
+// Function to fetch user and dentistry data based on the username
+async function fetchUserAndDentistry(username: string) {
+  const supabase = createClient();
+
+  // Fetch the user by username
+  const { data: userData, error: userError } = await supabase
+    .from("users")
+    .select("id, username")
+    .eq("username", username)
+    .single();
+
+  if (userError || !userData) {
+    return { username, dentistry: null };
+  }
+
+  // Fetch the dentistry data by user ID
+  const { data: dentistryData, error: dentistryError } = await supabase
+    .from("dentistries")
+    .select("about_title, about_text")
+    .eq("user_id", userData.id)
+    .single();
+
+  if (dentistryError || !dentistryData) {
+    return { username: userData.username, dentistry: null };
+  }
+
+  return { username: userData.username, dentistry: dentistryData };
+}
+
 // Function to fetch blog data based on the slug
 async function fetchBlog(slug: string) {
   const supabase = createClient();
@@ -30,10 +59,14 @@ export async function generateMetadata({
 }: {
   params: { username: string, slug: string };
 }): Promise<Metadata> {
+  const { username: fetchedUsername, dentistry } = await fetchUserAndDentistry(
+    username
+  );
+
   const { meta_title, meta_description, meta_image, content } = await fetchBlog(slug);
 
   // Set default values for the title and description
-  const title = meta_title || username;
+  const title = meta_title || dentistry?.about_title || username;
   const authors = [username] as Author[];
   const description = meta_description || content.slice(0, 200);
 

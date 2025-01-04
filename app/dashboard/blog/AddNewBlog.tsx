@@ -5,10 +5,12 @@ import AddBlogModal from "../components/AddBlogModal";
 
 type AddNewBlogProps = {
   onAdd: (blog: any) => void;
+  username: string;
 }
 
 const AddNewBlog: React.FC<AddNewBlogProps> = ({
   onAdd,
+  username,
 }: AddNewBlogProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -64,6 +66,7 @@ const AddNewBlog: React.FC<AddNewBlogProps> = ({
       <FullRoundedButton onClick={openModal} className="mb-4">Add Blog</FullRoundedButton>
 
       <AddBlogModal
+        username={username}
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={handleSubmit}

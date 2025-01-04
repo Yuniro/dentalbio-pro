@@ -7,8 +7,10 @@ import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ImageUploader from "./ImageUploader";
 import { Info } from "@phosphor-icons/react/dist/ssr";
 import RichTextEditor from "@/app/components/TextEditor/RichTextEditor";
+import { convertToSlug } from "@/utils/convertToSlug";
 
 interface ModalProps {
+  username: string;
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (formData: { title: string; content: string; image: File | null; meta_title: string; meta_description: string }) => void;
@@ -23,7 +25,8 @@ type formDataProps = {
   image: File | null;
 }
 
-const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const AddBlogModal: React.FC<ModalProps> = ({ username, isOpen, onClose, onSubmit }) => {
+  const [prefix, setPrefix] = useState<string>(`https://dental.bio/${username}/blog/`);
   const [formData, setFormData] = useState<formDataProps>({
     title: "",
     content: "",
@@ -41,7 +44,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
       content: "",
       meta_title: "",
       meta_description: "",
-      slug: "",
+      slug: prefix,
       image: null
     });
     setSelectedImage(null);
@@ -57,10 +60,45 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    let updateData = { [name]: value }
+    if (name === "title") {
+      if (value.includes(formData.meta_title))
+        updateData = {
+          ...updateData,
+          meta_title: value
+        };
+      updateData = {
+        ...updateData,
+        slug: prefix + convertToSlug(value)
+      };
+    } else if (name === "content" && formData.meta_description === "") {
+      updateData = {
+        ...updateData,
+        meta_description: value.slice(0, 200)
+      };
+    }
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      ...updateData
     }));
+
+  };
+
+  const handleChangeSlug = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Ensure the input always starts with the prefix
+    if (!value.startsWith(prefix)) {
+      setFormData((prevState) => ({
+        ...prevState,
+        slug: prefix
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        slug: value
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -132,7 +170,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                   label="URL"
                   name="slug"
                   value={formData.slug}
-                  onChange={handleChange}
+                  onChange={handleChangeSlug}
                   required
                 />
               </div>
