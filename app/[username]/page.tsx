@@ -16,6 +16,7 @@ import Link from "next/link";
 import { unstable_noStore } from "next/cache"; // Import noStore to prevent caching
 import BlogList from "./components/BlogList";
 import Gallery from "./components/Gallery";
+import Services from "./components/Services";
 
 type PageProps = {
   params: { username: string };
@@ -136,6 +137,7 @@ export default async function HomePage({ params }: PageProps) {
             />
           )}
           <Treatments dentistryId={dentistry.dentistry_id} />
+          <Services dentistryId={dentistry.dentistry_id} />
           <Links dentistryId={dentistry.dentistry_id} />
           <BlogList
             userId={user.id}

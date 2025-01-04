@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import AddTreatmentForm from "./AddTreatment";
 import ManageTreatments from "./ManageTreatments";
 import { redirect } from "next/navigation";
+import ManageServices from "./ManageServices";
 
 // Fetch authenticated user ID
 async function getUserId() {
@@ -57,6 +58,7 @@ export default async function TreatmentsPage() {
         {/* Pass the dentistryId to client-side components */}
         <AddTreatmentForm dentistryId={dentistryId} />
         <ManageTreatments dentistryId={dentistryId} />
+        <ManageServices dentistryId={dentistryId} />
       </div>
     </div>
   );

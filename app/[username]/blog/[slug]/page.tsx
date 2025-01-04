@@ -90,6 +90,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
           username={user?.username}
           dentistry_id={dentistry?.dentistry_id}
           contact_email={dentistry?.contact_email}
+          isOtherPage={true}
         />
 
         <div className='text-center mt-20'>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import SaveButton from "../components/SaveButton";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,7 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [isService, toggleIsService] = useReducer((prevState) => !prevState, true);
   const router = useRouter(); // Next.js router for refresh
 
   const maxLimit = 200;
@@ -43,12 +44,15 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
     event.preventDefault();
     const supabase = createClient();
 
+    console.log("Here");
+
     // Insert new treatment
     const { data: treatmentData, error: treatmentError } = await supabase
       .from("treatments")
       .insert([{
         title: toCapitalFirst(title),
-        description
+        description,
+        isService
       }])
       .select("treatment_id")
       .single();
@@ -100,11 +104,27 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
 
   return (
     <form onSubmit={handleSubmit} className="mb-6 mt-10">
-      <h2 className="text-lg font-semibold mb-3">Add new treatment</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-semibold mb-3">Add new {isService ? "service" : "treatment"}</h2>
+        <div className="flex justify-between items-center gap-2">
+          <label>Treatment</label>
+          <div className="form-check form-switch custom-form-check">
+            <input
+              className="form-check-input cursor-pointer toggler"
+              type="checkbox"
+              role="switch"
+              // id={`flexSwitchCheckChecked-${link.link_id}`}
+              checked={isService}
+              onChange={toggleIsService}
+            />
+          </div>
+          <label>Service</label>
+        </div>
+      </div>
       <div className="mb-3">
         <LabeledInput
           id='title'
-          label="Treatment Title"
+          label={`${isService ? "Service" : "Treatment"} Title`}
           name="title"
           className="w-ful text-base"
           // placeholder="Treatment Title"
@@ -118,7 +138,7 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
           htmlFor="description"
           className={`absolute top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || description ? '-translate-y-[7px] text-xs' : 'scale-100'}`}
         >
-          Treatment Description
+          {isService ? "Service" : "Treatment"} Description
         </label>
         <textarea
           name="description"
@@ -134,7 +154,7 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
         <div className='text-right text-gray-500'>{description.length}/{maxLimit}</div>
       </div>
       <div className="w-full flex justify-end">
-        <SaveButton text={"Add treatment"} />
+        <SaveButton text={`Add ${isService ? "service" : "treatment"}`} />
       </div>
     </form>
   );

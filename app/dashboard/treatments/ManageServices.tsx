@@ -37,7 +37,7 @@ async function fetchTreatments(dentistryId: string) {
     .from("dentistry_treatments")
     .select("treatment_id, rank, treatments(title, description)")
     .eq("dentistry_id", dentistryId)
-    .eq("treatments.isService", false)
+    .eq("treatments.isService", true)
     .order("rank", { nullsFirst: true });
 
     console.log(treatments);
@@ -136,7 +136,7 @@ const Treatment = ({
 };
 
 // Main Treatments Management Component with Popup Modal for Editing
-export default function ManageTreatments({
+export default function ManageServices({
   dentistryId,
 }: {
   dentistryId: string;
@@ -250,7 +250,7 @@ export default function ManageTreatments({
   return (
     <DndProvider backend={HTML5Backend}>
       {treatments.length > 0 && ( // Conditionally render the title only if treatments exist
-        <h2 className="text-lg font-semibold mb-3">Arrange Treatments</h2>
+        <h2 className="text-lg font-semibold mb-3">Arrange Services</h2>
       )}
       {isLoading ? (
         <div>
@@ -279,7 +279,7 @@ export default function ManageTreatments({
             className={`bg-[#5046db] hover:bg-[#302A83] transition-all text-white p-2 rounded-[26px] py-2 text-lg px-3 font-semibold flex items-center gap-2`}
             onClick={handleSaveOrder}
           >
-            Save treatment order
+            Save service order
           </button>
         )}
       </div>
@@ -288,13 +288,13 @@ export default function ManageTreatments({
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
           <form onSubmit={handleUpdateTreatment}>
-            <h2 className="text-lg font-semibold mb-3">Edit treatment</h2>
+            <h2 className="text-lg font-semibold mb-3">Edit service</h2>
             <div className="mb-3">
               <input
                 type="text"
                 value={newTreatmentTitle}
                 onChange={(e) => setNewTreatmentTitle(e.target.value)}
-                placeholder="Treatment Title"
+                placeholder="Service Title"
                 className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
               />
             </div>
@@ -302,12 +302,12 @@ export default function ManageTreatments({
               <textarea
                 value={newTreatmentDescription}
                 onChange={(e) => setNewTreatmentDescription(e.target.value)}
-                placeholder="Treatment Description"
+                placeholder="Service Description"
                 className="w-full p-2 focus:outline-none rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
               />
             </div>
             <div className="w-full flex justify-end">
-              <SaveButton text={"Update treatment"} />
+              <SaveButton text={"Update service"} />
             </div>
           </form>
         </Modal>

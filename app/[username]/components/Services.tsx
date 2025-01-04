@@ -4,7 +4,7 @@ import { Plus, Minus } from "phosphor-react"; // Import Phosphor Icons
 import { createClient } from "@/utils/supabase/client";
 import Collapse from "./Collapse";
 
-export default function Treatments({ dentistryId }: { dentistryId: string }) {
+export default function Services({ dentistryId }: { dentistryId: string }) {
   const [treatments, setTreatments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true); // Handle loading state
   const [openItem, setOpenItem] = useState<number | null>(null); // Track the accordion item
@@ -17,7 +17,7 @@ export default function Treatments({ dentistryId }: { dentistryId: string }) {
         .from("dentistry_treatments")
         .select("treatment_id, rank, treatments(title, description)")
         .eq("dentistry_id", dentistryId)
-        .eq("treatments.isService", false)
+        .eq("treatments.isService", true)
         .order("rank");
 
       if (error) {
@@ -61,7 +61,7 @@ export default function Treatments({ dentistryId }: { dentistryId: string }) {
   return (
     <section>
       <div className="text-center treatment-wrapper">
-        <h1 className="section-heading-treatment text-[23px] font-semibold">Treatments</h1>
+        <h1 className="section-heading-treatment text-[23px] font-semibold">Services</h1>
         <div
           className="accordion custom-accoradion-wrapper"
           id="accordionExample"

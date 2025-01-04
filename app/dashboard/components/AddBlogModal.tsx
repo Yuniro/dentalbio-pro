@@ -110,7 +110,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ isOpen, onClose, onSubmit }) => {
                   limit={5000}
                   required
                 /> */}
-                <ImageUploader onFileChange={handleFileChange} />
+                <ImageUploader onFileChange={handleFileChange} text="Add Image (optional)" />
                 <LabeledInput
                   label="Meta Title"
                   name="meta_title"

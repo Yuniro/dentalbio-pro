@@ -48,7 +48,6 @@ export default function ForgotPasswordForm({ defaultEmail }: ForgotPasswordFormP
         <input
           type="email"
           name="email"
-          defaultValue={defaultEmail}
           value={email}
           onChange={e => setEmail(e.target.value)}
           className="w-full p-2 rounded-[26px] py-2 mb-3 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"

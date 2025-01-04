@@ -7,15 +7,18 @@ import { DotsThreeCircle } from "phosphor-react";
 // import { DesktopModal, MobileModal } from "./Modals";
 import { createClient } from "@/utils/supabase/client";
 import ShareModal from "./ShareModal";
+import Link from "next/link";
 
 export default function Header({
   username,
   dentistry_id,
   contact_email,
+  isOtherPage,
 }: {
   username: string;
   dentistry_id: string;
   contact_email: string;
+  isOtherPage?: boolean;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
@@ -96,8 +99,16 @@ export default function Header({
             /> */}
           </div>
 
+
           {/* Dots icon for modal trigger */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            {isOtherPage &&
+                <Link
+                  href={`/${username}`}
+                  className="contact-me-btn whitespace-nowrap"
+                >
+                  <span>Back</span>
+                </Link>}
             <a href={`mailto:${contact_email}`} id="onscroll-hide-contact-btn">
               <button className="contact-me-btn whitespace-nowrap">
                 Contact me

@@ -176,7 +176,7 @@ export default function Sidebar() {
                   onClick={handleClose}
                 />
                 <SidebarItem
-                  label="Treatments"
+                  label="Treatments / Services"
                   link="/dashboard/treatments"
                   isActive={pathname === "/dashboard/treatments"}
                   Icon={Heart}
@@ -187,13 +187,6 @@ export default function Sidebar() {
                   link="/dashboard/links"
                   isActive={pathname === "/dashboard/links"}
                   Icon={LinkSimple}
-                  onClick={handleClose}
-                />
-                <SidebarItem
-                  label="Settings"
-                  link="/dashboard/settings"
-                  isActive={pathname === "/dashboard/settings"}
-                  Icon={Gear}
                   onClick={handleClose}
                 />
                 {userSubscriptionStatus === "pro" &&
@@ -213,6 +206,13 @@ export default function Sidebar() {
                     onClick={handleClose}
                   />
                   </>}
+                <SidebarItem
+                  label="Settings"
+                  link="/dashboard/settings"
+                  isActive={pathname === "/dashboard/settings"}
+                  Icon={Gear}
+                  onClick={handleClose}
+                />
               </div>
             </div>
           </div>
