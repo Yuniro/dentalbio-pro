@@ -20,6 +20,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
   const [geocoder, setGeocoder] = useState<google.maps.Geocoder | null>(null);
   const [city, setCity] = useState<string>("");
   const [isFocused, setIsFocused] = useState(false);
@@ -44,6 +45,13 @@ const MapComponent: React.FC<MapComponentProps> = ({
             zoom: 17,
           });
           setMap(newMap);
+
+          const newMarker = new google.maps.Marker({
+            position: { lat: latitude, lng: longitude },
+            map: newMap,
+            title: 'Marker', // Optional: title to display on hover
+          });
+          setMarker(newMarker);
         }
       } catch (error) {
         console.error('Error loading Google Maps script:', error);

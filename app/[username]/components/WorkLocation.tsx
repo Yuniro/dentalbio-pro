@@ -42,7 +42,7 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
 
   // If no location data is available, show a placeholder message
   if (!location) {
-    return <h2 className="section-heading-work"></h2>;
+    return <h2 className="section-heading-work p-0"></h2>;
   }
 
   return (

@@ -31,7 +31,7 @@ const SkeletonLoader = () => {
 };
 
 // Fetch treatments for the Dentistry
-async function fetchTreatments(dentistryId: string) {
+async function fetchServices(dentistryId: string) {
   const supabase = createClient();
   const { data: treatments, error } = await supabase
     .from("dentistry_treatments")
@@ -56,7 +56,7 @@ async function fetchTreatments(dentistryId: string) {
 }
 
 // Update treatment order in the database
-async function updateTreatmentOrder(dentistryId: string, treatments: any[]) {
+async function updateServiceOrder(dentistryId: string, treatments: any[]) {
   const supabase = createClient();
   for (let i = 0; i < treatments.length; i++) {
     await supabase
@@ -72,11 +72,11 @@ const areArraysEqual = (arr1: any[], arr2: any[]) =>
   JSON.stringify(arr1.map((t) => t.treatment_id)) ===
   JSON.stringify(arr2.map((t) => t.treatment_id));
 
-// Drag-and-Drop Treatment Component
-const Treatment = ({
+// Drag-and-Drop Service Component
+const Service = ({
   treatment,
   index,
-  moveTreatment,
+  moveService,
   onEdit,
   onDelete,
 }: any) => {
@@ -89,7 +89,7 @@ const Treatment = ({
     accept: ItemType.TREATMENT,
     hover: (draggedItem: any) => {
       if (draggedItem.index !== index) {
-        moveTreatment(draggedItem.index, index);
+        moveService(draggedItem.index, index);
         draggedItem.index = index;
       }
     },
@@ -101,7 +101,7 @@ const Treatment = ({
         if (node) ref(node);
         drop(node);
       }}
-      className="membar-cards"
+      className="membar-cards p-4"
     >
       <div className="d-flex align-items-center gap-3">
         <div className="flex flex-col gap-0 hover:bg-purple-100 hover:text-[#302a83] rounded-md cursor-pointer p-1">
@@ -109,7 +109,7 @@ const Treatment = ({
           <CaretDown className="-mt-0.5" weight="bold" />
         </div>
         <div className="w-100">
-          <div className="d-flex align-items-center justify-content-between gap-2 mb-3 member-cards-actions">
+          <div className="d-flex align-items-center justify-content-between gap-2 mb-1 member-cards-actions">
             <div>
               <button
                 onClick={() => onEdit(treatment)}
@@ -135,93 +135,93 @@ const Treatment = ({
   );
 };
 
-// Main Treatments Management Component with Popup Modal for Editing
+// Main Services Management Component with Popup Modal for Editing
 export default function ManageServices({
   dentistryId,
 }: {
   dentistryId: string;
 }) {
-  const [treatments, setTreatments] = useState<any[]>([]);
-  const [initialTreatments, setInitialTreatments] = useState<any[]>([]);
+  const [treatments, setServices] = useState<any[]>([]);
+  const [initialServices, setInitialServices] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [editingTreatment, setEditingTreatment] = useState<any>(null);
-  const [newTreatmentTitle, setNewTreatmentTitle] = useState("");
-  const [newTreatmentDescription, setNewTreatmentDescription] = useState("");
+  const [editingService, setEditingService] = useState<any>(null);
+  const [newServiceTitle, setNewServiceTitle] = useState("");
+  const [newServiceDescription, setNewServiceDescription] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasRearranged, setHasRearranged] = useState(false);
 
   // Fetch treatments on load
-  const loadTreatments = async () => {
+  const loadServices = async () => {
     setIsLoading(true);
-    const fetchedTreatments = await fetchTreatments(dentistryId);
-    setTreatments(fetchedTreatments);
-    setInitialTreatments(fetchedTreatments); // Store the initial order
+    const fetchedServices = await fetchServices(dentistryId);
+    setServices(fetchedServices);
+    setInitialServices(fetchedServices); // Store the initial order
     setIsLoading(false);
   };
 
   useEffect(() => {
-    loadTreatments();
+    loadServices();
   }, [dentistryId]);
 
   // Move treatment in the list
-  const moveTreatment = useCallback(
+  const moveService = useCallback(
     (fromIndex: number, toIndex: number) => {
-      const updatedTreatments = [...treatments];
-      const [movedTreatment] = updatedTreatments.splice(fromIndex, 1);
-      updatedTreatments.splice(toIndex, 0, movedTreatment);
-      setTreatments(updatedTreatments);
+      const updatedServices = [...treatments];
+      const [movedService] = updatedServices.splice(fromIndex, 1);
+      updatedServices.splice(toIndex, 0, movedService);
+      setServices(updatedServices);
 
       // Check if the new order is different from the initial order
-      if (!areArraysEqual(updatedTreatments, initialTreatments)) {
+      if (!areArraysEqual(updatedServices, initialServices)) {
         setHasRearranged(true);
       } else {
         setHasRearranged(false);
       }
     },
-    [treatments, initialTreatments]
+    [treatments, initialServices]
   );
 
   // Handle editing a treatment
-  const handleEditTreatment = (treatment: any) => {
-    setEditingTreatment(treatment);
-    setNewTreatmentTitle(treatment.title);
-    setNewTreatmentDescription(treatment.description);
+  const handleEditService = (treatment: any) => {
+    setEditingService(treatment);
+    setNewServiceTitle(treatment.title);
+    setNewServiceDescription(treatment.description);
     setIsModalOpen(true);
   };
 
-  const handleUpdateTreatment = async (e: React.FormEvent) => {
+  const handleUpdateService = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
     await supabase
       .from("treatments")
       .update({
-        title: newTreatmentTitle,
-        description: newTreatmentDescription,
+        title: newServiceTitle,
+        description: newServiceDescription,
       })
-      .eq("treatment_id", editingTreatment.treatment_id);
+      .eq("treatment_id", editingService.treatment_id);
 
-    const updatedTreatments = treatments.map((t) =>
-      t.treatment_id === editingTreatment.treatment_id
+    const updatedServices = treatments.map((t) =>
+      t.treatment_id === editingService.treatment_id
         ? {
             ...t,
-            title: newTreatmentTitle,
-            description: newTreatmentDescription,
+            title: newServiceTitle,
+            description: newServiceDescription,
           }
         : t
     );
 
-    setTreatments(updatedTreatments);
-    setEditingTreatment(null);
-    setNewTreatmentTitle("");
-    setNewTreatmentDescription("");
+    setServices(updatedServices);
+    setEditingService(null);
+    setNewServiceTitle("");
+    setNewServiceDescription("");
     setIsModalOpen(false);
 
     // Reload treatments after update
-    loadTreatments();
+    loadServices();
   };
 
   // Handle deleting a treatment
-  const handleDeleteTreatment = async (treatment: any) => {
+  const handleDeleteService = async (treatment: any) => {
     const supabase = createClient();
     await supabase
       .from("dentistry_treatments")
@@ -234,15 +234,15 @@ export default function ManageServices({
       .eq("treatment_id", treatment.treatment_id);
 
     // Reload treatments after delete
-    loadTreatments();
+    loadServices();
   };
 
   // Handle saving the new order of treatments
   const handleSaveOrder = async () => {
-    await updateTreatmentOrder(dentistryId, treatments);
+    await updateServiceOrder(dentistryId, treatments);
 
     // Reload treatments after saving the order
-    loadTreatments();
+    loadServices();
     setHasRearranged(false); // Reset the rearranged state
     window.location.reload(); // Hard reload to ensure everything is updated
   };
@@ -262,13 +262,13 @@ export default function ManageServices({
       ) : (
         <div>
           {treatments.map((treatment, index) => (
-            <Treatment
+            <Service
               key={treatment.treatment_id}
               index={index}
               treatment={treatment}
-              moveTreatment={moveTreatment}
-              onEdit={handleEditTreatment}
-              onDelete={handleDeleteTreatment}
+              moveService={moveService}
+              onEdit={handleEditService}
+              onDelete={handleDeleteService}
             />
           ))}
         </div>
@@ -284,24 +284,24 @@ export default function ManageServices({
         )}
       </div>
 
-      {/* Modal Popup for Editing Treatment */}
+      {/* Modal Popup for Editing Service */}
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <form onSubmit={handleUpdateTreatment}>
+          <form onSubmit={handleUpdateService}>
             <h2 className="text-lg font-semibold mb-3">Edit service</h2>
             <div className="mb-3">
               <input
                 type="text"
-                value={newTreatmentTitle}
-                onChange={(e) => setNewTreatmentTitle(e.target.value)}
+                value={newServiceTitle}
+                onChange={(e) => setNewServiceTitle(e.target.value)}
                 placeholder="Service Title"
                 className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
               />
             </div>
             <div className="mb-3">
               <textarea
-                value={newTreatmentDescription}
-                onChange={(e) => setNewTreatmentDescription(e.target.value)}
+                value={newServiceDescription}
+                onChange={(e) => setNewServiceDescription(e.target.value)}
                 placeholder="Service Description"
                 className="w-full p-2 focus:outline-none rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
               />

@@ -54,7 +54,7 @@ export default function Services({ dentistryId }: { dentistryId: string }) {
 
   // If no treatments are available, show a placeholder message
   if (treatments.length === 0) {
-    return <h2 className="section-heading-treatment"></h2>;
+    return <h2 className="section-heading-treatment p-0"></h2>;
   }
 
   // Render treatments

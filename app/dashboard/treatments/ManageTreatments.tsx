@@ -101,7 +101,7 @@ const Treatment = ({
         if (node) ref(node);
         drop(node);
       }}
-      className="membar-cards"
+      className="membar-cards p-4"
     >
       <div className="d-flex align-items-center gap-3">
         <div className="flex flex-col gap-0 hover:bg-purple-100 hover:text-[#302a83] rounded-md cursor-pointer p-1">
@@ -109,7 +109,7 @@ const Treatment = ({
           <CaretDown className="-mt-0.5" weight="bold" />
         </div>
         <div className="w-100">
-          <div className="d-flex align-items-center justify-content-between gap-2 mb-3 member-cards-actions">
+          <div className="d-flex align-items-center justify-content-between gap-2 mb-1 member-cards-actions">
             <div>
               <button
                 onClick={() => onEdit(treatment)}

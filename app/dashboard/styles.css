@@ -1287,7 +1287,6 @@ input:focus {
     background-color: var(--white-color);
     border-radius: 32px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    padding: 20px 31px 36px 16px;
     margin-bottom: 23px;
     overflow: hidden;
 }

@@ -27,6 +27,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
   const [geocoder, setGeocoder] = useState<google.maps.Geocoder | null>(null);
   const [inputAddress, setInputAddress] = useState(defaultAddress); // Track input changes
   const [country, setCountry] = useState<string>("");
@@ -57,6 +58,13 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
             zoom: 8,
           });
           setMap(newMap);
+
+          const newMarker = new google.maps.Marker({
+            position: { lat: 51.51, lng: -0.14 },
+            map: newMap,
+            title: 'Marker', // Optional: title to display on hover
+          });
+          setMarker(newMarker);
         }
 
         // Initialize Autocomplete
@@ -70,6 +78,9 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
               if (map) {
                 map.setCenter(location);
                 map.setZoom(18);
+
+                if (marker)
+                  marker.setPosition({ lat: location.lat(), lng: location.lng() });
               }
             }
           });
@@ -108,13 +119,16 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
           setLongitude(location.lng());
 
           const { city_name, country_name, area_name } = extractLocationDetails(results[0]);
-          
+
           setCity(city_name || "");
           setCountry(country_name || "");
           setArea(area_name || "");
 
           map.setCenter(location);
           map.setZoom(19);
+
+          if (marker)
+            marker.setPosition({ lat: location.lat(), lng: location.lng() });
         } else {
           console.error('Geocode was not successful for the following reason:', status);
         }
@@ -151,6 +165,8 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
           city_name = component.long_name; // City name
         } else if (component.types.includes('postal_town')) {
           city_name = city_name || component.long_name; // Fallback for city name
+        } else if (component.types.includes('administrative_area_level_1')) {
+          city_name = city_name || component.long_name; // Fallback for city name (state/province-level)
         } else if (component.types.includes('administrative_area_level_2')) {
           area_name = component.long_name; // Area (e.g., county or district)
         } else if (component.types.includes('country')) {
