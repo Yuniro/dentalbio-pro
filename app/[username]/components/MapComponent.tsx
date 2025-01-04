@@ -1,6 +1,6 @@
 'use client';
 import { loadGoogleMapsScript } from '@/utils/loadScript';
-import { Check, MapPin, Spinner } from '@phosphor-icons/react/dist/ssr';
+import { waitForGoogleAPI } from '@/utils/waitForGoogleAPI';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 
@@ -28,12 +28,10 @@ const MapComponent: React.FC<MapComponentProps> = ({
   const status = useFormStatus();
   const hasStartedPending = useRef(false);
 
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
 
   useEffect(() => {
     const initialize = async () => {
       try {
-        await loadGoogleMapsScript(apiKey);
         // Initialize Geocoder
         const geocoderInstance = new google.maps.Geocoder();
         setGeocoder(geocoderInstance);
@@ -52,8 +50,15 @@ const MapComponent: React.FC<MapComponentProps> = ({
       }
     };
 
-    // console.log(typeof google);
-    initialize();
+    loadGoogleMapsScript(apiKey);
+    
+    waitForGoogleAPI()
+    .then(() => {
+      initialize();
+    })
+    .catch((error) => {
+      console.error(error);
+    })
 
     return () => {
       // Cleanup event listeners when the component unmounts

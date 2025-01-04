@@ -1,4 +1,6 @@
 'use client';
+import { loadGoogleMapsScript } from '@/utils/loadScript';
+import { waitForGoogleAPI } from '@/utils/waitForGoogleAPI';
 import { Check, MapPin, Spinner } from '@phosphor-icons/react/dist/ssr';
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
@@ -16,24 +18,7 @@ type LocationDetails = {
 
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
 
-function waitForGoogleAPI(timeout = 5000) {
-  return new Promise((resolve, reject) => {
-    const interval = 100; // Check every 100ms
-    const maxAttempts = timeout / interval;
-    let attempts = 0;
-
-    const checkGoogleAPI = setInterval(() => {
-      if (typeof google !== 'undefined') {
-        clearInterval(checkGoogleAPI);
-        resolve('Google API is ready');
-      } else if (attempts >= maxAttempts) {
-        clearInterval(checkGoogleAPI);
-        reject('Google API script did not load in time');
-      }
-      attempts++;
-    }, interval);
-  });
-}
+loadGoogleMapsScript(apiKey);
 
 const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   id,

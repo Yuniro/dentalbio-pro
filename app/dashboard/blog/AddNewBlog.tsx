@@ -61,7 +61,7 @@ const AddNewBlog: React.FC<AddNewBlogProps> = ({
 
   return (
     <>
-      <FullRoundedButton onClick={openModal}>Add Blog</FullRoundedButton>
+      <FullRoundedButton onClick={openModal} className="mb-4">Add Blog</FullRoundedButton>
 
       <AddBlogModal
         isOpen={isModalOpen}
