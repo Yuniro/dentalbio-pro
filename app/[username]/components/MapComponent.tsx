@@ -17,18 +17,10 @@ const MapComponent: React.FC<MapComponentProps> = ({
   latitude,
   longitude,
 }: MapComponentProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [marker, setMarker] = useState<google.maps.Marker | null>(null);
   const [geocoder, setGeocoder] = useState<google.maps.Geocoder | null>(null);
-  const [city, setCity] = useState<string>("");
-  const [isFocused, setIsFocused] = useState(false);
-  const [showMap, toggleShowMap] = useReducer((oriValue) => !oriValue, false);
-
-  const status = useFormStatus();
-  const hasStartedPending = useRef(false);
-
 
   useEffect(() => {
     const initialize = async () => {

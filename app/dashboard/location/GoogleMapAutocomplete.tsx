@@ -36,7 +36,6 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [showMap, toggleShowMap] = useReducer((oriValue) => !oriValue, false);
 
   const status = useFormStatus();
   const hasStartedPending = useRef(false);
@@ -120,6 +119,8 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
 
           const { city_name, country_name, area_name } = extractLocationDetails(results[0]);
 
+          console.log(city_name);
+
           setCity(city_name || "");
           setCountry(country_name || "");
           setArea(area_name || "");
@@ -158,6 +159,8 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
     let city_name: string | null = null;
     let country_name: string | null = null;
     let area_name: string | null = null;
+    
+    console.log(addressComponents);
 
     if (addressComponents) {
       for (const component of addressComponents) {
