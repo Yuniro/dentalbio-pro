@@ -104,9 +104,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ username, isOpen, onClose, onSubmi
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     setIsUploading(true);
     onSubmit(formData);
   };
@@ -131,7 +129,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ username, isOpen, onClose, onSubmi
             onClick={(e) => e.stopPropagation()}
           >
             <h4 className="mb-4">Add New Blog</h4>
-            <form onSubmit={handleSubmit}>
+            <form action={handleSubmit}>
               <div className="max-h-[80vh] overflow-y-auto">
                 <LabeledInput
                   label="Title"

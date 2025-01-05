@@ -9,6 +9,7 @@ interface HomePageData {
 }
 
 type LocationType = {
+  location_id: string;
   full_address: string;
   country: string;
   city: string;

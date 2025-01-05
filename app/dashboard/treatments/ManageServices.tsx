@@ -235,6 +235,8 @@ export default function ManageServices({
 
     // Reload treatments after delete
     loadServices();
+    const event = new Event("iframeRefresh");
+    window.dispatchEvent(event);
   };
 
   // Handle saving the new order of treatments

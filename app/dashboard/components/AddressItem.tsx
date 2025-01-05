@@ -43,7 +43,7 @@ const AddressItem: React.FC<LocationProps> = ({
       longitude: parseFloat(formData.get("longitude") as string),
     };
 
-    onAddressChange(newLocation, location_id!);
+    // onAddressChange(newLocation, location_id!);
 
     setAddress(formData.get("full_address") as string);
     setCityname(formData.get("city") as string);
@@ -73,9 +73,6 @@ const AddressItem: React.FC<LocationProps> = ({
       >
         <form action={onSaveAction}>
           <GoogleMapAutocomplete id={location_id!} defaultAddress={address!} />
-          {/* <div className="flex justify-end">
-            <SaveButton />
-          </div> */}
         </form>
       </div>
 

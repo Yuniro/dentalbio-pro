@@ -12,6 +12,7 @@ import LabeledInput from '../components/LabeledInput';
 import FullRoundedButton from '@/app/components/Button/FullRoundedButton';
 import { useFormStatus } from 'react-dom';
 import SaveButton from '../components/SaveButton';
+import { usePreview } from '@/app/components/PreviewContext';
 
 const ItemType = {
   BLOG: "BLOG"
@@ -88,6 +89,8 @@ const ManageBlogs = ({ username }: { username: string; }) => {
     slug: "",
   });
 
+  const { triggerReload } = usePreview();
+
   const status = useFormStatus();
 
   useEffect(() => {
@@ -121,6 +124,8 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       if (!prevBlogs) return [blog];
       return [...prevBlogs, blog];
     })
+
+    triggerReload();
   }
 
   const handleEdit = async (blog: BlogType, image: File | null) => {
@@ -146,6 +151,7 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       })
     }
     setIsEditingOpen(false);
+    triggerReload();
   }
 
   const handleDelete = async (id: string) => {
@@ -163,6 +169,8 @@ const ManageBlogs = ({ username }: { username: string; }) => {
     if (data.error) {
       console.log("Failed to delete", data.error);
     }
+
+    triggerReload();
   }
 
   const handleEditItem = async (id: string) => {
@@ -205,6 +213,8 @@ const ManageBlogs = ({ username }: { username: string; }) => {
     } else {
       console.log(`Error: ${result.error}`);
     }
+    
+    triggerReload();
   }
 
   const updateOrder = async (updatedBlogs: any[]) => {
@@ -224,6 +234,7 @@ const ManageBlogs = ({ username }: { username: string; }) => {
 
     if (response.ok) {
       console.log('update orders');
+      triggerReload();
     } else {
       console.log(`Error: ${result.error}`)
     }

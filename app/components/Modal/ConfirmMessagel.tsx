@@ -29,7 +29,7 @@ const ConfirmMessage: React.FC<ModalProps> = ({
           <div className="bg-white p-4 rounded-[26px]">
             <div className="pb-4 text-lg">{description}</div>
             <div className="flex justify-end gap-2">
-              <FullRoundedButton buttonType="danger" onClick={onOk}>{okText ? okText : "Yes"}</FullRoundedButton>
+              <FullRoundedButton buttonType="danger" type="submit" onClick={onOk}>{okText ? okText : "Yes"}</FullRoundedButton>
               <FullRoundedButton buttonType="ghost" onClick={onClose}>{cancelText ? cancelText : "Close"}</FullRoundedButton>
             </div>
           </div>

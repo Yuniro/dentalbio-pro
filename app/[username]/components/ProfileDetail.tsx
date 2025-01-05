@@ -162,7 +162,7 @@ export default function ProfileDetail({
       )}
 
       {/* Description */}
-      <div className="profile-contents text-center">
+      <div className="profile-contents text-center p-0">
         <h5>{description}</h5>
         <div className="profile-address">
           {position !== "Other" && <div>{position}</div>}

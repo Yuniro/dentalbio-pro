@@ -119,8 +119,6 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
 
           const { city_name, country_name, area_name } = extractLocationDetails(results[0]);
 
-          console.log(city_name);
-
           setCity(city_name || "");
           setCountry(country_name || "");
           setArea(area_name || "");
@@ -145,6 +143,8 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
     if (!status.pending && hasStartedPending.current) {
       hasStartedPending.current = false;
 
+      setInputAddress("");
+
       // Dispatch the custom event to trigger iframe refresh
       const event = new Event("iframeRefresh");
       window.dispatchEvent(event); // Fire the event to refresh the iframe
@@ -159,8 +159,6 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
     let city_name: string | null = null;
     let country_name: string | null = null;
     let area_name: string | null = null;
-    
-    console.log(addressComponents);
 
     if (addressComponents) {
       for (const component of addressComponents) {

@@ -40,7 +40,7 @@ async function fetchTreatments(dentistryId: string) {
     .eq("treatments.isService", false)
     .order("rank", { nullsFirst: true });
 
-    console.log(treatments);
+  console.log(treatments);
 
   if (error) {
     console.error(error);
@@ -203,10 +203,10 @@ export default function ManageTreatments({
     const updatedTreatments = treatments.map((t) =>
       t.treatment_id === editingTreatment.treatment_id
         ? {
-            ...t,
-            title: newTreatmentTitle,
-            description: newTreatmentDescription,
-          }
+          ...t,
+          title: newTreatmentTitle,
+          description: newTreatmentDescription,
+        }
         : t
     );
 
@@ -235,6 +235,8 @@ export default function ManageTreatments({
 
     // Reload treatments after delete
     loadTreatments();
+    const event = new Event("iframeRefresh");
+    window.dispatchEvent(event);
   };
 
   // Handle saving the new order of treatments

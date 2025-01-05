@@ -44,8 +44,6 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
     event.preventDefault();
     const supabase = createClient();
 
-    console.log("Here");
-
     // Insert new treatment
     const { data: treatmentData, error: treatmentError } = await supabase
       .from("treatments")

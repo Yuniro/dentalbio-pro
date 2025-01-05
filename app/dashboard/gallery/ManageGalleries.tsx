@@ -7,6 +7,7 @@ import SkeletonLoader from '@/app/components/Loader/Loader';
 import { arraysAreEqual } from '@/utils/function_utils';
 import GalleryCard from './components/GalleryCard';
 import EditGalleryModal from './components/EditGalleryModal';
+import { usePreview } from '@/app/components/PreviewContext';
 
 const ItemType = {
   BLOG: "BLOG"
@@ -74,6 +75,8 @@ const ManageGalleries = () => {
     created_at: "",
   });
 
+  const { triggerReload } = usePreview();
+
   useEffect(() => {
     const fetchGalleries = async () => {
       const response = await fetch('/api/galleries', {
@@ -92,6 +95,8 @@ const ManageGalleries = () => {
       if (!prevGalleries) return [gallery];
       return [...prevGalleries, gallery];
     })
+
+    triggerReload();
   }
 
   const handleEdit = async (gallery: GalleryType, before_image_file: File | null, after_image_file: File | null) => {
@@ -119,6 +124,8 @@ const ManageGalleries = () => {
       })
 
       setIsEditingOpen(false);
+
+      triggerReload();
     }
   }
 
@@ -137,6 +144,8 @@ const ManageGalleries = () => {
     if (data.error) {
       console.log("Failed to delete", data.error);
     }
+
+    triggerReload();
   }
 
   const handleEditItem = async (id: string) => {
@@ -181,6 +190,8 @@ const ManageGalleries = () => {
 
     if (response.ok) {
       console.log('update orders');
+
+      triggerReload();
     } else {
       console.log(`Error: ${result.error}`)
     }
