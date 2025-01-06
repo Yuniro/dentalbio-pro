@@ -228,7 +228,7 @@
 
     .navbar-nav.custom-navbar-links {
         gap: 15px;
-        padding: 15px 21px;
+        padding: 15px 8px;
     }
     .navbar-nav.custom-navbar-links .nav-link {
         font-size: 14px;

@@ -1,11 +1,12 @@
 import { Inter } from "next/font/google";
+import RightPanel from "./components/RightPanel";
+import Sidebar from "./components/Sidebar";
+
 import "./styles.css";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import RightPanel from "./components/RightPanel";
-
-import Sidebar from "./components/Sidebar";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const metadata = {
   title: "Dashboard | Dentalbio",

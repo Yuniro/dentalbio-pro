@@ -28,7 +28,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   useEffect(() => {
     if (image_url) {
       setImagePreview(image_url!);
-      setValid(true);
     } else
       setValid(false);
   }, [image_url])

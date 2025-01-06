@@ -5,33 +5,43 @@
 .blured-bg {
   background-image: linear-gradient(225deg, #7878ec, #9a59f5 51%, #ef753a 64%);
   opacity: 0.8;
-  -webkit-filter: blur(120px); /* Safari specific */
+  -webkit-filter: blur(120px);
+  /* Safari specific */
   filter: blur(120px);
   border-radius: 400px;
   width: 700px;
   z-index: 342;
   height: 700px;
   position: absolute;
-  pointer-events: none; /* Prevents interaction */
-  backface-visibility: hidden; /* Improve rendering on Safari */
-  -webkit-backface-visibility: hidden; /* For Safari */
-  will-change: transform, filter; /* Performance optimization */
+  pointer-events: none;
+  /* Prevents interaction */
+  backface-visibility: hidden;
+  /* Improve rendering on Safari */
+  -webkit-backface-visibility: hidden;
+  /* For Safari */
+  will-change: transform, filter;
+  /* Performance optimization */
 }
 
 .blured-bg-cta {
   background-image: linear-gradient(225deg, #7878ec, #9a59f5 51%, #ef753a 64%);
   opacity: 0.6;
-  -webkit-filter: blur(120px); /* Safari specific */
+  -webkit-filter: blur(120px);
+  /* Safari specific */
   filter: blur(120px);
   border-radius: 400px;
   width: 700px;
   z-index: 324;
   height: 700px;
   position: absolute;
-  pointer-events: none; /* Prevents interaction */
-  backface-visibility: hidden; /* Improve rendering on Safari */
-  -webkit-backface-visibility: hidden; /* For Safari */
-  will-change: transform, filter; /* Performance optimization */
+  pointer-events: none;
+  /* Prevents interaction */
+  backface-visibility: hidden;
+  /* Improve rendering on Safari */
+  -webkit-backface-visibility: hidden;
+  /* For Safari */
+  will-change: transform, filter;
+  /* Performance optimization */
 }
 
 html {
@@ -41,7 +51,8 @@ html {
 .blured-bg-1 {
   background-image: linear-gradient(225deg, #7878ec, #9a59f5 51%, #ef753a 64%);
   opacity: 0.9;
-  -webkit-filter: blur(120px); /* Safari specific */
+  -webkit-filter: blur(120px);
+  /* Safari specific */
   filter: blur(120px);
   border-radius: 400px;
   width: 1284px;
@@ -51,10 +62,14 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 532;
-  pointer-events: none; /* Prevents interaction */
-  backface-visibility: hidden; /* Improve rendering on Safari */
-  -webkit-backface-visibility: hidden; /* For Safari */
-  will-change: transform, filter; /* Performance optimization */
+  pointer-events: none;
+  /* Prevents interaction */
+  backface-visibility: hidden;
+  /* Improve rendering on Safari */
+  -webkit-backface-visibility: hidden;
+  /* For Safari */
+  will-change: transform, filter;
+  /* Performance optimization */
 }
 
 /* Below tablet size (768px and below) */
@@ -64,7 +79,8 @@ html {
     width: 100%;
     height: 700px;
     bottom: 0;
-    -webkit-filter: blur(80px); /* Reduced blur for smaller screens */
+    -webkit-filter: blur(80px);
+    /* Reduced blur for smaller screens */
     filter: blur(80px);
   }
 }
@@ -72,8 +88,10 @@ html {
 
 /* Loader animation */
 .loader {
-  border: 8px solid rgba(0, 0, 0, 0.1); /* Light grey */
-  border-top: 8px solid var(--primary-2); /* Primary-2 color */
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  /* Light grey */
+  border-top: 8px solid var(--primary-2);
+  /* Primary-2 color */
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -95,12 +113,34 @@ html {
   left: inherit !important;
 }
 
+.react-datepicker-popper .react-datepicker {
+  border: none;
+  border-radius: 26px;
+  padding-top: 4px;
+}
+
+.react-datepicker-popper .react-datepicker .react-datepicker__navigation--previous,
+.react-datepicker-popper .react-datepicker .react-datepicker__navigation--next {
+  top: 6px;
+}
+
+.react-datepicker-popper .react-datepicker .react-datepicker__header {
+  background-color: white;
+  border-top-left-radius: 26px;
+  border-top-right-radius: 26px;
+}
+
+.react-datepicker__tab-loop .react-datepicker-popper .react-datepicker__triangle {
+  fill: white !important;
+  color: white !important;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
-

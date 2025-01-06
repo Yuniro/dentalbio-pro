@@ -46,14 +46,14 @@ type GalleryType = {
 }
 
 type ReviewType = {
-  id: string;
+  id?: string;
   user_id?: string;
-  writer_name?: string;
-  description?: string;
-  star?: number;
+  reviewer_name?: string;
+  content?: string;
+  stars?: number;
   image_url?: string;
-  source_name?: string;
-  review_link?: string;
+  platform?: string;
   rank?: number;
+  enabled?: boolean;
   created_at?: datetime;
 }

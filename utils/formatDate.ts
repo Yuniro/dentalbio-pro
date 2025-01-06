@@ -23,3 +23,18 @@ function getDaySuffix(day: number): string {
     default: return 'th';
   }
 }
+
+export function formatDateAsMonth(input: string): string {
+  const date = new Date(input);
+
+  // Format the day with suffix (1st, 2nd, 3rd, etc.)
+  const day = date.getDate();
+  const dayWithSuffix = `${day}${getDaySuffix(day)}`;
+
+  // Use Intl.DateTimeFormat without the comma by avoiding using a weekday with a comma
+  const options: Intl.DateTimeFormatOptions = { month: 'long', year: 'numeric' };
+  const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(date);
+
+  // Replace the day with the suffixed day
+  return formattedDate;
+}

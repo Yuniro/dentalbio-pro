@@ -1,6 +1,6 @@
 const SkeletonLoader = () => {
   return (
-    <div className="membar-cards animate-pulse">
+    <div className="membar-cards animate-pulse p-4">
       <div className="d-flex align-items-center gap-3">
         <div className="flex flex-col gap-0 bg-neutral-100 rounded-md w-10 h-16"></div>
         <div className="w-100">

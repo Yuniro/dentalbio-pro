@@ -17,6 +17,7 @@ import { unstable_noStore } from "next/cache"; // Import noStore to prevent cach
 import BlogList from "./components/BlogList";
 import Gallery from "./components/Gallery";
 import Services from "./components/Services";
+import Reviews from "./components/Reviews";
 
 type PageProps = {
   params: { username: string };
@@ -146,6 +147,9 @@ export default async function HomePage({ params }: PageProps) {
             userTitle={user.title}
           />
           <Gallery
+            userId={user.id}
+          />
+          <Reviews
             userId={user.id}
           />
           <WorkLocation dentistry={dentistry} />

@@ -21,11 +21,6 @@ export default function Navbar() {
       <nav className="navbar navbar-expand justify-content-center p-0">
         <div className="navbar-wrapper">
           <ul className="navbar-nav custom-navbar-links">
-            {/* <li className="nav-item">
-              <a className="nav-link" href="#treatments" onClick={e => handleScroll(e, "#treatments")}>
-                Treatments
-              </a>
-            </li> */}
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#links" onClick={e => handleScroll(e, "#links")}>
                 Links
@@ -39,6 +34,11 @@ export default function Navbar() {
             <li className="nav-item">
               <a className="nav-link" href="#gallery" onClick={e => handleScroll(e, "#gallery")}>
                 Gallery
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#review" onClick={e => handleScroll(e, "#review")}>
+                Review
               </a>
             </li>
             <li className="nav-item">
