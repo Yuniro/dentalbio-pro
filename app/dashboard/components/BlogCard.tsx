@@ -45,7 +45,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
 
   return (
     <>
-      <div className="w-full p-6 shadow rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
+      <div className="w-full px-6 py-3 shadow rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
         {/* Caret Buttons */}
         <div className="cursor-pointer">
           <div><CaretUp /></div>

@@ -4,11 +4,13 @@ import React, { useReducer, useState } from "react"
 import AddBlogModal from "../components/AddBlogModal";
 
 type AddNewBlogProps = {
+  group_id: string;
   onAdd: (blog: any) => void;
   username: string;
 }
 
 const AddNewBlog: React.FC<AddNewBlogProps> = ({
+  group_id,
   onAdd,
   username,
 }: AddNewBlogProps) => {
@@ -67,6 +69,7 @@ const AddNewBlog: React.FC<AddNewBlogProps> = ({
 
       <AddBlogModal
         username={username}
+        group_id={group_id}
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={handleSubmit}

@@ -18,8 +18,8 @@ const Blog = async () => {
     return redirect("/dashboard");
 
   return (
-    <div className='px-10 pt-10'>
-      <ManageBlogGroups />
+    <div className='px-10'>
+      <ManageBlogGroups username={userData.username} />
     </div>
   )
 }

@@ -20,7 +20,7 @@ type LocationType = {
 
 type BlogType = {
   id: string;
-  writer_id?: string;
+  group_id?: string;
   title?: string;
   content?: string;
   meta_title?: string;
@@ -30,6 +30,15 @@ type BlogType = {
   rank?: number;
   enabled?: boolean;
   slug?: string;
+}
+
+type BlogGroupType = {
+  id: string;
+  user_id?: string;
+  name?: string;
+  rank?: number;
+  enabled?: boolean;
+  blogs?: BlogType[];
 }
 
 type GalleryType = {

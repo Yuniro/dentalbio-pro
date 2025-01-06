@@ -13,6 +13,7 @@ import { convertToSlug } from "@/utils/convertToSlug";
 const RichTextEditor = dynamic(() => import('@/app/components/TextEditor/RichTextEditor'), { ssr: false });
 
 interface ModalProps {
+  group_id: string;
   username: string;
   isOpen: boolean;
   onClose: () => void;
@@ -26,9 +27,10 @@ type formDataProps = {
   meta_description: string;
   slug: string;
   image: File | null;
+  group_id: string;
 }
 
-const AddBlogModal: React.FC<ModalProps> = ({ username, isOpen, onClose, onSubmit }) => {
+const AddBlogModal: React.FC<ModalProps> = ({ group_id, username, isOpen, onClose, onSubmit }) => {
   const [prefix, setPrefix] = useState<string>(`https://dental.bio/${username}/blog/`);
   const [formData, setFormData] = useState<formDataProps>({
     title: "",
@@ -37,6 +39,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ username, isOpen, onClose, onSubmi
     meta_description: "",
     slug: "",
     image: null,
+    group_id: group_id
   });
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -48,7 +51,8 @@ const AddBlogModal: React.FC<ModalProps> = ({ username, isOpen, onClose, onSubmi
       meta_title: "",
       meta_description: "",
       slug: prefix,
-      image: null
+      image: null,
+      group_id
     });
     setSelectedImage(null);
     setIsUploading(false);

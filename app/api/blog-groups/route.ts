@@ -22,9 +22,10 @@ export async function GET(request: Request) {
 
     const { data, error } = await supabase
       .from('blog_groups')
-      .select('*')
-      .eq('writer_id', userId)
+      .select('*, blogs(*)')
+      .eq('user_id', userId)
       .in('enabled', enabledField)
+      .in('blogs.enabled', enabledField)
       .order('rank', { ascending: true });
 
     if (error) {
@@ -53,8 +54,8 @@ export async function POST(request: Request) {
     const { data, error } = await supabase
       .from('blog_groups')
       .insert([{ name, user_id: userData.id, rank: maxRank, enabled: true }])
-      .select("*")
-      .single();;
+      .select('*, blogs(*)')
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
@@ -76,7 +77,7 @@ export async function PUT(request: Request) {
       .from('blog_groups')
       .update(updated_data)
       .eq('id', updated_data.id)
-      .select('*')
+      .select('*, blogs(*)')
       .single();
 
     if (error) {

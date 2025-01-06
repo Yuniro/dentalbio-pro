@@ -5,42 +5,8 @@ import { getUserInfo } from '@/utils/userInfo';
 import { deleteFileFromSupabase } from '@/utils/removeFromBucket';
 import { getMaxRank } from '@/utils/getMaxOrder';
 
-export async function GET(request: Request) {
-  try {
-    const supabase = createClient();
-
-    // Parse query parameters
-    const { searchParams } = new URL(request.url);
-    const providedUserId = searchParams.get('userId');
-
-    // Get the logged-in user's data if no user ID is provided
-    const userData = providedUserId ? null : await getUserInfo({ supabase });
-    const userId = providedUserId || userData?.id;
-    const enabledField = providedUserId ? [true] : [true, false];
-
-    if (!userId) {
-      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
-    }
-
-    const { data, error } = await supabase
-      .from('blogs')
-      .select('*')
-      .eq('writer_id', userId)
-      .in('enabled', enabledField)
-      .order('rank', { ascending: true });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-
-    return NextResponse.json({ data });
-  } catch (error) {
-    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
-  }
-}
-
 export async function POST(request: Request) {
-  const { title, content, meta_title, meta_description, image_url, slug } = await request.json();
+  const { title, content, meta_title, meta_description, image_url, slug, group_id } = await request.json();
 
   try {
     const supabase = createClient();
@@ -48,15 +14,15 @@ export async function POST(request: Request) {
     const uniqueSlug = await generateUniqueSlug(supabase, slug);
 
     const userData = await getUserInfo({ supabase });
-
+    
     if (!(userData.subscription_status === "pro"))
       return NextResponse.json({ error: "Please upgrade membership!" });
 
-    const maxRank = await getMaxRank({ supabase, table: "blogs", field: "writer_id", value: userData.id }) + 1;
+    const maxRank = await getMaxRank({ supabase, table: "blogs", field: "group_id", value: group_id }) + 1;
 
     const { data, error } = await supabase
       .from('blogs')
-      .insert([{ title, content, meta_title, meta_description, image_url, writer_id: userData.id, rank: maxRank, slug: uniqueSlug }])
+      .insert([{ title, content, meta_title, meta_description, image_url, group_id, rank: maxRank, slug: uniqueSlug }])
       .select("*")
       .single();;
 

@@ -3,39 +3,23 @@ import LinkTitle from "@/app/components/Link/LinkTitle";
 import React, { useEffect, useState } from "react";
 
 type BlogListProps = {
-  userId: string;
   username: string;
-  userFirstName: string;
-  userTitle: string;
+  groupname: string;
+  fetchedBlogs: BlogType[];
 }
 
 const BlogList: React.FC<BlogListProps> = ({
-  userId,
+  groupname,
+  fetchedBlogs,
   username,
-  userFirstName,
-  userTitle
 }: BlogListProps) => {
-  const [blogs, setBlogs] = useState<any[]>([]);
-  const [blogTitle, setBlogTitle] = useState<string | null>(`${username}'s Blogs`);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      const query = userId ? `?userId=${userId}` : '';
-      const response = await fetch(`/api/blogs${query}`, {
-        method: 'GET'
-      });
-      const data = await response.json();
-      setBlogs(data.data);
-    };
-
-    fetchBlogs();
-  }, []);
+  const [blogs, setBlogs] = useState<any[]>(fetchedBlogs);
 
   return (
-    <div className="text-center mb-4" id="blog">
+    <div className="text-center mb-4">
       {(blogs.length > 0) &&
         <>
-          <h1 className="section-heading-treatment text-[23px] font-semibold">{blogTitle}</h1>
+          <h1 className="section-heading-treatment text-[23px] font-semibold">{groupname}</h1>
           {blogs.map((blog, index) => (
             <LinkTitle
               key={index}

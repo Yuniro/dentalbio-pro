@@ -1,7 +1,6 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react';
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDrag, useDrop } from "react-dnd";
 import BlogCard from '../components/BlogCard';
 import AddNewBlog from './AddNewBlog';
 import EditBlogModal from '../components/EditBlogModal';
@@ -9,13 +8,10 @@ import SkeletonLoader from '@/app/components/Loader/Loader';
 import { arraysAreEqual } from '@/utils/function_utils';
 import { usePreview } from '@/app/components/PreviewContext';
 
-const ItemType = {
-  BLOG: "BLOG"
-}
-
 function DraggableBlogCard({
   username,
   blog,
+  itemType,
   index,
   onUpdate,
   onDelete,
@@ -24,6 +20,7 @@ function DraggableBlogCard({
 }: {
   username: string;
   blog: BlogType,
+  itemType: number;
   index: number;
   onUpdate: any;
   onDelete: any;
@@ -31,12 +28,12 @@ function DraggableBlogCard({
   moveBlog: any;
 }) {
   const [, ref] = useDrag({
-    type: ItemType.BLOG,
+    type: "ItemType.BLOG" + itemType,
     item: { index },
   });
 
   const [, drop] = useDrop({
-    accept: ItemType.BLOG,
+    accept: "ItemType.BLOG" + itemType,
     hover: (draggedItem: any) => {
       if (draggedItem.index !== index) {
         moveBlog(draggedItem.index, index);
@@ -64,15 +61,23 @@ function DraggableBlogCard({
 }
 
 
-const ManageBlogs = ({ username }: { username: string; }) => {
+const ManageBlogs = ({
+  itemType,
+  group_id,
+  username,
+  fetchedBlogs
+}: {
+  itemType: number;
+  group_id: string;
+  username: string;
+  fetchedBlogs: BlogType[]
+}) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
-  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
-  const [blogTitle, setBlogTitle] = useState<string | null>(null);
   const [blogs, setBlogs] = useState<any[] | null>(null);
   const [initialBlogs, setInitialBlogs] = useState<any[] | null>(null);
   const [editingBlog, setEditingBlog] = useState<BlogType>({
     id: "",
-    writer_id: "",
+    group_id,
     title: "",
     content: "",
     image_url: "",
@@ -87,17 +92,10 @@ const ManageBlogs = ({ username }: { username: string; }) => {
   const { triggerReload } = usePreview();
 
   useEffect(() => {
-    const fetchBlogs = async () => {
-      const response = await fetch('/api/blogs', {
-        method: 'GET'
-      });
-      const data = await response.json();
-      setBlogs(data.data);
-      setInitialBlogs(data.data);
-    };
+    setBlogs(fetchedBlogs);
+    setInitialBlogs(fetchedBlogs);
 
-    fetchBlogs();
-  }, []);
+  }, [fetchedBlogs]);
 
   const handleAdd = async (blog: BlogType) => {
     setBlogs((prevBlogs) => {
@@ -113,8 +111,6 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       const image_url = await uploadImage(image);
       blog = { ...blog, image_url };
     }
-
-    console.log(blog);
 
     const response = await fetch('/api/blogs', {
       method: 'PUT',
@@ -176,7 +172,7 @@ const ManageBlogs = ({ username }: { username: string; }) => {
     } else {
       console.log(`Error: ${result.error}`);
     }
-    
+
     triggerReload();
   }
 
@@ -221,10 +217,8 @@ const ManageBlogs = ({ username }: { username: string; }) => {
     }, [blogs]);
 
   return (
-    <div>
-      <h4 className='mb-6'>My Blogs</h4>
-
-      <DndProvider backend={HTML5Backend}>
+    <div className='mb-4'>
+      {/* <DndProvider backend={HTML5Backend}> */}
         {blogs ?
           blogs.length > 0 ?
             blogs.map((blog, index) => (
@@ -232,6 +226,7 @@ const ManageBlogs = ({ username }: { username: string; }) => {
                 key={index}
                 index={index}
                 blog={blog}
+                itemType={itemType}
                 username={username}
                 onUpdate={handleEdit}
                 onDelete={handleDelete}
@@ -239,12 +234,12 @@ const ManageBlogs = ({ username }: { username: string; }) => {
                 moveBlog={moveBlog}
               />
             )) :
-            <div className='py-10 text-lg text-gray-400 text-center'>There is no blog to show</div> :
+            <div className='pb-10 text-lg text-gray-400 text-center'>There is no blog to show</div> :
           <SkeletonLoader />}
-      </DndProvider>
+      {/* </DndProvider> */}
 
       <div className="flex justify-end mt-6">
-        <AddNewBlog onAdd={handleAdd} username={username}/>
+        <AddNewBlog group_id={group_id} onAdd={handleAdd} username={username} />
       </div>
 
       <EditBlogModal

@@ -65,13 +65,20 @@ export default async function BlogPage({ params }: { params: { slug: string } })
     notFound(); // Shows 404 page if the blog is not found
   }
 
-  const user_id = blog[0].writer_id;
+  const group_id = blog[0].group_id;
+
+  // Fetch the user from Supabase based on the username slug
+  const { data: blogGroup, error: blogGroupError } = await supabase
+    .from("blog_groups")
+    .select("user_id")
+    .eq("id", group_id)
+    .single();
 
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("id, position, first_name, last_name, username, title, gdc_no, qualification")
-    .eq("id", user_id)
+    .eq("id", blogGroup?.user_id)
     .single();
 
   // Fetch the dentistry data using the user's ID
