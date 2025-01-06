@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import { generateUniqueSlug } from '@/utils/slugGenerator';
 import { getUserInfo } from '@/utils/userInfo';
 import { deleteFileFromSupabase } from '@/utils/removeFromBucket';
 import { getMaxRank } from '@/utils/getMaxOrder';

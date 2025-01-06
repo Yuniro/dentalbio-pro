@@ -17,7 +17,7 @@ interface ModalProps {
   username: string;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (formData: { title: string; content: string; image: File | null; meta_title: string; meta_description: string }) => void;
+  onSubmit: (formData: { title: string; content: string; image: File | null; meta_title: string; meta_description: string; slug: string; }) => void;
 }
 
 type formDataProps = {
@@ -110,7 +110,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ group_id, username, isOpen, onClos
 
   const handleSubmit = () => {
     setIsUploading(true);
-    onSubmit(formData);
+    onSubmit({ ...formData, slug: formData.slug.replace(prefix, "") });
   };
 
   const handleFileChange = (image: File) => {

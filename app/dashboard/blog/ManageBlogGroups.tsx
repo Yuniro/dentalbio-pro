@@ -161,7 +161,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
           )
         })}
         {blogGroups.length === 0 &&
-          <div className='pb-10 text-lg text-gray-400 text-center'>There is no blog to show</div>}
+          <div className='pb-10 text-lg text-gray-400 text-center'>There is no group</div>}
       </DndProvider>
     </div>
   )

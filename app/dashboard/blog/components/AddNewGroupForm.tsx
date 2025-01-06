@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import LabeledInput from "../../components/LabeledInput";
+import { Spinner } from "@phosphor-icons/react/dist/ssr";
 
 export default function AddNewGroupForm({ onAdd }: { onAdd: (group: BlogGroupType) => void }) {
   const [heading, setHeading] = useState("");
@@ -61,7 +62,7 @@ export default function AddNewGroupForm({ onAdd }: { onAdd: (group: BlogGroupTyp
               disabled={isLoading}
               className="bg-[#5046db] hover:bg-[#302A83] transition-all text-white py-1.5 rounded-[26px] text-md px-3 font-semibold flex items-center gap-2"
             >
-              {isLoading ? "Saving..." : "Save"}
+              {isLoading && <Spinner className="animate-spin" size={20} />} Save
             </button>
             <button
               type="button"
