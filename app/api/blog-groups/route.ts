@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { getUserInfo } from '@/utils/userInfo';
 import { getMaxRank } from '@/utils/getMaxOrder';
-import { deleteFileFromSupabase } from '@/utils/removeFromBucket';
 
 export async function GET(request: Request) {
   try {
@@ -22,9 +21,9 @@ export async function GET(request: Request) {
     }
 
     const { data, error } = await supabase
-      .from('galleries')
+      .from('blog_groups')
       .select('*')
-      .eq('user_id', userId)
+      .eq('writer_id', userId)
       .in('enabled', enabledField)
       .order('rank', { ascending: true });
 
@@ -39,7 +38,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { title, before_image_url, after_image_url, before_image_label, after_image_label } = await request.json();
+  const { name } = await request.json();
 
   try {
     const supabase = createClient();
@@ -49,11 +48,11 @@ export async function POST(request: Request) {
     if (!(userData.subscription_status === "pro"))
       return NextResponse.json({ error: "Please upgrade membership!" });
 
-    const maxRank = await getMaxRank({ supabase, table: "galleries", field: "user_id", value: userData.id }) + 1;
+    const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: userData.id }) + 1;
 
     const { data, error } = await supabase
-      .from('galleries')
-      .insert([{ title, before_image_url, after_image_url, user_id: userData.id, rank: maxRank, before_image_label, after_image_label }])
+      .from('blog_groups')
+      .insert([{ name, user_id: userData.id, rank: maxRank, enabled: true }])
       .select("*")
       .single();;
 
@@ -73,25 +72,8 @@ export async function PUT(request: Request) {
   try {
     const supabase = createClient();
 
-    // Delete original images if new images uploaded
-
-    const { data: gallery, error: readError } = await supabase
-      .from('galleries')
-      .select('*')
-      .eq('id', updated_data.id)
-      .single();
-
-    if (updated_data.before_image_url !== gallery.before_image_url) {
-      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.before_image_url });
-    }
-    if (updated_data.after_image_url !== gallery.after_image_url) {
-      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.after_image_url });
-    }
-
-    // Update gallery
-
     const { data, error } = await supabase
-      .from('galleries')
+      .from('blog_groups')
       .update(updated_data)
       .eq('id', updated_data.id)
       .select('*')
@@ -113,23 +95,8 @@ export async function DELETE(request: Request) {
   try {
     const supabase = createClient();
 
-    const { data: gallery, error: getError } = await supabase
-      .from('galleries')
-      .select('before_image_url, after_image_url')
-      .eq('id', id)
-      .single()
-
-    // Delete images from bucket
-
-    if (gallery) {
-      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.before_image_url });
-      await deleteFileFromSupabase({ supabase, bucketName: 'gallery-images', fileUrl: gallery.after_image_url });
-    }
-
-    // Delete data from table
-
     const { data, error } = await supabase
-      .from('galleries')
+      .from('blog_groups')
       .delete()
       .eq('id', id);
 

@@ -1,7 +1,7 @@
 import React from "react"
-import ManageBlogs from "./ManageBlogs"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import ManageBlogGroups from "./ManageBlogGroups";
 
 const Blog = async () => {
   const supabase = createClient();
@@ -19,7 +19,7 @@ const Blog = async () => {
 
   return (
     <div className='px-10 pt-10'>
-      <ManageBlogs username={userData.username}/>
+      <ManageBlogGroups />
     </div>
   )
 }

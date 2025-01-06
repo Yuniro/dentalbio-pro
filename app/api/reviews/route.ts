@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { generateUniqueSlug } from '@/utils/slugGenerator';
 import { getUserInfo } from '@/utils/userInfo';
 import { deleteFileFromSupabase } from '@/utils/removeFromBucket';
-import { getMaxRankFromReview } from '@/utils/getMasOrder';
+import { getMaxRank } from '@/utils/getMaxOrder';
 
 export async function GET(request: Request) {
   try {
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
 
     const userData = await getUserInfo({ supabase });
 
-    const maxRank = await getMaxRankFromReview({ supabase }) + 1;
+    const maxRank = await getMaxRank({ supabase, table: "reviews", field: "user_id", value: userData.id }) + 1;
 
     const { data, error } = await supabase
       .from('reviews')

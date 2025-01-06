@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import { generateUniqueSlug } from '@/utils/slugGenerator';
 import { getUserInfo } from '@/utils/userInfo';
 import { deleteFileFromSupabase } from '@/utils/removeFromBucket';
-import { getMaxRankFromBlog } from '@/utils/getMasOrder';
+import { getMaxRank } from '@/utils/getMaxOrder';
 
 export async function GET(request: Request) {
   try {
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     if (!(userData.subscription_status === "pro"))
       return NextResponse.json({ error: "Please upgrade membership!" });
 
-    const maxRank = await getMaxRankFromBlog({ supabase }) + 1;
+    const maxRank = await getMaxRank({ supabase, table: "blogs", field: "writer_id", value: userData.id }) + 1;
 
     const { data, error } = await supabase
       .from('blogs')

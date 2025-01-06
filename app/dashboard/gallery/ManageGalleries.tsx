@@ -179,11 +179,11 @@ const ManageGalleries = () => {
       rank: index,
     }));
 
-    // console.log(orderList);
+    const data = { table: "galleries", datasToUpdate: orderList };
 
-    const response = await fetch('/api/galleries-manage', {
+    const response = await fetch('/api/update-order', {
       method: 'POST',
-      body: JSON.stringify(orderList)
+      body: JSON.stringify(data)
     })
 
     const result = await response.json();
@@ -208,6 +208,7 @@ const ManageGalleries = () => {
       // Check if the new order is different from the initial order
       if (!arraysAreEqual(updatedGalleries, initialGalleries!)) {
         updateOrder(updatedGalleries);
+        setInitialGalleries(updatedGalleries);
       }
     }, [galleries]);
 

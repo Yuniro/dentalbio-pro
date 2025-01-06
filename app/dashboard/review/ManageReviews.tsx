@@ -183,11 +183,11 @@ const ManageReviews = ({ username }: { username: string; }) => {
       rank: index,
     }));
 
-    // console.log(orderList);
+    const data = { table: "reviews", datasToUpdate: orderList };
 
-    const response = await fetch('/api/reviews-manage', {
+    const response = await fetch('/api/update-order', {
       method: 'POST',
-      body: JSON.stringify(orderList)
+      body: JSON.stringify(data)
     })
 
     const result = await response.json();
@@ -211,6 +211,7 @@ const ManageReviews = ({ username }: { username: string; }) => {
       // Check if the new order is different from the initial order
       if (!arraysAreEqual(updatedReviews, initialReviews!)) {
         updateOrder(updatedReviews);
+        setInitialReviews(updatedReviews);
       }
     }, [reviews]);
 

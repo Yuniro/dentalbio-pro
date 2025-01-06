@@ -4,14 +4,14 @@ import { createClient } from '@/utils/supabase/server';
 export async function POST(request: Request) {
   try {
     const supabase = createClient();
-    const blogsToUpdate = await request.json(); // Expect an array of objects with `id` and `rank`
+    const { table, datasToUpdate } = await request.json(); // Expect an array of objects with `id` and `rank`
 
-    // Perform updates for each blog
-    const updates = blogsToUpdate.map(({ id, rank }: { id: string, rank: number }) =>
+    // Perform updates for each gallery
+    const updates = datasToUpdate.map(({ id, rank }: { id: string, rank: number }) =>
       supabase
-        .from('blogs')
+        .from(table)
         .update({ rank }) // Set the new rank
-        .eq('id', id) // Match the blog by its ID
+        .eq('id', id) // Match the gallery by its ID
     );
 
     // Execute all updates concurrently

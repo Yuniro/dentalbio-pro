@@ -19,20 +19,6 @@ const BlogList: React.FC<BlogListProps> = ({
   const [blogTitle, setBlogTitle] = useState<string | null>(`${username}'s Blogs`);
 
   useEffect(() => {
-    const fetchBlogTitle = async () => {
-      const query = userId ? `?userId=${userId}` : '';
-      const response = await fetch(`/api/blog-titles${query}`, {
-        method: 'GET'
-      });
-      const data = await response.json();
-
-      setBlogTitle((data.data.length > 0) ? data.data[0].title : `${username}'s Blogs`);
-    };
-
-    fetchBlogTitle();
-  }, []);
-
-  useEffect(() => {
     const fetchBlogs = async () => {
       const query = userId ? `?userId=${userId}` : '';
       const response = await fetch(`/api/blogs${query}`, {

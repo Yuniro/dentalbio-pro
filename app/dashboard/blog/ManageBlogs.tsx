@@ -7,11 +7,6 @@ import AddNewBlog from './AddNewBlog';
 import EditBlogModal from '../components/EditBlogModal';
 import SkeletonLoader from '@/app/components/Loader/Loader';
 import { arraysAreEqual } from '@/utils/function_utils';
-import { PencilSimple } from '@phosphor-icons/react/dist/ssr';
-import LabeledInput from '../components/LabeledInput';
-import FullRoundedButton from '@/app/components/Button/FullRoundedButton';
-import { useFormStatus } from 'react-dom';
-import SaveButton from '../components/SaveButton';
 import { usePreview } from '@/app/components/PreviewContext';
 
 const ItemType = {
@@ -91,21 +86,6 @@ const ManageBlogs = ({ username }: { username: string; }) => {
 
   const { triggerReload } = usePreview();
 
-  const status = useFormStatus();
-
-  useEffect(() => {
-    const fetchBlogTitle = async () => {
-      const response = await fetch('/api/blog-titles', {
-        method: 'GET'
-      });
-      const data = await response.json();
-
-      setBlogTitle((data.data.length > 0) ? data.data[0].title : `${username}'s Blogs`);
-    };
-
-    fetchBlogTitle();
-  }, []);
-
   useEffect(() => {
     const fetchBlogs = async () => {
       const response = await fetch('/api/blogs', {
@@ -178,23 +158,6 @@ const ManageBlogs = ({ username }: { username: string; }) => {
     setIsEditingOpen(true);
   }
 
-  const handleUpdateTitle = async () => {
-    const formData = { title: blogTitle };
-
-    const response = await fetch('/api/blog-titles', {
-      method: 'POST',
-      body: JSON.stringify(formData)
-    })
-
-    const result = await response.json();
-
-    if (response.ok) {
-      setIsEditingTitle(false);
-    } else {
-      console.log(`Error: ${result.error}`)
-    }
-  }
-
   const uploadImage = async (image: File) => {
     const formData = new FormData();
     formData.append('bucket_name', 'blog-images');
@@ -223,11 +186,13 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       rank: index,
     }));
 
+    const data = { table: "blogs", datasToUpdate: orderList };
+
     // console.log(orderList);
 
-    const response = await fetch('/api/blogs-manage', {
+    const response = await fetch('/api/update-order', {
       method: 'POST',
-      body: JSON.stringify(orderList)
+      body: JSON.stringify(data)
     })
 
     const result = await response.json();
@@ -251,43 +216,13 @@ const ManageBlogs = ({ username }: { username: string; }) => {
       // Check if the new order is different from the initial order
       if (!arraysAreEqual(updatedBlogs, initialBlogs!)) {
         updateOrder(updatedBlogs);
+        setInitialBlogs(updatedBlogs);
       }
     }, [blogs]);
 
   return (
     <div>
       <h4 className='mb-6'>My Blogs</h4>
-      {blogTitle ?
-        <>
-          {isEditingTitle ?
-            <div className='mb-4'>
-              <form action={handleUpdateTitle}>
-                <LabeledInput
-                  label='Blogs Title'
-                  name='title'
-                  value={blogTitle!}
-                  onChange={e => setBlogTitle(e.target.value)}
-                />
-                <div className='flex justify-end gap-2'>
-                  <SaveButton text='Save' />
-                  <FullRoundedButton buttonType="ghost" type='button' onClick={() => setIsEditingTitle(false)}>Cancel</FullRoundedButton>
-                </div>
-              </form>
-            </div> :
-            <div className="member-card-heading">
-              <div className="flex justify-center">
-                <div className="d-flex align-items-center gap-2 member-heading">
-                  <p className="mb-0">{blogTitle}</p>
-                  <PencilSimple
-                    onClick={() => setIsEditingTitle(true)}
-                    className="cursor-pointer"
-                  />
-                </div>
-              </div>
-            </div>}
-        </> :
-        <SkeletonLoader />
-      }
 
       <DndProvider backend={HTML5Backend}>
         {blogs ?
