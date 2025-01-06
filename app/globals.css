@@ -135,6 +135,11 @@ html {
   color: white !important;
 }
 
+.react-star span {
+  width: 20% !important;
+  text-align: center !important;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

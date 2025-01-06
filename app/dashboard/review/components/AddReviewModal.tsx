@@ -127,7 +127,7 @@ const AddReviewModal: React.FC<ModalProps> = ({
                   half={false}
                   value={formData.stars}
                   onChange={handleStarsChange}
-                  className="flex justify-around mb-3"
+                  className="flex justify-around mb-3 react-star"
                 />
                 <ImageUploader
                   image_url={formData.image_url}
