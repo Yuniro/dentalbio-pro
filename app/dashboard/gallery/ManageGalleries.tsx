@@ -205,11 +205,8 @@ const ManageGalleries = () => {
       updatedGalleries.splice(toIndex, 0, movedGallery);
       setGalleries(updatedGalleries);
 
-      // Check if the new order is different from the initial order
-      if (!arraysRankingAreEqual(updatedGalleries, initialGalleries!)) {
-        updateOrder(updatedGalleries);
-        setInitialGalleries(updatedGalleries);
-      }
+      updateOrder(updatedGalleries);
+      setInitialGalleries(updatedGalleries);
     }, [galleries]);
 
   return (

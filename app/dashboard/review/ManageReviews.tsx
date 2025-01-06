@@ -173,7 +173,7 @@ const ManageReviews = ({ username }: { username: string; }) => {
     } else {
       console.log(`Error: ${result.error}`);
     }
-    
+
     triggerReload();
   }
 
@@ -208,11 +208,8 @@ const ManageReviews = ({ username }: { username: string; }) => {
       updatedReviews.splice(toIndex, 0, movedReview);
       setReviews(updatedReviews);
 
-      // Check if the new order is different from the initial order
-      if (!arraysRankingAreEqual(updatedReviews, initialReviews!)) {
-        updateOrder(updatedReviews);
-        setInitialReviews(updatedReviews);
-      }
+      updateOrder(updatedReviews);
+      setInitialReviews(updatedReviews);
     }, [reviews]);
 
   return (
@@ -239,7 +236,7 @@ const ManageReviews = ({ username }: { username: string; }) => {
       </DndProvider>
 
       <div className="flex justify-end mt-6">
-        <AddNewReview onAdd={handleAdd} username={username}/>
+        <AddNewReview onAdd={handleAdd} username={username} />
       </div>
 
       <AddReviewModal

@@ -113,12 +113,8 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
       const [movedBlog] = updatedBlogs.splice(fromIndex, 1);
       updatedBlogs.splice(toIndex, 0, movedBlog);
       setBlogGroups(updatedBlogs);
-
-      // Check if the new order is different from the initial order
-      if (!arraysRankingAreEqual(updatedBlogs, initialBlogGroups!)) {
-        updateOrder(updatedBlogs);
-        setInitialBlogGroups(updatedBlogs);
-      }
+      updateOrder(updatedBlogs);
+      setInitialBlogGroups(updatedBlogs);
     }, [blogGroups]);
 
   if (!blogGroups) {

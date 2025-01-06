@@ -209,33 +209,30 @@ const ManageBlogs = ({
       updatedBlogs.splice(toIndex, 0, movedBlog);
       setBlogs(updatedBlogs);
 
-      // Check if the new order is different from the initial order
-      if (!arraysRankingAreEqual(updatedBlogs, initialBlogs!)) {
-        updateOrder(updatedBlogs);
-        setInitialBlogs(updatedBlogs);
-      }
+      updateOrder(updatedBlogs);
+      setInitialBlogs(updatedBlogs);
     }, [blogs]);
 
   return (
     <div className='mb-4'>
       {/* <DndProvider backend={HTML5Backend}> */}
-        {blogs ?
-          blogs.length > 0 ?
-            blogs.map((blog, index) => (
-              <DraggableBlogCard
-                key={blog.id}
-                index={index}
-                blog={blog}
-                itemType={itemType}
-                username={username}
-                onUpdate={handleEdit}
-                onDelete={handleDelete}
-                onEditItem={handleEditItem}
-                moveBlog={moveBlog}
-              />
-            )) :
-            <div className='pb-10 text-lg text-gray-400 text-center'>There is no blog to show</div> :
-          <SkeletonLoader />}
+      {blogs ?
+        blogs.length > 0 ?
+          blogs.map((blog, index) => (
+            <DraggableBlogCard
+              key={blog.id}
+              index={index}
+              blog={blog}
+              itemType={itemType}
+              username={username}
+              onUpdate={handleEdit}
+              onDelete={handleDelete}
+              onEditItem={handleEditItem}
+              moveBlog={moveBlog}
+            />
+          )) :
+          <div className='pb-10 text-lg text-gray-400 text-center'>There is no blog to show</div> :
+        <SkeletonLoader />}
       {/* </DndProvider> */}
 
       <div className="flex justify-end mt-6">
