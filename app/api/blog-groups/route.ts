@@ -19,20 +19,33 @@ export async function GET(request: Request) {
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
-
-    const { data, error } = await supabase
+    const { data: groups, error: groupsError } = await supabase
       .from('blog_groups')
-      .select('*, blogs(*)')
+      .select('*')
       .eq('user_id', userId)
       .in('enabled', enabledField)
-      .in('blogs.enabled', enabledField)
       .order('rank', { ascending: true });
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+    if (groupsError) {
+      return NextResponse.json({ error: groupsError.message }, { status: 400 });
     }
 
-    return NextResponse.json({ data });
+    const { data: blogs, error: blogsError } = await supabase
+      .from('blogs')
+      .select('*')
+      .in('enabled', enabledField)
+      .order('rank', { ascending: true });
+
+      if (blogsError) {
+        return NextResponse.json({ error: blogsError.message }, { status: 400 });
+      }
+
+    const groupedBlogs = groups.map(group => ({
+      ...group,
+      blogs: blogs.filter(blog => blog.group_id === group.id),
+    }));
+
+    return NextResponse.json({ data: groupedBlogs });
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }

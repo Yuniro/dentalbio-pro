@@ -5,7 +5,7 @@ import BlogCard from '../components/BlogCard';
 import AddNewBlog from './AddNewBlog';
 import EditBlogModal from '../components/EditBlogModal';
 import SkeletonLoader from '@/app/components/Loader/Loader';
-import { arraysAreEqual } from '@/utils/function_utils';
+import { arraysRankingAreEqual } from '@/utils/function_utils';
 import { usePreview } from '@/app/components/PreviewContext';
 
 function DraggableBlogCard({
@@ -210,7 +210,7 @@ const ManageBlogs = ({
       setBlogs(updatedBlogs);
 
       // Check if the new order is different from the initial order
-      if (!arraysAreEqual(updatedBlogs, initialBlogs!)) {
+      if (!arraysRankingAreEqual(updatedBlogs, initialBlogs!)) {
         updateOrder(updatedBlogs);
         setInitialBlogs(updatedBlogs);
       }
@@ -223,7 +223,7 @@ const ManageBlogs = ({
           blogs.length > 0 ?
             blogs.map((blog, index) => (
               <DraggableBlogCard
-                key={index}
+                key={blog.id}
                 index={index}
                 blog={blog}
                 itemType={itemType}

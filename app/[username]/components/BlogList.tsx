@@ -22,7 +22,7 @@ const BlogList: React.FC<BlogListProps> = ({
           <h1 className="section-heading-treatment text-[23px] font-semibold">{groupname}</h1>
           {blogs.map((blog, index) => (
             <LinkTitle
-              key={index}
+              key={blog.id}
               link={`${username}/blog/${blog.slug}`}
               title={blog.title}
             />

@@ -69,7 +69,7 @@ export default function Services({ dentistryId }: { dentistryId: string }) {
           {treatments.map((treatment, index) => (
             <Collapse
               title={treatment.title || "Untitled treatment"}
-              key={index}
+              key={treatment.id}
               isOpen={openItem === index}
               onToggle={() => toggleItem(index)}
             >

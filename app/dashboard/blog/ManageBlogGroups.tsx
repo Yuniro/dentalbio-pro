@@ -5,7 +5,7 @@ import AddNewGroupForm from "./components/AddNewGroupForm";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DraggableBlogGroup from "./components/DraggableBlogGroup";
-import { arraysAreEqual } from "@/utils/function_utils";
+import { arraysRankingAreEqual } from "@/utils/function_utils";
 import { usePreview } from "@/app/components/PreviewContext";
 import ManageBlogs from "./ManageBlogs";
 import SkeletonLoader from "@/app/components/Loader/Loader";
@@ -115,7 +115,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
       setBlogGroups(updatedBlogs);
 
       // Check if the new order is different from the initial order
-      if (!arraysAreEqual(updatedBlogs, initialBlogGroups!)) {
+      if (!arraysRankingAreEqual(updatedBlogs, initialBlogGroups!)) {
         updateOrder(updatedBlogs);
         setInitialBlogGroups(updatedBlogs);
       }
@@ -140,7 +140,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
       <DndProvider backend={HTML5Backend}>
         {blogGroups && blogGroups.map((group, index) => {
           return (
-            <div key={index}>
+            <div key={group.id}>
               <DraggableBlogGroup
                 index={index}
                 key={group.id}

@@ -4,7 +4,7 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import AddNewGallery from './AddNewGallery';
 import SkeletonLoader from '@/app/components/Loader/Loader';
-import { arraysAreEqual } from '@/utils/function_utils';
+import { arraysRankingAreEqual } from '@/utils/function_utils';
 import GalleryCard from './components/GalleryCard';
 import EditGalleryModal from './components/EditGalleryModal';
 import { usePreview } from '@/app/components/PreviewContext';
@@ -206,7 +206,7 @@ const ManageGalleries = () => {
       setGalleries(updatedGalleries);
 
       // Check if the new order is different from the initial order
-      if (!arraysAreEqual(updatedGalleries, initialGalleries!)) {
+      if (!arraysRankingAreEqual(updatedGalleries, initialGalleries!)) {
         updateOrder(updatedGalleries);
         setInitialGalleries(updatedGalleries);
       }
@@ -221,7 +221,7 @@ const ManageGalleries = () => {
           galleries.length > 0 ?
             galleries.map((gallery, index) => (
               <DraggableGalleryCard
-                key={index}
+                key={gallery.id}
                 index={index}
                 gallery={gallery}
                 onUpdate={handleEdit}

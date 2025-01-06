@@ -25,7 +25,7 @@ const LocationListManager: React.FC<LocationManagerProps> = ({
         </form>
       </div>
       {locations && locations.map((location, index) => (
-        <AddressItem {...location} key={index} />
+        <AddressItem {...location} key={location.id} />
       ))}
     </>
   )

@@ -32,8 +32,8 @@ export default function Gallery({ userId }: { userId: string }) {
             className="accordion custom-accoradion-wrapper"
             id="accordionExample"
           >
-            {galleries.map((gallery, index) => (
-              <div key={index} className="flex justify-center gap-6 mb-4">
+            {galleries.map((gallery) => (
+              <div key={gallery.id} className="flex justify-center gap-6 mb-4">
                 <GalleryImage
                   src={gallery.before_image_url}
                   title={gallery.title}

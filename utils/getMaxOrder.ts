@@ -1,5 +1,3 @@
-import { getUserInfo } from "./userInfo";
-
 export async function getMaxRank({ supabase, table, field, value }: { supabase: any, table: string, field: string, value: any }) {
   try {
     const { data, error } = await supabase

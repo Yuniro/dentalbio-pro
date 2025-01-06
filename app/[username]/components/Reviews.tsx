@@ -29,9 +29,9 @@ const Reviews: React.FC<ReviewsProps> = ({
       {(reviews.length > 0) &&
         <div className="mb-4">
           <h1 className="section-heading-treatment text-[23px] font-semibold">Reviews</h1>
-          {reviews.map((review, index) => (
+          {reviews.map((review) => (
             <ReviewItem
-              key={index}
+              key={review.id}
               {...review}
             />
           ))}

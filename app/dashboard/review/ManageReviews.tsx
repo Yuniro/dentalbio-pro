@@ -4,7 +4,7 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import AddNewReview from './AddNewReview';
 import SkeletonLoader from '@/app/components/Loader/Loader';
-import { arraysAreEqual } from '@/utils/function_utils';
+import { arraysRankingAreEqual } from '@/utils/function_utils';
 import { useFormStatus } from 'react-dom';
 import { usePreview } from '@/app/components/PreviewContext';
 import ReviewCard from './components/ReviewCard';
@@ -209,7 +209,7 @@ const ManageReviews = ({ username }: { username: string; }) => {
       setReviews(updatedReviews);
 
       // Check if the new order is different from the initial order
-      if (!arraysAreEqual(updatedReviews, initialReviews!)) {
+      if (!arraysRankingAreEqual(updatedReviews, initialReviews!)) {
         updateOrder(updatedReviews);
         setInitialReviews(updatedReviews);
       }
@@ -224,7 +224,7 @@ const ManageReviews = ({ username }: { username: string; }) => {
           reviews.length > 0 ?
             reviews.map((review, index) => (
               <DraggableReviewCard
-                key={index}
+                key={review.id}
                 index={index}
                 review={review}
                 username={username}
