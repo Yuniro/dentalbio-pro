@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <section className="profile-tab-wrapper">
-      <nav className="navbar navbar-expand justify-center p-0">
+      <nav className="navbar justify-center navbar-expand p-0">
         <div className="navbar-wrapper">
           <ul className="navbar-nav custom-navbar-links justify-around">
             <li className="nav-item">
