@@ -38,7 +38,7 @@ export default function Navbar() {
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#review" onClick={e => handleScroll(e, "#review")}>
-                Review
+                Reviews
               </a>
             </li>
             <li className="nav-item">

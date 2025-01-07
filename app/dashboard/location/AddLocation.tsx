@@ -22,7 +22,7 @@ const AddLocation: React.FC<AddLocationProps> = ({
     const newLocation = {
       full_address: formData.get("full_address") as string,
       country: formData.get("country") as string,
-      city: formData.get("city") as string,
+      city: formData.get("city-full_address") as string,
       area: formData.get("area") as string,
       latitude: parseFloat(formData.get("latitude") as string),
       longitude: parseFloat(formData.get("longitude") as string),

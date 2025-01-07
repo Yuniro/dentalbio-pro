@@ -35,18 +35,19 @@ const AddressItem: React.FC<LocationProps> = ({
 
   const onSaveAction = (formData: FormData) => {
     const newLocation = {
+      location_id: location_id!,
       full_address: formData.get("full_address") as string,
       country: formData.get("country") as string,
-      city: formData.get("city") as string,
+      city: formData.get("city-" + location_id) as string,
       area: formData.get("area") as string,
       latitude: parseFloat(formData.get("latitude") as string),
       longitude: parseFloat(formData.get("longitude") as string),
     };
 
-    // onAddressChange(newLocation, location_id!);
+    onAddressChange(newLocation, location_id!);
 
     setAddress(formData.get("full_address") as string);
-    setCityname(formData.get("city") as string);
+    setCityname(formData.get("city-" + location_id) as string);
     toggleIsEditing();
   }
 
@@ -72,7 +73,7 @@ const AddressItem: React.FC<LocationProps> = ({
         className={`overflow-hidden transition-all duration-300 ${isEditing ? "max-h-screen" : "max-h-0"}`}
       >
         <form action={onSaveAction}>
-          <GoogleMapAutocomplete id={location_id!} defaultAddress={address!} />
+          <GoogleMapAutocomplete id={location_id!} defaultAddress={address!} cityname={isEditing ? cityname : ""} />
         </form>
       </div>
 

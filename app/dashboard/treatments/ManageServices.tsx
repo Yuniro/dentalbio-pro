@@ -6,28 +6,11 @@ import { createClient } from "@/utils/supabase/client";
 import { CaretDown, CaretUp, PencilSimple, Trash } from "phosphor-react";
 import Modal from "./Modal"; // Modal component for popup
 import SaveButton from "../components/SaveButton";
+import SkeletonLoader from "@/app/components/Loader/Loader";
 
 // Constants for Drag-and-Drop
 const ItemType = {
   TREATMENT: "treatment",
-};
-
-// Glowing Skeleton Loader Component
-const SkeletonLoader = () => {
-  return (
-    <div className="membar-cards animate-pulse">
-      <div className="d-flex align-items-center gap-3">
-        <div className="flex flex-col gap-0 bg-neutral-100 rounded-md w-10 h-16"></div>
-        <div className="w-100">
-          <div className="d-flex align-items-center justify-content-between gap-2 mb-3">
-            <div className="bg-neutral-100 w-3/5 h-6 rounded-md mb-2"></div>
-            <div className="bg-neutral-100 w-1/5 h-6 rounded-md"></div>
-          </div>
-          <div className="bg-neutral-100 w-full h-5 rounded-md"></div>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 // Fetch treatments for the Dentistry
@@ -39,8 +22,6 @@ async function fetchServices(dentistryId: string) {
     .eq("dentistry_id", dentistryId)
     .eq("treatments.isService", true)
     .order("rank", { nullsFirst: true });
-
-    console.log(treatments);
 
   if (error) {
     console.error(error);
