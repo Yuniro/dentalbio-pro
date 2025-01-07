@@ -10,6 +10,7 @@ const Reviews: React.FC<ReviewsProps> = ({
   userId,
 }: ReviewsProps) => {
   const [reviews, setReviews] = useState<any[]>([]);
+  const [externalLink, setExternalLink] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -24,11 +25,29 @@ const Reviews: React.FC<ReviewsProps> = ({
     fetchReviews();
   }, []);
 
+  useEffect(() => {
+    const fetchReviewLink = async () => {
+      const query = userId ? `?userId=${userId}` : '';
+      const response = await fetch(`/api/external-review-pages${query}`, {
+        method: 'GET'
+      });
+      const data = await response.json();
+      if (data.data.length)
+        setExternalLink(data.data[0].link);
+    };
+
+    fetchReviewLink();
+  }, []);
+
   return (
     <div className="text-center" id="review">
       {(reviews.length > 0) &&
         <div className="mb-4">
-          <h1 className="section-heading-treatment text-[26px] font-bold pb-4">Reviews</h1>
+          <h1 className="section-heading-treatment text-[26px] font-bold pb-4">
+            {externalLink ?
+              <a href={externalLink} className="text-black no-underline" target="_blank">Reviews</a> :
+              <span>Reviews</span>}
+          </h1>
           {reviews.map((review) => (
             <ReviewItem
               key={review.id}
