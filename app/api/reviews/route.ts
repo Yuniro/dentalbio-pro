@@ -39,7 +39,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { reviewer_name, content, stars, image_url, platform, created_at } = await request.json();
+  const { reviewer_name, content, stars, image_url, external_link, platform, created_at } = await request.json();
 
   try {
     const supabase = createClient();
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabase
       .from('reviews')
-      .insert([{ user_id: userData.id, reviewer_name, content, stars, image_url, platform, rank: maxRank, created_at }])
+      .insert([{ user_id: userData.id, reviewer_name, content, stars, image_url, external_link, platform, rank: maxRank, created_at }])
       .select("*")
       .single();;
 

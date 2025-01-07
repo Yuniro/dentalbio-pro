@@ -14,7 +14,9 @@ const ReviewItem: React.FC<ReviewType> = ({ ...reviewData }) => {
             />
           </div>
           <div>
-            <div className='text-sm font-semibold'>{reviewData.reviewer_name}</div>
+            <div className='text-sm font-semibold'>
+              <a href={reviewData.external_link} target="_blank">{reviewData.reviewer_name}</a>
+            </div>
             <div className='text-sm text-[#9D9D9D] text-left'>{formatDateAsMonth(reviewData.created_at)}</div>
           </div>
         </div>

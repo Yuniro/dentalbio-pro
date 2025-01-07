@@ -29,6 +29,7 @@ const AddReviewModal: React.FC<ModalProps> = ({
     stars: 5,
     content: "",
     image_url: "",
+    external_link: "",
     created_at: null,
     platform: "",
   });
@@ -44,6 +45,7 @@ const AddReviewModal: React.FC<ModalProps> = ({
         stars: 5,
         content: "",
         image_url: "",
+        external_link: "",
         created_at: null,
         platform: "",
       });
@@ -133,6 +135,12 @@ const AddReviewModal: React.FC<ModalProps> = ({
                   image_url={formData.image_url}
                   onFileChange={handleFileChange}
                   text="Add Photo (optional)"
+                />
+                <LabeledInput
+                  label="External Link (optional)"
+                  name="external_link"
+                  value={formData.external_link}
+                  onChange={handleChange}
                 />
                 <LabeledInput
                   label="Review Platform"
