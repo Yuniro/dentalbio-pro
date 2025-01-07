@@ -27,7 +27,7 @@ export default function Gallery({ userId }: { userId: string }) {
     <div className="text-center treatment-wrapper" id="gallery">
       {galleries.length > 0 &&
         <>
-          <h1 className="section-heading-treatment text-[23px] font-semibold">Gallery</h1>
+          <h1 className="section-heading-treatment text-[26px] font-bold pb-8">Gallery</h1>
           <div
             className="accordion custom-accoradion-wrapper"
             id="accordionExample"

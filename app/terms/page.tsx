@@ -10,7 +10,7 @@ export default function Terms() {
       <div className="flex flex-col items-center justify-start h-full w-full overflow-x-clip pt-44 px-10 md:px-20">
         <div className="flex justify-start items-center min-h-screen">
           <div className="rounded-lg max-w-4xl">
-            <h1 className="text-2xl font-bold mb-6 text-gray-800">
+            <h1 className="text-[26px] font-bold mb-6 text-gray-800">
               Terms & Conditions
             </h1>
 

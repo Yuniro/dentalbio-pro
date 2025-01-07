@@ -162,9 +162,9 @@ export default function ProfileDetail({
       )}
 
       {/* Description */}
-      <div className="profile-contents text-center p-0">
-        <h5>{description}</h5>
-        <div className="profile-address">
+      <div className="profile-contents text-center py-2">
+        <h5 className="pb-[27px]">{description}</h5>
+        <div className="profile-address pb-4">
           {position !== "Other" && <div>{position}</div>}
           {gdc_no && <div>GDC No. {gdc_no}</div>}
           {qualification && <div>{qualification}</div>}

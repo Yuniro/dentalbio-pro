@@ -28,7 +28,7 @@ const Reviews: React.FC<ReviewsProps> = ({
     <div className="text-center" id="review">
       {(reviews.length > 0) &&
         <div className="mb-4">
-          <h1 className="section-heading-treatment text-[23px] font-semibold">Reviews</h1>
+          <h1 className="section-heading-treatment text-[26px] font-bold pb-4">Reviews</h1>
           {reviews.map((review) => (
             <ReviewItem
               key={review.id}

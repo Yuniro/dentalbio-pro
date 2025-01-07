@@ -43,7 +43,7 @@ export default async function HomePage({ params }: PageProps) {
           <span className="flex items-center mb-4 justify-center flex-col text-6xl md:text-8xl font-bold">
             dental.bio/<span className="font-bold">{username}</span>
           </span>
-          <span className="text-3xl font-bold max-w-screen-md w-full mx-auto bg-clip-text text-transparent">
+          <span className="text-[26px] font-bold max-w-screen-md w-full mx-auto bg-clip-text text-transparent">
             is available!
           </span>
         </span>
@@ -87,7 +87,7 @@ export default async function HomePage({ params }: PageProps) {
           <span className="flex items-center mb-4 justify-center flex-col text-6xl md:text-8xl font-bold">
             dental.bio/<span className="font-bold">{username}</span>
           </span>
-          <span className="text-3xl font-bold max-w-screen-md w-full mx-auto bg-clip-text text-transparent">
+          <span className="text-[26px] font-bold max-w-screen-md w-full mx-auto bg-clip-text text-transparent">
             is reserved!
           </span>
         </span>
