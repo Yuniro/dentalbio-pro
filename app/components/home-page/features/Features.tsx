@@ -8,7 +8,7 @@ export default function Features({ featuresData }: any) {
     <><div id="features"></div>
     <div className="max-w-screen-2xl px-3 lg:px-28 mt-12 lg:mt-28 text-center mx-auto">
       {/* Display the featuresData title */}
-      <h2 className="text-lg md:text-2xl lg:text-[26px] font-bold mb-5 md:mb-8">
+      <h2 className="text-lg md:text-2xl lg:text-[26px] font-semibold mb-5 md:mb-8">
         {featuresData.section_title}
       </h2>
       

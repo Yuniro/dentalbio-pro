@@ -48,7 +48,7 @@ export default function PromoBanner() {
         {/* White card */}
         <div className="relative bg-white text-black max-w-screen-lg lg:max-w-min w-full flex items-center justify-center flex-col p-10 rounded-[35px] z-10">
           <div className="flex flex-col items-center text-center mb-8">
-            <h3 className="text-[26px] font-bold lg:whitespace-nowrap">
+            <h3 className="text-[26px] font-semibold lg:whitespace-nowrap">
               Claim your unique Dentalbio website username today before it’s
               taken! 🚀
             </h3>

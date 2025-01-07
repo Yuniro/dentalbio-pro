@@ -55,7 +55,7 @@ export default function Links({ dentistryId }: { dentistryId: string }) {
         <div key={group.link_group_id}>
           {(group.dentistry_links.length > 0) &&
             <div className="row section-wrapper-meditation">
-              <h1 className="text-center section-heading-meditation text-[26px] font-bold">
+              <h1 className="text-center section-heading-meditation text-[26px] font-semibold">
                 {group.heading || "Untitled Group"}
               </h1>
 

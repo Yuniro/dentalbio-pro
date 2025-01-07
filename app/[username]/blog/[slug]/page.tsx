@@ -107,7 +107,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
             className="w-full mb-4 rounded-[6px]"
           />
 
-          <h1 className='text-[26px] font-bold'>{blog[0].title}</h1>
+          <h1 className='text-[26px] font-semibold'>{blog[0].title}</h1>
 
           <div className='w-full flex justify-center my-4'>
             <div className='flex items-center gap-2 text-left'>

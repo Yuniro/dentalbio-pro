@@ -6,7 +6,7 @@ export default function Section({ section }: any) {
   return (
     <div className="max-w-screen-2xl px-3 lg:px-20 mt-12 lg:mt-40 z-0 bg-transparent text-center mx-auto">
       {/* Display the section title */}
-      <h2 className="text-lg md:text-2xl lg:text-[26px] font-bold mb-5 md:mb-8">
+      <h2 className="text-lg md:text-2xl lg:text-[26px] font-semibold mb-5 md:mb-8">
         {section.section_title}
       </h2>
 
