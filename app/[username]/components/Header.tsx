@@ -123,7 +123,7 @@ export default function Header({
       {/* Mobile View */}
       <div className="mobileview-header">
         <div
-          className={`d-flex align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200" : ""
+          className={`px-0 d-flex align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200" : ""
             } transition-all`}
           id="onscroll-header-mobile"
         >

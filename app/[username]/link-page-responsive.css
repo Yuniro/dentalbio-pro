@@ -237,7 +237,7 @@
     } */
     .profile-detail-wrapper {
         padding-top: 45px;
-        padding-bottom: 15px;
+        padding-bottom: 27px;
     }
     #onscroll-header {
         min-height: 3.3rem;
@@ -252,11 +252,11 @@
     }
 
     .navbar-nav.custom-navbar-links {
-        gap: 15px;
-        padding: 15px 8px;
+        gap: 10px;
+        padding: 15px 18px;
     }
     .navbar-nav.custom-navbar-links .nav-link {
-        font-size: 14px;
+        font-size: 16px;
         line-height: 15.73px;
     }
 
@@ -505,7 +505,7 @@
     }
 
     .profile-wrapper {
-        padding: 30px 23px;
+        padding: 10px 23px 30px 23px;
     }
 
     .blog-detail-img {

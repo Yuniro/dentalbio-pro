@@ -17,7 +17,7 @@ const SocialLinks: React.FC<SocialLinkProps> = ({
   other_link
 }) => {
   return (
-    <div className="d-flex align-items-center justify-content-center gap-2">
+    <div className="d-flex align-items-center justify-content-center gap-2 pt-1">
       {instagram_link && (
         <a
           href={instagram_link}

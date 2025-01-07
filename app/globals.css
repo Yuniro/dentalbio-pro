@@ -140,6 +140,11 @@ html {
   text-align: center !important;
 }
 
+.navbar-nav.custom-navbar-links.justify-around li a {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

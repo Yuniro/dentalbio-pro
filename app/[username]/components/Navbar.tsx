@@ -18,9 +18,9 @@ export default function Navbar() {
 
   return (
     <section className="profile-tab-wrapper">
-      <nav className="navbar navbar-expand justify-content-center p-0">
+      <nav className="navbar navbar-expand justify-center p-0">
         <div className="navbar-wrapper">
-          <ul className="navbar-nav custom-navbar-links">
+          <ul className="navbar-nav custom-navbar-links justify-around">
             <li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#links" onClick={e => handleScroll(e, "#links")}>
                 Links
@@ -34,6 +34,11 @@ export default function Navbar() {
             <li className="nav-item">
               <a className="nav-link" href="#gallery" onClick={e => handleScroll(e, "#gallery")}>
                 Gallery
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#gallery" onClick={e => handleScroll(e, "#gallery")}>
+                Videos
               </a>
             </li>
             <li className="nav-item">
