@@ -102,7 +102,7 @@ const AddReviewModal: React.FC<ModalProps> = ({
           >
             <h4 className="mb-4">Add New Review</h4>
             <form action={handleSubmit}>
-              <div className="max-h-[70vh] overflow-y-auto">
+              <div className="max-h-[70vh] overflow-y-auto pt-3">
                 <LabeledInput
                   label="Reviewer Name"
                   name="reviewer_name"
@@ -137,18 +137,25 @@ const AddReviewModal: React.FC<ModalProps> = ({
                   text="Add Photo (optional)"
                 />
                 <LabeledInput
-                  label="External Link (optional)"
-                  name="external_link"
-                  value={formData.external_link}
-                  onChange={handleChange}
-                />
-                <LabeledInput
                   label="Review Platform"
                   name="platform"
                   value={formData.platform}
                   onChange={handleChange}
                   required
                 />
+                <div>
+                  <h2 className="text-lg font-semibold text-dark text-start w-full mt-6 mb-0">
+                    External Reviews Page
+                  </h2>
+
+                  <div className="text-sm text-gray-500 my-1 ml-2">Insert the URL of your reviews page here (e.g Google Reviews) if you want your Dentalbio visitors to view all your reviews.</div>
+                  <LabeledInput
+                    label="External Reviews Page (optional)"
+                    name="external_link"
+                    value={formData.external_link}
+                    onChange={handleChange}
+                  />
+                </div>
               </div>
               <div className="flex justify-end gap-2 mt-4">
                 <FullRoundedButton isLoading={isUploading} type="submit">
