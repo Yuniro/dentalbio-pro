@@ -4,11 +4,12 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import AddNewReview from './AddNewReview';
 import SkeletonLoader from '@/app/components/Loader/Loader';
-import { arraysRankingAreEqual } from '@/utils/function_utils';
 import { useFormStatus } from 'react-dom';
 import { usePreview } from '@/app/components/PreviewContext';
 import ReviewCard from './components/ReviewCard';
 import AddReviewModal from './components/AddReviewModal';
+import LabeledInput from '../components/LabeledInput';
+import FullRoundedButton from '@/app/components/Button/FullRoundedButton';
 
 const ItemType = {
   BLOG: "BLOG"
@@ -67,10 +68,11 @@ function DraggableReviewCard({
 
 const ManageReviews = ({ username }: { username: string; }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
-  const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
-  const [reviewTitle, setReviewTitle] = useState<string | null>(null);
   const [reviews, setReviews] = useState<any[] | null>(null);
   const [initialReviews, setInitialReviews] = useState<any[] | null>(null);
+  const [externalLink, setExternalLink] = useState<string>("");
+  const [externalLinkId, setExternalLinkId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [editingReview, setEditingReview] = useState<ReviewType>({
     id: "",
     user_id: "",
@@ -96,6 +98,21 @@ const ManageReviews = ({ username }: { username: string; }) => {
       const data = await response.json();
       setReviews(data.data);
       setInitialReviews(data.data);
+    };
+
+    fetchReviews();
+  }, []);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const response = await fetch('/api/external-review-pages', {
+        method: 'GET'
+      });
+      const data = await response.json();
+      if (data.data.length) {
+        setExternalLink(data.data[0].link);
+        setExternalLinkId(data.data[0].id);
+      }
     };
 
     fetchReviews();
@@ -153,6 +170,25 @@ const ManageReviews = ({ username }: { username: string; }) => {
   const handleEditItem = async (id: string) => {
     await setEditingReview(reviews?.at(reviews?.findIndex((review) => review.id === id)));
     setIsEditingOpen(true);
+  }
+
+  const handleExternalReviewPageSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+    const method = externalLinkId ? 'PUT' : 'POST';
+    const response = await fetch('/api/external-review-pages', {
+      method,
+      body: JSON.stringify({ id: externalLinkId, link: externalLink })
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      console.log("Failed to Save External Link", data.error);
+    } else {
+      triggerReload();
+    }
+    setIsLoading(false);
   }
 
   const uploadImage = async (image: File) => {
@@ -237,6 +273,25 @@ const ManageReviews = ({ username }: { username: string; }) => {
 
       <div className="flex justify-end mt-6">
         <AddNewReview onAdd={handleAdd} username={username} />
+      </div>
+
+      <div>
+        <h2 className="text-lg font-semibold text-dark text-start w-full mt-6 mb-0">
+          External Reviews Page
+        </h2>
+
+        <div className="text-sm text-gray-500 my-1 ml-2">Insert the URL of your reviews page here (e.g Google Reviews) if you want your Dentalbio visitors to view all your reviews.</div>
+        <form onSubmit={handleExternalReviewPageSave}>
+          <LabeledInput
+            label="External Reviews Page (optional)"
+            name="external_link"
+            value={externalLink}
+            onChange={e => setExternalLink(e.target.value)}
+          />
+          <div className='flex justify-end'>
+            <FullRoundedButton isLoading={isLoading} type='submit'> Save</FullRoundedButton>
+          </div>
+        </form>
       </div>
 
       <AddReviewModal

@@ -29,7 +29,6 @@ const AddReviewModal: React.FC<ModalProps> = ({
     stars: 5,
     content: "",
     image_url: "",
-    external_link: "",
     created_at: null,
     platform: "",
   });
@@ -45,7 +44,6 @@ const AddReviewModal: React.FC<ModalProps> = ({
         stars: 5,
         content: "",
         image_url: "",
-        external_link: "",
         created_at: null,
         platform: "",
       });
@@ -143,19 +141,6 @@ const AddReviewModal: React.FC<ModalProps> = ({
                   onChange={handleChange}
                   required
                 />
-                <div>
-                  <h2 className="text-lg font-semibold text-dark text-start w-full mt-6 mb-0">
-                    External Reviews Page
-                  </h2>
-
-                  <div className="text-sm text-gray-500 my-1 ml-2">Insert the URL of your reviews page here (e.g Google Reviews) if you want your Dentalbio visitors to view all your reviews.</div>
-                  <LabeledInput
-                    label="External Reviews Page (optional)"
-                    name="external_link"
-                    value={formData.external_link}
-                    onChange={handleChange}
-                  />
-                </div>
               </div>
               <div className="flex justify-end gap-2 mt-4">
                 <FullRoundedButton isLoading={isUploading} type="submit">

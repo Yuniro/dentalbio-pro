@@ -22,11 +22,9 @@ export async function GET(request: Request) {
     }
 
     const { data, error } = await supabase
-      .from('reviews')
+      .from('external_review_pages')
       .select('*')
-      .eq('user_id', userId)
-      .in('enabled', enabledField)
-      .order('rank', { ascending: true });
+      .eq('user_id', userId);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
@@ -39,20 +37,18 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { reviewer_name, content, stars, image_url, platform, created_at } = await request.json();
+  const { link } = await request.json();
 
   try {
     const supabase = createClient();
 
     const userData = await getUserInfo({ supabase });
 
-    const maxRank = await getMaxRank({ supabase, table: "reviews", field: "user_id", value: userData.id }) + 1;
-
     const { data, error } = await supabase
-      .from('reviews')
-      .insert([{ user_id: userData.id, reviewer_name, content, stars, image_url, platform, rank: maxRank, created_at }])
+      .from('external_review_pages')
+      .insert([{ user_id: userData.id, link }])
       .select("*")
-      .single();;
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
@@ -65,26 +61,15 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const updated_data = await request.json();
+  const { id, link } = await request.json();
 
   try {
     const supabase = createClient();
 
-    if (updated_data.image_url) {
-      const { data: review, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .eq('id', updated_data.id)
-        .single();
-
-      if (updated_data.image_url !== review.image_url && review.image_url.length > 0)
-        await deleteFileFromSupabase({ supabase, bucketName: 'review-images', fileUrl: review.image_url });
-    }
-
     const { data, error } = await supabase
-      .from('reviews')
-      .update(updated_data)
-      .eq('id', updated_data.id)
+      .from('external_review_pages')
+      .update({ link })
+      .eq('id', id)
       .select('*')
       .single();
 
@@ -104,17 +89,8 @@ export async function DELETE(request: Request) {
   try {
     const supabase = createClient();
 
-    const { data: review, error: getError } = await supabase
-      .from('reviews')
-      .select('image_url')
-      .eq('id', id)
-      .single()
-
-    if (review?.image_url)
-      await deleteFileFromSupabase({ supabase, bucketName: 'review-images', fileUrl: review.image_url });
-
     const { data, error } = await supabase
-      .from('reviews')
+      .from('external_review_pages')
       .delete()
       .eq('id', id);
 

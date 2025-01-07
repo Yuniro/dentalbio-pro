@@ -61,7 +61,6 @@ type ReviewType = {
   content?: string;
   stars?: number;
   image_url?: string;
-  external_link?: string;
   platform?: string;
   rank?: number;
   enabled?: boolean;
