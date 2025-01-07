@@ -48,7 +48,7 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
   return (
     <div id="location">
       <div className="row section-wrapper-work">
-        <h1 className="text-center text-[26px] font-semibold pb-8">Where I work</h1>
+        <h1 className="text-center text-[23px] md:text-[26px] font-semibold pb-8">Where I work</h1>
 
         {locations?.map((location) =>
           <div className="col-12 map-wrapper" key={location.location_id}>

@@ -17,19 +17,19 @@ export default function SuccessPage() {
       className={`${manrope.className} flex flex-col items-center justify-center min-h-screen gap-10 text-center mx-auto px-10`}
     >
       <span className="bg-gradient-to-r from-[#8866e9] via-[#cb7470] to-[#ed8b39] bg-clip-text text-transparent">
-        <span className="text-2xl -mb-5 lg:text-[26px] font-semibold  max-w-screen-md w-full mx-auto bg-gradient-to-r from-[#8866e9] via-[#cb7470] to-[#ed8b39] bg-clip-text text-transparent">
+        <span className="text-2xl -mb-5 lg:text-[23px] md:text-[26px] font-semibold  max-w-screen-md w-full mx-auto bg-gradient-to-r from-[#8866e9] via-[#cb7470] to-[#ed8b39] bg-clip-text text-transparent">
           You did it!
         </span>
         <span className="flex items-center mb-4  justify-center flex-col text-6xl md:text-8xl font-bold">
           dental.bio/<span className=" font-bold">{username}</span>
         </span>
-        <span className="text-[26px] font-semibold  max-w-screen-md w-full mx-auto from-primary-1 via-primary-2 to-primary-orange-1 bg-clip-text text-transparent">
+        <span className="text-[23px] md:text-[26px] font-semibold  max-w-screen-md w-full mx-auto from-primary-1 via-primary-2 to-primary-orange-1 bg-clip-text text-transparent">
           is <span className=" border-b-4 border-[#8866e9] ">almost</span>{" "}
           yours!
         </span>
       </span>
 
-      <span className="text-2xl -mb-5 -mt-5 lg:text-[26px] font-semibold  max-w-screen-md w-full mx-auto bg-gradient-to-r from-[#8866e9] via-[#cb7470] to-[#ed8b39] bg-clip-text text-transparent">
+      <span className="text-2xl -mb-5 -mt-5 lg:text-[23px] md:text-[26px] font-semibold  max-w-screen-md w-full mx-auto bg-gradient-to-r from-[#8866e9] via-[#cb7470] to-[#ed8b39] bg-clip-text text-transparent">
         Please check your email to complete your registration!
       
       <svg

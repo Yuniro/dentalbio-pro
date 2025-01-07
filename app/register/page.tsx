@@ -190,7 +190,7 @@
 //           <div className=" h-full text-center flex flex-col justify-between items-center py-10 gap-32">
 //             <div className="flex flex-col justify-center items-center gap-5">
 //               {/* <span className="text-dark text-sm -mb-2">Almost there</span> */}
-//               <span className="text-[26px] font-semibold bg-gradient-to-r mb-3 from-primary-1 via-primary-2 to-primary-orange-1 bg-clip-text text-transparent">
+//               <span className="text-[23px] md:text-[26px] font-semibold bg-gradient-to-r mb-3 from-primary-1 via-primary-2 to-primary-orange-1 bg-clip-text text-transparent">
 //                 Choose your username
 //               </span>
 //               <ClaimForm />
@@ -548,7 +548,7 @@ export default function Page() {
         {!usernameFromUrl ? (
           <div className=" h-full text-center flex flex-col justify-between items-center py-10 gap-32">
             <div className="flex flex-col justify-center items-center gap-5">
-              <span className="text-[26px] font-semibold bg-gradient-to-r mb-3 from-primary-1 via-primary-2 to-primary-orange-1 bg-clip-text text-transparent">
+              <span className="text-[23px] md:text-[26px] font-semibold bg-gradient-to-r mb-3 from-primary-1 via-primary-2 to-primary-orange-1 bg-clip-text text-transparent">
                 Choose your username
               </span>
               <ClaimForm />

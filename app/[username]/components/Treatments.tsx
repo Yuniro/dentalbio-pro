@@ -61,7 +61,7 @@ export default function Treatments({ dentistryId }: { dentistryId: string }) {
   return (
     <section>
       <div className="text-center treatment-wrapper">
-        <h1 className="section-heading-treatment text-[26px] font-semibold pb-4">Treatments</h1>
+        <h1 className="section-heading-treatment text-[23px] md:text-[26px] font-semibold pb-4">Treatments</h1>
         <div
           className="accordion custom-accoradion-wrapper"
           id="accordionExample"

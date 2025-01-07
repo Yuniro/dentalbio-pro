@@ -43,7 +43,7 @@ const Reviews: React.FC<ReviewsProps> = ({
     <div className="text-center" id="review">
       {(reviews.length > 0) &&
         <div className="mb-4">
-          <h1 className="section-heading-treatment text-[26px] font-semibold pb-4">
+          <h1 className="section-heading-treatment text-[23px] md:text-[26px] font-semibold pb-4">
             {externalLink ?
               <a href={externalLink} className="text-black no-underline" target="_blank">Reviews</a> :
               <span>Reviews</span>}
