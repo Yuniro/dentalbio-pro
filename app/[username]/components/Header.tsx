@@ -103,12 +103,12 @@ export default function Header({
           {/* Dots icon for modal trigger */}
           <div className="flex items-center gap-2">
             {isOtherPage &&
-                <Link
-                  href={`/${username}`}
-                  className="contact-me-btn whitespace-nowrap no-underline"
-                >
-                  <span>Back</span>
-                </Link>}
+              <Link
+                href={`/${username}`}
+                className="contact-me-btn whitespace-nowrap no-underline"
+              >
+                <span>Back</span>
+              </Link>}
             <a href={`mailto:${contact_email}`} id="onscroll-hide-contact-btn">
               <button className="contact-me-btn whitespace-nowrap">
                 Contact me
@@ -149,13 +149,20 @@ export default function Header({
 
           {/* Contact and modal button */}
           <div className="d-flex align-items-center gap-2">
-            {!scrolled && (
-              <a href={`mailto:${contact_email}`} id="onscroll-hide-contact-btn">
-                <button className="contact-me-btn whitespace-nowrap">
-                  Contact me
-                </button>
-              </a>
-            )}
+            {/* {isOtherPage &&
+              <Link
+                href={`/${username}`}
+                className="contact-me-btn whitespace-nowrap no-underline"
+              >
+                <span>Back</span>
+              </Link>} */}
+            {/* {!scrolled && ( */}
+            <a href={`mailto:${contact_email}`} id="onscroll-hide-contact-btn">
+              <button className="contact-me-btn whitespace-nowrap">
+                Contact me
+              </button>
+            </a>
+            {/* )} */}
             <ShareModal username={username} />
           </div>
         </div>
