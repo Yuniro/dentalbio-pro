@@ -169,7 +169,7 @@ export default function Sidebar() {
                   onClick={handleClose}
                 /> */}
                 <SidebarItem
-                  label="Location"
+                  label="Locations"
                   link="/dashboard/location"
                   isActive={pathname === "/dashboard/location"}
                   Icon={MapPin}
@@ -192,7 +192,7 @@ export default function Sidebar() {
                 {userSubscriptionStatus === "pro" &&
                   <>
                   <SidebarItem
-                    label="Blog"
+                    label="Blogs"
                     link="/dashboard/blog"
                     isActive={pathname === "/dashboard/blog"}
                     Icon={Newspaper}
@@ -207,7 +207,7 @@ export default function Sidebar() {
                   />
                   </>}
                 <SidebarItem
-                  label="Review"
+                  label="Reviews"
                   link="/dashboard/review"
                   isActive={pathname === "/dashboard/review"}
                   Icon={CheckSquare}
