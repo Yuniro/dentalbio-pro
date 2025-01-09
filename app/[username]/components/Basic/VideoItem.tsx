@@ -18,7 +18,7 @@ const VideoItem: React.FC<VideoItemType> = ({
     <div className={`w-full`}>
       <div className="toplinks-main">
         <div
-          className={`w-full block cursor-pointer text-center toplinks-wrapper toplinks-without-image transition-opacity duration-500 ${isOpen ? "opacity-0 invisible h-0 p-0 m-0 border-none" : "h-auto visible opacity-100"}`}
+          className={`w-full block cursor-pointer text-center toplinks-wrapper toplinks-without-image justify-center transition-opacity duration-500 ${isOpen ? "opacity-0 invisible h-0 p-0 m-0 border-none" : "h-auto visible opacity-100"}`}
           onClick={() => setIsOpen(true)}
         >
           {title}
