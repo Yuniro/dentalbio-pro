@@ -37,7 +37,7 @@ export default function Navbar() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#gallery" onClick={e => handleScroll(e, "#gallery")}>
+              <a className="nav-link" href="#video" onClick={e => handleScroll(e, "#video")}>
                 Videos
               </a>
             </li>

@@ -66,3 +66,21 @@ type ReviewType = {
   enabled?: boolean;
   created_at?: datetime;
 }
+
+type VideoType = {
+  id?: string;
+  group_id?: string;
+  title?: string;
+  link?: string;
+  rank?: number;
+  enabled?: boolean;
+}
+
+type GroupType = {
+  id: string;
+  user_id?: string;
+  name?: string;
+  rank?: number;
+  enabled?: boolean;
+  datas?: any[];
+}

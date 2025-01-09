@@ -1,9 +1,9 @@
 import React from "react"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import ManageReviews from "./ManageReviews";
+import ManageVideoGroups from "./ManageVideoGroups";
 
-const Review = async () => {
+const Video = async () => {
   const supabase = createClient();
 
   const { data: authData, error: authError } = await supabase.auth.getUser();
@@ -18,10 +18,10 @@ const Review = async () => {
     return redirect("/dashboard");
 
   return (
-    <div className='px-10 pt-10'>
-      <ManageReviews />
+    <div className='px-10'>
+      <ManageVideoGroups />
     </div>
   )
 }
 
-export default Review
+export default Video

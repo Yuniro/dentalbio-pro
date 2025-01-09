@@ -25,8 +25,8 @@ const ConfirmMessage: React.FC<ModalProps> = ({
   return (
     <>
       {isOpen && (
-        <div className="modal-overlay fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center" onClick={onClose}>
-          <div className="bg-white p-4 rounded-[26px]">
+        <div className="modal-overlay fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center" onMouseDown={onClose}>
+          <div className="bg-white p-4 rounded-[26px]" onMouseDown={(e) => e.stopPropagation()}>
             <div className="pb-4 text-lg">{description}</div>
             <div className="flex justify-end gap-2">
               <FullRoundedButton buttonType="danger" type="submit" onClick={onOk}>{okText ? okText : "Yes"}</FullRoundedButton>

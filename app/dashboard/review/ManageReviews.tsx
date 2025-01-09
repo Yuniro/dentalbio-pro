@@ -16,7 +16,6 @@ const ItemType = {
 }
 
 function DraggableReviewCard({
-  username,
   review,
   index,
   onUpdate,
@@ -24,7 +23,6 @@ function DraggableReviewCard({
   onEditItem,
   moveReview
 }: {
-  username: string;
   review: ReviewType,
   index: number;
   onUpdate: any;
@@ -55,7 +53,6 @@ function DraggableReviewCard({
       }}
     >
       <ReviewCard
-        username={username}
         onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
@@ -66,7 +63,7 @@ function DraggableReviewCard({
 }
 
 
-const ManageReviews = ({ username }: { username: string; }) => {
+const ManageReviews = () => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [reviews, setReviews] = useState<any[] | null>(null);
   const [initialReviews, setInitialReviews] = useState<any[] | null>(null);
@@ -260,7 +257,6 @@ const ManageReviews = ({ username }: { username: string; }) => {
                 key={review.id}
                 index={index}
                 review={review}
-                username={username}
                 onUpdate={handleEdit}
                 onDelete={handleDelete}
                 onEditItem={handleEditItem}
@@ -272,7 +268,7 @@ const ManageReviews = ({ username }: { username: string; }) => {
       </DndProvider>
 
       <div className="flex justify-end mt-6">
-        <AddNewReview onAdd={handleAdd} username={username} />
+        <AddNewReview onAdd={handleAdd} />
       </div>
 
       <div>
@@ -295,7 +291,6 @@ const ManageReviews = ({ username }: { username: string; }) => {
       </div>
 
       <AddReviewModal
-        username={username}
         isOpen={isEditingOpen}
         onClose={() => setIsEditingOpen(false)}
         onEdit={handleEdit}

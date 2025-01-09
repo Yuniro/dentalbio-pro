@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { User, Gear, MapPin, Heart, LinkSimple, House } from "phosphor-react";
-import { CheckSquare, Image, Newspaper } from "@phosphor-icons/react/dist/ssr";
+import { CheckSquare, Image, Newspaper, Video } from "@phosphor-icons/react/dist/ssr";
 
 // Constants for storing keys in cookies
 const COOKIE_USERNAME_KEY = "username";
@@ -191,28 +191,35 @@ export default function Sidebar() {
                 />
                 {userSubscriptionStatus === "pro" &&
                   <>
-                  <SidebarItem
-                    label="Blogs"
-                    link="/dashboard/blog"
-                    isActive={pathname === "/dashboard/blog"}
-                    Icon={Newspaper}
-                    onClick={handleClose}
-                  />
-                  <SidebarItem
-                    label="Gallery"
-                    link="/dashboard/gallery"
-                    isActive={pathname === "/dashboard/gallery"}
-                    Icon={Image}
-                    onClick={handleClose}
-                  />
+                    <SidebarItem
+                      label="Blogs"
+                      link="/dashboard/blog"
+                      isActive={pathname === "/dashboard/blog"}
+                      Icon={Newspaper}
+                      onClick={handleClose}
+                    />
+                    <SidebarItem
+                      label="Gallery"
+                      link="/dashboard/gallery"
+                      isActive={pathname === "/dashboard/gallery"}
+                      Icon={Image}
+                      onClick={handleClose}
+                    />
+                    <SidebarItem
+                      label="Reviews"
+                      link="/dashboard/review"
+                      isActive={pathname === "/dashboard/review"}
+                      Icon={CheckSquare}
+                      onClick={handleClose}
+                    />
+                    <SidebarItem
+                      label="Videos"
+                      link="/dashboard/video"
+                      isActive={pathname === "/dashboard/video"}
+                      Icon={Video}
+                      onClick={handleClose}
+                    />
                   </>}
-                <SidebarItem
-                  label="Reviews"
-                  link="/dashboard/review"
-                  isActive={pathname === "/dashboard/review"}
-                  Icon={CheckSquare}
-                  onClick={handleClose}
-                />
                 <SidebarItem
                   label="Settings"
                   link="/dashboard/settings"

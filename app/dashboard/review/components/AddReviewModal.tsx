@@ -9,7 +9,6 @@ import ReactStars from "react-stars";
 import CustomDatePicker from "@/app/components/DatePicker/DatePicker";
 
 type ModalProps = ReviewType & {
-  username: string;
   isOpen: boolean;
   onClose: () => void;
   onCreate?: (formData: ReviewType, image_file: File | null) => void;
@@ -17,7 +16,6 @@ type ModalProps = ReviewType & {
 }
 
 const AddReviewModal: React.FC<ModalProps> = ({
-  username,
   isOpen,
   onClose,
   onCreate,
@@ -92,11 +90,11 @@ const AddReviewModal: React.FC<ModalProps> = ({
       {isOpen && (
         <div
           className="modal-overlay overflow-auto fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center"
-          onClick={onClose}
+          onMouseDown={onClose}
         >
           <div
             className="w-[600px] overflow-hidden flex flex-col rounded-[26px] bg-[#F3F3F1] p-10"
-            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
           >
             <h4 className="mb-4">Add New Review</h4>
             <form action={handleSubmit}>

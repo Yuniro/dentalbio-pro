@@ -1,48 +1,40 @@
 'use client'
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
-import { CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
+import { ArrowSquareOut, CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
+import Link from "next/link";
 import React, { useEffect, useReducer, useState } from "react"
 
-type ReviewCardProps = {
-  id?: string;
-  reviewer_name?: string;
-  content?: string;
-  slug?: string;
-  enabled?: boolean;
-  onUpdate: (review: ReviewType, image: null) => void;
+type VideoCardProps = VideoType & {
+  onUpdate: (video: VideoType, image: null) => void;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-const ReviewCard: React.FC<ReviewCardProps> = ({
-  id,
-  reviewer_name,
-  content,
-  slug,
-  enabled,
+const VideoCard: React.FC<VideoCardProps> = ({
   onUpdate,
   onEditItem,
   onDelete,
-}: ReviewCardProps) => {
+  ...videoProps
+}: VideoCardProps) => {
   const [isOpenConfirmMessage, setIsOpenConfirmMessage] = useState<boolean>(false);
-  const [isActive, toggleIsActive] = useReducer((prevState) => !prevState, enabled!);
+  const [isActive, toggleIsActive] = useReducer((prevState) => !prevState, videoProps.enabled!);
 
   useEffect(() => {
-    if (enabled !== isActive) {
-      const review = {
-        id, enabled: isActive
+    if (videoProps.enabled !== isActive) {
+      const video = {
+        id: videoProps.id, enabled: isActive
       }
-      onUpdate(review, null);
+      onUpdate(video, null);
     }
   }, [isActive]);
 
   const handleDelete = () => {
-    onDelete(id!);
+    onDelete(videoProps.id!);
   }
 
   return (
     <>
-      <div className="w-full p-6 shadow rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
+      <div className="w-full px-6 py-3 shadow rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
         {/* Caret Buttons */}
         <div className="cursor-pointer">
           <div><CaretUp /></div>
@@ -53,16 +45,16 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
         <div className="flex-grow text-[14px] overflow-hidden">
           {/* Title Row */}
           <div className="flex flex-1 items-center truncate gap-2">
-            <div className="text-[#5046db] font-bold truncate">{reviewer_name}</div>
+            <div className="text-[#5046db] font-bold truncate">{videoProps.title}</div>
             <PencilSimple
               size={18}
               className="cursor-pointer flex-shrink-0 hover:text-[#5046db]"
-              onClick={() => onEditItem(id!)}
+              onClick={() => onEditItem(videoProps.id!)}
             />
           </div>
 
           {/* Content Row */}
-          <div className="truncate">{content}</div>
+          {/* <div className="truncate" dangerouslySetInnerHTML={{__html: content!}} /> */}
         </div>
 
         {/* Trash Button */}
@@ -70,6 +62,14 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
           <div onClick={() => setIsOpenConfirmMessage(true)}>
             <Trash size={20} className="cursor-pointer hover:text-red-700" />
           </div>
+
+          {/* <Link
+            href={videoProps.link!}
+            target="_blank"
+            className="w-8 h-8 p-0.5 hover:bg-neutral-100 hover:text-neutral-700 text-neutral-900 flex items-center justify-center rounded-md transition-all"
+          >
+            <ArrowSquareOut size={20} />
+          </Link> */}
 
           <div className="form-check form-switch custom-form-check">
             <input
@@ -85,7 +85,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
       </div>
 
       <ConfirmMessage
-        description="Aure you sure you want to delete the review?"
+        description="Aure you sure you want to delete the video?"
         okText="Delete"
         isOpen={isOpenConfirmMessage}
         onClose={() => setIsOpenConfirmMessage(false)}
@@ -95,4 +95,4 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
   )
 }
 
-export default ReviewCard;
+export default VideoCard;

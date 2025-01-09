@@ -1,16 +1,14 @@
 'use client'
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
-import React, { useReducer, useState } from "react"
+import React, { useState } from "react"
 import AddReviewModal from "./components/AddReviewModal";
 
 type AddNewReviewProps = {
   onAdd: (review: any) => void;
-  username: string;
 }
 
 const AddNewReview: React.FC<AddNewReviewProps> = ({
   onAdd,
-  username,
 }: AddNewReviewProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -66,7 +64,6 @@ const AddNewReview: React.FC<AddNewReviewProps> = ({
       <FullRoundedButton onClick={openModal} className="mb-4">Add Review</FullRoundedButton>
 
       <AddReviewModal
-        username={username}
         isOpen={isModalOpen}
         onClose={closeModal}
         onCreate={handleSubmit}
