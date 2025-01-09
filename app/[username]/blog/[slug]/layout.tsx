@@ -1,6 +1,11 @@
+import GoogleAnalytics from "@/app/components/GoogleAnalytics";
+import { PreviewProvider } from "@/app/components/PreviewContext";
 import { createClient } from "@/utils/supabase/server";
 import type { Metadata } from "next";
 import { Author } from "next/dist/lib/metadata/types/metadata-types";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 // Function to fetch user and dentistry data based on the username
 async function fetchUserAndDentistry(username: string) {
@@ -97,5 +102,19 @@ export default function RootLayout({
 }: Readonly<{
   children: any;
 }>) {
-  return <>{children}</>;
+  return (
+    <html lang="en">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="Pw4B8ek0e6LOZZqGHufiTdEs-IXcGHD3hFS1U8q9478"
+        />
+      </head>
+      <body className={`${inter.className} `}>
+        {" "}
+        <GoogleAnalytics ga_id={"G-987STTWJ02"} />
+        <PreviewProvider>{children}</PreviewProvider>
+      </body>
+    </html>
+  );
 }

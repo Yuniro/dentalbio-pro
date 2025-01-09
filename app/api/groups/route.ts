@@ -131,7 +131,7 @@ export async function DELETE(request: Request) {
     const supabase = createClient();
 
     const { data, error } = await supabase
-      .from('blog_groups')
+      .from('groups')
       .delete()
       .eq('id', id);
 
