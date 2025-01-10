@@ -63,9 +63,10 @@ const AddVideoModal: React.FC<ModalProps> = ({
             className="w-[600px] overflow-hidden flex flex-col rounded-[26px] bg-[#F3F3F1] p-10"
             onMouseDown={(e) => e.stopPropagation()}
           >
-            <h4 className="mb-4">{props.id ? "Edit" : "Add New"} Video</h4>
+            <h4 className="mb-2">{props.id ? "Edit" : "Add New"} Video</h4>
+            <div className="text-gray-500 text-sm pl-2">Enter the URL of your video. You can embed the video right on your Dentalbio.</div>
             <form action={handleSubmit}>
-              <div className="max-h-[80vh] overflow-y-auto">
+              <div className="max-h-[80vh] overflow-y-auto pt-3">
                 <LabeledInput
                   label="Title"
                   name="title"
@@ -74,10 +75,16 @@ const AddVideoModal: React.FC<ModalProps> = ({
                   required
                 />
                 <LabeledInput
-                  label="Link"
+                  label="Video Link"
                   name="link"
                   value={formData.link}
                   onChange={handleChange}
+                  tooltip
+                  tooltipText={<>
+                    <div>Please enter youtube or vimeo video links.</div>
+                    <div className="">-https://www.youtube.com/watch?v=abc123</div>
+                    <div className="">-https://vimeo.com/12345678</div>
+                  </>}
                   required
                 />
               </div>

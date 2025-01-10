@@ -25,7 +25,7 @@ const FullRoundedButton: React.FC<FullRoundedButtonProps> = ({
       disabled={isLoading}
       {...props}
     >
-      {isLoading && <Spinner className="animate-spin" size={20} />}
+      {isLoading && <Spinner className="animate-spin mr-1" size={20} />}
       {children}
     </button>
   )

@@ -7,7 +7,7 @@ interface AboutTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
   tooltip?: boolean;
-  tooltipText?: string;
+  tooltipText?: React.ReactNode;
   placeholder?: string;
   className?: string;
   children?: React.ReactNode;
@@ -62,20 +62,22 @@ const LabeledInput: React.FC<AboutTextProps> = ({
     <div className="mb-3 relative">
       <div className='rounded-[26px] bg-white pt-[20px] pb-2 px-4 h-[50px]'>
         <label
+          onMouseEnter={showTooltip}
+          onMouseLeave={hideTooltip}
           htmlFor={name}
-          className={`absolute flex items-center gap-1 top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || value ? '-translate-y-[7px] text-xs' : 'scale-100'} ${children ? "pl-5" : ""}`}
+          className={`absolute flex items-center gap-1 top-[12px] text-gray-500 transition-all duration-100 ease-linear transform cursor-pointer ${isFocused || value ? '-translate-y-[7px] text-xs' : 'scale-100'} ${children ? "pl-5" : ""}`}
         >
           {label}
           {tooltip &&
             <div
-              onMouseEnter={showTooltip}
-              onMouseLeave={hideTooltip}
-              className='relative flex-grow cursor-pointer'>
+              // onMouseEnter={showTooltip}
+              // onMouseLeave={hideTooltip}
+              className='flex-grow'>
               <Info
                 size={20}
               />
-              {tooltipVisible &&
-                <div className='absolute w-80 top-[-30px] left-6 bg-gray-900 text-white p-2 z-50 text-sm rounded-lg'>{tooltipText}</div>}
+              {/* {tooltipVisible && */}
+              <div className={`absolute w-80 bottom-8 -left-5 bg-[#121822e8] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 ${tooltipVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}>{tooltipText}</div>
             </div>}
         </label>
 
