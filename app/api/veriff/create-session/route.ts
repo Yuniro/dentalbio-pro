@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     if (userData.isVerified) {
       return NextResponse.json({ error: 'You already verified your identity.' }, { status: 400 });
     }
-    
+
     const response = await fetch(VERIFF_API_URL, {
       method: 'POST',
       headers: {
@@ -37,14 +37,14 @@ export async function POST(req: Request) {
 
     console.log(data);
 
-    // const { data: user, error } = await supabase
-    //   .from('users')
-    //   .update({ session_id, veriff_session_url, session_cretead_at})
-    //   .eq("id", userData.id)
+    const { error } = await supabase
+      .from('users')
+      .update({ session_id: data.verification.id, veriff_session_url: data.verification.url, session_cretead_at: new Date() })
+      .eq("id", userData.id)
 
-    // if (error) {
-    //   return NextResponse.json({ error: error.message }, { status: 400 });
-    // }
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
 
     if (!response.ok) {
       throw new Error(`Failed to create session: ${response.statusText}`);

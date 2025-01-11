@@ -111,7 +111,7 @@ const VerifyStatus: React.FC = () => {
         <>
           <div className="p-6 bg-white rounded-[26px]">
             <h3 className="text-base">Verification is pending</h3>
-            <p className="text-gray-500">Your verification is pending. We will notify you once it's complete.</p>
+            <p className="text-gray-500">Your verification is pending. We will notify you via email once it's complete.</p>
           </div>
         </>}
 
