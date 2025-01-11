@@ -77,7 +77,7 @@ const LabeledInput: React.FC<AboutTextProps> = ({
                 size={20}
               />
               {/* {tooltipVisible && */}
-              <div className={`absolute w-80 bottom-8 -left-5 bg-[#121822e8] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 ${tooltipVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}>{tooltipText}</div>
+              <div className={`absolute w-[400px] bottom-8 -left-5 bg-[#121822] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 ${tooltipVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}>{tooltipText}</div>
             </div>}
         </label>
 

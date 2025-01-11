@@ -47,8 +47,8 @@ export default function Navbar() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#location" onClick={e => handleScroll(e, "#location")}>
-                Location
+              <a className="nav-link">
+                Shop
               </a>
             </li>
           </ul>

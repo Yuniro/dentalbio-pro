@@ -66,19 +66,19 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
       <div className="mb-3">
         <div className='relative rounded-[26px] bg-white pt-[20px] pb-2 px-4'>
           <label
+            onMouseEnter={showTooltip}
+            onMouseLeave={hideTooltip}
             htmlFor={name}
-            className={`absolute flex items-center gap-1 top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || aboutTextContent ? '-translate-y-[7px] text-xs' : 'scale-100'}`}
+            className={`absolute flex items-center gap-1 top-[12px] text-gray-500 transition-all duration-100 ease-linear cursor-pointer transform ${isFocused || aboutTextContent ? '-translate-y-[7px] text-xs' : 'scale-100'}`}
           >
             {placeholder}
             {tooltip &&
               <div
-                onMouseEnter={showTooltip}
-                onMouseLeave={hideTooltip}
-                className='relative flex-grow cursor-pointer'>
+                className='flex-grow'>
                 <Info
                   size={20}
                 />
-                <div className={`absolute w-80 bottom-[30px] -left-5 bg-[#121822e8] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 ${tooltipVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}>{tooltipText}</div>
+                <div className={`absolute w-[400px] bottom-[30px] -left-5 bg-[#121822e8] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 break-words ${tooltipVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}>{tooltipText}</div>
                 {/* {tooltipVisible &&
                   <div className='absolute w-72 top-[-30px] left-6 bg-gray-900 text-white p-2 z-50 text-sm rounded-lg'>{tooltipText}</div>} */}
               </div>}

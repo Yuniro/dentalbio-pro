@@ -52,7 +52,7 @@ export async function POST(request: Request) {
       .from('reviews')
       .insert([{ user_id: userData.id, reviewer_name, content, stars, image_url, platform, rank: maxRank, created_at }])
       .select("*")
-      .single();;
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });

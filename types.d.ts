@@ -84,3 +84,26 @@ type GroupType = {
   enabled?: boolean;
   datas?: any[];
 }
+
+type UserType = {
+  id?: string;
+  email?: string;
+  first_name?: string;
+  middle_name?: string;
+  last_name?: string;
+  username?: string;
+  country?: string;
+  position?: string;
+  title?: string;
+  subcription_id?: string;
+  plan_id?: string;
+  subscription_status?: string;
+  current_period?: Date;
+  trial_end?: Date;
+  customer_id?: string;
+  gdc_no?: string;
+  qualification?: string;
+  isVerified?: boolean;
+  veriff_session_url?: string;
+  created_at?: Date;
+}

@@ -37,6 +37,7 @@ export default function Header({
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const fetchProfilePicture = async (dentistryId: string) => {
     try {
       const supabase = createClient();
@@ -63,9 +64,25 @@ export default function Header({
       setProfilePicUrl("/placeholder.png"); // Set placeholder on error
     }
   };
+
   useEffect(() => {
     fetchProfilePicture(dentistry_id);
   }, []);
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, target: string) => {
+    e.preventDefault(); // Prevent default anchor behavior
+
+    const targetElement = document.querySelector(target);
+    const offset = 120; // Adjust this value for your navbar height or desired gap
+    const elementPosition = targetElement!.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth', // Enables smooth scrolling
+    });
+  }
+
   return (
     <div>
       {/* Desktop View */}
@@ -109,7 +126,7 @@ export default function Header({
               >
                 <span>Back</span>
               </Link>}
-            <a href={`mailto:${contact_email}`} id="onscroll-hide-contact-btn">
+            <a href="#location" onClick={e => handleScroll(e, "#location")} id="onscroll-hide-contact-btn">
               <button className="contact-me-btn whitespace-nowrap">
                 Contact me
               </button>

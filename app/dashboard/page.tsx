@@ -63,7 +63,7 @@ async function getUserDetails() {
 
   const { data: userRecord, error: userError } = await supabase
     .from("users")
-    .select("id, email, first_name, last_name, title, position, gdc_no, qualification")
+    .select("id, email, first_name, last_name, title, position, gdc_no, qualification, isVerified")
     .eq("email", userEmail)
     .single();
 

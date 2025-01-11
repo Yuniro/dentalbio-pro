@@ -64,30 +64,29 @@ const AddVideoModal: React.FC<ModalProps> = ({
             onMouseDown={(e) => e.stopPropagation()}
           >
             <h4 className="mb-2">{props.id ? "Edit" : "Add New"} Video</h4>
-            <div className="text-gray-500 text-sm pl-2">Enter the URL of your video. You can embed the video right on your Dentalbio.</div>
+            <div className="text-gray-500 text-sm pl-2 mb-3">Enter the URL of your video. You can embed the video right on your Dentalbio.</div>
             <form action={handleSubmit}>
-              <div className="max-h-[80vh] overflow-y-auto pt-3">
-                <LabeledInput
-                  label="Title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  required
-                />
-                <LabeledInput
-                  label="Video Link"
-                  name="link"
-                  value={formData.link}
-                  onChange={handleChange}
-                  tooltip
-                  tooltipText={<>
-                    <div>Please enter youtube or vimeo video links.</div>
-                    <div className="">-https://www.youtube.com/watch?v=abc123</div>
-                    <div className="">-https://vimeo.com/12345678</div>
-                  </>}
-                  required
-                />
-              </div>
+              <LabeledInput
+                label="Title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+              />
+              <LabeledInput
+                label="Video Link"
+                name="link"
+                value={formData.link}
+                onChange={handleChange}
+                tooltip
+                tooltipText={<>
+                  <div>{"Please enter video links (youtube, vimeo, dailymotion, facebook, twitter and direct video urls are available)."}</div>
+                  <div className="">-https://www.youtube.com/watch?v=123456</div>
+                  <div className="">-https://vimeo.com/123456</div>
+                  <div className="">-https://www.dailymotion.com/video/123456</div>
+                </>}
+                required
+              />
               <div className="flex justify-end gap-2 mt-4">
                 <FullRoundedButton isLoading={isUploading} type="submit">
                   {props.id ? "Update" : "Add"} Video
