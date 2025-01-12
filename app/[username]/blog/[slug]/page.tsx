@@ -77,7 +77,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select("id, position, first_name, last_name, username, title, gdc_no, qualification")
+    .select("id, position, first_name, last_name, username, title, gdc_no, qualification, isVerified")
     .eq("id", blogGroup?.user_id)
     .single();
 
@@ -98,6 +98,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
           dentistry_id={dentistry?.dentistry_id}
           contact_email={dentistry?.contact_email}
           isOtherPage={true}
+          isVerified={user?.isVerified}
         />
 
         <div className='text-center mt-20'>
