@@ -8,17 +8,20 @@ import { DotsThreeCircle } from "phosphor-react";
 import { createClient } from "@/utils/supabase/client";
 import ShareModal from "./ShareModal";
 import Link from "next/link";
+import { SealCheck } from "@phosphor-icons/react/dist/ssr";
 
 export default function Header({
   username,
   dentistry_id,
   contact_email,
   isOtherPage,
+  isVerified
 }: {
   username: string;
   dentistry_id: string;
   contact_email: string;
   isOtherPage?: boolean;
+  isVerified: boolean;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
@@ -106,8 +109,9 @@ export default function Header({
           </div>
 
           {/* Username and verification */}
-          <div className="d-flex align-items-center gap-2 justify-content-center">
+          <div className="flex items-center gap-1 justify-content-center">
             <h6 className="fw-medium">@{username}</h6>
+            {isVerified && <SealCheck size={16} weight="fill" color="#49ADF4" />}
             {/* Verification icon - uncomment if needed */}
             {/* <Image
               src="/assets/Verify.svg"

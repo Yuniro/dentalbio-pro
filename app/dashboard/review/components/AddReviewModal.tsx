@@ -111,6 +111,7 @@ const AddReviewModal: React.FC<ModalProps> = ({
                   name="content"
                   value={formData.content}
                   onChange={handleChange}
+                  limit={500}
                   required
                 />
                 <CustomDatePicker

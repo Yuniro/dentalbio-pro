@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
     const { error } = await supabase
       .from('users')
-      .update({ session_id: data.verification.id, veriff_session_url: data.verification.url, session_cretead_at: new Date() })
+      .update({ session_id: data.verification.id, veriff_session_url: data.verification.url, session_created_at: new Date() })
       .eq("id", userData.id)
 
     if (error) {

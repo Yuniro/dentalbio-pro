@@ -36,11 +36,9 @@ export default function ProfileDetail({
       const { data: dentistryLocations, error: dentistryLocationError } =
         await supabase
           .from("dentistry_locations")
-          .select(
-            `
-          location_id,
-          locations (country, city, area, full_address)
-        `
+          .select(`
+            location_id,
+            locations (country, city, area, full_address)`
           )
           .eq("dentistry_id", dentistry_id)
 
@@ -132,7 +130,7 @@ export default function ProfileDetail({
         <div className="text-center">
           <h2 className="fw-medium user-name text-[23px]">{title}</h2>
           <div className="user-profile-header-detail">
-            <div className="d-flex align-items-center gap-2 justify-content-center">
+            <div className="flex items-center gap-2 justify-content-center">
               <h5>@{username}</h5>
             </div>
           </div>

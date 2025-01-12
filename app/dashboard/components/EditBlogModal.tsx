@@ -140,6 +140,7 @@ const EditBlogModal: React.FC<ModalProps> = ({
                   tooltip={true}
                   tooltipText="The Meta Description provides a summary for search engines. Keep it between 50-200 characters."
                   value={formData.meta_description}
+                  limit={300}
                   onChange={handleChange}
                 />
                 <LabeledInput

@@ -31,13 +31,15 @@ const LimitedTextArea: React.FC<LimitedTextAreaProp> = ({
 
   useEffect(() => {
     if (props.value)
-      setAboutTextContent(props.value as string);
+      setAboutTextContent((props.value as string).slice(0, maxLimit));
   }, [props])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    // Prevent input beyond the max limit
-    if (e.target.value.length <= maxLimit) {
-      setAboutTextContent(e.target.value);
+    const data = e.target.value.slice(0, maxLimit);
+
+    if (data !== aboutTextContent) {
+      setAboutTextContent(data);
+
       if (props.onChange)
         props.onChange(e);
     }

@@ -53,7 +53,7 @@ const VerifyStatus: React.FC = () => {
     <div className="py-4">
       <div className="flex items-center gap-2 mb-4">
         <h4 className="mb-0">{userData.isVerified ? "Your account is verified" : "Identity verification"}</h4>
-        {(sessionStatus === "approved") && <SealCheck size={16} weight="fill" color="#5046db" />}
+        {(sessionStatus === "approved") && <SealCheck size={16} weight="fill" color="#49ADF4" />}
       </div>
 
       {(sessionStatus === "approved") &&
