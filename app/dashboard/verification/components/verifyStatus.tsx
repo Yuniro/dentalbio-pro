@@ -26,17 +26,21 @@ const VerifyStatus: React.FC = () => {
 
       if (data.data.isVerified) {
         setSessionStatus("approved");
-      } else if (data.data.session_id) {
-        const response = await fetch(`https://api.veriff.com/v1/sessions/${data.data.session_id}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${process.env.VERIFF_API_KEY}`,
-          },
-        });
+      } 
+      // else if (data.data.session_id) {
+      //   const response = await fetch(`${process.env.VERIFF_BASE_URL}/v1/sessions/${data.data.session_id}/decision`, {
+      //     method: 'GET',
+      //     headers: {
+      //       'X-HMAC-SIGNATURE': '334141f052e317fde6668de54dc6640b4a5c47582ad86a8bed63afe566f17b14',
+      //       'X-AUTH-CLIENT': `Bearer ${process.env.VERIFF_API_KEY}`,
+      //     },
+      //   });
 
-        const status = await response.json();
-        setSessionStatus(status);
-      } else {
+      //   const status = await response.json();
+      //   console.log(status);
+      //   setSessionStatus(status);
+      // } 
+      else {
         setSessionStatus("declined");
       }
 

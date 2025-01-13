@@ -35,8 +35,6 @@ export async function POST(req: Request) {
 
     const data = await response.json();
 
-    console.log(data);
-
     const { error } = await supabase
       .from('users')
       .update({ session_id: data.verification.id, veriff_session_url: data.verification.url, session_created_at: new Date() })
