@@ -34,8 +34,8 @@ export async function POST(req: Request) {
 
     send_email({ userData: data, subject });
 
-    // return NextResponse.redirect('/dashboard/verification');
-    return NextResponse.json({ message: 'Callback handled successfully' });
+    return NextResponse.redirect(process.env.VERIFF_CALLBACK_URL!);
+    // return NextResponse.json({ message: 'Callback handled successfully' });
   } catch (error) {
     console.error('Error handling Veriff callback:', error);
     return NextResponse.json(
