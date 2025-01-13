@@ -9,7 +9,6 @@ export default function Footer({
   dentistryId,
   bookingLink,
   contact_email,
-  userTitle,
   userFirstName,
   userLastName,
   username,
@@ -17,7 +16,6 @@ export default function Footer({
   dentistryId: string;
   bookingLink: string;
   contact_email: string;
-  userTitle: string;
   userFirstName: string;
   userLastName: string;
   username: string;
@@ -75,7 +73,7 @@ export default function Footer({
               href="/"
               className="text-decoration-none text-black fw-semibold footer-dentalbio"
             >
-              Join {userTitle === 'N/A' ? '' : userTitle} {userFirstName} on Dentalbio
+              Join {userFirstName} on Dentalbio
             </a>
           </div>
           <div className="absolute w-[44px] top-0 right-0">

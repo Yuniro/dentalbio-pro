@@ -144,7 +144,6 @@ export default async function BlogPage({ params }: { params: { slug: string } })
           dentistryId={dentistry.dentistry_id}
           bookingLink={dentistry?.booking_link}
           contact_email={dentistry?.contact_email}
-          userTitle={user?.title}
           username={user?.username}
           userFirstName={user?.first_name}
           userLastName={user?.last_name}
