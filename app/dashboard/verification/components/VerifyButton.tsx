@@ -1,6 +1,7 @@
 'use client';
 
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
+import { useState } from "react";
 
 type VerifyButtonProps = {
   userId: string;
@@ -10,7 +11,10 @@ type VerifyButtonProps = {
 }
 
 const VerifyButton: React.FC<VerifyButtonProps> = ({ userId, sessionUrl, sessionCreatedAt, text }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const startVerification = async () => {
+    setIsLoading(true);
     const currentTime = new Date();
     const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
 
@@ -35,7 +39,7 @@ const VerifyButton: React.FC<VerifyButtonProps> = ({ userId, sessionUrl, session
     };
   }
 
-  return <FullRoundedButton onClick={startVerification}>{text || "Start now"}</FullRoundedButton>;
+  return <FullRoundedButton isLoading={isLoading} onClick={startVerification}>{text || "Start now"}</FullRoundedButton>;
 }
 
 export default VerifyButton;

@@ -73,7 +73,7 @@ export default function Footer({
               href="/"
               className="text-decoration-none text-black fw-semibold footer-dentalbio"
             >
-              Join {userFirstName} on Dentalbio
+              Join {userFirstName} {userLastName} on Dentalbio
             </a>
           </div>
           <div className="absolute w-[44px] top-0 right-0">
