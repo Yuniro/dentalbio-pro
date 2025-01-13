@@ -105,5 +105,7 @@ type UserType = {
   qualification?: string;
   isVerified?: boolean;
   veriff_session_url?: string;
+  session_id?: Date;
+  session_created_at?: Date;
   created_at?: Date;
 }

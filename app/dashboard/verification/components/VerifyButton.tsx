@@ -5,11 +5,16 @@ import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 type VerifyButtonProps = {
   userId: string;
   sessionUrl?: string;
+  sessionCreatedAt?: Date;
+  text?: string;
 }
 
-const VerifyButton: React.FC<VerifyButtonProps> = ({ userId, sessionUrl }) => {
+const VerifyButton: React.FC<VerifyButtonProps> = ({ userId, sessionUrl, sessionCreatedAt, text }) => {
   const startVerification = async () => {
-    if (sessionUrl) {
+    const currentTime = new Date();
+    const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+
+    if (sessionUrl && (currentTime.getTime() - (new Date(sessionCreatedAt!)).getTime() < oneWeekInMilliseconds)) {
       window.location.href = sessionUrl; // Redirect to Veriff
     } else {
       try {
@@ -23,8 +28,6 @@ const VerifyButton: React.FC<VerifyButtonProps> = ({ userId, sessionUrl }) => {
 
         const data = await response.json();
 
-        console.log(data);
-
         window.location.href = data.verification.url; // Redirect to Veriff
       } catch (error) {
         console.error('Error starting verification:', error);
@@ -32,7 +35,7 @@ const VerifyButton: React.FC<VerifyButtonProps> = ({ userId, sessionUrl }) => {
     };
   }
 
-  return <FullRoundedButton onClick={startVerification}>Start now</FullRoundedButton>;
+  return <FullRoundedButton onClick={startVerification}>{text || "Start now"}</FullRoundedButton>;
 }
 
 export default VerifyButton;

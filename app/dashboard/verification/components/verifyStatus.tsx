@@ -26,21 +26,23 @@ const VerifyStatus: React.FC = () => {
 
       if (data.data.isVerified) {
         setSessionStatus("approved");
-      } 
-      // else if (data.data.session_id) {
-      //   const response = await fetch(`${process.env.VERIFF_BASE_URL}/v1/sessions/${data.data.session_id}/decision`, {
-      //     method: 'GET',
-      //     headers: {
-      //       'X-HMAC-SIGNATURE': '334141f052e317fde6668de54dc6640b4a5c47582ad86a8bed63afe566f17b14',
-      //       'X-AUTH-CLIENT': `Bearer ${process.env.VERIFF_API_KEY}`,
-      //     },
-      //   });
+      } else if (data.data.session_id) {
+        const currentTime = new Date();
+        const timeDifference = currentTime.getTime() - (new Date(data.data.session_created_at)).getTime();
+        const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+        if (timeDifference < oneWeekInMilliseconds) {
+          const response = await fetch(`/api/veriff/session-status?sessionId=${data.data.session_id}`);
 
-      //   const status = await response.json();
-      //   console.log(status);
-      //   setSessionStatus(status);
-      // } 
-      else {
+          const { data: veriffData } = await response.json();
+          if (!veriffData.verification) {
+            setSessionStatus("declined");
+          } else {
+            setSessionStatus(veriffData.verification.status);
+          }
+        } else {
+          setSessionStatus("declined");
+        }
+      } else {
         setSessionStatus("declined");
       }
 
@@ -114,8 +116,11 @@ const VerifyStatus: React.FC = () => {
       {(sessionStatus === "pending") &&
         <>
           <div className="p-6 bg-white rounded-[26px]">
-            <h3 className="text-base">Verification is pending</h3>
-            <p className="text-gray-500">Your verification is pending. We will notify you via email once it's complete.</p>
+            <h3 className="text-base mb-3">Verification in Progress</h3>
+            <p className="text-gray-500 mb-1">Thank you for submitting your verification details.</p>
+            <p className="text-gray-500 mb-1">Our team is currently reviewing your information to ensure everything meets the required standards.</p>
+            <p className="text-gray-500 mb-1">You will receive a notification via email as soon as the verification process is completed. If additional information is needed, we will reach out to you directly.</p>
+            <p className="text-gray-500 mb-1">We appreciate your patience and understanding during this process.</p>
           </div>
         </>}
 
@@ -172,6 +177,7 @@ const VerifyStatus: React.FC = () => {
             <VerifyButton
               userId={userData.id!}
               sessionUrl={userData.veriff_session_url}
+              sessionCreatedAt={userData.session_created_at}
             />
           </div>
         </>}
