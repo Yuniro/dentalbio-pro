@@ -6,12 +6,14 @@ import VerifyButton from "./VerifyButton";
 import { CheckCircle } from "@phosphor-icons/react/dist/ssr";
 import { SealCheck } from "@phosphor-icons/react";
 import { redirect } from "next/navigation";
+import { usePreview } from "@/app/components/PreviewContext";
 
 type SessionType = "pending" | "approved" | "declined";
 
 const VerifyStatus: React.FC = () => {
   const [userData, setUserData] = useState<UserType | null>(null);
   const [sessionStatus, setSessionStatus] = useState<SessionType | null>(null);
+  const { triggerReload } = usePreview();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,16 +34,11 @@ const VerifyStatus: React.FC = () => {
         const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
         if (timeDifference < oneWeekInMilliseconds) {
           const response = await fetch(`/api/veriff/session-status?sessionId=${data.data.session_id}`);
-
-          const { data: veriffData } = await response.json();
-
-          console.log(veriffData);
-
-          if (!veriffData?.verification) {
-            setSessionStatus("declined");
-          } else {
-            setSessionStatus(veriffData.verification.status);
+          const { status } = await response.json();
+          if (status === "approved") {
+            triggerReload();
           }
+          setSessionStatus(status);
         } else {
           setSessionStatus("declined");
         }
