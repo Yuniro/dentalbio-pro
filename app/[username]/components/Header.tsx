@@ -165,6 +165,7 @@ export default function Header({
           <div className={`${scrolled ? "d-block" : "d-none"}`}>
             <div className="d-flex align-items-center gap-2 justify-content-center">
               <h6 className="fw-medium">@{username}</h6>
+              {isVerified && <SealCheck size={16} weight="fill" color="#49ADF4" />}
             </div>
           </div>
 

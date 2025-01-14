@@ -137,6 +137,7 @@ export default async function HomePage({ params }: PageProps) {
               title={dentistry.about_title}
               description={dentistry.about_text}
               dentistry_id={dentistry.dentistry_id}
+              isVerified={user.isVerified}
             />
           )}
           <Treatments dentistryId={dentistry.dentistry_id} />

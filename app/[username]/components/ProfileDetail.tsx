@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Navbar from "./Navbar";
 import { createClient } from "@/utils/supabase/client";
-import { FacebookLogo, InstagramLogo, TiktokLogo, TwitterLogo } from "@phosphor-icons/react/dist/ssr";
+import { FacebookLogo, InstagramLogo, SealCheck, TiktokLogo, TwitterLogo } from "@phosphor-icons/react/dist/ssr";
 import SocialLinks from "./SocialLinks";
 
 export default function ProfileDetail({
@@ -14,6 +14,7 @@ export default function ProfileDetail({
   title,
   description,
   dentistry_id,
+  isVerified,
 }: {
   username: string;
   position: string;
@@ -22,6 +23,7 @@ export default function ProfileDetail({
   title: string;
   description: string;
   dentistry_id: string;
+  isVerified: boolean;
 }) {
   const [locations, setLocations] = useState<any[] | null>(null);
   const [socialLinks, setSocialLinks] = useState<any>(null); // State for social links
@@ -132,6 +134,7 @@ export default function ProfileDetail({
           <div className="user-profile-header-detail">
             <div className="flex items-center gap-2 justify-content-center">
               <h5>@{username}</h5>
+              {isVerified && <SealCheck size={16} weight="fill" color="#49ADF4" />}
             </div>
           </div>
           <SocialLinks {...socialLinks} />
