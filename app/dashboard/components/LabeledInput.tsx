@@ -59,7 +59,7 @@ const LabeledInput: React.FC<AboutTextProps> = ({
   }
 
   return (
-    <div className="mb-3 relative">
+    <div className="mb-3 relative flex-grow">
       <div className='rounded-[26px] bg-white pt-[20px] pb-2 px-4 h-[50px]'>
         <label
           onMouseEnter={showTooltip}

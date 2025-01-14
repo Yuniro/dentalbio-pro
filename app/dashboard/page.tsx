@@ -180,6 +180,7 @@ async function saveDentistryDetails(formData: FormData) {
     about_text: formData.get("about_text") as string,
     phone: formData.get("phone") as string,
     booking_link: formData.get("booking_link") as string,
+    booking_link_enabled: formData.get("booking_link_enabled") === "on",
     contact_email: formData.get("contact_email") as string,
   };
 
@@ -430,18 +431,32 @@ export default async function Profile() {
             />
           </LabeledInput>
 
-          <LabeledInput
-            label="Booking Link (optional)"
-            className="w-full text-base pl-5"
-            name="booking_link"
-            defaultValue={dentistry?.booking_link || ""}
-          // placeholder="Booking Link (optional)"
-          >
-            <CalendarPlus
-              size={24}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
-            />
-          </LabeledInput>
+          <div className="w-full flex justify-between items-center gap-3">
+            <LabeledInput
+              label="Booking Link (optional)"
+              className="w-full flex-grow text-base pl-5"
+              name="booking_link"
+              defaultValue={dentistry?.booking_link || ""}
+            // placeholder="Booking Link (optional)"
+            >
+              <CalendarPlus
+                size={24}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
+              />
+            </LabeledInput>
+
+            <div className="form-check form-switch custom-form-check mb-3">
+              <input
+                className="form-check-input cursor-pointer"
+                type="checkbox"
+                role="switch"
+                id="booking_link_enabled"
+                name="booking_link_enabled"
+                // checked={dentistry.booking_link_enabled}
+                defaultChecked={dentistry.booking_link_enabled}
+              />
+            </div>
+          </div>
 
           {/* Save Button for Dentistry */}
           <div className="w-full flex items-end justify-end">

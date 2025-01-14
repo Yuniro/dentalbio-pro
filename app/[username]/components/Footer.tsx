@@ -90,7 +90,7 @@ export default function Footer({
             />
             <p>
               A{" "}
-              <a href="https://www.digimax.co.uk/" target="_blank">
+              <a href="https://digimax.dental/" target="_blank">
                 Digimax
               </a>{" "}
               Project

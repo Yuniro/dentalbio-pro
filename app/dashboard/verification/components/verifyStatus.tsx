@@ -35,7 +35,7 @@ const VerifyStatus: React.FC = () => {
 
           const { data: veriffData } = await response.json();
 
-          // console.log(veriffData);
+          console.log(veriffData);
 
           if (!veriffData?.verification) {
             setSessionStatus("declined");
