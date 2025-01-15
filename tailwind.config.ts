@@ -21,7 +21,7 @@ const config: Config = {
       },
     },
     screens: {
-      'xs': '425px',
+      'xs': '380px',
       // => @media (min-width: 425px) { ... }
     },
   },
