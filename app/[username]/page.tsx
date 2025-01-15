@@ -162,8 +162,7 @@ export default async function HomePage({ params }: PageProps) {
             bookingLink={dentistry.booking_link}
             contact_email={dentistry.contact_email}
             username={username}
-            userFirstName={user.first_name}
-            userLastName={user.last_name}
+            title={dentistry.about_title}
           />
         </div>
       </div>

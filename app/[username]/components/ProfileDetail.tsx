@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import { createClient } from "@/utils/supabase/client";
 import { FacebookLogo, InstagramLogo, SealCheck, TiktokLogo, TwitterLogo } from "@phosphor-icons/react/dist/ssr";
 import SocialLinks from "./SocialLinks";
+import VerificationBadge from "@/app/components/VerificationBadge";
 
 export default function ProfileDetail({
   username,
@@ -130,11 +131,14 @@ export default function ProfileDetail({
           />
         </div>
         <div className="text-center">
-          <h2 className="fw-medium user-name text-[23px]">{title}</h2>
+          <div className="flex justify-center items-center gap-2 pb-1">
+            <h2 className="fw-medium user-name text-[23px] pb-0">{title}</h2>
+            {isVerified && <VerificationBadge size={22}/>}
+          </div>
           <div className="user-profile-header-detail">
-            <div className="flex items-center gap-2 justify-content-center">
+            <div className="flex items-center gap-2 justify-center">
               <h5>@{username}</h5>
-              {isVerified && <SealCheck size={16} weight="fill" color="#49ADF4" />}
+              {isVerified && <VerificationBadge />}
             </div>
           </div>
           <SocialLinks {...socialLinks} />

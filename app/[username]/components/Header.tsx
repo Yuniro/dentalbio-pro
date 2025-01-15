@@ -9,6 +9,7 @@ import { createClient } from "@/utils/supabase/client";
 import ShareModal from "./ShareModal";
 import Link from "next/link";
 import { SealCheck } from "@phosphor-icons/react/dist/ssr";
+import VerificationBadge from "@/app/components/VerificationBadge";
 
 export default function Header({
   username,
@@ -109,9 +110,9 @@ export default function Header({
           </div>
 
           {/* Username and verification */}
-          <div className="flex items-center gap-1 justify-content-center">
+          <div className="flex items-center gap-2 justify-content-center">
             <h6 className="fw-medium">@{username}</h6>
-            {isVerified && <SealCheck size={16} weight="fill" color="#49ADF4" />}
+            {isVerified && <VerificationBadge direction="right" />}
             {/* Verification icon - uncomment if needed */}
             {/* <Image
               src="/assets/Verify.svg"
@@ -165,7 +166,7 @@ export default function Header({
           <div className={`${scrolled ? "d-block" : "d-none"}`}>
             <div className="d-flex align-items-center gap-2 justify-content-center">
               <h6 className="fw-medium">@{username}</h6>
-              {isVerified && <SealCheck size={16} weight="fill" color="#49ADF4" />}
+              {isVerified && <VerificationBadge direction="right" />}
             </div>
           </div>
 

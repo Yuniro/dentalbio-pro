@@ -20,6 +20,10 @@ const config: Config = {
         "primary-green-1": "#34d594",
       },
     },
+    screens: {
+      'xs': '425px',
+      // => @media (min-width: 425px) { ... }
+    },
   },
   plugins: [],
 };

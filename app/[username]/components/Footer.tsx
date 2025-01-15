@@ -9,15 +9,13 @@ export default function Footer({
   dentistryId,
   bookingLink,
   contact_email,
-  userFirstName,
-  userLastName,
+  title,
   username,
 }: {
   dentistryId: string;
   bookingLink: string;
   contact_email: string;
-  userFirstName: string;
-  userLastName: string;
+  title: string;
   username: string;
 }) {
   const [socialLinks, setSocialLinks] = useState<any>(null);
@@ -73,7 +71,7 @@ export default function Footer({
               href="/"
               className="text-decoration-none text-black fw-semibold footer-dentalbio"
             >
-              Join {userFirstName} {userLastName} on Dentalbio
+              Join {title} on Dentalbio
             </a>
           </div>
           <div className="absolute w-[44px] top-0 right-0">
