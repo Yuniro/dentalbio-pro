@@ -7,7 +7,7 @@ const ReviewItem: React.FC<ReviewType> = ({ ...reviewData }) => {
   return (
     <div className="flex flex-col items-center text-center mb-4">
       <div className='w-full flex justify-center'>
-        <div className='flex items-center gap-2 text-left'>
+        <div className={`flex items-center ${reviewData.image_url?.length! > 0 ? "gap-2 text-left" : "gap-0 text-center"}`}>
           <div>
             <BlogImage
               src={reviewData.image_url!}
@@ -16,7 +16,7 @@ const ReviewItem: React.FC<ReviewType> = ({ ...reviewData }) => {
           </div>
           <div>
             <div className='text-sm font-semibold'>{reviewData.reviewer_name}</div>
-            <div className={`text-sm text-[#9D9D9D] ${reviewData.image_url ? "text-left" : "text-center"}`}>{formatDateAsMMDDYYYY(reviewData.created_at)}</div>
+            <div className={`text-sm text-[#9D9D9D]`}>{formatDateAsMMDDYYYY(reviewData.created_at)}</div>
           </div>
         </div>
       </div>

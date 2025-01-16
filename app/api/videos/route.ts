@@ -43,10 +43,8 @@ export async function POST(request: Request) {
 
   try {
     const supabase = createClient();
-
-    const userData = await getUserInfo({ supabase });
-
-    const maxRank = await getMaxRank({ supabase, table: "videos", field: "group_id", value: userData.id }) + 1;
+    
+    const maxRank = await getMaxRank({ supabase, table: "videos", field: "group_id", value: group_id }) + 1;
 
     const { data, error } = await supabase
       .from('videos')
@@ -69,17 +67,6 @@ export async function PUT(request: Request) {
 
   try {
     const supabase = createClient();
-
-    if (updated_data.image_url) {
-      const { data: review, error } = await supabase
-        .from('videos')
-        .select('*')
-        .eq('id', updated_data.id)
-        .single();
-
-      if (updated_data.image_url !== review.image_url && review.image_url.length > 0)
-        await deleteFileFromSupabase({ supabase, bucketName: 'review-images', fileUrl: review.image_url });
-    }
 
     const { data, error } = await supabase
       .from('videos')
@@ -104,16 +91,7 @@ export async function DELETE(request: Request) {
   try {
     const supabase = createClient();
 
-    const { data: review, error: getError } = await supabase
-      .from('videos')
-      .select('image_url')
-      .eq('id', id)
-      .single()
-
-    if (review?.image_url)
-      await deleteFileFromSupabase({ supabase, bucketName: 'review-images', fileUrl: review.image_url });
-
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('videos')
       .delete()
       .eq('id', id);

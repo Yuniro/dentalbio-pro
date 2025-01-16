@@ -130,6 +130,7 @@ export default async function HomePage({ params }: PageProps) {
 
           {dentistry.about_title && (
             <ProfileDetail
+              userId={user.id}
               username={username}
               position={user.position}
               gdc_no={user.gdc_no}

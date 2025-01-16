@@ -34,6 +34,24 @@ const EditGalleryModal: React.FC<ModalProps> = ({
 
     setIsUploading(false);
     setFormData(props);
+    
+    if (isOpen) {
+      // Get the scrollbar width
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      
+      // Prevent scrolling and adjust padding
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      // Restore styles
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+    };
   }, [isOpen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -60,8 +78,8 @@ const EditGalleryModal: React.FC<ModalProps> = ({
   return (
     <>
       {isOpen && (
-        <div className="modal-overlay fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center" onMouseDown={onClose}>
-          <div className="w-[600px] rounded-[26px] bg-[#F3F3F1] p-10" onMouseDown={(e) => e.stopPropagation()}>
+        <div className="modal-overlay cursor-pointer fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center" onMouseDown={onClose}>
+          <div className="w-[600px] rounded-[26px] cursor-auto bg-[#F3F3F1] p-10" onMouseDown={(e) => e.stopPropagation()}>
             <h4 className="mb-4">Edit Gallery</h4>
             <form onSubmit={handleSubmit}>
               <div className="max-h-[70vh] overflow-y-auto">

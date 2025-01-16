@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function Navbar() {
+type NavbarProps = {
+  toggleShopOpen: () => void;
+}
+
+export default function Navbar({ toggleShopOpen }: NavbarProps) {
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, target: string) => {
     e.preventDefault(); // Prevent default anchor behavior
@@ -47,7 +51,7 @@ export default function Navbar() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link">
+              <a className="nav-link cursor-pointer" onClick={toggleShopOpen}>
                 Shop
               </a>
             </li>

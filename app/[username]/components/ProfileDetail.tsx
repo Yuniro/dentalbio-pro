@@ -1,13 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import Link from "next/link";
 import Navbar from "./Navbar";
 import { createClient } from "@/utils/supabase/client";
 import { FacebookLogo, InstagramLogo, SealCheck, TiktokLogo, TwitterLogo } from "@phosphor-icons/react/dist/ssr";
 import SocialLinks from "./SocialLinks";
 import VerificationBadge from "@/app/components/VerificationBadge";
+import ProductList from "./ProductList";
 
 export default function ProfileDetail({
+  userId,
   username,
   position,
   gdc_no,
@@ -17,6 +19,7 @@ export default function ProfileDetail({
   dentistry_id,
   isVerified,
 }: {
+  userId: string;
   username: string;
   position: string;
   gdc_no: string;
@@ -26,10 +29,12 @@ export default function ProfileDetail({
   dentistry_id: string;
   isVerified: boolean;
 }) {
+  const [productGroups, setProductGroups] = useState<GroupType[]>([]);
   const [locations, setLocations] = useState<any[] | null>(null);
   const [socialLinks, setSocialLinks] = useState<any>(null); // State for social links
   const [loading, setLoading] = useState(true);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
+  const [isShopOpen, toggleShopOpen] = useReducer((state: boolean) => !state, false);
 
   // Fetch the location based on the dentistry_id
   useEffect(() => {
@@ -93,6 +98,26 @@ export default function ProfileDetail({
     fetchSocialLinks();
   }, [dentistry_id]);
 
+  useEffect(() => {
+    async function fetchProductList() {
+      const query = [
+        userId ? `userId=${userId}` : '', // Add userId if it exists
+        'type=products'
+      ]
+        .filter(Boolean)                  // Remove empty strings
+        .join('&');                       // Join with '&' to form a valid query string
+
+      const response = await fetch(`/api/groups?${query}`, {
+        method: 'GET'
+      });
+      const data = await response.json();
+
+      setProductGroups(data.data);
+    }
+
+    fetchProductList();
+  }, [dentistry_id]);
+
   const fetchProfilePicture = async (dentistryId: string) => {
     try {
       const supabase = createClient();
@@ -147,7 +172,11 @@ export default function ProfileDetail({
         </div>
       </div>
 
-      <Navbar />
+      <Navbar toggleShopOpen={toggleShopOpen} />
+
+      {productGroups.length > 0 && <div className={`flex flex-wrap pb-4 ${isShopOpen ? 'animate-fade-in' : 'animate-fade-out'}`}>
+        {productGroups.map((group) => <ProductList key={group.id} products={group.datas!} />)}
+      </div>}
 
       {/* "Based in" Section */}
       {locations && (

@@ -76,6 +76,32 @@ type VideoType = {
   enabled?: boolean;
 }
 
+type ProductType = {
+  id?: string;
+  group_id?: string;
+  name?: string;
+  link?: string;
+  platform?: string;
+  image_url?: string;
+  price?: string;
+  currency?: string;
+  rank?: number;
+  enabled?: boolean;
+}
+
+type IndividualProductType = {
+  id?: string;
+  user_id?: string;
+  name?: string;
+  link?: string;
+  platform?: string;
+  image_url?: string;
+  price?: string;
+  currency?: string;
+  rank?: number;
+  enabled?: boolean;
+}
+
 type GroupType = {
   id: string;
   user_id?: string;
