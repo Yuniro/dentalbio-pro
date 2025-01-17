@@ -113,7 +113,7 @@ export default function ProfileDetail({
       });
       const data = await response.json();
 
-      setProductGroups(data.data);
+      setProductGroups(data);
     }
 
     fetchGroupList();
@@ -128,8 +128,8 @@ export default function ProfileDetail({
       });
       const data = await response.json();
 
-      // setProductGroups(data.data);
-      setProducts(data.data);
+      // setProductGroups(data);
+      setProducts(data);
     }
 
     fetchProductList();

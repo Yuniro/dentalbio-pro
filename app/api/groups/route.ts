@@ -52,7 +52,7 @@ export async function GET(request: Request) {
       datas: dataList.filter(data => data.group_id === group.id),
     }));
 
-    return NextResponse.json({ data: groupedDatas });
+    return NextResponse.json(groupedDatas);
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }

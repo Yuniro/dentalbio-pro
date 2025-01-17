@@ -1,6 +1,7 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import VideoItem from "./Basic/VideoItem";
+import { useNavbar } from "@/app/components/NavbarContext";
 
 type VideoListProps = {
   groupname: string;
@@ -11,7 +12,14 @@ const VideoList: React.FC<VideoListProps> = ({
   groupname,
   fetchedVideos,
 }: VideoListProps) => {
+  const { setNavItemState } = useNavbar();
   const [videos, setVideos] = useState<any[]>(fetchedVideos);
+
+  useEffect(() => {
+    if (videos.length > 0) {
+      setNavItemState("Videos", true);
+    }
+  }, [videos]);
 
   return (
     <div className="text-center mb-4">

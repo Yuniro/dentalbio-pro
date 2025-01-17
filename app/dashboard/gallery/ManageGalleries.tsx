@@ -83,8 +83,8 @@ const ManageGalleries = () => {
         method: 'GET'
       });
       const data = await response.json();
-      setGalleries(data.data);
-      setInitialGalleries(data.data);
+      setGalleries(data);
+      setInitialGalleries(data);
     };
 
     fetchGalleries();

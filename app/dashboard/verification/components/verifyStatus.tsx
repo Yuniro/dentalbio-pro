@@ -24,18 +24,18 @@ const VerifyStatus: React.FC = () => {
       });
       const data = await response.json();
 
-      if (!data.data) {
+      if (!data) {
         return redirect("/error?message=user_not_found");
       }
 
-      if (data.data.isVerified) {
+      if (data.isVerified) {
         setSessionStatus("approved");
-      } else if (data.data.session_id) {
-        if (isWithinSevenDays(new Date(data.data.session_created_at))) {
-          const response = await fetch(`/api/veriff/session-status?sessionId=${data.data.session_id}`);
+      } else if (data.session_id) {
+        if (isWithinSevenDays(new Date(data.session_created_at))) {
+          const response = await fetch(`/api/veriff/session-status?sessionId=${data.session_id}`);
           const { status } = await response.json();
           if (status === "approved") {
-            await sendVerificationMail(data.data.email!, data.data.username!, data.data.first_name!);
+            await sendVerificationMail(data.email!, data.username!, data.first_name!);
 
             triggerReload();
           }
@@ -47,7 +47,7 @@ const VerifyStatus: React.FC = () => {
         setSessionStatus("not_started");
       }
 
-      setUserData(data.data);
+      setUserData(data);
     }
 
     fetchUserData();

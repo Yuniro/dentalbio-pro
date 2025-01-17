@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       blogs: blogs.filter(blog => blog.group_id === group.id),
     }));
 
-    return NextResponse.json({ data: groupedBlogs });
+    return NextResponse.json(groupedBlogs);
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }

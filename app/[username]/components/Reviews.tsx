@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import ReviewItem from "./ReviewItem";
+import { useNavbar } from "@/app/components/NavbarContext";
 
 type ReviewsProps = {
   userId: string;
@@ -11,6 +12,7 @@ const Reviews: React.FC<ReviewsProps> = ({
 }: ReviewsProps) => {
   const [reviews, setReviews] = useState<any[]>([]);
   const [externalLink, setExternalLink] = useState<string | null>(null);
+  const { setNavItemState } = useNavbar();
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -19,7 +21,7 @@ const Reviews: React.FC<ReviewsProps> = ({
         method: 'GET'
       });
       const data = await response.json();
-      setReviews(data.data);
+      setReviews(data);
     };
 
     fetchReviews();
@@ -32,12 +34,18 @@ const Reviews: React.FC<ReviewsProps> = ({
         method: 'GET'
       });
       const data = await response.json();
-      if (data.data.length)
-        setExternalLink(data.data[0].link);
+      if (data.length)
+        setExternalLink(data[0].link);
     };
 
     fetchReviewLink();
   }, []);
+
+  useEffect(() => {
+    if (reviews.length > 0) {
+      setNavItemState("Reviews", true);
+    }
+  }, [reviews]);
 
   return (
     <div className="text-center" id="review">

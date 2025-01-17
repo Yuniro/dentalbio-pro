@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import { PreviewProvider } from "./components/PreviewContext";
+import { NavbarProvider } from "./components/NavbarContext";
 
 // Define the type for your content type fields
 interface LandingPageFields {
@@ -78,7 +79,7 @@ export default function RootLayout({
       <body className={`${inter.className} `}>
         {" "}
         <GoogleAnalytics ga_id={"G-987STTWJ02"} />
-        <PreviewProvider>{children}</PreviewProvider>
+        <NavbarProvider><PreviewProvider>{children}</PreviewProvider></NavbarProvider>
       </body>
     </html>
   );

@@ -14,7 +14,7 @@
 //       expand: ["data.product"],
 //     });
 
-//     const prices = pricesData.data;
+//     const prices = pricesdata;
 
 //     return NextResponse.json({ prices });
 //   } catch (err: any) {

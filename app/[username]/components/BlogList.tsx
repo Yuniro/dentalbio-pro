@@ -1,5 +1,6 @@
 'use client'
 import LinkTitle from "@/app/components/Link/LinkTitle";
+import { useNavbar } from "@/app/components/NavbarContext";
 import React, { useEffect, useState } from "react";
 
 type BlogListProps = {
@@ -13,7 +14,14 @@ const BlogList: React.FC<BlogListProps> = ({
   fetchedBlogs,
   username,
 }: BlogListProps) => {
+  const { setNavItemState } = useNavbar();
   const [blogs, setBlogs] = useState<any[]>(fetchedBlogs);
+
+  useEffect(() => {
+    if (blogs.length > 0) {
+      setNavItemState("Blog", true);
+    }
+  }, [blogs]);
 
   return (
     <div className="text-center mb-4">

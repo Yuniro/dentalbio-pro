@@ -285,3 +285,12 @@ export const countries = [
   "Zambia",
   "Zimbabwe",
 ];
+
+export const navItemNames = [
+  "Links",
+  "Blog",
+  "Gallery",
+  "Videos",
+  "Reviews",
+  "Shop",
+]

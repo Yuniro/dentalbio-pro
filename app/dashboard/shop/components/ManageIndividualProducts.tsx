@@ -83,8 +83,8 @@ const ManageIndividualProducts = () => {
       });
       const data = await response.json();
 
-      setProducts(data.data);
-      setInitialProducts(data.data);
+      setProducts(data);
+      setInitialProducts(data);
     };
 
     fetchIndividualProducts();

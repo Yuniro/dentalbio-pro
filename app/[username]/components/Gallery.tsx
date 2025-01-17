@@ -4,9 +4,11 @@ import { Plus, Minus } from "phosphor-react"; // Import Phosphor Icons
 import { createClient } from "@/utils/supabase/client";
 import Collapse from "./Collapse";
 import GalleryImage from "./GalleryImage";
+import { useNavbar } from "@/app/components/NavbarContext";
 
 export default function Gallery({ userId }: { userId: string }) {
   const [galleries, setGalleries] = useState<any[]>([]);
+  const { setNavItemState } = useNavbar();
 
   // Fetch treatments from Supabase
   useEffect(() => {
@@ -16,7 +18,11 @@ export default function Gallery({ userId }: { userId: string }) {
         method: 'GET'
       });
       const data = await response.json();
-      setGalleries(data.data);
+      setGalleries(data);
+
+      if (data.length > 0) {
+        setNavItemState("Gallery", true);
+      }
     };
 
     fetchGalleries();

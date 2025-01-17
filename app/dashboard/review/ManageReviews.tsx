@@ -93,8 +93,8 @@ const ManageReviews = () => {
         method: 'GET'
       });
       const data = await response.json();
-      setReviews(data.data);
-      setInitialReviews(data.data);
+      setReviews(data);
+      setInitialReviews(data);
     };
 
     fetchReviews();
@@ -106,9 +106,9 @@ const ManageReviews = () => {
         method: 'GET'
       });
       const data = await response.json();
-      if (data.data.length) {
-        setExternalLink(data.data[0].link);
-        setExternalLinkId(data.data[0].id);
+      if (data.length) {
+        setExternalLink(data[0].link);
+        setExternalLinkId(data[0].id);
       }
     };
 

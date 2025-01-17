@@ -27,8 +27,8 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
       });
       const data = await response.json();
 
-      setBlogGroups(data.data);
-      setInitialBlogGroups(data.data);
+      setBlogGroups(data);
+      setInitialBlogGroups(data);
     };
 
     fetchBlogGroups();

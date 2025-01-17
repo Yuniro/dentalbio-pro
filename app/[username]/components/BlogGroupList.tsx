@@ -22,7 +22,7 @@ const BlogGroupList: React.FC<BlogListProps> = ({
       });
       const data = await response.json();
 
-      setBlogGroups(data.data);
+      setBlogGroups(data);
     };
 
     fetchBlogGroups();

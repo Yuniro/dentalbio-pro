@@ -1,10 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useNavbar } from "@/app/components/NavbarContext";
 
 export default function Links({ dentistryId }: { dentistryId: string }) {
   const [linkGroups, setLinkGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { setNavItemState } = useNavbar();
+
 
   // Fetch the link groups and associated links from Supabase
   useEffect(() => {
@@ -29,6 +32,10 @@ export default function Links({ dentistryId }: { dentistryId: string }) {
         console.error("Error fetching link groups:", error);
         setLoading(false);
         return;
+      }
+
+      if (linkGroupsData.length > 0) {
+        setNavItemState("Links", true);
       }
 
       setLinkGroups(linkGroupsData);

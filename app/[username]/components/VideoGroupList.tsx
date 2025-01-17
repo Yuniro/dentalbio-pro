@@ -25,7 +25,7 @@ const VideoGroupList: React.FC<VideoListProps> = ({
       });
       const data = await response.json();
 
-      setVideoGroups(data.data);
+      setVideoGroups(data);
     };
 
     fetchVideoGroups();

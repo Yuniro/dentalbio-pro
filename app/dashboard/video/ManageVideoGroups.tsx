@@ -24,8 +24,8 @@ const ManageGroups: React.FC = () => {
       });
       const data = await response.json();
 
-      setGroups(data.data);
-      setInitialGroups(data.data);
+      setGroups(data);
+      setInitialGroups(data);
     };
 
     fetchGroups();
