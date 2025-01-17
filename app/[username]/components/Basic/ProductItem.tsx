@@ -16,7 +16,7 @@ export default function ProductItem({ product }: ProductItemProps) {
     <Link
       href={product.link!}
       target="_blank"
-      className="block w-1/2 sm:w-1/3 p-2 text-center text-xs sm:text-sm cursor-pointer"
+      className="block w-1/2 sm:w-1/3 p-2 text-center text-xs sm:text-sm cursor-pointer no-underline"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

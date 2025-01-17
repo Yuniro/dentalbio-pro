@@ -135,7 +135,7 @@ const AddIndividualProductModal: React.FC<ModalProps> = ({
                         name="currency"
                         className="w-full appearance-none p-2 rounded-[26px] h-[50px] py-2 text-base px-3 text-neutral-800 pr-10 outline-none cursor-pointer"
                         onChange={handleCurrencyChange}
-                        defaultValue={formData.currency}
+                        value={formData.currency}
                       >
                         {currencies.map((currency) => (
                           <option key={currency} value={currency}>
