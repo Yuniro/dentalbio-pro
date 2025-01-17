@@ -110,7 +110,7 @@ export default function Header({
           </div>
 
           {/* Username and verification */}
-          <div className="flex items-center gap-2 justify-content-center">
+          <div className="flex items-center gap-[6px] justify-content-center">
             <h6 className="fw-medium">@{username}</h6>
             {isVerified && <VerificationBadge direction="right" />}
             {/* Verification icon - uncomment if needed */}
@@ -164,7 +164,7 @@ export default function Header({
 
           {/* Username visible on scroll */}
           <div className={`${scrolled ? "d-block" : "d-none"}`}>
-            <div className="d-flex align-items-center gap-2 justify-content-center">
+            <div className="d-flex align-items-center gap-[6px] justify-content-center">
               <h6 className="fw-medium max-w-32 truncate">@{username}</h6>
               {isVerified && <VerificationBadge direction="right" />}
             </div>
