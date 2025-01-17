@@ -257,7 +257,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
             required
           />
           <div>
-            <button type='submit' className='absolute flex justify-center items-center top-0 right-0 w-[60px] h-[50px] rounded-r-[26px] bg-[#5046DB] hover:bg-[#6960e6]'>
+            <button type='submit' className='absolute flex justify-center items-center top-0 right-0 w-[60px] h-[50px] rounded-r-[26px] bg-primary-1 hover:bg-[#6960e6]'>
               {status.pending ? (
                 <Spinner className="animate-spin" size={20} color='white' />
               ) : (

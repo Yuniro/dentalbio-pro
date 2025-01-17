@@ -94,7 +94,7 @@ export default function AddLinkForm({
             <button
               type="submit"
               disabled={isLoading}
-              className="bg-[#5046db] hover:bg-[#302A83] transition-all text-white py-1.5 rounded-[26px] text-md px-3 font-semibold flex items-center gap-2"
+              className="bg-primary-1 hover:bg-[#302A83] transition-all text-white py-1.5 rounded-[26px] text-md px-3 font-semibold flex items-center gap-2"
             >
               {isLoading ? "Saving..." : "Save"}
             </button>

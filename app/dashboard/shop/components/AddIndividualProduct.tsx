@@ -1,15 +1,13 @@
 'use client'
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import React, { useState } from "react"
-import AddProductModal from "./components/AddProductModal";
+import AddIndividualProductModal from "./AddIndividualProductModal";
 
 type AddNewProductProps = {
-  group_id: string;
   onAdd: (product: any) => void;
 }
 
-const AddNewProduct: React.FC<AddNewProductProps> = ({
-  group_id,
+const AddIndividualProduct: React.FC<AddNewProductProps> = ({
   onAdd,
 }: AddNewProductProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -42,10 +40,10 @@ const AddNewProduct: React.FC<AddNewProductProps> = ({
     }
   }
 
-  const handleSubmit = async (formData: ProductType, image: File | null) => {
+  const handleSubmit = async (formData: IndividualProductType, image: File | null) => {
     const image_url = image ? await uploadImage(image) : "";
 
-    const response = await fetch('/api/products', {
+    const response = await fetch('/api/individual-products', {
       method: 'POST',
       body: JSON.stringify({ ...formData, image_url }),
     });
@@ -64,8 +62,7 @@ const AddNewProduct: React.FC<AddNewProductProps> = ({
     <>
       <FullRoundedButton onClick={openModal} className="mb-4">Add Product</FullRoundedButton>
 
-      <AddProductModal
-        group_id={group_id}
+      <AddIndividualProductModal
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={handleSubmit}
@@ -74,4 +71,4 @@ const AddNewProduct: React.FC<AddNewProductProps> = ({
   )
 }
 
-export default AddNewProduct;
+export default AddIndividualProduct;

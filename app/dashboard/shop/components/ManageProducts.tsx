@@ -4,8 +4,8 @@ import { useDrag, useDrop } from "react-dnd";
 import SkeletonLoader from '@/app/components/Loader/Loader';
 import { usePreview } from '@/app/components/PreviewContext';
 import AddNewProduct from './AddNewProduct';
-import ProductCard from './components/ProductCard';
-import AddProductModal from './components/AddProductModal';
+import ProductCard from './ProductCard';
+import AddProductModal from './AddProductModal';
 
 function DraggableProductCard({
   product,

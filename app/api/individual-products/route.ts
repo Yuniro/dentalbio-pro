@@ -39,16 +39,18 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { group_id, name, link, platform, image_url, price, currency } = await request.json();
+  const { name, link, platform, image_url, price, currency } = await request.json();
 
   try {
     const supabase = createClient();
 
-    const maxRank = await getMaxRank({ supabase, table: "products", field: "group_id", value: group_id }) + 1;
+    const userData = await getUserInfo({ supabase });
+    const userId = userData?.id;
+    const maxRank = await getMaxRank({ supabase, table: "products", field: "user_id", value: userId }) + 1;
 
     const { data, error } = await supabase
       .from('products')
-      .insert([{ group_id, name, link, platform, image_url, price, currency, rank: maxRank }])
+      .insert([{ user_id: userId, name, link, platform, image_url, price, currency, rank: maxRank }])
       .select("*")
       .single();;
 
@@ -64,8 +66,6 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const updated_data = await request.json();
-
-  console.log(updated_data);
 
   try {
     const supabase = createClient();

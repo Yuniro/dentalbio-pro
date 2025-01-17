@@ -259,7 +259,7 @@ export default function ManageTreatments({
       <div className="w-full flex justify-end mt-4 mb-4">
         {hasRearranged && (
           <button
-            className={`bg-[#5046db] hover:bg-[#302A83] transition-all text-white p-2 rounded-[26px] py-2 text-lg px-3 font-semibold flex items-center gap-2`}
+            className={`bg-primary-1 hover:bg-[#302A83] transition-all text-white p-2 rounded-[26px] py-2 text-lg px-3 font-semibold flex items-center gap-2`}
             onClick={handleSaveOrder}
           >
             Save treatment order

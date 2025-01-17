@@ -53,10 +53,10 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
         <div className="flex-grow text-[14px] overflow-hidden">
           {/* Title Row */}
           <div className="flex flex-1 items-center truncate gap-2">
-            <div className="text-[#5046db] font-bold truncate">{reviewer_name}</div>
+            <div className="text-primary-1 font-bold truncate">{reviewer_name}</div>
             <PencilSimple
               size={18}
-              className="cursor-pointer flex-shrink-0 hover:text-[#5046db]"
+              className="cursor-pointer flex-shrink-0 hover:text-primary-1"
               onClick={() => onEditItem(id!)}
             />
           </div>

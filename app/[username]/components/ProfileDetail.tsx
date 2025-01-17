@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { FacebookLogo, InstagramLogo, SealCheck, TiktokLogo, TwitterLogo } from "@phosphor-icons/react/dist/ssr";
 import SocialLinks from "./SocialLinks";
 import VerificationBadge from "@/app/components/VerificationBadge";
-import ProductList from "./ProductList";
+import IndividualProductList from "./IndividualProductList";
 
 export default function ProfileDetail({
   userId,
@@ -30,6 +30,7 @@ export default function ProfileDetail({
   isVerified: boolean;
 }) {
   const [productGroups, setProductGroups] = useState<GroupType[]>([]);
+  const [products, setProducts] = useState<IndividualProductType[]>([]);
   const [locations, setLocations] = useState<any[] | null>(null);
   const [socialLinks, setSocialLinks] = useState<any>(null); // State for social links
   const [loading, setLoading] = useState(true);
@@ -99,7 +100,7 @@ export default function ProfileDetail({
   }, [dentistry_id]);
 
   useEffect(() => {
-    async function fetchProductList() {
+    async function fetchGroupList() {
       const query = [
         userId ? `userId=${userId}` : '', // Add userId if it exists
         'type=products'
@@ -113,6 +114,22 @@ export default function ProfileDetail({
       const data = await response.json();
 
       setProductGroups(data.data);
+    }
+
+    fetchGroupList();
+  }, [dentistry_id]);
+
+  useEffect(() => {
+    async function fetchProductList() {
+      const query = userId ? `userId=${userId}` : '';
+
+      const response = await fetch(`/api/individual-products?${query}`, {
+        method: 'GET'
+      });
+      const data = await response.json();
+
+      // setProductGroups(data.data);
+      setProducts(data.data);
     }
 
     fetchProductList();
@@ -174,9 +191,13 @@ export default function ProfileDetail({
 
       <Navbar toggleShopOpen={toggleShopOpen} />
 
-      {productGroups.length > 0 && <div className={`flex flex-wrap pb-4 ${isShopOpen ? 'animate-fade-in' : 'animate-fade-out'}`}>
+      {/* {productGroups.length > 0 && <div className={`flex flex-wrap pb-4 ${isShopOpen ? 'animate-fade-in' : 'animate-fade-out'}`}>
         {productGroups.map((group) => <ProductList key={group.id} products={group.datas!} />)}
-      </div>}
+      </div>} */}
+
+      <div className={`flex flex-wrap pb-4 ${isShopOpen ? 'animate-fade-in' : 'animate-fade-out'}`}>
+        <IndividualProductList products={products} />
+      </div>
 
       {/* "Based in" Section */}
       {locations && (

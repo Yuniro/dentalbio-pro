@@ -61,7 +61,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
               <button
                 type="submit"
                 disabled={isLoading}
-                className="bg-[#5046db] hover:bg-[#302A83] transition-all text-white py-1.5 rounded-[26px] text-md px-3 font-semibold flex items-center gap-2"
+                className="bg-primary-1 hover:bg-[#302A83] transition-all text-white py-1.5 rounded-[26px] text-md px-3 font-semibold flex items-center gap-2"
               >
                 {isLoading && <Spinner className="animate-spin" size={20} />} Save
               </button>
@@ -86,10 +86,10 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
           <div className="flex-grow text-[14px] overflow-hidden">
             {/* Title Row */}
             <div className="flex flex-1 items-center justify-center truncate gap-2">
-              <div className="text-[#5046db] font-bold truncate">{group.name}</div>
+              <div className="text-primary-1 font-bold truncate">{group.name}</div>
               <PencilSimple
                 size={18}
-                className="cursor-pointer flex-shrink-0 hover:text-[#5046db]"
+                className="cursor-pointer flex-shrink-0 hover:text-primary-1"
                 onClick={() => setIsEditing(true)}
               />
             </div>

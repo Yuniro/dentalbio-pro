@@ -4,10 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { usePreview } from "@/app/components/PreviewContext";
-import ManageProducts from "./ManageProducts";
 import SkeletonLoader from "@/app/components/Loader/Loader";
 import DraggableGroup from "@/app/components/Group/DraggableGroup";
 import AddNewGroupForm from "@/app/components/Group/AddNewGroupForm";
+import ManageProducts from "./ManageProducts";
 
 const ManageGroups: React.FC = () => {
   const [groups, setGroups] = useState<GroupType[] | null>(null);

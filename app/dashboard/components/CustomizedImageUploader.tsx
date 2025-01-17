@@ -216,7 +216,7 @@ const CustomizedImageUploader = ({
                 </button>
                 <button
                   // onClick={handleCropAndUpload}
-                  className="bg-[#5046db] rounded-full text-white px-4 py-2 font-bold"
+                  className="bg-primary-1 rounded-full text-white px-4 py-2 font-bold"
                   disabled={uploading}
                 >
                   Upload

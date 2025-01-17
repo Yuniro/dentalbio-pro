@@ -64,8 +64,8 @@ const AddressItem: React.FC<LocationProps> = ({
         </div>
         <div className="flex flex-col justify-between">
           {isEditing ?
-            <X size={22} className="cursor-pointer hover:text-[#5046DB]" onClick={toggleIsEditing} /> :
-            <NotePencil size={22} className="cursor-pointer hover:text-[#5046DB]" onClick={toggleIsEditing} />}
+            <X size={22} className="cursor-pointer hover:text-primary-1" onClick={toggleIsEditing} /> :
+            <NotePencil size={22} className="cursor-pointer hover:text-primary-1" onClick={toggleIsEditing} />}
           <Trash size={22} className="cursor-pointer text-red-700" onClick={() => setIsOpenConfirmMessage(true)} />
         </div>
       </div>

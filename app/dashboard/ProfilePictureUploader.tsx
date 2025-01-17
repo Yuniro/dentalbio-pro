@@ -350,7 +350,7 @@ export default function ProfilePictureUploader({
         {/* Trash Icon */}
         {profilePicUrl && (
           <button
-            className="absolute top-1 left-1 bg-[#5046db] text-white p-0.5 rounded-full z-20"
+            className="absolute top-1 left-1 bg-primary-1 text-white p-0.5 rounded-full z-20"
             onClick={deleteProfilePicture}
           >
             <TrashSimple size={20} />
@@ -442,7 +442,7 @@ export default function ProfilePictureUploader({
               </button>
               <button
                 onClick={handleCropAndUpload}
-                className="bg-[#5046db] rounded-full text-white px-4 py-2 font-bold"
+                className="bg-primary-1 rounded-full text-white px-4 py-2 font-bold"
                 disabled={uploading}
               >
                 Apply

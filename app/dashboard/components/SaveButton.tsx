@@ -25,7 +25,7 @@ export default function SaveButton({ text }: { text?: string }) {
   return (
     <button
       type="submit"
-      className={`bg-[#5046db] hover:bg-[#302A83] transition-all text-white p-2 rounded-[26px] py-2 text-lg px-3 font-semibold flex items-center gap-2 ${
+      className={`bg-primary-1 hover:bg-[#302A83] transition-all text-white p-2 rounded-[26px] py-2 text-lg px-3 font-semibold flex items-center gap-2 ${
         status.pending ? "opacity-50 cursor-not-allowed" : ""
       }`}
       disabled={status.pending}

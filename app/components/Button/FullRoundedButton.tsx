@@ -21,7 +21,7 @@ const FullRoundedButton: React.FC<FullRoundedButtonProps> = ({
         "bg-red-500 hover:bg-red-800" :
         buttonType === 'ghost' ?
         "bg-gray-500 hover:bg-gray-400" :
-        "bg-[#5046db] hover:bg-[#302a83]" ) + " flex items-center px-[20px] py-[10px] font-bold text-white rounded-[26px] transition-all ease-in-out "}
+        "bg-primary-1 hover:bg-[#302a83]" ) + " flex items-center px-[20px] py-[10px] font-bold text-white rounded-[26px] transition-all ease-in-out "}
       disabled={isLoading}
       {...props}
     >

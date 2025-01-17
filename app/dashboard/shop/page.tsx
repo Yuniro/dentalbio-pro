@@ -1,7 +1,8 @@
 import React from "react"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import ManageProductGroups from "./ManageProductGroups";
+import ManageIndividualProducts from "./components/ManageIndividualProducts";
+// import ManageProductGroups from "./ManageProductGroups";
 
 const Product = async () => {
   const supabase = createClient();
@@ -19,7 +20,8 @@ const Product = async () => {
 
   return (
     <div className='px-10'>
-      <ManageProductGroups />
+      {/* <ManageProductGroups /> */}
+      <ManageIndividualProducts />
     </div>
   )
 }

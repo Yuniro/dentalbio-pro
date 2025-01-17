@@ -57,7 +57,7 @@ export default function ForgotPasswordForm({ defaultEmail }: ForgotPasswordFormP
         <button
           type="submit"
           disabled={loading}
-          className={`bg-[#5046db] hover:bg-[#302A83] transition-all text-white p-2 rounded-[26px] py-2 text-lg px-3 font-semibold flex items-center mb-4 gap-2 ${
+          className={`bg-primary-1 hover:bg-[#302A83] transition-all text-white p-2 rounded-[26px] py-2 text-lg px-3 font-semibold flex items-center mb-4 gap-2 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >

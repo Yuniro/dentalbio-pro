@@ -1,5 +1,7 @@
 'use client'
+import BlogImage from "@/app/components/Image/BlogImage";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
+import { formatCurrency } from "@/utils/functions/formatCurrency";
 import { ArrowSquareOut, CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import React, { useEffect, useReducer, useState } from "react"
@@ -10,7 +12,7 @@ type ProductCardProps = ProductType & {
   onDelete: (id: string) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({
+const InvidualProductCard: React.FC<ProductCardProps> = ({
   onUpdate,
   onEditItem,
   onDelete,
@@ -41,45 +43,50 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <div><CaretDown /></div>
         </div>
 
+        {/* Image */}
+        <BlogImage src={productProps.image_url!} alt={productProps.name!} className="w-24 h-24 rounded-md" />
+
         {/* Title and Content */}
-        <div className="flex-grow text-[14px] overflow-hidden">
+        <div className="flex-grow overflow-hidden">
           {/* Title Row */}
-          <div className="flex flex-1 items-center truncate gap-2">
+          {/* <div className="flex flex-1 items-center truncate gap-2"> */}
+          <div className="text-[14px]">
+            <div className="font-medium truncate">{productProps.platform}</div>
             <div className="text-primary-1 font-bold truncate">{productProps.name}</div>
-            <PencilSimple
-              size={18}
-              className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-              onClick={() => onEditItem(productProps.id!)}
-            />
+            <div className="text-gray-500 font-medium truncate">{formatCurrency(productProps.currency!)}{productProps.price}</div>
           </div>
+          {/* </div> */}
 
           {/* Content Row */}
-          {/* <div className="truncate" dangerouslySetInnerHTML={{__html: content!}} /> */}
-        </div>
-
-        {/* Trash Button */}
-        <div className="flex items-center gap-2">
-          <div onClick={() => setIsOpenConfirmMessage(true)}>
-            <Trash size={20} className="cursor-pointer hover:text-red-700" />
-          </div>
-
-          {/* <Link
-            href={productProps.link!}
-            target="_blank"
-            className="w-8 h-8 p-0.5 hover:bg-neutral-100 hover:text-neutral-700 text-neutral-900 flex items-center justify-center rounded-md transition-all"
-          >
-            <ArrowSquareOut size={20} />
-          </Link> */}
-
-          <div className="form-check form-switch custom-form-check">
-            <input
-              className="form-check-input cursor-pointer"
-              type="checkbox"
-              role="switch"
-              // id={`flexSwitchCheckChecked-${link.link_id}`}
-              checked={isActive}
-              onChange={toggleIsActive}
+          <div className="flex justify-end items-center gap-2">
+            <PencilSimple
+              size={18}
+              className="cursor-pointer hover:text-primary-1"
+              onClick={() => onEditItem(productProps.id!)}
             />
+
+            <Link
+              href={productProps.link!}
+              target="_blank"
+              className="hover:bg-neutral-100 hover:text-primary-1 text-neutral-900 flex items-center justify-center rounded-md transition-all"
+            >
+              <ArrowSquareOut size={20} />
+            </Link>
+
+            <div onClick={() => setIsOpenConfirmMessage(true)}>
+              <Trash size={20} className="cursor-pointer hover:text-red-700" />
+            </div>
+
+            <div className="form-check form-switch custom-form-check">
+              <input
+                className="form-check-input cursor-pointer w-8"
+                type="checkbox"
+                role="switch"
+                // id={`flexSwitchCheckChecked-${link.link_id}`}
+                checked={isActive}
+                onChange={toggleIsActive}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -95,4 +102,4 @@ const ProductCard: React.FC<ProductCardProps> = ({
   )
 }
 
-export default ProductCard;
+export default InvidualProductCard;
