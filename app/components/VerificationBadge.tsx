@@ -8,7 +8,7 @@ type VerificationBadgeProps = {
   direction?: "top" | "right" | "bottom" | "left";
 }
 
-export default function VerificationBadge({ tooltipText, size = 16, direction = "top" }: VerificationBadgeProps) {
+export default function VerificationBadge({ tooltipText, size = 17, direction = "top" }: VerificationBadgeProps) {
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
 
   const showTooltip = () => {
@@ -27,7 +27,7 @@ export default function VerificationBadge({ tooltipText, size = 16, direction = 
 
   return (
     <div
-      className="group relative inline-block"
+      className="group relative"
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
     >
