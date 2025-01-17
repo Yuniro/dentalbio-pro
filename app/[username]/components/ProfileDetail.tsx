@@ -176,7 +176,7 @@ export default function ProfileDetail({
           <div className="flex justify-center items-center gap-2 pb-1">
             <h2 className="fw-medium user-name text-[23px] pb-0">{title}</h2>
             <div className="desktopview-header flex items-center">
-              {isVerified && <VerificationBadge size={22} />}
+              {isVerified && <VerificationBadge size={23} />}
             </div>
           </div>
           <div className="user-profile-header-detail">
