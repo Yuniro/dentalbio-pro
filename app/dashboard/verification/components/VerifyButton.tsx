@@ -17,26 +17,22 @@ const VerifyButton: React.FC<VerifyButtonProps> = ({ userId, sessionUrl, session
     setIsLoading(true);
     const currentTime = new Date();
     const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+    
+    try {
+      const response = await fetch('/api/veriff/create-session', {
+        method: 'POST',
+      });
 
-    if (sessionUrl && (currentTime.getTime() - (new Date(sessionCreatedAt!)).getTime() < oneWeekInMilliseconds)) {
-      window.location.href = sessionUrl; // Redirect to Veriff
-    } else {
-      try {
-        const response = await fetch('/api/veriff/create-session', {
-          method: 'POST',
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to start verification');
-        }
-
-        const data = await response.json();
-
-        window.location.href = data.verification.url; // Redirect to Veriff
-      } catch (error) {
-        console.error('Error starting verification:', error);
+      if (!response.ok) {
+        throw new Error('Failed to start verification');
       }
-    };
+
+      const data = await response.json();
+
+      window.location.href = data.verification.url; // Redirect to Veriff
+    } catch (error) {
+      console.error('Error starting verification:', error);
+    }
   }
 
   return <FullRoundedButton isLoading={isLoading} onClick={startVerification}>{text || "Start now"}</FullRoundedButton>;
