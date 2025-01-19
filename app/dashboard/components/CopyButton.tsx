@@ -13,11 +13,11 @@ const CopyButton = ({ link }: { link: string }) => {
     const supabase = createClient();
 
     // Check if username is already in cookies
-    const storedUsername = Cookies.get("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-      return; // No need to make another request if we already have it in cookies
-    }
+    // const storedUsername = Cookies.get("username");
+    // if (storedUsername) {
+    //   setUsername(storedUsername);
+    //   return; // No need to make another request if we already have it in cookies
+    // }
 
     // Fetch the logged-in user's email
     const { data: authData, error: authError } = await supabase.auth.getUser();

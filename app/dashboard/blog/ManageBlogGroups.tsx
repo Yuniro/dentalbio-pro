@@ -6,7 +6,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DraggableBlogGroup from "./components/DraggableBlogGroup";
 import { arraysRankingAreEqual } from "@/utils/function_utils";
-import { usePreview } from "@/app/components/PreviewContext";
+import { usePreview } from "@/app/contexts/PreviewContext";
 import ManageBlogs from "./ManageBlogs";
 import SkeletonLoader from "@/app/components/Loader/Loader";
 

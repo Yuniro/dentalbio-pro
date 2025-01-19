@@ -5,7 +5,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import AddNewReview from './AddNewReview';
 import SkeletonLoader from '@/app/components/Loader/Loader';
 import { useFormStatus } from 'react-dom';
-import { usePreview } from '@/app/components/PreviewContext';
+import { usePreview } from '@/app/contexts/PreviewContext';
 import ReviewCard from './components/ReviewCard';
 import AddReviewModal from './components/AddReviewModal';
 import LabeledInput from '../components/LabeledInput';

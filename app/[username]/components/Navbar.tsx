@@ -1,5 +1,5 @@
 
-import { useNavbar } from "@/app/components/NavbarContext";
+import { useNavbar } from "@/app/contexts/NavbarContext";
 import React from "react";
 
 type NavbarProps = {

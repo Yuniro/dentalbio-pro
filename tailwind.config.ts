@@ -12,9 +12,10 @@ const config: Config = {
       colors: {
         dark: "#1d1d1d",
         "primary-1": "#5046db",
-        "primary-2": "#9a59f5",
-        "primary-3": "#d064d4",
-        "primary-4": "#e9bded",
+        "primary-2": "#7267e3",
+        "primary-3": "#9488eb",
+        "primary-4": "#b6adf3",
+        "primary-5": "#d8d3fa",
         "primary-orange-1": "#ef753a",
         "primary-orange-2": "#fd8516",
         "primary-green-1": "#34d594",

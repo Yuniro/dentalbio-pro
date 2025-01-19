@@ -6,7 +6,7 @@ import VerifyButton from "./VerifyButton";
 import { CheckCircle } from "@phosphor-icons/react/dist/ssr";
 import { SealCheck } from "@phosphor-icons/react";
 import { redirect } from "next/navigation";
-import { usePreview } from "@/app/components/PreviewContext";
+import { usePreview } from "@/app/contexts/PreviewContext";
 import { isWithinSevenDays } from "@/utils/functions/isWithinSevenDays";
 import { sendVerificationMail } from "@/utils/mails/sendVerificationMail";
 

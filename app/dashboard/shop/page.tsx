@@ -2,7 +2,6 @@ import React from "react"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ManageIndividualProducts from "./components/ManageIndividualProducts";
-// import ManageProductGroups from "./ManageProductGroups";
 
 const Product = async () => {
   const supabase = createClient();

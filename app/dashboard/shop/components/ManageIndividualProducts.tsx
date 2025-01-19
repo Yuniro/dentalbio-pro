@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import SkeletonLoader from '@/app/components/Loader/Loader';
-import { usePreview } from '@/app/components/PreviewContext';
+import { usePreview } from '@/app/contexts/PreviewContext';
 import InvidualProductCard from './InvidualProductCard';
 import AddIndividualProduct from './AddIndividualProduct';
 import AddIndividualProductModal from './AddIndividualProductModal';

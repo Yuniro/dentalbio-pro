@@ -4,7 +4,7 @@ import { Plus, Minus } from "phosphor-react"; // Import Phosphor Icons
 import { createClient } from "@/utils/supabase/client";
 import Collapse from "./Collapse";
 import GalleryImage from "./GalleryImage";
-import { useNavbar } from "@/app/components/NavbarContext";
+import { useNavbar } from "@/app/contexts/NavbarContext";
 
 export default function Gallery({ userId }: { userId: string }) {
   const [galleries, setGalleries] = useState<any[]>([]);

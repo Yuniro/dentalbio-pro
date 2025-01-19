@@ -1,6 +1,6 @@
 'use client'
 import LinkTitle from "@/app/components/Link/LinkTitle";
-import { useNavbar } from "@/app/components/NavbarContext";
+import { useNavbar } from "@/app/contexts/NavbarContext";
 import React, { useEffect, useState } from "react";
 
 type BlogListProps = {

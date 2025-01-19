@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import AddressItem from "../components/AddressItem";
-import { usePreview } from "@/app/components/PreviewContext";
+import { usePreview } from "@/app/contexts/PreviewContext";
 import AddLocation from "./AddLocation";
 
 type ManageLocationsProps = {

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { useNavbar } from "@/app/components/NavbarContext";
+import { useNavbar } from "@/app/contexts/NavbarContext";
 
 export default function Links({ dentistryId }: { dentistryId: string }) {
   const [linkGroups, setLinkGroups] = useState<any[]>([]);

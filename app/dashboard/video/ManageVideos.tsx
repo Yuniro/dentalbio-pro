@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDrag, useDrop } from "react-dnd";
 import SkeletonLoader from '@/app/components/Loader/Loader';
-import { usePreview } from '@/app/components/PreviewContext';
+import { usePreview } from '@/app/contexts/PreviewContext';
 import VideoCard from '../components/VideoCard';
 import AddNewVideo from './AddNewVideo';
 import AddVideoModal from '../components/AddVideoModal';

@@ -7,7 +7,7 @@ import SkeletonLoader from '@/app/components/Loader/Loader';
 import { arraysRankingAreEqual } from '@/utils/function_utils';
 import GalleryCard from './components/GalleryCard';
 import EditGalleryModal from './components/EditGalleryModal';
-import { usePreview } from '@/app/components/PreviewContext';
+import { usePreview } from '@/app/contexts/PreviewContext';
 
 const ItemType = {
   BLOG: "BLOG"

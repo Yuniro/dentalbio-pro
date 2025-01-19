@@ -145,6 +145,10 @@ html {
   padding-right: 0;
 }
 
+.no-underline > a {
+  text-decoration: none !important;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

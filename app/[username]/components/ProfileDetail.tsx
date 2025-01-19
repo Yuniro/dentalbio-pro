@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect, useState, useReducer } from "react";
-import Link from "next/link";
 import Navbar from "./Navbar";
 import { createClient } from "@/utils/supabase/client";
-import { FacebookLogo, InstagramLogo, SealCheck, TiktokLogo, TwitterLogo } from "@phosphor-icons/react/dist/ssr";
 import SocialLinks from "./SocialLinks";
 import VerificationBadge from "@/app/components/VerificationBadge";
 import IndividualProductList from "./IndividualProductList";

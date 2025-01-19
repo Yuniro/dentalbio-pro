@@ -1,4 +1,4 @@
-import { useNavbar } from "@/app/components/NavbarContext";
+import { useNavbar } from "@/app/contexts/NavbarContext";
 import ProductItem from "./Basic/ProductItem";
 import { useEffect } from "react";
 

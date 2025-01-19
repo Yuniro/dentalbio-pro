@@ -3,8 +3,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "./components/GoogleAnalytics";
-import { PreviewProvider } from "./components/PreviewContext";
-import { NavbarProvider } from "./components/NavbarContext";
+import { PreviewProvider } from "./contexts/PreviewContext";
+import { NavbarProvider } from "./contexts/NavbarContext";
+import { ErrorProvider } from "./contexts/ErrorContext";
+import { AdminProvider } from "./contexts/AdminContext";
+import composeProviders from "@/utils/provider/ComposeProviders";
+
+const CombinedProviders = composeProviders(PreviewProvider, NavbarProvider, ErrorProvider, AdminProvider);
 
 // Define the type for your content type fields
 interface LandingPageFields {
@@ -79,7 +84,7 @@ export default function RootLayout({
       <body className={`${inter.className} `}>
         {" "}
         <GoogleAnalytics ga_id={"G-987STTWJ02"} />
-        <NavbarProvider><PreviewProvider>{children}</PreviewProvider></NavbarProvider>
+        <CombinedProviders>{children}</CombinedProviders>
       </body>
     </html>
   );

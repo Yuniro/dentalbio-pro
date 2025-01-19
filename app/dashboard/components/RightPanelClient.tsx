@@ -2,7 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { ArrowsClockwise } from "phosphor-react";
-import { usePreview } from "@/app/components/PreviewContext";
+import { usePreview } from "@/app/contexts/PreviewContext";
 
 const RightPanelClient = ({ username }: { username: string }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);

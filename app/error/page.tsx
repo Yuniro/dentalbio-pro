@@ -1,10 +1,25 @@
+'use client'
+import { useEffect } from "react";
 import { Manrope } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useError } from "../contexts/ErrorContext";
+
 
 const manrope = Manrope({ subsets: ["latin"] });
 
 export default function ErrorPage() {
+  const { errorMessage, setErrorMessage } = useError();
+
+  useEffect(() => {
+    if (errorMessage.show && errorMessage.message) {
+      toast.error(errorMessage.message);
+      setErrorMessage({ message: "", show: false });
+    }
+  }, [errorMessage.show])
+
   return (
     <div
       className={`${manrope.className} text-center flex flex-col justify-center items-center py-20 gap-5`}
@@ -14,10 +29,10 @@ export default function ErrorPage() {
       </h1>
 
       <span className=" mt-10 max-w-lg text-dark">
-        Please email{" "}
+        Please email&nbsp;
         <Link href={"mailto:support@dental.bio"} className=" font-semibold">
           support@dental.bio
-        </Link>{" "}
+        </Link>&nbsp;
         with details of what went wrong, along with the browser and device you
         were using at the time. As we are a new platform, we greatly appreciate
         your patience and error reporting, and we will do our best to resolve
@@ -32,6 +47,8 @@ export default function ErrorPage() {
           className="px-4 pt-20"
         />
       </Link>
+
+      <ToastContainer />
     </div>
   );
 }

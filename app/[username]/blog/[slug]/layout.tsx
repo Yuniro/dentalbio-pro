@@ -1,5 +1,5 @@
 import GoogleAnalytics from "@/app/components/GoogleAnalytics";
-import { PreviewProvider } from "@/app/components/PreviewContext";
+import { PreviewProvider } from "@/app/contexts/PreviewContext";
 import { createClient } from "@/utils/supabase/server";
 import type { Metadata } from "next";
 import { Author } from "next/dist/lib/metadata/types/metadata-types";

@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import ReviewItem from "./ReviewItem";
-import { useNavbar } from "@/app/components/NavbarContext";
+import { useNavbar } from "@/app/contexts/NavbarContext";
 
 type ReviewsProps = {
   userId: string;
