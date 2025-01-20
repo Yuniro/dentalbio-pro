@@ -1,20 +1,19 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { getEffectiveUserId } from '@/utils/user/getEffectiveUserId';
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
+  const { targetUserId } = await request.json();
+
   try {
     const supabase = createClient();
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json({ error: 'You should log in.' }, { status: 400 });
-    }
+    const userId = await getEffectiveUserId({ targetUserId, supabase });
 
     const { data, error } = await supabase
       .from('users')
       .select('*')
-      .eq('email', user.email)
+      .eq('id', userId)
       .single();
 
     if (error) {

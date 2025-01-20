@@ -6,10 +6,9 @@ import GoogleAnalytics from "./components/GoogleAnalytics";
 import { PreviewProvider } from "./contexts/PreviewContext";
 import { NavbarProvider } from "./contexts/NavbarContext";
 import { ErrorProvider } from "./contexts/ErrorContext";
-import { AdminProvider } from "./contexts/AdminContext";
 import composeProviders from "@/utils/provider/ComposeProviders";
 
-const CombinedProviders = composeProviders(PreviewProvider, NavbarProvider, ErrorProvider, AdminProvider);
+const CombinedProviders = composeProviders(PreviewProvider, NavbarProvider, ErrorProvider);
 
 // Define the type for your content type fields
 interface LandingPageFields {

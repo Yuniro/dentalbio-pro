@@ -1,14 +1,23 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
-const getEffectiveUserId = async ({ authUserId, targetUserId, supabase }: { authUserId: string, targetUserId?: string, supabase: SupabaseClient }) => {
+export const getEffectiveUserId = async ({ targetUserId, supabase }: { targetUserId?: string | null, supabase: SupabaseClient }) => {
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+
+  if (authError) {
+    console.error("Error fetching user:", authError);
+    return;
+  }
+
+  const email = authData.user.email;
+
   const { data: user, error } = await supabase
-    .from('profiles')
+    .from('users')
     .select('id, role')
-    .eq('id', authUserId)
+    .eq('email', email)
     .single();
 
   if (error) throw new Error('Error fetching user data');
   if (targetUserId && user.role !== 'admin') throw new Error('Not authorized');
 
-  return targetUserId || authUserId;
+  return targetUserId || user.id;
 };

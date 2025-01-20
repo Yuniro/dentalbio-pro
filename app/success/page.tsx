@@ -6,6 +6,9 @@ import Link from "next/link";
 import SignOutForm from "./SignOutForm"; // Import the SignOutForm component
 import SendEmailConfirmation from "./SendEmailConfirmation"; // Import the client-side component
 import { revalidatePath } from "next/cache";
+import { User } from "@phosphor-icons/react/dist/ssr";
+import React from "react";
+import GotoDashboard from "../components/Button/GotoDashboard";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -24,7 +27,7 @@ export default async function DashboardPage() {
   // Fetch the user's data including subscription status and username
   const { data: userRecord, error: userError } = await supabase
     .from("users")
-    .select("username, subscription_status, first_name")
+    .select("username, subscription_status, first_name, role")
     .eq("email", email)
     .single();
 
@@ -43,8 +46,8 @@ export default async function DashboardPage() {
       country,
       position,
     })
-    .select('*')
-    .single();
+      .select('*')
+      .single();
 
     if (insertError) {
       return redirect("/error?message=insert_failed");
@@ -67,6 +70,15 @@ export default async function DashboardPage() {
             <div className="w-full flex justify-end items-center px-3">
               <SignOutForm /> {/* Use the client-side sign-out component */}
             </div>
+            <div className="w-full flex justify-end items-center px-3">
+              <Link
+                href="/admin"
+                className="flex items-center gap-2 hover:bg-gray-200 text-dark px-3 py-2 rounded-lg text-sm font-light transition-all"
+              >
+                <User className="h-5 w-5" />
+                Admin
+              </Link>
+            </div>
             <div className="max-w-screen-2xl w-full mt-5 text-center flex flex-col items-center justify-center px-5 lg:px-32 mx-auto">
               <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-primary-orange-1 pb-6">
                 Welcome, {first_name}!
@@ -82,14 +94,9 @@ export default async function DashboardPage() {
                 No payments until after our official launch!
               </span>
               <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-dark">
-                Exclusive pre-launch offer, don’t miss out!
+                Exclusive pre-launch offer, don't miss out!
               </span>
-              <Link
-                href={"/dashboard"}
-                className=" bg-primary-1 px-5  py-3 text-lg mt-5 rounded-full text-white font-bold"
-              >
-                Go to Dashboard
-              </Link>
+              <GotoDashboard />
               <PricingTable email={email} /> {/* Show pricing table */}
             </div>
           </div>
@@ -118,6 +125,17 @@ export default async function DashboardPage() {
             <div className="w-full flex justify-end items-center px-3">
               <SignOutForm /> {/* Use the client-side sign-out component */}
             </div>
+            {userRecord.role === "admin" && (
+              <div className="w-full flex justify-end items-center px-3">
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                >
+                  <User size={20} weight="bold" />
+                  Admin Panel
+                </Link>
+              </div>
+            )}
             <div className="max-w-screen-2xl w-full mt-5 text-center flex flex-col items-center justify-center px-5 lg:px-32 mx-auto">
               <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-primary-orange-1 pb-6">
                 Welcome, {first_name}!
@@ -133,14 +151,9 @@ export default async function DashboardPage() {
                 No payments until after our official launch!
               </span>
               <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-dark">
-                Exclusive pre-launch offer, don’t miss out!
+                Exclusive pre-launch offer, don't miss out!
               </span>
-              <Link
-                href={"/dashboard"}
-                className=" bg-primary-1 px-5  py-3 text-lg mt-5 rounded-full text-white font-bold"
-              >
-                Go to Dashboard
-              </Link>
+              <GotoDashboard />
               <PricingTable email={email} /> {/* Show pricing table */}
             </div>
           </div>
@@ -175,6 +188,17 @@ export default async function DashboardPage() {
             </form>
             <SignOutForm /> {/* Use the client-side sign-out component */}
           </div>
+          {userRecord.role === "admin" && (
+            <div className="w-full flex justify-end items-center px-3">
+              <Link
+                href="/admin"
+                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              >
+                <User size={20} weight="bold" />
+                Admin Panel
+              </Link>
+            </div>
+          )}
           <div className="max-w-screen-2xl w-full mt-5 text-center flex flex-col items-center justify-center px-5 lg:px-32 mx-auto">
             <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-primary-orange-1 pb-6">
               Welcome, {first_name}!
@@ -190,7 +214,7 @@ export default async function DashboardPage() {
               No payments until after our official launch!
             </span>
             <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-dark">
-              Exclusive pre-launch offer, don’t miss out!
+              Exclusive pre-launch offer, don't miss out!
             </span>
             <PricingTable email={email} /> {/* Show pricing table */}
           </div>

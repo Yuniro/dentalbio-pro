@@ -45,7 +45,7 @@ const fetchTableData = async (
   const start = (page - 1) * limit;
   const end = start + limit - 1;
 
-  let query = supabase.from('users').select('*', { count: 'exact' }).order('created_at', { ascending: false });
+  let query = supabase.from('users').select('*', { count: 'exact' }).order('created_at', { ascending: true });
 
   // Apply filters
   Object.entries(filters).forEach(([key, value]) => {
@@ -53,6 +53,9 @@ const fetchTableData = async (
       if (key === 'isVerified') {
         // Use eq for boolean fields
         query = query.eq(key, value === 'true' || value === true);
+      } else if (key === 'subscription_status' && value === 'free') {
+        // For free subscription, check for null or empty string values
+        query = query.or('subscription_status.is.null,subscription_status.eq.');
       } else {
         // Use ilike for string fields
         query = query.ilike(key, `%${value}%`);

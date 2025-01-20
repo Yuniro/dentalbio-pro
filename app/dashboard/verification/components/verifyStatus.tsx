@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import { isWithinSevenDays } from "@/utils/functions/isWithinSevenDays";
 import { sendVerificationMail } from "@/utils/mails/sendVerificationMail";
+import { useAdmin } from "@/utils/functions/useAdmin";
 
 type SessionType = "pending" | "approved" | "declined" | "not_started";
 
@@ -16,11 +17,13 @@ const VerifyStatus: React.FC = () => {
   const [userData, setUserData] = useState<UserType | null>(null);
   const [sessionStatus, setSessionStatus] = useState<SessionType | null>(null);
   const { triggerReload } = usePreview();
+  const { getTargetUserId } = useAdmin();
 
   useEffect(() => {
     const fetchUserData = async () => {
       const response = await fetch('/api/user', {
-        method: 'GET'
+        method: 'POST',
+        body: JSON.stringify({ targetUserId: getTargetUserId()! })
       });
       const data = await response.json();
 

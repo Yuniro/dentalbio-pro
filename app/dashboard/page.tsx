@@ -20,51 +20,28 @@ import ProfilePictureUploader from "./ProfilePictureUploader";
 import LimitedTextArea from "./components/LimitedTextArea";
 import LabeledInput from "./components/LabeledInput";
 import { positions } from "@/utils/global_constants";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { AdminServer } from "@/utils/functions/useAdminServer";
 
 // Fetch the authenticated user ID
 async function getUserId() {
-  "use server";
   const supabase = createClient();
-  const { data: userData, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !userData?.user) {
-    return redirect(
-      "/login?error=User authentication failed, redirecting to login."
-    );
-  }
-
-  const userEmail = userData.user.email;
-
-  // Fetch the correct user_id from the users table based on the email
-  const { data: userRecord, error: userError } = await supabase
-    .from("users")
-    .select("id")
-    .eq("email", userEmail)
-    .single();
-
-  if (userError || !userRecord) {
-    return redirect("/error?message=user_not_found_in_users_table");
-  }
-
-  return userRecord.id; // The correct user ID from the users table
+  
+  return getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
 }
 
 // Get detailed user information
 async function getUserDetails() {
   "use server";
   const supabase = createClient();
-  const { data: userData, error: authError } = await supabase.auth.getUser();
+  const userId = await getUserId();
 
-  if (authError || !userData?.user) {
-    return redirect("/login");
-  }
-
-  const userEmail = userData.user.email;
+  console.log(userId);
 
   const { data: userRecord, error: userError } = await supabase
     .from("users")
     .select("id, email, first_name, last_name, title, position, gdc_no, qualification, isVerified")
-    .eq("email", userEmail)
+    .eq("id", userId)
     .single();
 
   if (userError || !userRecord) {

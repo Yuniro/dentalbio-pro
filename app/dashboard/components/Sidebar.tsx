@@ -1,17 +1,22 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { User, Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple } from "phosphor-react";
 import { CheckSquare, Image, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { useAdmin } from "@/utils/functions/useAdmin";
 
 // Constants for storing keys in cookies
 const COOKIE_USERNAME_KEY = "username";
 const COOKIE_DENTISTRY_ID_KEY = "dentistry_id";
 
 export default function Sidebar() {
+  const { getTargetUserId } = useAdmin();
+  const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
@@ -31,36 +36,14 @@ export default function Sidebar() {
   // Fetch logged-in user's email and username, and set it in cookies
   const fetchUserInfo = async () => {
     const supabase = createClient();
-    const storedUsername = Cookies.get(COOKIE_USERNAME_KEY);
-    const storedDentistryId = Cookies.get(COOKIE_DENTISTRY_ID_KEY);
+    const response = await fetch('/api/user', {
+      method: 'POST',
+      body: JSON.stringify({ targetUserId: getTargetUserId()! })
+    });
+    const userRecord = await response.json();
 
-    // Check if username and dentistry_id are already in cookies
-    // if (storedUsername && storedDentistryId) {
-    //   setUsername(storedUsername);
-    //   setDentistryId(storedDentistryId);
-    //   fetchProfilePicture(storedDentistryId);
-    //   return;
-    // }
-
-    // Fetch the logged-in user's email
-    const { data: authData, error: authError } = await supabase.auth.getUser();
-    if (authError || !authData?.user) {
-      console.error("Error fetching user:", authError);
-      return;
-    }
-
-    const userEmail = authData.user.email;
-
-    // Fetch the username from the `users` table using the email
-    const { data: userRecord, error: userError } = await supabase
-      .from("users")
-      .select("username, id, subscription_status")
-      .eq("email", userEmail)
-      .single();
-
-    if (userError || !userRecord) {
-      console.error("Error fetching user info from users table:", userError);
-      return;
+    if (!userRecord) {
+      return router.push("/error?message=user_not_found");
     }
 
     const fetchedUsername = userRecord.username;

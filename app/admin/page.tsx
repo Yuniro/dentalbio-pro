@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useError } from "../contexts/ErrorContext";
 import VerificationBadge from "../components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
+import { useAdmin } from "@/utils/functions/useAdmin";
 
 const Admin: React.FC = () => {
   const { errorMessage, setErrorMessage } = useError();
+  const { setTargetUserId } = useAdmin();
   const router = useRouter();
 
   const [data, setData] = useState([]);
@@ -50,7 +52,8 @@ const Admin: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await fetch('/api/user', {
-        method: 'GET'
+        method: 'POST',
+        body: JSON.stringify({ })
       });
 
       const userData = await response.json();
@@ -111,11 +114,28 @@ const Admin: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [tempFilters]);
 
+  const handleViewDashboard = (userId: string) => {
+    setTargetUserId(userId);
+
+    router.push(`/dashboard`);
+  };
+
   const totalPages = Math.ceil(total / limit);
 
   return (
     <div className="p-8 max-w-[1400px] mx-auto">
-      <h1 className="text-2xl font-bold mb-6">User Management Dashboard</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">User Management Dashboard</h1>
+        <button
+          onClick={() => router.push('/success')}
+          className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors flex items-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+          Return
+        </button>
+      </div>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         {/* Filter Button and Dropdown */}
@@ -161,6 +181,7 @@ const Admin: React.FC = () => {
                     className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   >
                     <option value="">All Subscription Status</option>
+                    <option value="free">Free</option>
                     <option value="pro">Pro</option>
                     <option value="premier">Premier</option>
                   </select>
@@ -317,7 +338,7 @@ const Admin: React.FC = () => {
                   <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.isVerified ? <VerificationBadge /> : ''}</td>
                   <td className="px-4 py-3 text-sm text-center">
                     <button
-                      onClick={() => router.push(`/dashboard/${row.id}`)}
+                      onClick={() => handleViewDashboard(row.id)}
                       className="text-blue-600 hover:text-blue-800 transition-colors inline-flex"
                       title="View Dashboard"
                     >
