@@ -67,6 +67,17 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   // Extract relevant fields
   const planId = subscription.items.data[0]?.price.id ?? null;
   const status = subscription.status;
+  
+  // Get product name for subscription_status
+  let subscriptionStatus = null;
+  if (status === 'active' || status === 'trialing') {
+    const priceId = subscription.items.data[0]?.price.id;
+    if (priceId) {
+      const price = await stripe.prices.retrieve(priceId, { expand: ['product'] });
+      subscriptionStatus = (price.product as Stripe.Product).name;
+    }
+  }
+
   const currentPeriodEnd = subscription.current_period_end
     ? new Date(subscription.current_period_end * 1000)
     : null;
@@ -78,10 +89,10 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
   const { error } = await supabase
     .from('users')
     .update({
-      customer_id: customerId, // Store the customer ID
+      customer_id: customerId,
       subscription_id: subscriptionId,
       plan_id: planId,
-      subscription_status: status,
+      subscription_status: subscriptionStatus,
       current_period_end: currentPeriodEnd,
       trial_end: trialEnd,
     })
@@ -103,6 +114,17 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   const subscriptionId = subscription.id;
   const planId = subscription.items.data[0]?.price.id ?? null;
   const status = subscription.status;
+  
+  // Get product name for subscription_status
+  let subscriptionStatus = null;
+  if (status === 'active' || status === 'trialing') {
+    const priceId = subscription.items.data[0]?.price.id;
+    if (priceId) {
+      const price = await stripe.prices.retrieve(priceId, { expand: ['product'] });
+      subscriptionStatus = (price.product as Stripe.Product).name;
+    }
+  }
+
   const currentPeriodEnd = subscription.current_period_end
     ? new Date(subscription.current_period_end * 1000)
     : null;
@@ -125,7 +147,7 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
     .update({
       subscription_id: subscriptionId,
       plan_id: planId,
-      subscription_status: status,
+      subscription_status: subscriptionStatus,
       current_period_end: currentPeriodEnd,
       trial_end: trialEnd,
     })

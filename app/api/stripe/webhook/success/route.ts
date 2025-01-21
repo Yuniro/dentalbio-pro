@@ -23,8 +23,6 @@ export async function GET(request: Request) {
     // Get the subscription
     const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
 
-    console.log(subscription);
-
     const product = await getProductInfo(subscription.items.data[0].plan.product as string);
 
     // Determine subscription status
@@ -43,6 +41,9 @@ export async function GET(request: Request) {
     const { error } = await supabase
       .from('users')
       .update({
+        customer_id: session.customer as string,
+        subscription_id: session.subscription as string,
+        plan_id: subscription.items.data[0].plan.id,
         subscription_status: subscriptionStatus,
         current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null,
         trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null
