@@ -5,6 +5,8 @@ import { useError } from "../contexts/ErrorContext";
 import VerificationBadge from "../components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
+import Link from "next/link";
+import { Gear } from "@phosphor-icons/react/dist/ssr";
 
 const Admin: React.FC = () => {
   const { errorMessage, setErrorMessage } = useError();
@@ -40,6 +42,8 @@ const Admin: React.FC = () => {
 
       const userList = await response.json();
 
+      console.log(userList);
+
       setData(userList.data);
       setTotal(userList.count);
     } catch (error) {
@@ -53,7 +57,7 @@ const Admin: React.FC = () => {
     const fetchUser = async () => {
       const response = await fetch('/api/user', {
         method: 'POST',
-        body: JSON.stringify({ })
+        body: JSON.stringify({})
       });
 
       const userData = await response.json();
@@ -181,9 +185,10 @@ const Admin: React.FC = () => {
                     className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   >
                     <option value="">All Subscription Status</option>
-                    <option value="free">Free</option>
-                    <option value="pro">Pro</option>
-                    <option value="premier">Premier</option>
+                    <option value="trialing">Trailing</option>
+                    <option value="FREE">Free</option>
+                    <option value="PRO">Pro</option>
+                    <option value="PREMIUM PRO">Premium Pro</option>
                   </select>
 
                   <select
@@ -323,35 +328,50 @@ const Admin: React.FC = () => {
                   <td className="px-4 py-3 text-sm text-gray-500">{row.email}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{row.username}</td>
                   <td className="px-4 py-3 text-sm text-gray-500 text-center">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${row.subscription_status === 'pro' ? 'bg-green-500 text-white' :
-                        row.subscription_status === 'premier' ? 'bg-purple-500 text-white' :
-                          row.subscription_status === 'trialing' ? 'bg-blue-500 text-white' :
-                            'bg-gray-500 text-white'
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${row.subscription_status === "PRO" ? 'bg-green-500 text-white' :
+                      row.subscription_status === "PREMIUM PRO" ? 'bg-purple-500 text-white' :
+                        row.subscription_status === 'trialing' ? 'bg-blue-500 text-white' :
+                          'bg-gray-500 text-white'
                       }`}>
                       {(row.subscription_status === null || row.subscription_status === '')
-                        ? 'Free'
+                        ? 'FREE'
                         : row.subscription_status.charAt(0).toUpperCase() + row.subscription_status.slice(1)}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.current_period_end ? new Date(row.current_period_end).toLocaleDateString() : '-'}</td>
                   <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.trial_end ? new Date(row.trial_end).toLocaleDateString() : '-'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.isVerified ? <VerificationBadge /> : ''}</td>
+                  <td className="px-4 py-3 text-sm text-gray-500">
+                    <div className="flex justify-center items-center gap-2">{row.isVerified ? <VerificationBadge /> : ''}</div>
+                  </td>
                   <td className="px-4 py-3 text-sm text-center">
-                    <button
-                      onClick={() => handleViewDashboard(row.id)}
-                      className="text-blue-600 hover:text-blue-800 transition-colors inline-flex"
-                      title="View Dashboard"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                        <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clipRule="evenodd" />
-                      </svg>
-                    </button>
+                    {row.dentistries.length > 0 &&
+                      <div className="flex justify-center items-center gap-2">
+                        <Link
+                          href={`/${row.username}`}
+                          target="_blank"
+                          className="text-blue-600 hover:text-blue-800 transition-colors inline-flex"
+                        // title="View Dashboard"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-5 h-5"
+                          >
+                            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                            <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clipRule="evenodd" />
+                          </svg>
+                        </Link>
+
+                        {/* <button
+                          onClick={() => handleViewDashboard(row.id)}
+                          className="text-blue-600 hover:text-blue-800 transition-colors inline-flex"
+                          title="View Dashboard"
+                        >
+                          <Gear weight="fill" size={20} />
+                        </button> */}
+                      </div>
+                    }
                   </td>
                 </tr>
               ))

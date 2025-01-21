@@ -4,31 +4,15 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import MapLoader from "./MapLoader";
 import ManageLocations from "./ManageLocations";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { AdminServer } from "@/utils/functions/useAdminServer";
 
 // Utility function to fetch authenticated user, user ID, and dentistry ID
 async function fetchUserAndDentistry() {
   "use server";
   const supabase = createClient();
 
-  // Fetch authenticated user
-  const { data: userData, error: authError } = await supabase.auth.getUser();
-  if (authError || !userData?.user) {
-    redirect("/login?error=User authentication failed, redirecting to login.");
-  }
-
-  const userEmail = userData.user.email;
-
-  // Fetch user ID
-  const { data: userRecord, error: userError } = await supabase
-    .from("users")
-    .select("id")
-    .eq("email", userEmail)
-    .single();
-  if (userError || !userRecord) {
-    redirect("/error?message=user_not_found_in_users_table");
-  }
-
-  const userId = userRecord.id;
+  const userId = await getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
 
   // Fetch Dentistry ID
   const { data: dentistry, error: dentistryError } = await supabase

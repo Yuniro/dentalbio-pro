@@ -4,6 +4,8 @@ import GoogleMapAutocomplete from "./GoogleMapAutocomplete";
 import { redirect } from "next/navigation";
 import { getDentistryInfo, getUserInfo } from "@/utils/userInfo";
 import { useState } from "react";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { useAdmin } from "@/utils/functions/useAdmin";
 
 type AddLocationProps = {
   onAddressAdd: (location: LocationType) => void;
@@ -12,12 +14,15 @@ const AddLocation: React.FC<AddLocationProps> = ({
   onAddressAdd
 }) => {
   const [address, setAddress] = useState<string>("");
+  const { getTargetUserId } = useAdmin();
 
   // Save or update location data
   const saveLocation = async (formData: FormData) => {
     const supabase = createClient();
-    const userData = await getUserInfo({ supabase });
-    const dentistryData = await getDentistryInfo({ supabase, user_id: userData.id });
+    
+    const userId = await getEffectiveUserId({ targetUserId: getTargetUserId(), supabase });
+
+    const dentistryData = await getDentistryInfo({ supabase, user_id: userId });
 
     const newLocation = {
       full_address: formData.get("full_address") as string,
@@ -31,7 +36,7 @@ const AddLocation: React.FC<AddLocationProps> = ({
     const { data: userRecord, error: userError } = await supabase
       .from("users")
       .select("username, subscription_status, first_name")
-      .eq("id", userData.id)
+      .eq("id", userId)
       .single();
 
     const { data: dentistryLocation, error: joinError } = await supabase
@@ -39,7 +44,7 @@ const AddLocation: React.FC<AddLocationProps> = ({
       .select("location_id")
       .eq("dentistry_id", dentistryData.dentistry_id)
 
-    if (joinError || (dentistryLocation.length === 0) || (userRecord?.subscription_status === "pro")) {
+    if (joinError || (dentistryLocation.length === 0) || (userRecord?.subscription_status === "PRO")) {
       const { data: insertedLocation, error: insertError } = await supabase
         .from("locations")
         .insert([newLocation])

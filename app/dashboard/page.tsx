@@ -36,8 +36,6 @@ async function getUserDetails() {
   const supabase = createClient();
   const userId = await getUserId();
 
-  console.log(userId);
-
   const { data: userRecord, error: userError } = await supabase
     .from("users")
     .select("id, email, first_name, last_name, title, position, gdc_no, qualification, isVerified")

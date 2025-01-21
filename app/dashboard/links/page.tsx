@@ -4,30 +4,15 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import AddLinkGroupForm from "./components/AddLinkGroupForm";
 import ManageLinkGroups from "./components/ManageLinkGroups";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { AdminServer } from "@/utils/functions/useAdminServer";
 
 // Fetch authenticated user ID
 async function getUserId() {
   "use server";
   const supabase = createClient();
-  const { data: userData, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !userData?.user) {
-    return redirect("/login");
-  }
-
-  const userEmail = userData.user.email;
-
-  const { data: userRecord, error: userError } = await supabase
-    .from("users")
-    .select("id")
-    .eq("email", userEmail)
-    .single();
-
-  if (userError || !userRecord) {
-    return redirect("/error?message=user_not_found");
-  }
-
-  return userRecord.id;
+  
+  return getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
 }
 
 // Fetch Dentistry ID based on user ID

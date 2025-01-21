@@ -96,7 +96,9 @@ export default async function DashboardPage() {
               <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-dark">
                 Exclusive pre-launch offer, don't miss out!
               </span>
-              <GotoDashboard />
+              <div className="my-3">
+                <GotoDashboard />
+              </div>
               <PricingTable email={email} /> {/* Show pricing table */}
             </div>
           </div>
@@ -129,7 +131,7 @@ export default async function DashboardPage() {
               <div className="w-full flex justify-end items-center px-3">
                 <Link
                   href="/admin"
-                  className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                  className="flex items-center gap-2 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all"
                 >
                   <User size={20} weight="bold" />
                   Admin Panel
@@ -153,7 +155,9 @@ export default async function DashboardPage() {
               <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-dark">
                 Exclusive pre-launch offer, don't miss out!
               </span>
-              <GotoDashboard />
+              <div className="my-3">
+                <GotoDashboard />
+              </div>
               <PricingTable email={email} /> {/* Show pricing table */}
             </div>
           </div>
@@ -192,7 +196,7 @@ export default async function DashboardPage() {
             <div className="w-full flex justify-end items-center px-3">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                className="flex items-center gap-2 hover:bg-gray-200 text-gray-700 py-3 rounded-lg text-sm font-medium transition-all"
               >
                 <User size={20} weight="bold" />
                 Admin Panel

@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     .eq("dentistry_id", dentistryData.dentistry_id)
     .single();
 
-  if (joinError || !dentistryLocation || (userRecord?.subscription_status === "pro")) {
+  if (joinError || !dentistryLocation || (userRecord?.subscription_status === "PRO")) {
     const { data: insertedLocation, error: insertError } = await supabase
       .from("locations")
       .insert([newLocation])

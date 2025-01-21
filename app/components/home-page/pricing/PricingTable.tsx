@@ -17,7 +17,7 @@ export default function PricingTable() {
 
   const plans = [
     {
-      name: "Free",
+      name: "FREE",
       price: billingCycle === "monthly" ? "£0" : "£0",
       description: "Free for life :)",
       features: [
@@ -36,7 +36,7 @@ export default function PricingTable() {
       mostPopular: false,
     },
     {
-      name: "Pro",
+      name: "PRO",
       price: billingCycle === "monthly" ? "£10" : "£100",
       description:
         billingCycle === "monthly" ? "Per month" : "Each year, save £20",
@@ -67,7 +67,7 @@ export default function PricingTable() {
       mostPopular: true,
     },
     {
-      name: "Premium Pro",
+      name: "PREMIUM PRO",
       price: billingCycle === "monthly" ? "£25" : "£210",
       description:
         billingCycle === "monthly" ? "Per month" : "Each year, save £40",

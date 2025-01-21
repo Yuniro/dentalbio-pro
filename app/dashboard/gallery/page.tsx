@@ -14,7 +14,7 @@ const Gallery = async () => {
     .eq("email", authData?.user?.email)
     .single();
 
-  if (!(userData?.subscription_status === "pro"))
+  if (!(userData?.subscription_status === "PRO"))
     return redirect("/dashboard");
 
   return (

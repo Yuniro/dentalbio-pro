@@ -111,6 +111,7 @@ p {
 
 .profile-wrapper {
     max-width: 661px;
+    min-height: 100vh;
     margin: 0 auto;
     background-color: var(--white-color);
     padding: 30px 80px;
