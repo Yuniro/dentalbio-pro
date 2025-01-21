@@ -44,7 +44,7 @@ const AddLocation: React.FC<AddLocationProps> = ({
       .select("location_id")
       .eq("dentistry_id", dentistryData.dentistry_id)
 
-    if (joinError || (dentistryLocation.length === 0) || (userRecord?.subscription_status === "PRO")) {
+    if (joinError || (dentistryLocation.length === 0) || (userRecord?.subscription_status === "PRO" || userRecord?.subscription_status === "PREMIUM PRO")) {
       const { data: insertedLocation, error: insertError } = await supabase
         .from("locations")
         .insert([newLocation])

@@ -12,8 +12,8 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <div className="member-panel-wrapper py-10">
-        <div className="max-w-[1400px] mx-auto">
+      <div className="member-panel-wrapper py-10 bg-[#f3f3f1]">
+        <div className="max-w-[1400px] mx-auto min-h-[100vh] bg-[#f3f3f1]">
           {children}
         </div>
       </div>

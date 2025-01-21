@@ -13,6 +13,13 @@ import GotoDashboard from "../components/Button/GotoDashboard";
 export default async function DashboardPage() {
   const supabase = createClient();
 
+  // const handleManageSubscription = async () => {
+  //   "use server"
+  //   const response = await fetch('/api/create-portal-session', {
+  //     method: 'POST'
+  //   })
+  // }
+
   // Fetch the authenticated user
   const { data: userData, error: authError } = await supabase.auth.getUser();
 
@@ -131,7 +138,7 @@ export default async function DashboardPage() {
               <div className="w-full flex justify-end items-center px-3">
                 <Link
                   href="/admin"
-                  className="flex items-center gap-2 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all"
+                  className="flex no-underline items-center gap-2 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all"
                 >
                   <User size={20} weight="bold" />
                   Admin Panel
@@ -180,23 +187,23 @@ export default async function DashboardPage() {
     <>
       <div className="px-3 py-3 h-screen flex flex-col items-center justify-between">
         <div className="flex flex-col items-start justify-center">
-          <div className="w-full flex justify-between items-center px-3">
+          <div className="w-full flex justify-end items-center px-3">
             {/* Show the Manage Subscription button for subscribed users */}
-            <form action="/api/create-portal-session">
-              <button
-                type="submit"
+            {/* <form action="" method="POST"> */}
+              {/* <button
+                onClick={handleManageSubscription}
                 className="hover:bg-gray-200 text-dark px-3 py-2 rounded-lg text-sm font-light transition-all"
               >
                 Manage Subscription
-              </button>
-            </form>
+              </button> */}
+            {/* </form> */}
             <SignOutForm /> {/* Use the client-side sign-out component */}
           </div>
           {userRecord.role === "admin" && (
             <div className="w-full flex justify-end items-center px-3">
               <Link
                 href="/admin"
-                className="flex items-center gap-2 hover:bg-gray-200 text-gray-700 py-3 rounded-lg text-sm font-medium transition-all"
+                className="flex no-underline items-center gap-2 hover:bg-gray-200 text-gray-700 py-3 rounded-lg text-sm font-medium transition-all"
               >
                 <User size={20} weight="bold" />
                 Admin Panel

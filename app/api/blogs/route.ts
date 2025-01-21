@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     const userData = await getUserInfo({ supabase });
     
-    if (!(userData.subscription_status === "PRO" && userData.subscription_status === "PREMIUM PRO" && userData.subscription_status === "trialing"))
+    if (!((userData.subscription_status === "PRO") || (userData.subscription_status === "PREMIUM PRO") || (new Date(userData.trial_end) > new Date())))
       return NextResponse.json({ error: "Please upgrade membership!" });
 
     const maxRank = await getMaxRank({ supabase, table: "blogs", field: "group_id", value: group_id }) + 1;

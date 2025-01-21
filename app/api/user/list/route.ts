@@ -55,7 +55,10 @@ const fetchTableData = async (
         query = query.eq(key, value === 'true' || value === true);
       } else if (key === 'subscription_status') {
         console.log(value);
-        if (value === 'FREE') {
+        if (value === 'trialing') {
+          const today = new Date().toISOString();
+          query = query.gt('trial_end', today);
+        } else if (value === 'FREE') {
           query = query.or('subscription_status.is.null,subscription_status.eq.');
         } else {
           query = query.eq(key, value);

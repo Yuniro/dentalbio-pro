@@ -36,9 +36,9 @@ export async function GET(request: Request) {
       .in('enabled', enabledField)
       .order('rank', { ascending: true });
 
-      if (blogsError) {
-        return NextResponse.json({ error: blogsError.message }, { status: 400 });
-      }
+    if (blogsError) {
+      return NextResponse.json({ error: blogsError.message }, { status: 400 });
+    }
 
     const groupedBlogs = groups.map(group => ({
       ...group,
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
     const userData = await getUserInfo({ supabase });
 
-    if (!(userData.subscription_status === "PRO" && userData.subscription_status === "PREMIUM PRO" && userData.subscription_status === "trialing"))
+    if (!((userData.subscription_status === "PRO") || (userData.subscription_status === "PREMIUM PRO") || (new Date(userData.trial_end) > new Date())))
       return NextResponse.json({ error: "Please upgrade membership!" });
 
     const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: userData.id }) + 1;

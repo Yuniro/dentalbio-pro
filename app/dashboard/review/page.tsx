@@ -14,7 +14,7 @@ const Review = async () => {
     .eq("email", authData?.user?.email)
     .single();
 
-  if (!(userData?.subscription_status === "PRO"))
+  if (!(userData?.subscription_status === "PRO" || userData?.subscription_status === "PREMIUM PRO"  ))
     return redirect("/dashboard");
 
   return (

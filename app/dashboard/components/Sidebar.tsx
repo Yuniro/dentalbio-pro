@@ -172,7 +172,7 @@ export default function Sidebar() {
                   Icon={LinkSimple}
                   onClick={handleClose}
                 />
-                {userSubscriptionStatus === "PRO" &&
+                {(userSubscriptionStatus === "PRO" || userSubscriptionStatus === "PREMIUM PRO") &&
                   <>
                     <SidebarItem
                       label="Blogs"

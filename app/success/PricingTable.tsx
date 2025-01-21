@@ -142,7 +142,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
           setSubscriptionStatus('FREE');  
         } else if (data[0].subscription_status === "PRO") {
           setSubscriptionStatus('PRO');
-        } else if (data[0].subscription_status === "PREMIUM PRO" || data[0].subscription_status === 'trialing') {
+        } else if (data[0].subscription_status === "PREMIUM PRO") {
           setSubscriptionStatus('PREMIUM PRO');
         }
       }

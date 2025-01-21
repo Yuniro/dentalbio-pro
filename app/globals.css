@@ -149,6 +149,10 @@ html {
   text-decoration: none !important;
 }
 
+input {
+  outline: none !important;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

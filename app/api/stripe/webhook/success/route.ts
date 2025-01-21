@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     // Retrieve the checkout session
     const session = await stripe.checkout.sessions.retrieve(sessionId);
-    
+
     // Get the subscription
     const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
 
@@ -29,27 +29,22 @@ export async function GET(request: Request) {
 
     // Determine subscription status
     let subscriptionStatus = '';
-    if (subscription.status === 'trialing') {
-      subscriptionStatus = 'trialing';
-    } else if (subscription.status === 'active') {
-      // You'll need to map your price IDs to subscription tiers
-      switch (product?.name) {
-        case 'PRO':
-          subscriptionStatus = "PRO";
-          break;
-        case 'PREMIUM PRO':
-          subscriptionStatus = "PREMIUM PRO";
-          break;
-        default:
-          subscriptionStatus = 'FREE';
-      }
+    switch (product?.name) {
+      case 'PRO':
+        subscriptionStatus = "PRO";
+        break;
+      case 'PREMIUM PRO':
+        subscriptionStatus = "PREMIUM PRO";
+        break;
+      default:
+        subscriptionStatus = 'FREE';
     }
 
     const { error } = await supabase
       .from('users')
-      .update({ 
-        subscription_status: subscriptionStatus, 
-        current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null, 
+      .update({
+        subscription_status: subscriptionStatus,
+        current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null,
         trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null
       })
       .eq('id', session.metadata?.userId);
@@ -66,7 +61,7 @@ export async function GET(request: Request) {
     console.error('Error processing success webhook:', error);
     return NextResponse.redirect(`${process.env.APP_URL}/error`);
   }
-} 
+}
 
 async function getProductInfo(productId: string) {
   try {

@@ -36,17 +36,27 @@ export const POST = async (request: Request) => {
 
   const userId = await getEffectiveUserId({ targetUserId: null, supabase });
 
+  const user = await supabase.from('users').select('*').eq('id', userId).single();
+
   const { priceId, email } = await request.json();
 
   const APP_URL = process.env.APP_URL || "http://localhost:3000";
 
   // Calculate the trial end timestamp for February 1, 2025
-  const trialEndDate = new Date('2025-01-01T00:00:00Z');
+  const trialEndDate = new Date("2025-02-01");
   const trialEndTimestamp = Math.floor(trialEndDate.getTime() / 1000);
 
-  const subscription_data = ((trialEndTimestamp - new Date().getTime() / 1000) > (2 * 24 * 60 * 60)) ? {
+  const subscription_data = (trialEndTimestamp > (new Date()).getTime() / 1000 + 2 * 24 * 60 * 60) ? {
     trial_end: trialEndTimestamp,
   } : {};
+
+  // const trialEndTimestamp = Math.floor((user.data?.trial_end) ? (new Date(user.data?.trial_end)).getTime() / 1000 : (new Date()).getTime() / 1000 + 31 * 24 * 60 * 60);
+
+  // const subscription_data = (trialEndTimestamp > (new Date()).getTime() / 1000 + 2 * 24 * 60 * 60) ? {
+  //   trial_end: trialEndTimestamp,
+  // } : {};
+
+
 
   try {
     const session = await stripe.checkout.sessions.create({
