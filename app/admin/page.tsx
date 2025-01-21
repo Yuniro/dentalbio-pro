@@ -284,7 +284,7 @@ const Admin: React.FC = () => {
                   forcePage={page - 1}
                   containerClassName="flex items-center gap-1 min-w-fit mb-0"
                   pageClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer"
-                  activeClassName="!bg-blue-600 hover:!bg-blue-700 text-white cursor-pointer"
+                  activeClassName="!bg-primary-1 hover:!bg-primary-2 text-white cursor-pointer"
                   previousClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer no-underline pagination-ctrl-btn"
                   nextClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer no-underline pagination-ctrl-btn"
                   disabledClassName="opacity-50 cursor-not-allowed hover:bg-transparent"
@@ -352,17 +352,21 @@ const Admin: React.FC = () => {
                   <td className="px-4 py-3 text-sm text-gray-500">{(page - 1) * limit + index + 1}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{row.email}</td>
                   <td className="px-4 py-3 text-sm text-gray-500">{row.username}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 text-center">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${(row.trial_end && new Date(row.trial_end) > new Date()) ? 'bg-blue-500 text-white' :
-                      row.subscription_status === "PRO" ? 'bg-green-500 text-white' :
+                  <td className="px-4 text-sm text-gray-500 text-center">
+                    <div className="flex flex-col justify-center items-center gap-1">
+                      {row.trial_end && new Date(row.trial_end) > new Date() &&
+                        <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white`}>
+                          trialing
+                        </div>}
+                      <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${row.subscription_status === "PRO" ? 'bg-green-500 text-white' :
                         row.subscription_status === "PREMIUM PRO" ? 'bg-purple-500 text-white' :
                           'bg-gray-500 text-white'
-                      }`}>
-                      {(row.subscription_status === null || row.subscription_status === '')
-                        ? 'FREE'
-                        : row.subscription_status.charAt(0).toUpperCase() + row.subscription_status.slice(1).toLowerCase()}
-                      {row.trial_end && new Date(row.trial_end) > new Date() && <span className="ml-1">(trialing)</span>}
-                    </span>
+                        }`}>
+                        {(row.subscription_status === null || row.subscription_status === '')
+                          ? 'FREE'
+                          : row.subscription_status.charAt(0).toUpperCase() + row.subscription_status.slice(1).toLowerCase()}
+                      </div>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.current_period_end ? new Date(row.current_period_end).toLocaleDateString() : '-'}</td>
                   <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.trial_end ? new Date(row.trial_end).toLocaleDateString() : '-'}</td>
