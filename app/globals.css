@@ -149,6 +149,14 @@ html {
   text-decoration: none !important;
 }
 
+.bordered {
+  border-width: 1px;
+}
+
+.pagination-ctrl-btn a {
+  color: #212529;
+}
+
 input {
   outline: none !important;
 }

@@ -284,9 +284,9 @@ const Admin: React.FC = () => {
                   forcePage={page - 1}
                   containerClassName="flex items-center gap-1 min-w-fit mb-0"
                   pageClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer"
-                  activeClassName="!text-blue-600 hover:!text-blue-700 !border-blue-600 border cursor-pointer"
-                  previousClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer no-underline"
-                  nextClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer no-underline"
+                  activeClassName="!bg-blue-600 hover:!bg-blue-700 text-white cursor-pointer"
+                  previousClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer no-underline pagination-ctrl-btn"
+                  nextClassName="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer no-underline pagination-ctrl-btn"
                   disabledClassName="opacity-50 cursor-not-allowed hover:bg-transparent"
                   breakClassName="px-3 py-2"
                 />
