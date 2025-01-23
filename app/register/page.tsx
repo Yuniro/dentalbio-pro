@@ -224,7 +224,7 @@ export default function Page() {
         options: {
           emailRedirectTo: `${
             process.env.NEXT_PUBLIC_BASE_URL
-          }/register/confirm?username=${encodeURIComponent(username)}`,
+          }/auth/confirm?username=${encodeURIComponent(username)}`,
           data: {
             username,
             first_name: formData.firstName,
