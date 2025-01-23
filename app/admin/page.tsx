@@ -7,15 +7,19 @@ import AdminComponent from "./AdminComponent";
 const Admin = async () => {
   const supabase = createClient();
 
-  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+
+  if (authError) {
+    redirect("/login");
+  }
 
   const { data: userData, error: userError } = await supabase
     .from("users")
     .select("username, subscription_status, role")
-    .eq("id", userId)
+    .eq("email", authData.user.email)
     .single();
 
-  if (!(userData?.subscription_status === "PRO" || userData?.subscription_status === "PREMIUM PRO" || userData?.role === "admin"))
+  if (!(userData?.role === "admin"))
     return redirect("/dashboard");
 
   return (
