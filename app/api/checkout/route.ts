@@ -71,7 +71,7 @@ export const POST = async (request: Request) => {
         userId: userId,
       },
       success_url: `${APP_URL}/api/stripe/webhook/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${APP_URL}/cancel`,
+      cancel_url: `${APP_URL}/success`,
       customer_email: email,
     });
 

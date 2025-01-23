@@ -33,7 +33,7 @@ interface Plan {
 }
 
 const planDetails: { [key: string]: PlanDetails } = {
-  prod_QqVNlzmPjjX2zc: {
+  "PRO": {
     // Updated Details for PRO
     features: [
       "Reg No.",
@@ -61,7 +61,7 @@ const planDetails: { [key: string]: PlanDetails } = {
     cta: "Upgrade plan",
     mostPopular: true,
   },
-  prod_QqVPa6guvZktmC: {
+  "PREMIUM PRO": {
     // Updated Details for PREMIUM PRO
     features: [
       "Reg No.",
@@ -95,7 +95,7 @@ const planDetails: { [key: string]: PlanDetails } = {
     cta: "Upgrade plan",
     mostPopular: false,
   },
-  prod_QqVPOJBK8nRBXg: {    // Updated Details for FREE
+  "FREE": {    // Updated Details for FREE
     features: [
       "Reg No.",
       "About me",
@@ -138,12 +138,12 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
       const { data, error } = await supabase.from('users').select('subscription_status').eq('id', userId);
 
       if (data && data.length > 0) {
-        if (data[0].subscription_status === 'FREE') {
-          setSubscriptionStatus('FREE');  
-        } else if (data[0].subscription_status === "PRO") {
+        if (data[0].subscription_status === "PRO") {
           setSubscriptionStatus('PRO');
         } else if (data[0].subscription_status === "PREMIUM PRO") {
           setSubscriptionStatus('PREMIUM PRO');
+        } else {
+          setSubscriptionStatus('FREE');
         }
       }
     };
@@ -181,28 +181,16 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
               productId: productId, // Store the productId
               name: product.name,
               prices: {},
-              features: planDetails[productId]?.features || [],
-              orangeFeatures: planDetails[productId]?.orangeFeatures || [],
-              cta: planDetails[productId]?.cta || "Sign up",
-              mostPopular: planDetails[productId]?.mostPopular || false,
+              features: planDetails[product.name]?.features || [],
+              orangeFeatures: planDetails[product.name]?.orangeFeatures || [],
+              cta: planDetails[product.name]?.cta || "Sign up",
+              mostPopular: planDetails[product.name]?.mostPopular || false,
             };
           }
 
           // Assign price to billing cycle
           productPrices[productId].prices![billingKey] = price;
         });
-
-        // Add the Free plan manually if it's in the planDetails
-        // if (planDetails["prod_QrfB2LXLW8vpOz"]) {
-        //   productPrices["prod_QrfB2LXLW8vpOz"] = {
-        //     name: "FREE",
-        //     isFree: true,
-        //     features: planDetails["prod_QrfB2LXLW8vpOz"].features,
-        //     orangeFeatures: planDetails["prod_QrfB2LXLW8vpOz"].orangeFeatures,
-        //     cta: planDetails["prod_QrfB2LXLW8vpOz"].cta,
-        //     mostPopular: planDetails["prod_QrfB2LXLW8vpOz"].mostPopular,
-        //   };
-        // }
 
         // Convert to array and sort plans
         const plansArray = Object.values(productPrices).sort((a, b) => {
@@ -228,7 +216,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
     const userId = await getEffectiveUserId({ targetUserId: null, supabase });
     await supabase.from('users').update({ subscription_status: planName }).eq('id', userId);
 
-    setSubscriptionStatus(planName);
+    setSubscriptionStatus(planName || "FREE");
   }
 
   const handleUpgrade = async (priceId: string) => {
@@ -437,7 +425,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
                       Most popular
                     </div>
                   )}
-                  
+
                   <div className="text-left flex flex-col">
                     <h3 className="text-lg font-normal uppercase text-primary-orange-1">
                       {plan.name}
@@ -455,8 +443,8 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
                           viewBox="0 0 24 24"
                           strokeWidth={2.5}
                           stroke={(plan.orangeFeatures.includes(feature) && !currentPlan?.features.includes(feature))
-                              ? "#E97348"
-                              : "#7977ED"
+                            ? "#E97348"
+                            : "#7977ED"
                           } // Dynamic stroke color
                           className="size-7 mr-3"
                         >
@@ -481,9 +469,8 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
                   <div className="mt-10">
                     <button
                       onClick={() => handleSubscribe(price.id, plan.name)}
-                      className={`flex justify-between items-center w-full text-center text-[22px] bg-gradient-to-r text-white py-3 px-5 rounded-full font-semibold hover:opacity-90 transition ${
-                        plan.name === subscriptionStatus ? 'bg-green-600' : planOrder[plan.name] > planOrder[subscriptionStatus!] ? 'bg-gradient-to-r from-[#e7b274] to-[#d46466]' : 'bg-red-400'
-                      }`}
+                      className={`flex justify-between items-center w-full text-center text-[22px] bg-gradient-to-r text-white py-3 px-5 rounded-full font-semibold hover:opacity-90 transition ${plan.name === subscriptionStatus ? 'bg-green-600' : planOrder[plan.name] > planOrder[subscriptionStatus!] ? 'bg-gradient-to-r from-[#e7b274] to-[#d46466]' : 'bg-red-400'
+                        }`}
                       disabled={plan.name === subscriptionStatus}
                     >
                       {plan.name === subscriptionStatus ? 'Current' : planOrder[plan.name] > planOrder[subscriptionStatus!] ? 'Upgrade Plan' : 'Downgrade Plan'}
