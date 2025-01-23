@@ -61,7 +61,7 @@ function DraggableGalleryCard({
 }
 
 
-const ManageGalleries = () => {
+const ManageGalleries = ({ targetUserId }: { targetUserId: string | null }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [galleries, setGalleries] = useState<any[] | null>(null);
   const [initialGalleries, setInitialGalleries] = useState<any[] | null>(null);
@@ -79,7 +79,9 @@ const ManageGalleries = () => {
 
   useEffect(() => {
     const fetchGalleries = async () => {
-      const response = await fetch('/api/galleries', {
+      const query = targetUserId ? `?userId=${targetUserId}&isAdmin=true` : '';
+
+      const response = await fetch(`/api/galleries${query}`, {
         method: 'GET'
       });
       const data = await response.json();
@@ -232,7 +234,7 @@ const ManageGalleries = () => {
       </DndProvider>
 
       <div className="flex justify-end mt-6">
-        <AddNewGallery onAdd={handleAdd} />
+        <AddNewGallery onAdd={handleAdd} targetUserId={targetUserId} />
       </div>
 
       <EditGalleryModal

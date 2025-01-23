@@ -10,7 +10,7 @@ import SkeletonLoader from "@/app/components/Loader/Loader";
 import DraggableGroup from "@/app/components/Group/DraggableGroup";
 import AddNewGroupForm from "@/app/components/Group/AddNewGroupForm";
 
-const ManageGroups: React.FC = () => {
+const ManageGroups: React.FC<{ targetUserId: string | null }> = ({ targetUserId }) => {
   const [groups, setGroups] = useState<GroupType[] | null>(null);
   const [initialGroups, setInitialGroups] = useState<GroupType[]>([]);
 
@@ -18,7 +18,8 @@ const ManageGroups: React.FC = () => {
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const query = '?type=videos';
+      const query = targetUserId ? `?type=videos&userId=${targetUserId}&isAdmin=true` : '?type=videos';
+      
       const response = await fetch(`/api/groups${query}`, {
         method: 'GET'
       });
@@ -129,7 +130,7 @@ const ManageGroups: React.FC = () => {
 
   return (
     <div>
-      <AddNewGroupForm onAdd={handleAdd} type="videos" />
+      <AddNewGroupForm onAdd={handleAdd} type="videos" targetUserId={targetUserId} />
 
       <DndProvider backend={HTML5Backend}>
         {groups && groups.map((group, index) => {

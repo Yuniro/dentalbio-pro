@@ -21,6 +21,6 @@ export const getEffectiveUserId = async ({ targetUserId, supabase }: { targetUse
   if (error) throw new Error('Error fetching user data');
   if (targetUserId && user.role !== 'admin') throw new Error('Not authorized');
 
-  // return targetUserId || user.id;
-  return user.id;
+  return targetUserId || user.id;
+  // return user.id;
 };

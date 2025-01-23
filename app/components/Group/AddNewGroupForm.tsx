@@ -5,10 +5,12 @@ import LabeledInput from "@/app/dashboard/components/LabeledInput";
 
 export default function AddNewGroupForm({
   type,
-  onAdd
+  onAdd,
+  targetUserId
 }: {
   type: string;
-  onAdd: (group: GroupType) => void
+  onAdd: (group: GroupType) => void;
+  targetUserId: string | null;
 }) {
   const [heading, setHeading] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +20,7 @@ export default function AddNewGroupForm({
     e.preventDefault();
     setIsLoading(true);
 
-    const formData = { name: heading, type };
+    const formData = { name: heading, type, targetUserId };
 
     const response = await fetch('/api/groups', {
       method: 'POST',

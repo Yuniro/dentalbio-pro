@@ -10,12 +10,14 @@ export async function GET(request: Request) {
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
+
     const providedUserId = searchParams.get('userId');
+    const isAdmin = searchParams.get('isAdmin');
 
     // Get the logged-in user's data if no user ID is provided
     const userData = providedUserId ? null : await getUserInfo({ supabase });
     const userId = providedUserId || userData?.id;
-    const enabledField = providedUserId ? [true] : [true, false];
+    const enabledField = (providedUserId && !isAdmin) ? [true] : [true, false];
 
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
       .from('products')
       .insert([{ group_id, name, link, platform, image_url, price, currency, rank: maxRank }])
       .select("*")
-      .single();;
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
@@ -64,8 +66,6 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const updated_data = await request.json();
-
-  console.log(updated_data);
 
   try {
     const supabase = createClient();

@@ -33,7 +33,7 @@ export default async function HomePage({ params }: PageProps) {
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("id, position, first_name, last_name, title, gdc_no, qualification, isVerified")
-    .eq("username", username)
+    .ilike("username", username)
     .single();
 
   // Handle error or no user case

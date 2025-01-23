@@ -11,11 +11,12 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const providedUserId = searchParams.get('userId');
     const providedType = searchParams.get('type');
+    const isAdmin = searchParams.get('isAdmin');
 
     // Get the logged-in user's data if no user ID is provided
     const userData = providedUserId ? null : await getUserInfo({ supabase });
     const userId = providedUserId || userData?.id;
-    const enabledField = providedUserId ? [true] : [true, false];
+    const enabledField = (providedUserId && !isAdmin) ? [true] : [true, false];
 
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
@@ -59,7 +60,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { name, type } = await request.json();
+  const { name, type, targetUserId } = await request.json();
 
   try {
     const supabase = createClient();
@@ -69,7 +70,10 @@ export async function POST(request: Request) {
     if (!((userData.subscription_status === "PRO") || (userData.subscription_status === "PREMIUM PRO") || (new Date(userData.trial_end) > new Date())))
       return NextResponse.json({ error: "Please upgrade membership!" });
 
-    const maxRank = await getMaxRank({ supabase, table: "groups", field: "user_id", value: userData.id }) + 1;
+    if (targetUserId && userData.role !== "admin")
+      return NextResponse.json({ error: "Not authorized" });
+
+    const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: targetUserId || userData.id }) + 1;
 
     const { data, error } = await supabase
       .from('groups')

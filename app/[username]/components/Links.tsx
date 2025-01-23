@@ -34,9 +34,11 @@ export default function Links({ dentistryId }: { dentistryId: string }) {
         return;
       }
 
-      if (linkGroupsData.length > 0) {
-        setNavItemState("Links", true);
-      }
+      linkGroupsData.forEach((group: any) => {
+        if (group.dentistry_links.length > 0) {
+          setNavItemState("Links", true);
+        }
+      });
 
       setLinkGroups(linkGroupsData);
       setLoading(false);

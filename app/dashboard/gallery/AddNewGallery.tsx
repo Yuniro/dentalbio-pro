@@ -5,11 +5,13 @@ import AddGalleryModal from "./components/AddGalleryModal";
 
 type AddNewGalleryProps = {
   onAdd: (gallery: any) => void;
+  targetUserId: string | null;
 }
 
 const AddNewGallery: React.FC<AddNewGalleryProps> = ({
   onAdd,
-}: AddNewGalleryProps) => {
+  targetUserId
+}) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const openModal = () => {
@@ -47,7 +49,7 @@ const AddNewGallery: React.FC<AddNewGalleryProps> = ({
 
     const response = await fetch('/api/galleries', {
       method: 'POST',
-      body: JSON.stringify({ ...formData, before_image_url, after_image_url }),
+      body: JSON.stringify({ ...formData, before_image_url, after_image_url, targetUserId }),
     });
 
     const result = await response.json();

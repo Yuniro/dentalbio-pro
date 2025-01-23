@@ -58,7 +58,7 @@ function DraggableProductCard({
 }
 
 
-const ManageIndividualProducts = () => {
+const ManageIndividualProducts = ({ targetUserId }: { targetUserId: string | null }) => {
   const [itemType] = useState<number>(1);
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [products, setProducts] = useState<any[] | null>(null);
@@ -78,7 +78,9 @@ const ManageIndividualProducts = () => {
 
   useEffect(() => {
     const fetchIndividualProducts = async () => {
-      const response = await fetch(`/api/individual-products`, {
+      const query = targetUserId ? `?userId=${targetUserId}&isAdmin=true` : "";
+      
+      const response = await fetch(`/api/individual-products${query}`, {
         method: 'GET'
       });
       const data = await response.json();

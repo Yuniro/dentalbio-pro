@@ -63,7 +63,7 @@ function DraggableReviewCard({
 }
 
 
-const ManageReviews = () => {
+const ManageReviews = ({ targetUserId }: { targetUserId: string | null }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [reviews, setReviews] = useState<any[] | null>(null);
   const [initialReviews, setInitialReviews] = useState<any[] | null>(null);
@@ -89,7 +89,9 @@ const ManageReviews = () => {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const response = await fetch('/api/reviews', {
+      const query = targetUserId ? `?userId=${targetUserId}&isAdmin=true` : "";
+
+      const response = await fetch(`/api/reviews${query}`, {
         method: 'GET'
       });
       const data = await response.json();
@@ -98,11 +100,13 @@ const ManageReviews = () => {
     };
 
     fetchReviews();
-  }, []);
+  }, [targetUserId]);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      const response = await fetch('/api/external-review-pages', {
+    const fetchExternalReviews = async () => {
+      const query = targetUserId ? `?userId=${targetUserId}&isAdmin=true` : "";
+
+      const response = await fetch(`/api/external-review-pages${query}`, {
         method: 'GET'
       });
       const data = await response.json();
@@ -112,7 +116,7 @@ const ManageReviews = () => {
       }
     };
 
-    fetchReviews();
+    fetchExternalReviews();
   }, []);
 
   const handleAdd = async (review: ReviewType) => {
@@ -268,7 +272,7 @@ const ManageReviews = () => {
       </DndProvider>
 
       <div className="flex justify-end mt-6">
-        <AddNewReview onAdd={handleAdd} />
+        <AddNewReview onAdd={handleAdd} targetUserId={targetUserId} />
       </div>
 
       <div>

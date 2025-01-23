@@ -10,12 +10,14 @@ export async function GET(request: Request) {
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
+
     const providedUserId = searchParams.get('userId');
+    const isAdmin = searchParams.get('isAdmin');
 
     // Get the logged-in user's data if no user ID is provided
     const userData = providedUserId ? null : await getUserInfo({ supabase });
     const userId = providedUserId || userData?.id;
-    const enabledField = providedUserId ? [true] : [true, false];
+    const enabledField = (providedUserId && !isAdmin) ? [true] : [true, false];
 
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
@@ -37,16 +39,22 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { link } = await request.json();
+  const { link, targetUserId } = await request.json();
 
   try {
     const supabase = createClient();
 
     const userData = await getUserInfo({ supabase });
 
+    if (!((userData.subscription_status === "PRO") || (userData.subscription_status === "PREMIUM PRO") || (new Date(userData.trial_end) > new Date())))
+      return NextResponse.json({ error: "Please upgrade membership!" });
+
+    if (targetUserId && userData.role !== "admin")
+      return NextResponse.json({ error: "Not authorized" });
+
     const { data, error } = await supabase
       .from('external_review_pages')
-      .insert([{ user_id: userData.id, link }])
+      .insert([{ user_id: targetUserId || userData.id, link }])
       .select("*")
       .single();
 

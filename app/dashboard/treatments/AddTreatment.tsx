@@ -4,7 +4,6 @@ import SaveButton from "../components/SaveButton";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import LabeledInput from "../components/LabeledInput";
-import LimitedTextArea from "../components/LimitedTextArea";
 
 // Function for Captical First
 function toCapitalFirst(sentence: string): string {

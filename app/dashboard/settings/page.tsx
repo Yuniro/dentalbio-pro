@@ -5,23 +5,24 @@ import SaveButton from "../components/SaveButton";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { titles } from "@/utils/global_constants";
+import { AdminServer } from "@/utils/functions/useAdminServer";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 
 // Fetch authenticated user details
 async function getUserDetails() {
   "use server";
   const supabase = createClient();
-  const { data: userData, error: authError } = await supabase.auth.getUser();
 
-  if (authError || !userData?.user) {
+  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
+
+  if (!userId) {
     return redirect("/login");
   }
-
-  const userEmail = userData.user.email;
 
   const { data: userRecord, error: userError } = await supabase
     .from("users")
     .select("id, email, first_name, middle_name, last_name, title, position")
-    .eq("email", userEmail)
+    .eq("id", userId)
     .single();
 
   if (userError || !userRecord) {
@@ -35,13 +36,11 @@ async function getUserDetails() {
 async function updateUserDetails(formData: FormData) {
   "use server";
   const supabase = createClient();
-  const { data: userData, error: authError } = await supabase.auth.getUser();
+  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
 
-  if (authError || !userData?.user) {
+  if (!userId) {
     return redirect("/login");
   }
-
-  const userEmail = userData.user.email;
 
   const updatedUserDetails = {
     first_name: formData.get("first_name") as string,
@@ -53,7 +52,7 @@ async function updateUserDetails(formData: FormData) {
   const { error: updateError } = await supabase
     .from("users")
     .update(updatedUserDetails)
-    .eq("email", userEmail);
+    .eq("id", userId);
 
   if (updateError) {
     return redirect("/error?message=failed_to_update_user_details");

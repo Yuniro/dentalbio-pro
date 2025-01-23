@@ -1,12 +1,24 @@
+'use client'
+import { useEffect } from "react";
 import { Manrope } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useError } from "../contexts/ErrorContext";
+
 
 const manrope = Manrope({ subsets: ["latin"] });
 
 export default function ErrorComponent() {
+  const { errorMessage, setErrorMessage } = useError();
+
+  useEffect(() => {
+    if (errorMessage.show && errorMessage.message) {
+      toast.error(errorMessage.message);
+      setErrorMessage({ message: "", show: false });
+    }
+  }, [errorMessage.show])
 
   return (
     <div

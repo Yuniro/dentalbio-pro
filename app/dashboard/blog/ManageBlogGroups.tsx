@@ -9,12 +9,15 @@ import { arraysRankingAreEqual } from "@/utils/function_utils";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import ManageBlogs from "./ManageBlogs";
 import SkeletonLoader from "@/app/components/Loader/Loader";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { AdminServer } from "@/utils/functions/useAdminServer";
 
 type ManageBlogGroupProps = {
   username: string;
+  targetUserId: string | null;
 }
 
-const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { username: string; }) => {
+const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username, targetUserId }) => {
   const [blogGroups, setBlogGroups] = useState<BlogGroupType[] | null>(null);
   const [initialBlogGroups, setInitialBlogGroups] = useState<BlogGroupType[]>([]);
 
@@ -22,7 +25,9 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
 
   useEffect(() => {
     const fetchBlogGroups = async () => {
-      const response = await fetch('/api/blog-groups', {
+      const query = targetUserId ? `?userId=${targetUserId}&isAdmin=true` : '';
+
+      const response = await fetch(`/api/blog-groups${query}`, {
         method: 'GET'
       });
       const data = await response.json();
@@ -40,6 +45,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
         return [group];
       return [...prevGroups, group];
     })
+    triggerReload();
   }
 
   const handleUpdate = async (props: { id: string; name?: string; enabled?: boolean; }) => {
@@ -131,7 +137,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username }: { userna
 
   return (
     <div>
-      <AddNewGroupForm onAdd={handleAdd} />
+      <AddNewGroupForm onAdd={handleAdd} targetUserId={targetUserId} />
 
       <DndProvider backend={HTML5Backend}>
         {blogGroups && blogGroups.map((group, index) => {

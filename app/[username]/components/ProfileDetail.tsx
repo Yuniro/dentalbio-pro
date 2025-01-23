@@ -198,7 +198,7 @@ export default function ProfileDetail({
       </div>
 
       {/* "Based in" Section */}
-      {locations && (
+      {locations && locations.length > 0 && (
         <div className="basedin-tabination-wrapper">
           <ul
             className="nav nav-tabs border-0 justify-content-center align-items-center"

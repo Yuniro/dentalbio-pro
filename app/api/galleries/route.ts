@@ -10,12 +10,14 @@ export async function GET(request: Request) {
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
+
     const providedUserId = searchParams.get('userId');
+    const isAdmin = searchParams.get('isAdmin');
 
     // Get the logged-in user's data if no user ID is provided
     const userData = providedUserId ? null : await getUserInfo({ supabase });
     const userId = providedUserId || userData?.id;
-    const enabledField = providedUserId ? [true] : [true, false];
+    const enabledField = (providedUserId && !isAdmin) ? [true] : [true, false];
 
     if (!userId) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
@@ -39,7 +41,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { title, before_image_url, after_image_url, before_image_label, after_image_label } = await request.json();
+  const { title, before_image_url, after_image_url, before_image_label, after_image_label, targetUserId } = await request.json();
 
   try {
     const supabase = createClient();
@@ -49,13 +51,16 @@ export async function POST(request: Request) {
     if (!((userData.subscription_status === "PRO") || (userData.subscription_status === "PREMIUM PRO") || (new Date(userData.trial_end) > new Date())))
       return NextResponse.json({ error: "Please upgrade membership!" });
 
-    const maxRank = await getMaxRank({ supabase, table: "galleries", field: "user_id", value: userData.id }) + 1;
+    if (targetUserId && userData.role !== "admin")
+      return NextResponse.json({ error: "Not authorized" });
+
+    const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: targetUserId || userData.id }) + 1;
 
     const { data, error } = await supabase
       .from('galleries')
-      .insert([{ title, before_image_url, after_image_url, user_id: userData.id, rank: maxRank, before_image_label, after_image_label }])
+      .insert([{ title, before_image_url, after_image_url, user_id: targetUserId || userData.id, rank: maxRank, before_image_label, after_image_label }])
       .select("*")
-      .single();;
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });

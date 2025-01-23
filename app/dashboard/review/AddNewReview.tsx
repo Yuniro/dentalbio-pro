@@ -5,10 +5,12 @@ import AddReviewModal from "./components/AddReviewModal";
 
 type AddNewReviewProps = {
   onAdd: (review: any) => void;
+  targetUserId: string | null;
 }
 
 const AddNewReview: React.FC<AddNewReviewProps> = ({
   onAdd,
+  targetUserId
 }: AddNewReviewProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -46,7 +48,7 @@ const AddNewReview: React.FC<AddNewReviewProps> = ({
 
     const response = await fetch('/api/reviews', {
       method: 'POST',
-      body: JSON.stringify({ ...formData, image_url }),
+      body: JSON.stringify({ ...formData, image_url, targetUserId }),
     });
 
     const result = await response.json();

@@ -32,6 +32,7 @@ const InvidualProductCard: React.FC<ProductCardProps> = ({
 
   const handleDelete = () => {
     onDelete(productProps.id!);
+    setIsOpenConfirmMessage(false);
   }
 
   return (

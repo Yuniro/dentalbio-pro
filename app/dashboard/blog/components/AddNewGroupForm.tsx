@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import LabeledInput from "../../components/LabeledInput";
 import { Spinner } from "@phosphor-icons/react/dist/ssr";
 
-export default function AddNewGroupForm({ onAdd }: { onAdd: (group: BlogGroupType) => void }) {
+export default function AddNewGroupForm({ onAdd, targetUserId }: { onAdd: (group: BlogGroupType) => void, targetUserId: string | null }) {
   const [heading, setHeading] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(false); // State to toggle form visibility
@@ -13,7 +13,7 @@ export default function AddNewGroupForm({ onAdd }: { onAdd: (group: BlogGroupTyp
     setIsLoading(true);
 
 
-    const formData = { name: heading };
+    const formData = { name: heading, targetUserId };
 
     const response = await fetch('/api/blog-groups', {
       method: 'POST',

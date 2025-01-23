@@ -4,30 +4,21 @@ import AddTreatmentForm from "./AddTreatment";
 import ManageTreatments from "./ManageTreatments";
 import { redirect } from "next/navigation";
 import ManageServices from "./ManageServices";
+import { AdminServer } from "@/utils/functions/useAdminServer";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 
 // Fetch authenticated user ID
 async function getUserId() {
   "use server";
   const supabase = createClient();
-  const { data: userData, error: authError } = await supabase.auth.getUser();
 
-  if (authError || !userData?.user) {
-    return redirect("/login");
-  }
+  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
 
-  const userEmail = userData.user.email;
-
-  const { data: userRecord, error: userError } = await supabase
-    .from("users")
-    .select("id")
-    .eq("email", userEmail)
-    .single();
-
-  if (userError || !userRecord) {
+  if (!userId) {
     return redirect("/error?message=user_not_found");
   }
 
-  return userRecord.id;
+  return userId;
 }
 
 // Fetch Dentistry ID based on user ID
