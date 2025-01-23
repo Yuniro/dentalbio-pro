@@ -147,10 +147,10 @@ export default function LinkItem({
   return (
     <li
       ref={ref}
-      className="d-flex justify-between align-items-center mb-2 bg-transparent w-full"
+      className="flex justify-between align-items-center mb-2 bg-transparent w-full"
     >
       {isEditing ? (
-        <div className="d-flex flex-column max-w-100 w-full">
+        <div className="flex flex-column max-w-100 w-full">
           <input
             type="text"
             value={newTitle}
@@ -183,7 +183,7 @@ export default function LinkItem({
       ) : (
         <>
           <div className="membar-cards w-full">
-            <div className="d-flex align-items-start gap-3 bg-transparent w-full p-4">
+            <div className="flex align-items-start gap-3 bg-transparent w-full p-4">
               {/* Drag Handle */}
               <div className="flex flex-col gap-0 cursor-move p-1 mt-2">
                 <CaretUp className="-mb-0.5" weight="bold" />
@@ -191,9 +191,9 @@ export default function LinkItem({
               </div>
               <div className="w-full">
                 {/* Member Card Actions */}
-                <div className="d-flex align-items-center justify-content-between gap-2 mb-3 member-cards-actions">
+                <div className="flex align-items-center justify-content-between gap-2 mb-3 member-cards-actions">
                   <div>
-                    <div className="d-flex align-items-center gap-2 member-heading">
+                    <div className="flex align-items-center gap-2 member-heading">
                       <p className="mb-0">{link.title}</p>
                       {/* Edit Icon */}
                       <PencilSimple
@@ -205,7 +205,7 @@ export default function LinkItem({
                     <p className="links-wrapper mb-0">{link.link}</p>
                   </div>
                   {/* Link and Switch */}
-                  <div className="d-flex gap-1 align-items-center">
+                  <div className="flex gap-1 align-items-center">
                     <button
                       onClick={handleDeleteLink}
                       className="w-8 h-8 p-0.5 hover:bg-red-100 hover:text-red-700 flex items-center justify-center rounded-md transition-all"

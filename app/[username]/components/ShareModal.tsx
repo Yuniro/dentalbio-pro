@@ -122,8 +122,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                         className="text-decoration-none w-100 border-0 bg-transparent p-0"
                         style={{ cursor: "pointer" }}
                       >
-                        <div className="d-flex align-items-center justify-content-between">
-                          <div className="d-flex align-items-center gap-3">
+                        <div className="flex align-items-center justify-content-between">
+                          <div className="flex align-items-center gap-3">
                             <Image
                               src="/assets/copy.png"
                               alt="copy"
@@ -147,8 +147,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <div className="d-flex align-items-center justify-content-between items-center justify-center">
-                          <div className="d-flex align-items-center gap-3">
+                        <div className="flex align-items-center justify-content-between items-center justify-center">
+                          <div className="flex align-items-center gap-3">
                             <Image
                               src="/assets/share.png"
                               alt="linkedin"
@@ -171,8 +171,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                         className="text-decoration-none"
                         onClick={(e) => e.preventDefault()}
                       >
-                        <div className="d-flex align-items-center justify-content-between items-center justify-center">
-                          <div className="d-flex align-items-center gap-3">
+                        <div className="flex align-items-center justify-content-between items-center justify-center">
+                          <div className="flex align-items-center gap-3">
                             <Image
                               src="/assets/instagram.png"
                               alt="instagram"
@@ -196,8 +196,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <div className="d-flex align-items-center justify-content-between items-center justify-center">
-                          <div className="d-flex align-items-center gap-3">
+                        <div className="flex align-items-center justify-content-between items-center justify-center">
+                          <div className="flex align-items-center gap-3">
                             <Image
                               src="/assets/facebook.png"
                               alt="facebook"
@@ -221,8 +221,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <div className="d-flex align-items-center justify-content-between items-center justify-center">
-                          <div className="d-flex align-items-center gap-3">
+                        <div className="flex align-items-center justify-content-between items-center justify-center">
+                          <div className="flex align-items-center gap-3">
                             <Image
                               src="/assets/whatsapp.png"
                               alt="whatsapp"
@@ -244,8 +244,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                         href={`fb-messenger://share?link=https://dental.bio/${username}`}
                         className="text-decoration-none"
                       >
-                        <div className="d-flex align-items-center justify-content-between items-center justify-center">
-                          <div className="d-flex align-items-center gap-3">
+                        <div className="flex align-items-center justify-content-between items-center justify-center">
+                          <div className="flex align-items-center gap-3">
                             <Image
                               src="/assets/messanger.png"
                               alt="messenger"
@@ -267,8 +267,8 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                         href={`mailto:?subject=Check%20out%20this%20Dentalbio&body=Visit%20https://dental.bio/${username}`}
                         className="text-decoration-none"
                       >
-                        <div className="d-flex align-items-center justify-content-between items-center justify-center">
-                          <div className="d-flex align-items-center gap-3">
+                        <div className="flex align-items-center justify-content-between items-center justify-center">
+                          <div className="flex align-items-center gap-3">
                             <Image
                               src="/assets/email.png"
                               alt="email"
@@ -286,7 +286,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                     </div>
 
                     <div>
-                      <a className="text-center d-flex justify-content-between align-items-center modal-copy-content">
+                      <a className="text-center flex justify-content-between align-items-center modal-copy-content">
                         <button
                           onClick={copyLinkToClipboard}
                           className="flex justify-between items-center w-full"
@@ -308,7 +308,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                   </div>
                   {/* Report Dentalbio */}
                   <div className="report-dentalbio">
-                    <div className="d-flex align-items-center justify-content-between gap-2">
+                    <div className="flex align-items-center justify-content-between gap-2">
                       <h6 className=" mb-0">Report this Dentalbio</h6>
                       <CaretRight size={24} className="text-black" />
                     </div>
@@ -316,7 +316,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
                   {/* Modal footer */}
                   <div className="modal-footer justify-content-center flex-column modal-footer-content mb-6">
                     <h5>Create your own Dentalbio</h5>
-                    <div className="d-flex align-items-center justify-content-center gap-3">
+                    <div className="flex align-items-center justify-content-center gap-3">
                       <Link href={"/"} target="_blank">
                         <button className="custom-fill-btn">Sign up</button>
                       </Link>

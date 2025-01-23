@@ -70,7 +70,7 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
             referrerPolicy="no-referrer-when-downgrade"
           /> */}
 
-              <div className="d-flex align-items-center justify-content-center map-button">
+              <div className="flex align-items-center justify-content-center map-button">
                 {(dentistry.booking_link_enabled && dentistry.booking_link) && (
                   <Link
                     href={dentistry.booking_link || ""}

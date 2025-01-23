@@ -281,7 +281,7 @@ const SidebarItem = ({
   return (
     <Link
       href={link}
-      className="nav-item d-flex align-items-center gap-3 no-underline"
+      className="nav-item flex align-items-center gap-3 no-underline"
       onClick={onClick}
     >
       <Icon

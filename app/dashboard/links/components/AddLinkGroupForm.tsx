@@ -47,7 +47,7 @@ export default function AddLinkGroupForm({
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="d-flex flex-column max-w-100 w-full"
+          className="flex flex-column max-w-100 w-full"
         >
           <input
             type="text"

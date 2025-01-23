@@ -145,7 +145,7 @@ export default function Header({
       {/* Mobile View */}
       <div className="mobileview-header">
         <div
-          className={`d-flex align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200 py-1 top-6" : "px-0"
+          className={`flex align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200 py-1 top-6" : "px-0"
             } transition-all`}
           id="onscroll-header-mobile"
         >
@@ -164,14 +164,14 @@ export default function Header({
 
           {/* Username visible on scroll */}
           <div className={`${scrolled ? "d-block" : "d-none"}`}>
-            <div className="d-flex align-items-center gap-[5px] justify-content-center">
+            <div className="flex align-items-center gap-[5px] justify-content-center">
               <h6 className="fw-medium max-w-32 truncate">@{username}</h6>
               {isVerified && <VerificationBadge direction="right" />}
             </div>
           </div>
 
           {/* Contact and modal button */}
-          <div className="d-flex align-items-center gap-2">
+          <div className="flex align-items-center gap-2">
             {/* {isOtherPage &&
               <Link
                 href={`/${username}`}

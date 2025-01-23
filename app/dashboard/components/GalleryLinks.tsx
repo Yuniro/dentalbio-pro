@@ -14,8 +14,8 @@ const GalleryLinks = () => {
         {links.map((link, index) => (
           <div className="sharelinks" key={index}>
             <a href={link.href} className="text-decoration-none">
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center gap-3">
+              <div className="flex align-items-center justify-content-between">
+                <div className="flex align-items-center gap-3">
                   <img src={link.img} alt="icon" className="img-fluid modal-icons" />
                   <h6 className="fw-semibold">{link.text}</h6>
                 </div>

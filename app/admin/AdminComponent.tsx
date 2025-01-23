@@ -30,7 +30,7 @@ const AdminComponent: React.FC = () => {
   const [tempFilters, setTempFilters] = useState<Record<string, string>>({}); // Temporary filters
 
   // Add page size options
-  const pageSizeOptions = [10, 25, 50, 100];
+  const pageSizeOptions = [10, 15, 20, 25];
 
   const fetchUserList = async () => {
     setIsLoading(true);
@@ -82,7 +82,7 @@ const AdminComponent: React.FC = () => {
 
   useEffect(() => {
     fetchUserList();
-  }, [page, filters]);
+  }, [limit, page, filters]);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -157,7 +157,7 @@ const AdminComponent: React.FC = () => {
         <h1 className="text-2xl font-bold">User Management Dashboard</h1>
         <button
           onClick={() => router.push('/success')}
-          className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors flex items-center gap-2 shadow-md"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
@@ -172,6 +172,7 @@ const AdminComponent: React.FC = () => {
           <FullRoundedButton
             id="filter-button"
             onClick={() => setIsFilterOpen(!isFilterOpen)}
+            className="shadow-md"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white mr-1" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
@@ -319,13 +320,18 @@ const AdminComponent: React.FC = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-[26px] border border-gray-200 shadow-sm pb-1">
-        <table className="w-full">
+      <div className="overflow-x-auto rounded-[26px] border border-gray-200 shadow-xl pb-1">
+        <table className="w-full min-w-[2400px]">
           <thead className="bg-primary-1 text-white">
             <tr>
               <th className="border-b px-4 py-3 text-left text-sm font-semibold">#</th>
+              <th className="border-b px-4 py-3 text-left text-sm font-semibold">Title</th>
+              <th className="border-b px-4 py-3 text-left text-sm font-semibold">First Name</th>
+              <th className="border-b px-4 py-3 text-left text-sm font-semibold">Last Name</th>
               <th className="border-b px-4 py-3 text-left text-sm font-semibold">Email</th>
               <th className="border-b px-4 py-3 text-left text-sm font-semibold">Username</th>
+              <th className="border-b px-4 py-3 text-left text-sm font-semibold">Position</th>
+              <th className="border-b px-4 py-3 text-left text-sm font-semibold">Country</th>
               <th className="border-b px-4 py-3 text-center text-sm font-semibold">Subscription Status</th>
               <th className="border-b px-4 py-3 text-center text-sm font-semibold">Current Period End</th>
               <th className="border-b px-4 py-3 text-center text-sm font-semibold">Trial End</th>
@@ -338,7 +344,7 @@ const AdminComponent: React.FC = () => {
               // Loading skeleton
               Array.from({ length: limit }).map((_, index) => (
                 <tr key={`skeleton-${index}`}>
-                  {Array.from({ length: 8 }).map((_, cellIndex) => (
+                  {Array.from({ length: 13 }).map((_, cellIndex) => (
                     <td key={`skeleton-cell-${cellIndex}`} className="px-4 py-3">
                       <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
                     </td>
@@ -371,11 +377,16 @@ const AdminComponent: React.FC = () => {
               </tr>
             ) : (
               data.map((row: any, index) => (
-                <tr key={row.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-500">{(page - 1) * limit + index + 1}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">{row.email}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">{row.username}</td>
-                  <td className="px-4 text-sm text-gray-500 text-center">
+                <tr key={row.id} className="hover:bg-gray-50  text-sm text-gray-700">
+                  <td className="px-4 py-3">{(page - 1) * limit + index + 1}</td>
+                  <td className="px-4 py-3">{row.title}</td>
+                  <td className="px-4 py-3">{row.first_name}</td>
+                  <td className="px-4 py-3">{row.last_name}</td>
+                  <td className="px-4 py-3">{row.email}</td>
+                  <td className="px-4 py-3">{row.username}</td>
+                  <td className="px-4 py-3">{row.position}</td>
+                  <td className="px-4 py-3">{row.country}</td>
+                  <td className="px-4 text-center">
                     <div className="flex flex-col justify-center items-center gap-1">
                       {row.trial_end && new Date(row.trial_end) > new Date() &&
                         <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white`}>
@@ -391,9 +402,9 @@ const AdminComponent: React.FC = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.current_period_end ? new Date(row.current_period_end).toLocaleDateString() : '-'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500 text-center">{row.trial_end ? new Date(row.trial_end).toLocaleDateString() : '-'}</td>
-                  <td className="px-4 py-3 text-sm text-gray-500">
+                  <td className="px-4 py-3 text-center">{row.current_period_end ? new Date(row.current_period_end).toLocaleDateString() : '-'}</td>
+                  <td className="px-4 py-3 text-center">{row.trial_end ? new Date(row.trial_end).toLocaleDateString() : '-'}</td>
+                  <td className="px-4 py-3">
                     <div className="flex justify-center items-center gap-2">{row.isVerified ? <VerificationBadge /> : ''}</div>
                   </td>
                   <td className="px-4 py-3 text-sm text-center">

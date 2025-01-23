@@ -84,24 +84,24 @@ const Treatment = ({
       }}
       className="membar-cards p-4"
     >
-      <div className="d-flex align-items-center gap-3">
+      <div className="flex align-items-center gap-3">
         <div className="flex flex-col gap-0 hover:bg-purple-100 hover:text-[#302a83] rounded-md cursor-pointer p-1">
           <CaretUp className="-mb-0.5" weight="bold" />
           <CaretDown className="-mt-0.5" weight="bold" />
         </div>
         <div className="w-100">
-          <div className="d-flex align-items-center justify-content-between gap-2 mb-1 member-cards-actions">
+          <div className="flex align-items-center justify-content-between gap-2 mb-1 member-cards-actions">
             <div>
               <button
                 onClick={() => onEdit(treatment)}
-                className="d-flex align-items-center gap-2 member-heading"
+                className="flex align-items-center gap-2 member-heading"
               >
                 <p className="mb-0">{treatment.title}</p>
                 <PencilSimple className="w-5 h-5" />
               </button>
               <p className=" mb-0">{treatment.description}</p>
             </div>
-            <div className="d-flex gap-3 align-items-center">
+            <div className="flex gap-3 align-items-center">
               <button
                 className="w-10 h-10 p-0.5 hover:bg-red-100 hover:text-red-700 flex items-center justify-center rounded-md transition-all"
                 onClick={() => onDelete(treatment)}

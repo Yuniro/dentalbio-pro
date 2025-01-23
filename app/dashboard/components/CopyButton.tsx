@@ -16,7 +16,7 @@ const CopyButton = ({ username }: { username: string }) => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-between gap-2 dentalbio-copy-wrapper">
+    <div className="flex align-items-center justify-content-between gap-2 dentalbio-copy-wrapper">
       <p className="m-0 truncate transition-all">
         dental.bio/
         <span>{username ? `${username}` : "Loading..."}</span>

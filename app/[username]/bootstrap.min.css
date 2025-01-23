@@ -7876,7 +7876,7 @@ textarea.form-control-lg {
     display: table-cell!important
 }
 
-.d-flex {
+.flex {
     display: flex!important
 }
 
@@ -10517,7 +10517,7 @@ textarea.form-control-lg {
         display: table-cell!important
     }
 
-    .d-md-flex {
+    .d-mflex {
         display: flex!important
     }
 
