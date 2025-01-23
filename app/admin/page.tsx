@@ -1,43 +1,27 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import { AdminServer } from "@/utils/functions/useAdminServer";
+import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { redirect } from "next/navigation";
 import AdminComponent from "./AdminComponent";
 
-const Admin = () => {
-  const router = useRouter();
+const Admin = async () => {
   const supabase = createClient();
 
-  useEffect(() => {
-    const checkAuthorization = async () => {
-      const { data: authData, error: authError } = await supabase.auth.getUser();
+  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
 
-      if (authError || !authData?.user) {
-        router.push("/login");
-        return;
-      }
+  const { data: userData, error: userError } = await supabase
+    .from("users")
+    .select("username, subscription_status, role")
+    .eq("id", userId)
+    .single();
 
-      const { data: userData, error: userError } = await supabase
-        .from("users")
-        .select("role")
-        .eq("email", authData?.user?.email);
+  if (!(userData?.subscription_status === "PRO" || userData?.subscription_status === "PREMIUM PRO" || userData?.role === "admin"))
+    return redirect("/dashboard");
 
-      if (userError || !userData) {
-        router.push("/login");
-        return;
-      }
-
-      if (userData[0]?.role !== "admin") {
-        router.push("/login");
-        return;
-      }
-    };
-
-    checkAuthorization();
-  }, [router, supabase]);
-
-  return <AdminComponent />;
+  return (
+    <>
+      {userData && <AdminComponent />}
+    </>);
 };
 
 export default Admin;

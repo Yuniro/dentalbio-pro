@@ -26,8 +26,11 @@ import { AdminServer } from "@/utils/functions/useAdminServer";
 // Fetch the authenticated user ID
 async function getUserId() {
   const supabase = createClient();
-  
-  return getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
+  try {
+    return getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
+  } catch (e) {
+    redirect("/login");
+  }
 }
 
 // Get detailed user information
