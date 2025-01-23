@@ -23,7 +23,12 @@ const Admin = () => {
         .select("role")
         .eq("email", authData?.user?.email);
 
-      if (userError || userData?.length === 0 || userData[0]?.role !== "admin") {
+      if (userError || !userData) {
+        router.push("/login");
+        return;
+      }
+
+      if (userData[0]?.role !== "admin") {
         router.push("/login");
         return;
       }
