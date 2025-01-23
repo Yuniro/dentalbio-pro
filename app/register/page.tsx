@@ -222,9 +222,9 @@ export default function Page() {
         email,
         password,
         options: {
-          // emailRedirectTo: `${
-          //   process.env.NEXT_PUBLIC_BASE_URL
-          // }/register/confirm?username=${encodeURIComponent(username)}`,
+          emailRedirectTo: `${
+            process.env.NEXT_PUBLIC_BASE_URL
+          }/register/confirm?username=${encodeURIComponent(username)}`,
           data: {
             username,
             first_name: formData.firstName,
