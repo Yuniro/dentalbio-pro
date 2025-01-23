@@ -18,6 +18,7 @@ const AdminComponent: React.FC = () => {
 
   const [isOpenConfirmMessage, setIsOpenConfirmMessage] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState("");
+  const [deleteEmail, setDeleteEmail] = useState("");
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -129,7 +130,7 @@ const AdminComponent: React.FC = () => {
   const handleDelete = async () => {
     const response = await fetch('/api/user', {
       method: 'DELETE',
-      body: JSON.stringify({ id: deleteUserId })
+      body: JSON.stringify({ id: deleteUserId, email: deleteEmail })
     });
 
     const data = await response.json();
@@ -138,12 +139,13 @@ const AdminComponent: React.FC = () => {
       console.log("Failed to delete", data.error);
     } else {
       fetchUserList();
+      setIsOpenConfirmMessage(false);
     }
-    setIsOpenConfirmMessage(false);
   }
 
-  const openDeleteConfirmMessage = (userId: string) => {
+  const openDeleteConfirmMessage = (userId: string, email: string) => {
     setDeleteUserId(userId);
+    setDeleteEmail(email);
     setIsOpenConfirmMessage(true);
   }
 
@@ -425,7 +427,7 @@ const AdminComponent: React.FC = () => {
                         </>}
 
                       <button
-                        onClick={() => openDeleteConfirmMessage(row.id)}
+                        onClick={() => openDeleteConfirmMessage(row.id, row.email)}
                         className="text-gray-600 hover:text-red-600 transition-colors inline-flex"
                         title="Delete Dentist"
                       >

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { getEffectiveUserId } from '@/utils/user/getEffectiveUserId';
+import { getUserIdByEmail } from '@/utils/user/getUserIdByEmail';
+import supabaseAdmin from '@/utils/supabase/supabaseAdmin';
 
 export async function POST(request: Request) {
   const { targetUserId } = await request.json();
@@ -27,10 +29,18 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
+  const { id, email } = await request.json();
 
   try {
     const supabase = createClient();
+
+    const userId = await getUserIdByEmail(email);
+    
+    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId!);
+
+    if (authError) {
+      return NextResponse.json({ error: authError.message }, { status: 400 });
+    }
 
     const { error } = await supabase
       .from('users')
