@@ -26,7 +26,7 @@ const config: Config = {
           '100%': { opacity: '1' },
         },
         fadeOut: {
-          '0%': { opacity: '1' },
+          '0%': { opacity: '1', display: 'flex' },
           '100%': { opacity: '0', display: 'none' },
         },
       },

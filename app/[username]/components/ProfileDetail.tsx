@@ -193,7 +193,7 @@ export default function ProfileDetail({
         {productGroups.map((group) => <ProductList key={group.id} products={group.datas!} />)}
       </div>} */}
 
-      <div className={`flex flex-wrap ${products.length > 0 ? 'pb-4' : ''} ${isShopOpen ? 'animate-fade-in' : 'animate-fade-out'}`}>
+      <div className={`flex-wrap ${products.length > 0 ? 'pb-4' : ''} ${isShopOpen ? 'animate-fade-in flex' : 'animate-fade-out'}`}>
         <IndividualProductList products={products} />
       </div>
 
