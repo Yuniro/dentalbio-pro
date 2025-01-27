@@ -10,6 +10,8 @@ import ShareModal from "./ShareModal";
 import Link from "next/link";
 import { SealCheck } from "@phosphor-icons/react/dist/ssr";
 import VerificationBadge from "@/app/components/VerificationBadge";
+import { useNavbar } from "../../contexts/NavbarContext";
+import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 
 export default function Header({
   username,
@@ -26,6 +28,8 @@ export default function Header({
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
+  const { navState } = useNavbar();
+
   // Handle the scroll behavior
   useEffect(() => {
     const handleScroll = () => {
@@ -131,11 +135,11 @@ export default function Header({
               >
                 <span>Back</span>
               </Link>}
-            <a href="#location" onClick={e => handleScroll(e, "#location")} id="onscroll-hide-contact-btn">
-              <button className="contact-me-btn whitespace-nowrap">
-                Contact me
-              </button>
-            </a>
+              <a href="#location" onClick={e => handleScroll(e, "#location")} id="onscroll-hide-contact-btn">
+                <FullRoundedButton className={`py-2 ${navState.Location ? "" : "bg-[#BFBFBF]"}`} buttonType={navState.Location ? "primary" : "ghost"}>
+                  Contact me
+                </FullRoundedButton>
+              </a>
 
             <ShareModal username={username} />
           </div>

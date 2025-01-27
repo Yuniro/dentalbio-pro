@@ -4,10 +4,12 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import "../../globals.css";
 import MapComponent from "./MapComponent";
+import { useNavbar } from "@/app/contexts/NavbarContext";
 
 export default function WorkLocation({ dentistry }: { dentistry: any }) {
   const [locations, setLocations] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const { setNavItemState } = useNavbar();
 
   useEffect(() => {
     async function fetchLocation() {
@@ -27,6 +29,9 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
         setLoading(false);
         return;
       }
+
+      if (dentistryLocations.length)
+        setNavItemState('Location', true);
 
       setLocations(dentistryLocations); // Store the location data
       setLoading(false);

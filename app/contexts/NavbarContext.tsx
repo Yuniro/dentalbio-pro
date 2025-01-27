@@ -17,6 +17,7 @@ export const NavbarProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     Videos: false,
     Reviews: false,
     Shop: false,
+    Location: false,
   });
 
   const setNavItemState = (name: string, state: boolean) => {

@@ -22,12 +22,27 @@ export default function Sidebar() {
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
   const [userSubscriptionStatus, setUserSubscriptionStatus] = useState<string | null>(null);
   const [dentistryId, setDentistryId] = useState<string | null>(null);
+  const [announcements, setAnnouncements] = useState({ title: '', content: '' });
+
   const pathname = usePathname();
 
   // Fetch user info on component mount
   useEffect(() => {
     fetchUserInfo();
   }, []);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      const response = await fetch('/api/announcements', {
+        method: 'GET',
+      });
+
+      const fetchData = await response.json();
+      setAnnouncements(fetchData);
+    }
+
+    fetchAnnouncements();
+  }, [])
 
   // Function to toggle the sidebar visibility
   const handleToggle = () => setIsOpen(!isOpen);
@@ -238,12 +253,13 @@ export default function Sidebar() {
         ></div>
       )}
 
-      <div className="memberpanel-sidebar-detail">
-        <p className="fw-bold memberpanel-detail-title">
-          New Features Soon! ⏳
-        </p>
-        <p className="mb-0">Upgrade now and be the first to enjoy our upcoming features!</p>
-      </div>
+      {announcements.title &&
+        <div className="memberpanel-sidebar-detail">
+          <p className="fw-bold memberpanel-detail-title">
+            {announcements.title}
+          </p>
+          <p className="mb-0">{announcements.content}</p>
+        </div>}
       <Link
         href={"/success"}
         target="_blank"

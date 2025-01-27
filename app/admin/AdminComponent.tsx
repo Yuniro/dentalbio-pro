@@ -1,12 +1,12 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useError } from "../contexts/ErrorContext";
 import VerificationBadge from "../components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
 import Link from "next/link";
-import { CaretDown, Gear, Trash } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, Gear, Megaphone, Trash } from "@phosphor-icons/react/dist/ssr";
 import FullRoundedButton from "../components/Button/FullRoundedButton";
 import LabeledInput from "../dashboard/components/LabeledInput";
 import ConfirmMessage from "../components/Modal/ConfirmMessagel";
@@ -27,7 +27,12 @@ const AdminComponent: React.FC = () => {
   const [limit, setLimit] = useState(10); // Rows per page
   const [total, setTotal] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isAnnouncementEditorOpen, setIsAnnouncementEditorOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState<Record<string, string>>({}); // Temporary filters
+  const [announcements, setAnnouncements] = useState({ title: '', content: '' })
+  const [tempAnnouncements, setTempAnnouncements] = useState({ title: '', content: '' })
+
+  const announcementsRef = useRef(announcements);
 
   // Add page size options
   const pageSizeOptions = [10, 15, 20, 25];
@@ -81,12 +86,38 @@ const AdminComponent: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    announcementsRef.current = announcements;
+  }, [announcements])
+
+  useEffect(() => {
     fetchUserList();
   }, [limit, page, filters]);
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      const response = await fetch('/api/announcements', {
+        method: 'GET',
+      });
+
+      const fetchData = await response.json();
+      setAnnouncements(fetchData);
+      setTempAnnouncements(fetchData);
+    }
+
+    fetchAnnouncements();
+  }, [])
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setTempFilters((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleAnnouncementsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setTempAnnouncements((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -103,17 +134,46 @@ const AdminComponent: React.FC = () => {
     setIsFilterOpen(false);
   };
 
+  const applyAnnouncements = async () => {
+    setAnnouncements(tempAnnouncements);
+
+    const response = await fetch("/api/announcements", {
+      method: "PUT",
+      body: JSON.stringify(announcements)
+    });
+
+    const data = response.json();
+
+    setIsAnnouncementEditorOpen(false);
+  }
+
+  const cancelAnnouncements = () => {
+    setTempAnnouncements(announcementsRef.current);
+    setIsAnnouncementEditorOpen(false);
+  }
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const dropdown = document.getElementById('filter-dropdown');
       const filterButton = document.getElementById('filter-button');
+
+      const announcementEditor = document.getElementById('announcement-editor');
+      const announcementButton = document.getElementById('announcement-button');
       if (
         dropdown &&
         !dropdown.contains(event.target as Node) &&
         !filterButton?.contains(event.target as Node)
       ) {
-        applyFilters();
+        cancelFilters();
+      }
+
+      if (
+        announcementEditor &&
+        !announcementEditor.contains(event.target as Node) &&
+        !announcementButton?.contains(event.target as Node)
+      ) {
+        cancelAnnouncements();
       }
     };
 
@@ -166,7 +226,7 @@ const AdminComponent: React.FC = () => {
         </button>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
         {/* Filter Button and Dropdown */}
         <div className="relative w-full sm:w-auto">
           <FullRoundedButton
@@ -258,6 +318,60 @@ const AdminComponent: React.FC = () => {
                   onClick={applyFilters}
                 >
                   Apply Filters
+                </FullRoundedButton>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="relative flex-grow w-full sm:w-auto">
+          <FullRoundedButton
+            id="announcement-button"
+            onClick={() => setIsAnnouncementEditorOpen(!isAnnouncementEditorOpen)}
+            className="shadow-md"
+          >
+            <Megaphone size={22} className="mr-1" />
+            Announcements
+          </FullRoundedButton>
+
+          {isAnnouncementEditorOpen && (
+            <div
+              id="announcement-editor"
+              className="absolute left-0 mt-2 w-full sm:w-96 bg-[#f1f1f3] border rounded-[26px] shadow-xl z-10"
+            >
+              <div className="p-4">
+                <h3 className="font-semibold mb-4 text-gray-700">Manage Announcements</h3>
+
+                {/* Text inputs */}
+                <div className="space-y-3">
+                  <LabeledInput
+                    label="Title"
+                    name="title"
+                    type="text"
+                    value={tempAnnouncements.title}
+                    onChange={handleAnnouncementsChange}
+                  />
+                  <LabeledInput
+                    label="Content"
+                    name="content"
+                    type="text"
+                    value={tempAnnouncements.content}
+                  />
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="border-t p-4 flex justify-end space-x-2 bg-gray-50 rounded-b-[26px]">
+                <FullRoundedButton
+                  onClick={cancelAnnouncements}
+                  buttonType="danger"
+                >
+                  Cancel
+                </FullRoundedButton>
+                <FullRoundedButton
+                  onClick={applyAnnouncements}
+                >
+                  Save
                 </FullRoundedButton>
               </div>
             </div>
