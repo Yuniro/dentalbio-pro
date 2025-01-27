@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { User, Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple } from "phosphor-react";
-import { CheckSquare, Image, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
+import { CheckSquare, Image, LockSimple, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { useAdmin } from "@/utils/functions/useAdmin";
 
@@ -23,6 +23,7 @@ export default function Sidebar() {
   const [userSubscriptionStatus, setUserSubscriptionStatus] = useState<string | null>(null);
   const [dentistryId, setDentistryId] = useState<string | null>(null);
   const [announcements, setAnnouncements] = useState({ title: '', content: '' });
+  const [proAvailable, setProAvailable] = useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -68,6 +69,9 @@ export default function Sidebar() {
     Cookies.set(COOKIE_USERNAME_KEY, fetchedUsername, { expires: 7 });
     setUsername(fetchedUsername);
     setUserSubscriptionStatus(userRecord.subscription_status);
+
+    if ((userRecord.subscription_status === "PRO" || userRecord.subscription_status === "PREMIUM PRO"))
+      setProAvailable(true);
 
     // Fetch the `dentistry_id` using the user ID
     const { data: dentistryRecord, error: dentistryError } = await supabase
@@ -187,12 +191,11 @@ export default function Sidebar() {
                   Icon={LinkSimple}
                   onClick={handleClose}
                 />
-                {(userSubscriptionStatus === "PRO" || userSubscriptionStatus === "PREMIUM PRO") &&
-                  <>
                     <SidebarItem
                       label="Blogs"
                       link="/dashboard/blog"
                       isActive={pathname === "/dashboard/blog"}
+                      enabled={proAvailable}
                       Icon={Newspaper}
                       onClick={handleClose}
                     />
@@ -200,6 +203,7 @@ export default function Sidebar() {
                       label="Gallery"
                       link="/dashboard/gallery"
                       isActive={pathname === "/dashboard/gallery"}
+                      enabled={proAvailable}
                       Icon={Image}
                       onClick={handleClose}
                     />
@@ -207,6 +211,7 @@ export default function Sidebar() {
                       label="Reviews"
                       link="/dashboard/review"
                       isActive={pathname === "/dashboard/review"}
+                      enabled={proAvailable}
                       Icon={CheckSquare}
                       onClick={handleClose}
                     />
@@ -214,6 +219,7 @@ export default function Sidebar() {
                       label="Videos"
                       link="/dashboard/video"
                       isActive={pathname === "/dashboard/video"}
+                      enabled={proAvailable}
                       Icon={Video}
                       onClick={handleClose}
                     />
@@ -221,6 +227,7 @@ export default function Sidebar() {
                       label="Shop"
                       link="/dashboard/shop"
                       isActive={pathname === "/dashboard/shop"}
+                      enabled={proAvailable}
                       Icon={ShoppingCartSimple}
                       onClick={handleClose}
                     />
@@ -228,10 +235,10 @@ export default function Sidebar() {
                       label="Verification"
                       link="/dashboard/verification"
                       isActive={pathname === "/dashboard/verification"}
+                      enabled={proAvailable}
                       Icon={SealCheck}
                       onClick={handleClose}
                     />
-                  </>}
                 <SidebarItem
                   label="Settings"
                   link="/dashboard/settings"
@@ -283,6 +290,7 @@ interface SidebarItemProps {
   label: string;
   link: string;
   isActive: boolean;
+  enabled?: boolean;
   Icon: React.ElementType;
   onClick: () => void;
 }
@@ -291,24 +299,27 @@ const SidebarItem = ({
   label,
   link,
   isActive,
+  enabled = true,
   Icon,
   onClick,
 }: SidebarItemProps) => {
   return (
     <Link
       href={link}
-      className="nav-item flex align-items-center gap-3 no-underline"
+      className={`flex justify-start nav-item flex align-items-center gap-3 no-underline ${isActive ? "text-black" : enabled ? "text-neutral-900" : "text-gray-500"}`}
       onClick={onClick}
     >
       <Icon
         size={24}
         weight={`${isActive ? (link === "/dashboard/links" ? "bold" : "fill") : "regular"
           }`}
-        className={isActive ? "text-black" : "text-neutral-900"}
       />
-      <span className={`nav-link ${isActive ? "active" : ""} p-0`}>
+      <div className="flex-grow">
         {label}
-      </span>
+      </div>
+
+      {!enabled &&
+        <LockSimple size={20} />}
     </Link>
   );
 };

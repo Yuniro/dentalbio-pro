@@ -26,7 +26,7 @@ export default function RootLayout({
             <div className="col-xl-3 col-12 mb-3">
               <Sidebar />
             </div>
-            <div className="col-xl-6 col-12">{children}</div>
+            <div className="relative col-xl-6 col-12">{children}</div>
             <RightPanel />
           </div>
         </div>

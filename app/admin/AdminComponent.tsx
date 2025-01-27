@@ -22,6 +22,7 @@ const AdminComponent: React.FC = () => {
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [filters, setFilters] = useState<Record<string, string>>({});
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10); // Rows per page
@@ -30,7 +31,7 @@ const AdminComponent: React.FC = () => {
   const [isAnnouncementEditorOpen, setIsAnnouncementEditorOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState<Record<string, string>>({}); // Temporary filters
   const [announcements, setAnnouncements] = useState({ title: '', content: '' })
-  const [tempAnnouncements, setTempAnnouncements] = useState({ title: '', content: '' })
+  const [tempAnnouncements, setTempAnnouncements] = useState({ title: '', content: '' });
 
   const announcementsRef = useRef(announcements);
 
@@ -136,6 +137,7 @@ const AdminComponent: React.FC = () => {
 
   const applyAnnouncements = async () => {
     setAnnouncements(tempAnnouncements);
+    setIsSaving(true);
 
     const response = await fetch("/api/announcements", {
       method: "PUT",
@@ -145,6 +147,7 @@ const AdminComponent: React.FC = () => {
     const data = response.json();
 
     setIsAnnouncementEditorOpen(false);
+    setIsSaving(false);
   }
 
   const cancelAnnouncements = () => {
@@ -369,6 +372,7 @@ const AdminComponent: React.FC = () => {
                   Cancel
                 </FullRoundedButton>
                 <FullRoundedButton
+                  isLoading={isSaving}
                   onClick={applyAnnouncements}
                 >
                   Save

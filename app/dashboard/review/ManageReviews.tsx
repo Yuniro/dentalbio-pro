@@ -251,8 +251,6 @@ const ManageReviews = ({ targetUserId }: { targetUserId: string | null }) => {
 
   return (
     <div>
-      <h4 className='mb-6'>My Reviews</h4>
-
       <DndProvider backend={HTML5Backend}>
         {reviews ?
           reviews.length > 0 ?

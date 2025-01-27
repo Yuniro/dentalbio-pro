@@ -213,8 +213,6 @@ const ManageGalleries = ({ targetUserId }: { targetUserId: string | null }) => {
 
   return (
     <div>
-      <h4 className='mb-6'>My Galleries</h4>
-
       <DndProvider backend={HTML5Backend}>
         {galleries ?
           galleries.length > 0 ?
