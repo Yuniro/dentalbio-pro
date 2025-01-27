@@ -15,7 +15,7 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const [isService, toggleIsService] = useReducer((prevState) => !prevState, true);
+  const [isService, toggleIsService] = useReducer((prevState) => !prevState, false);
   const router = useRouter(); // Next.js router for refresh
 
   const maxLimit = 200;
