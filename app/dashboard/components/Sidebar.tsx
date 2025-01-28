@@ -282,8 +282,8 @@ export default function Sidebar() {
                 />
                 <SidebarItem
                   label="Domain Name"
-                  link="/dashboard/domain-name"
-                  isActive={pathname === "/dashboard/domain-name"}
+                  link="/dashboard/domain"
+                  isActive={pathname === "/dashboard/domain"}
                   enabled={premiumProAvailable}
                   Icon={Globe}
                   onClick={handleClose}

@@ -27,7 +27,7 @@ const Branding = async () => {
     <div className="px-10">
       {!premiumProAvailable &&
         <>
-          <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibod my-4">
+          <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
             <LockSimple size={22} />
             Upgrade your membership to unlock this feature
           </div>
