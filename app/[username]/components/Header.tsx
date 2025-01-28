@@ -136,7 +136,7 @@ export default function Header({
                 <span>Back</span>
               </Link>}
             <a href="#location" onClick={e => handleScroll(e, "#location")} id="onscroll-hide-contact-btn">
-              <FullRoundedButton className={`py-2 ${navState.Location ? "" : "bg-[#BFBFBF]"}`} buttonType={navState.Location ? "primary" : "ghost"}>
+              <FullRoundedButton className={`no-underline py-2 ${navState.Location ? "" : "bg-[#BFBFBF]"}`} buttonType={navState.Location ? "primary" : "ghost"}>
                 Contact me
               </FullRoundedButton>
             </a>
@@ -185,7 +185,7 @@ export default function Header({
               </Link>} */}
             {/* {!scrolled && ( */}
             <a href="#location" onClick={e => handleScroll(e, "#location")} id="onscroll-hide-contact-btn">
-              <FullRoundedButton className={`py-2 ${navState.Location ? "" : "bg-[#BFBFBF]"}`} buttonType={navState.Location ? "primary" : "ghost"}>
+              <FullRoundedButton className={`no-underline py-2 ${navState.Location ? "" : "bg-[#BFBFBF]"}`} buttonType={navState.Location ? "primary" : "ghost"}>
                 Contact me
               </FullRoundedButton>
             </a>

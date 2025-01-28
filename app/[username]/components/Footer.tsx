@@ -50,7 +50,7 @@ export default function Footer({
           <div className="col-12 text-center">
             {bookingLink && (
               <a href={`mailto:${contact_email}`}>
-                <button className="custom-outline-btn contact-btn">
+                <button className="no-underline custom-outline-btn contact-btn">
                   Contact me
                 </button>
               </a>
