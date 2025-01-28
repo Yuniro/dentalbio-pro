@@ -12,6 +12,7 @@ import LabeledInput from "../dashboard/components/LabeledInput";
 import ConfirmMessage from "../components/Modal/ConfirmMessagel";
 import { formatDateAsMMDDYYYY } from "@/utils/formatDate";
 import UpgradePlanModal from "./components/upgradePlanModal";
+import { PreviewProvider } from "../contexts/PreviewContext";
 
 const AdminComponent: React.FC = () => {
   const { errorMessage, setErrorMessage } = useError();
@@ -138,6 +139,18 @@ const AdminComponent: React.FC = () => {
     setTempFilters(filters);
     setIsFilterOpen(false);
   };
+
+  const handleUpdateUser = (id: string, subscription_status: string) => {
+    setData((prev: any ) => {
+      const updatedData = prev.map((user: any) => {
+        if (user.id === id) {
+          return { ...user, subscription_status };
+        }
+        return user;
+      });
+      return updatedData;
+    });
+  }
 
   const applyAnnouncements = async () => {
     setAnnouncements(tempAnnouncements);
@@ -605,6 +618,7 @@ const AdminComponent: React.FC = () => {
         isOpen={isOpenUpgradePlanModal}
         onClose={() => setIsOpenUpgradePlanModal(false)}
         user={upgradeUser}
+        onSuccess={handleUpdateUser}
       />  
     </div>
   );

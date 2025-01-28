@@ -10,22 +10,25 @@ import { createClient } from "@/utils/supabase/client";
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: (id: string, subscription_status: string) => void;
   user: any;
 }
 
 const UpgradePlanModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
+  onSuccess,
   user
 }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [period_end, setPeriodEnd] = useState<Date | null>(null);
-  const [planName, setPlanName] = useState<string>("");
+  const [planName, setPlanName] = useState<string>("PRO");
 
   const handleSubmit = async () => {
+    setIsUploading(true);
     const userId = user.id;
 
-    const response = await fetch("/api/subscrible", {
+    const response = await fetch("/api/subscribe", {
       method: "POST",
       body: JSON.stringify({ id: userId, subscription_status: planName, current_period_end: period_end })
     });
@@ -34,7 +37,12 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
 
     if (data.error) {
       console.error(data.error);
+    } else {
+      onSuccess(userId, planName);
     }
+
+    onClose();
+    setIsUploading(false);
   }
 
   const plans = ["Pro", "Premium Pro"];

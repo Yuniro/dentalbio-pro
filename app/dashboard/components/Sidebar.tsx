@@ -318,9 +318,9 @@ export default function Sidebar() {
           <button>Upgrade now</button>
         </Link>}
       {proAvailable &&
-        <FullRoundedButton onClick={handleDowngrade} buttonType="warning" className="w-full my-4">Cancel Current Plan</FullRoundedButton>}
+        <FullRoundedButton onClick={() => setIsOpenDowngradeConfirmMessage(true)} buttonType="warning" className="w-full my-4 text-[20px]">Cancel Current Plan</FullRoundedButton>}
 
-      <FullRoundedButton buttonType="danger" className="w-full my-4">Delete Bio</FullRoundedButton>
+      <FullRoundedButton onClick={() => setIsOpenDeleteConfirmMessage(true)} buttonType="danger" className="w-full my-4 text-[20px]">Delete Bio</FullRoundedButton>
 
       <div className="memberpanel-profile flex items-center justify-start">
         <img
@@ -336,7 +336,7 @@ export default function Sidebar() {
         okText="Delete"
         isOpen={isOpenDowngradeConfirmMessage}
         onClose={() => setIsOpenDowngradeConfirmMessage(false)}
-        onOk={handleDelete}
+        onOk={handleDowngrade}
       />
 
       <ConfirmMessage

@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { sendDowngradePlanMail } from "@/utils/mails/sendDowngradePlanMail";
 
 interface PricingTableProps {
   email: string;
@@ -125,6 +124,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
   const [currentPlan, setCurrentPlan] = useState<Plan>();
   const [loading, setLoading] = useState(true);
   const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null);
+  const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
   const toggleBillingCycle = () => {
     setBillingCycle(billingCycle === "monthly" ? "annually" : "monthly");
   };
@@ -133,7 +133,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
     const fetchSubscriptionStatus = async () => {
       const supabase = createClient();
       const userId = await getEffectiveUserId({ targetUserId: null, supabase });
-      const { data, error } = await supabase.from('users').select('subscription_status').eq('id', userId);
+      const { data, error } = await supabase.from('users').select('subscription_status, subscription_id').eq('id', userId);
 
       if (data && data.length > 0) {
         if (data[0].subscription_status === "PRO") {
@@ -143,6 +143,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
         } else {
           setSubscriptionStatus('FREE');
         }
+        setSubscriptionId(data[0].subscription_id);
       }
     };
     fetchSubscriptionStatus();
@@ -209,7 +210,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
     setCurrentPlan(plans.filter(plan => plan.name === subscriptionStatus)[0]);
   }, [plans, subscriptionStatus]);
 
-  const handleDowngrade = async (priceId: string, planName: string) => {
+  const handleUpdate = async (priceId: string, planName: string) => {
     const response = await fetch("/api/subscribe", {
       method: "PUT",
       body: JSON.stringify({ priceId, subscription_status: planName })
@@ -221,7 +222,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
     setSubscriptionStatus(planName || "FREE");
   }
 
-  const handleUpgrade = async (priceId: string) => {
+  const handleCreate = async (priceId: string) => {
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
@@ -245,10 +246,10 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
   }
 
   const handleSubscribe = async (priceId: string, planName: string) => {
-    if (planOrder[planName] < planOrder[subscriptionStatus!]) {
-      handleDowngrade(priceId, planName);
+    if (subscriptionId) {
+      handleUpdate(priceId, planName);
     } else {
-      handleUpgrade(priceId);
+      handleCreate(priceId);
     }
   };
 
