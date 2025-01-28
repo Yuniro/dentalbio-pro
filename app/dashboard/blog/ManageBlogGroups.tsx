@@ -156,6 +156,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username, targetUser
                 group_id={group.id}
                 fetchedBlogs={group.blogs!}
                 username={username}
+                targetUserId={targetUserId!}
               />
               {(blogGroups.length > (index + 1)) &&
                 <hr className="my-8" />}

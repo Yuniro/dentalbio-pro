@@ -6,7 +6,7 @@ import { deleteFileFromSupabase } from '@/utils/removeFromBucket';
 import { getMaxRank } from '@/utils/getMaxOrder';
 
 export async function POST(request: Request) {
-  const { title, content, meta_title, meta_description, image_url, slug, group_id } = await request.json();
+  const { title, content, meta_title, meta_description, image_url, slug, group_id, targetUserId } = await request.json();
 
   try {
     const supabase = createClient();
@@ -14,9 +14,12 @@ export async function POST(request: Request) {
     const uniqueSlug = await generateUniqueSlug(supabase, slug);
 
     const userData = await getUserInfo({ supabase });
-    
+
     if (!((userData.subscription_status === "PRO") || (userData.subscription_status === "PREMIUM PRO") || (new Date(userData.trial_end) > new Date())))
       return NextResponse.json({ error: "Please upgrade membership!" });
+
+    if (targetUserId && userData.role !== "admin")
+      return NextResponse.json({ error: "Not authorized" });
 
     const maxRank = await getMaxRank({ supabase, table: "blogs", field: "group_id", value: group_id }) + 1;
 

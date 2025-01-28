@@ -32,7 +32,7 @@ export default async function HomePage({ params }: PageProps) {
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select("id, position, first_name, last_name, title, gdc_no, qualification, isVerified")
+    .select("id, position, first_name, last_name, title, gdc_no, qualification, isVerified, use_dental_brand")
     .ilike("username", username)
     .single();
 
@@ -164,6 +164,7 @@ export default async function HomePage({ params }: PageProps) {
             contact_email={dentistry.contact_email}
             username={username}
             title={dentistry.about_title}
+            useDentalBrand={user.use_dental_brand}
           />
         </div>
       </div>

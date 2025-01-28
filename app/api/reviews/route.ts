@@ -54,11 +54,13 @@ export async function POST(request: Request) {
     if (targetUserId && userData.role !== "admin")
       return NextResponse.json({ error: "Not authorized" });
 
-    const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: targetUserId || userData.id }) + 1;
+    const userId = targetUserId || userData?.id;
+
+    const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: userId }) + 1;
 
     const { data, error } = await supabase
       .from('reviews')
-      .insert([{ user_id: targetUserId || userData.id, reviewer_name, content, stars, image_url, platform, rank: maxRank, created_at }])
+      .insert([{ user_id: userId, reviewer_name, content, stars, image_url, platform, rank: maxRank, created_at }])
       .select("*")
       .single();
 

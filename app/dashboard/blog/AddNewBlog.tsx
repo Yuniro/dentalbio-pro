@@ -7,12 +7,14 @@ type AddNewBlogProps = {
   group_id: string;
   onAdd: (blog: any) => void;
   username: string;
+  targetUserId: string | null;
 }
 
 const AddNewBlog: React.FC<AddNewBlogProps> = ({
   group_id,
   onAdd,
   username,
+  targetUserId
 }: AddNewBlogProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 

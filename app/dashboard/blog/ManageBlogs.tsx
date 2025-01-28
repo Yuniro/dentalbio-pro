@@ -65,12 +65,14 @@ const ManageBlogs = ({
   itemType,
   group_id,
   username,
-  fetchedBlogs
+  fetchedBlogs,
+  targetUserId,
 }: {
   itemType: number;
   group_id: string;
   username: string;
-  fetchedBlogs: BlogType[]
+  fetchedBlogs: BlogType[];
+  targetUserId: string;
 }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [blogs, setBlogs] = useState<any[] | null>(null);
@@ -236,7 +238,7 @@ const ManageBlogs = ({
       {/* </DndProvider> */}
 
       <div className="flex justify-end mt-6">
-        <AddNewBlog group_id={group_id} onAdd={handleAdd} username={username} />
+        <AddNewBlog group_id={group_id} onAdd={handleAdd} username={username} targetUserId={targetUserId} />
       </div>
 
       <EditBlogModal

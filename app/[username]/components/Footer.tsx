@@ -11,12 +11,14 @@ export default function Footer({
   contact_email,
   title,
   username,
+  useDentalBrand,
 }: {
   dentistryId: string;
   bookingLink: string;
   contact_email: string;
   title: string;
   username: string;
+  useDentalBrand: boolean;
 }) {
   const [socialLinks, setSocialLinks] = useState<any>(null);
 
@@ -57,45 +59,52 @@ export default function Footer({
             )}
             <SocialLinks {...socialLinks} />
           </div>
-
         </div>
 
-        <div className="relative align-items-center">
-          <div className="col-12 text-center">
-            <div className="footer-logo">
-              <a href="/">
-                <img src="/logo.svg" alt="logo" className="img-fluid mx-auto" />
+        {useDentalBrand &&
+          <div className="relative align-items-center">
+            <div className="col-12 text-center">
+              <div className="footer-logo">
+                <a href="/">
+                  <img src="/logo.svg" alt="logo" className="img-fluid mx-auto" />
+                </a>
+              </div>
+              <a
+                href="/"
+                className="text-decoration-none text-black fw-semibold footer-dentalbio"
+              >
+                Join {title} on Dentalbio
               </a>
             </div>
-            <a
-              href="/"
-              className="text-decoration-none text-black fw-semibold footer-dentalbio"
-            >
-              Join {title} on Dentalbio
-            </a>
-          </div>
-          <div className="absolute w-[44px] top-0 right-0">
-            <ShareModal username={username} />
-          </div>
-        </div>
+            <div className="absolute w-[44px] top-0 right-0">
+              <ShareModal username={username} />
+            </div>
+          </div>}
 
-        <div className="row">
-          <div className="col-12 text-center digimax-wrapper">
-            <img
-              src="../../Perks-logo.svg"
-              alt="digimax"
-              className="img-fluid mx-auto"
-            />
-            <p>
-              A{" "}
-              <a href="https://digimax.dental/" target="_blank">
-                Digimax
-              </a>{" "}
-              Project
-            </p>
+        {/* {useDentalBrand && */}
+        <div className="relative align-items-center">
+          <div className="">
+            <div className="col-12 text-center mt-10">
+              <img
+                src="../../Perks-logo.svg"
+                alt="digimax"
+                className="img-fluid mx-auto w-10"
+              />
+              <p>
+                A{" "}
+                <a href="https://digimax.dental/" target="_blank">
+                  Digimax
+                </a>{" "}
+                Project
+              </p>
+            </div>
           </div>
+          {!useDentalBrand &&
+            <div className="absolute w-[44px] top-0 right-0">
+              <ShareModal username={username} />
+            </div>}
         </div>
-      </section>
+      </section >
     </>
   );
 }

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { User, Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple } from "phosphor-react";
-import { CheckSquare, Image, LockSimple, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
+import { CheckSquare, Globe, Image, LockSimple, Medal, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { useAdmin } from "@/utils/functions/useAdmin";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
@@ -278,6 +278,22 @@ export default function Sidebar() {
                   isActive={pathname === "/dashboard/verification"}
                   enabled={proAvailable}
                   Icon={SealCheck}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Domain Name"
+                  link="/dashboard/domain-name"
+                  isActive={pathname === "/dashboard/domain-name"}
+                  enabled={premiumProAvailable}
+                  Icon={Globe}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Branding"
+                  link="/dashboard/branding"
+                  isActive={pathname === "/dashboard/branding"}
+                  enabled={premiumProAvailable}
+                  Icon={Medal}
                   onClick={handleClose}
                 />
                 <SidebarItem
