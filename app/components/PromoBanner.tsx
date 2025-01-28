@@ -52,10 +52,6 @@ export default function PromoBanner() {
               Claim your unique Dentalbio website username today before it’s
               taken! 🚀
             </h3>
-            <p className="mt-4 text-lg">
-              Our platform is launching soon, so be among the first to secure
-              your spot.
-            </p>
           </div>
           <ClaimForm/>
 
