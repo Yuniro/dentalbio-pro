@@ -268,7 +268,7 @@ export default function Sidebar() {
           <p className="mb-0">{announcements.content}</p>
         </div>}
       <Link
-        href={"/success"}
+        href={"/upgrade"}
         target="_blank"
         className="no-underline add-btn upgrade-now-btn"
       >
@@ -306,7 +306,7 @@ const SidebarItem = ({
   return (
     <Link
       href={link}
-      className={`flex justify-start nav-item flex align-items-center gap-3 no-underline ${isActive ? "text-black" : enabled ? "text-neutral-900" : "text-gray-500"}`}
+      className={`flex justify-start nav-item align-items-center gap-3 no-underline ${isActive ? "text-black" : enabled ? "text-neutral-900" : "text-gray-500"}`}
       onClick={onClick}
     >
       <Icon

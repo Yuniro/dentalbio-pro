@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { sendDowngradePlanMail } from "@/utils/mails/sendDowngradePlanMail";
 
 interface PricingTableProps {
   email: string;
@@ -212,10 +211,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
   const handleDowngrade = async (planName: string) => {
     const supabase = createClient();
     const userId = await getEffectiveUserId({ targetUserId: null, supabase });
-    const { data } = await supabase.from('users').update({ subscription_status: planName }).eq('id', userId).select('*').single();
-    // const { data } = await supabase.from('users').select('*').eq('id', userId).single();
-    await sendDowngradePlanMail(data.email, data.first_name, data.subscription_status);
-    // console.log(userData);
+    await supabase.from('users').update({ subscription_status: planName }).eq('id', userId);
 
     setSubscriptionStatus(planName || "FREE");
   }

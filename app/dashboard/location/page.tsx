@@ -14,6 +14,12 @@ async function fetchUserAndDentistry() {
 
   const userId = await getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
 
+  const { data: userData, error: userError } = await supabase
+    .from("users")
+    .select("username, subscription_status, role")
+    .eq("id", userId)
+    .single();
+
   // Fetch Dentistry ID
   const { data: dentistry, error: dentistryError } = await supabase
     .from("dentistries")
@@ -24,7 +30,7 @@ async function fetchUserAndDentistry() {
     redirect("/error?message=dentistry_not_found");
   }
 
-  return { userId, dentistryId: dentistry.dentistry_id };
+  return { userId, userData, dentistryId: dentistry.dentistry_id };
 }
 
 // Fetch existing location data
@@ -66,11 +72,21 @@ async function updateLocation(locationData: LocationType, location_id: string) {
 
 // Main component
 export default async function Location() {
-  const { dentistryId } = await fetchUserAndDentistry();
+  const { userData, dentistryId } = await fetchUserAndDentistry();
   const locations = await fetchLocation(dentistryId);
+
+  if (!userData)
+    return redirect("/dashboard");
+
+  const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
   return (
     <div className="memberpanel-details-wrapper">
+      {!proAvailable &&
+        <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
+          Upgrade your membership to use unlock location feature
+        </div>}
+
       <MapLoader />
       <ManageLocations locations={locations} updateLocation={updateLocation} />
     </div>

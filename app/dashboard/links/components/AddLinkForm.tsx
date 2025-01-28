@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 
 import { LinkSimple } from "phosphor-react";
@@ -15,6 +15,7 @@ export default function AddLinkForm({
   const [linkUrl, setLinkUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(false); // Toggle form visibility
+  const formRef = useRef<HTMLFormElement>(null); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +56,15 @@ export default function AddLinkForm({
     window.location.reload();
   };
 
+  const handleUrl = () => {
+    let formattedUrl = linkUrl.trim();
+    if (!formattedUrl.match(/^https?:\/\//i)) {
+      setLinkUrl(`https://${formattedUrl}`);
+    }
+    if (formRef.current)
+      formRef.current.submit();
+  }
+
   return (
     <div className="w-full flex flex-col items-end">
       {/* Button to toggle the form */}
@@ -71,6 +81,7 @@ export default function AddLinkForm({
       {/* Form to add a new link */}
       {showForm && (
         <form
+          ref={formRef}
           onSubmit={handleSubmit}
           className="flex flex-column max-w-100 w-full"
         >
@@ -92,7 +103,8 @@ export default function AddLinkForm({
           />
           <div className="flex gap-2 pt-2 w-full justify-end">
             <button
-              type="submit"
+              // type="submit"
+              onClick={handleUrl}
               disabled={isLoading}
               className="bg-primary-1 hover:bg-[#302A83] transition-all text-white py-1.5 rounded-[26px] text-md px-3 font-semibold flex items-center gap-2"
             >

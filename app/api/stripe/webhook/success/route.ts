@@ -1,3 +1,4 @@
+import { sendUpgradePlanMail } from "@/utils/mails/sendUpgradePlanMail";
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
@@ -38,7 +39,7 @@ export async function GET(request: Request) {
         subscriptionStatus = 'FREE';
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('users')
       .update({
         customer_id: session.customer as string,
@@ -48,15 +49,19 @@ export async function GET(request: Request) {
         current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000) : null,
         trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000) : null
       })
-      .eq('id', session.metadata?.userId);
+      .eq('id', session.metadata?.userId)
+      .select('*')
+      .single();
 
     if (error) {
       console.error('Error updating subscription status:', error);
       return NextResponse.redirect(`${process.env.APP_URL}/error`);
     }
 
+    await sendUpgradePlanMail(data.email, data.first_name, data.subscription_status);
+
     // Redirect to success page
-    return NextResponse.redirect(`${process.env.APP_URL}/success`);
+    return NextResponse.redirect(`${process.env.APP_URL}/upgrade-success`);
 
   } catch (error) {
     console.error('Error processing success webhook:', error);
