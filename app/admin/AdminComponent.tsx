@@ -6,10 +6,12 @@ import VerificationBadge from "../components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
 import Link from "next/link";
-import { CaretDown, Gear, Megaphone, Trash } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash } from "@phosphor-icons/react/dist/ssr";
 import FullRoundedButton from "../components/Button/FullRoundedButton";
 import LabeledInput from "../dashboard/components/LabeledInput";
 import ConfirmMessage from "../components/Modal/ConfirmMessagel";
+import { formatDateAsMMDDYYYY } from "@/utils/formatDate";
+import UpgradePlanModal from "./components/upgradePlanModal";
 
 const AdminComponent: React.FC = () => {
   const { errorMessage, setErrorMessage } = useError();
@@ -32,6 +34,8 @@ const AdminComponent: React.FC = () => {
   const [tempFilters, setTempFilters] = useState<Record<string, string>>({}); // Temporary filters
   const [announcements, setAnnouncements] = useState({ title: '', content: '' })
   const [tempAnnouncements, setTempAnnouncements] = useState({ title: '', content: '' });
+  const [isOpenUpgradePlanModal, setIsOpenUpgradePlanModal] = useState(false);  
+  const [upgradeUser, setUpgradeUser] = useState(null);
 
   const announcementsRef = useRef(announcements);
 
@@ -210,6 +214,14 @@ const AdminComponent: React.FC = () => {
     setDeleteUserId(userId);
     setDeleteEmail(email);
     setIsOpenConfirmMessage(true);
+  }
+
+  const upgradePlan = (userId: string) => {
+    const user = data.find((user: any) => user.id === userId);
+    if (user) {
+      setUpgradeUser(user );
+      setIsOpenUpgradePlanModal(true);
+    }
   }
 
   const totalPages = Math.ceil(total / limit);
@@ -450,6 +462,7 @@ const AdminComponent: React.FC = () => {
               <th className="border-b px-4 py-3 text-left text-sm font-semibold">Username</th>
               <th className="border-b px-4 py-3 text-left text-sm font-semibold">Position</th>
               <th className="border-b px-4 py-3 text-left text-sm font-semibold">Country</th>
+              <th className="border-b px-4 py-3 text-center text-sm font-semibold">Registered At</th>
               <th className="border-b px-4 py-3 text-center text-sm font-semibold">Subscription Status</th>
               <th className="border-b px-4 py-3 text-center text-sm font-semibold">Current Period End</th>
               <th className="border-b px-4 py-3 text-center text-sm font-semibold">Trial End</th>
@@ -462,7 +475,7 @@ const AdminComponent: React.FC = () => {
               // Loading skeleton
               Array.from({ length: limit }).map((_, index) => (
                 <tr key={`skeleton-${index}`}>
-                  {Array.from({ length: 13 }).map((_, cellIndex) => (
+                  {Array.from({ length: 14 }).map((_, cellIndex) => (
                     <td key={`skeleton-cell-${cellIndex}`} className="px-4 py-3">
                       <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
                     </td>
@@ -504,6 +517,7 @@ const AdminComponent: React.FC = () => {
                   <td className="px-4 py-3">{row.username}</td>
                   <td className="px-4 py-3">{row.position}</td>
                   <td className="px-4 py-3">{row.country}</td>
+                  <td className="px-4 py-3 text-center">{formatDateAsMMDDYYYY(row.created_at)}</td>
                   <td className="px-4 text-center">
                     <div className="flex flex-col justify-center items-center gap-1">
                       {row.trial_end && new Date(row.trial_end) > new Date() &&
@@ -515,7 +529,7 @@ const AdminComponent: React.FC = () => {
                           'bg-gray-500 text-white'
                         }`}>
                         {(row.subscription_status === null || row.subscription_status === '')
-                          ? 'FREE'
+                          ? 'Free'
                           : row.subscription_status.charAt(0).toUpperCase() + row.subscription_status.slice(1).toLowerCase()}
                       </div>
                     </div>
@@ -553,6 +567,14 @@ const AdminComponent: React.FC = () => {
                           >
                             <Gear weight="fill" size={20} />
                           </button>
+
+                          <button
+                            onClick={() => upgradePlan(row.id)}
+                            className="text-gray-600 hover:text-primary-1 transition-colors inline-flex"
+                            title="View Dashboard"
+                          >
+                            <CloudArrowUp weight="fill" size={20} />
+                          </button>
                         </>}
 
                       <button
@@ -578,6 +600,12 @@ const AdminComponent: React.FC = () => {
         onClose={() => setIsOpenConfirmMessage(false)}
         onOk={handleDelete}
       />
+
+      <UpgradePlanModal
+        isOpen={isOpenUpgradePlanModal}
+        onClose={() => setIsOpenUpgradePlanModal(false)}
+        user={upgradeUser}
+      />  
     </div>
   );
 }

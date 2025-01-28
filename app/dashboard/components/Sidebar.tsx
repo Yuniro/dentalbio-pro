@@ -8,6 +8,9 @@ import { User, Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple } from
 import { CheckSquare, Image, LockSimple, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { useAdmin } from "@/utils/functions/useAdmin";
+import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
+import { sendDowngradePlanMail } from "@/utils/mails/sendDowngradePlanMail";
+import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 
 // Constants for storing keys in cookies
 const COOKIE_USERNAME_KEY = "username";
@@ -24,6 +27,9 @@ export default function Sidebar() {
   const [dentistryId, setDentistryId] = useState<string | null>(null);
   const [announcements, setAnnouncements] = useState({ title: '', content: '' });
   const [proAvailable, setProAvailable] = useState<boolean>(false);
+  const [premiumProAvailable, setPremiumProAvailable] = useState<boolean>(false);
+  const [isOpenDowngradeConfirmMessage, setIsOpenDowngradeConfirmMessage] = useState<boolean>(false);
+  const [isOpenDeleteConfirmMessage, setIsOpenDeleteConfirmMessage] = useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -44,6 +50,37 @@ export default function Sidebar() {
 
     fetchAnnouncements();
   }, [])
+
+  const handleDowngrade = async () => {
+    const response = await fetch("/api/subscribe", {
+      method: "DELETE",
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    setProAvailable(false);
+    setPremiumProAvailable(false);
+  }
+
+  const handleDelete = async () => {
+    const supabase = createClient();
+
+    const userId = await getEffectiveUserId({ targetUserId: getTargetUserId(), supabase });
+
+    const response = await fetch('/api/dentistry', {
+      method: 'DELETE',
+      body: JSON.stringify({ id: userId })
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+      console.error(data.error);
+    }
+
+    router.push("/success");
+  }
 
   // Function to toggle the sidebar visibility
   const handleToggle = () => setIsOpen(!isOpen);
@@ -70,8 +107,12 @@ export default function Sidebar() {
     setUsername(fetchedUsername);
     setUserSubscriptionStatus(userRecord.subscription_status);
 
+    console.log(userRecord.subscription_status);
+
     if ((userRecord.subscription_status === "PRO" || userRecord.subscription_status === "PREMIUM PRO"))
       setProAvailable(true);
+    if (userRecord.subscription_status === "PREMIUM PRO")
+      setPremiumProAvailable(true);
 
     // Fetch the `dentistry_id` using the user ID
     const { data: dentistryRecord, error: dentistryError } = await supabase
@@ -191,54 +232,54 @@ export default function Sidebar() {
                   Icon={LinkSimple}
                   onClick={handleClose}
                 />
-                    <SidebarItem
-                      label="Blogs"
-                      link="/dashboard/blog"
-                      isActive={pathname === "/dashboard/blog"}
-                      enabled={proAvailable}
-                      Icon={Newspaper}
-                      onClick={handleClose}
-                    />
-                    <SidebarItem
-                      label="Gallery"
-                      link="/dashboard/gallery"
-                      isActive={pathname === "/dashboard/gallery"}
-                      enabled={proAvailable}
-                      Icon={Image}
-                      onClick={handleClose}
-                    />
-                    <SidebarItem
-                      label="Reviews"
-                      link="/dashboard/review"
-                      isActive={pathname === "/dashboard/review"}
-                      enabled={proAvailable}
-                      Icon={CheckSquare}
-                      onClick={handleClose}
-                    />
-                    <SidebarItem
-                      label="Videos"
-                      link="/dashboard/video"
-                      isActive={pathname === "/dashboard/video"}
-                      enabled={proAvailable}
-                      Icon={Video}
-                      onClick={handleClose}
-                    />
-                    <SidebarItem
-                      label="Shop"
-                      link="/dashboard/shop"
-                      isActive={pathname === "/dashboard/shop"}
-                      enabled={proAvailable}
-                      Icon={ShoppingCartSimple}
-                      onClick={handleClose}
-                    />
-                    <SidebarItem
-                      label="Verification"
-                      link="/dashboard/verification"
-                      isActive={pathname === "/dashboard/verification"}
-                      enabled={proAvailable}
-                      Icon={SealCheck}
-                      onClick={handleClose}
-                    />
+                <SidebarItem
+                  label="Blogs"
+                  link="/dashboard/blog"
+                  isActive={pathname === "/dashboard/blog"}
+                  enabled={proAvailable}
+                  Icon={Newspaper}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Gallery"
+                  link="/dashboard/gallery"
+                  isActive={pathname === "/dashboard/gallery"}
+                  enabled={proAvailable}
+                  Icon={Image}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Reviews"
+                  link="/dashboard/review"
+                  isActive={pathname === "/dashboard/review"}
+                  enabled={proAvailable}
+                  Icon={CheckSquare}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Videos"
+                  link="/dashboard/video"
+                  isActive={pathname === "/dashboard/video"}
+                  enabled={proAvailable}
+                  Icon={Video}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Shop"
+                  link="/dashboard/shop"
+                  isActive={pathname === "/dashboard/shop"}
+                  enabled={proAvailable}
+                  Icon={ShoppingCartSimple}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Verification"
+                  link="/dashboard/verification"
+                  isActive={pathname === "/dashboard/verification"}
+                  enabled={proAvailable}
+                  Icon={SealCheck}
+                  onClick={handleClose}
+                />
                 <SidebarItem
                   label="Settings"
                   link="/dashboard/settings"
@@ -267,13 +308,20 @@ export default function Sidebar() {
           </p>
           <p className="mb-0">{announcements.content}</p>
         </div>}
-      <Link
-        href={"/upgrade"}
-        target="_blank"
-        className="no-underline add-btn upgrade-now-btn"
-      >
-        <button>Upgrade now</button>
-      </Link>
+
+      {!premiumProAvailable &&
+        <Link
+          href={"/upgrade"}
+          target="_blank"
+          className="no-underline add-btn upgrade-now-btn"
+        >
+          <button>Upgrade now</button>
+        </Link>}
+      {proAvailable &&
+        <FullRoundedButton onClick={handleDowngrade} buttonType="warning" className="w-full my-4">Cancel Current Plan</FullRoundedButton>}
+
+      <FullRoundedButton buttonType="danger" className="w-full my-4">Delete Bio</FullRoundedButton>
+
       <div className="memberpanel-profile flex items-center justify-start">
         <img
           src={profilePicUrl || "/placeholder.png"}
@@ -282,6 +330,22 @@ export default function Sidebar() {
         />
         <p className="fw-bold mb-0">@{username ? username : "loading..."}</p>
       </div>
+
+      <ConfirmMessage
+        description="Aure you sure you want to downgrade your plan?"
+        okText="Delete"
+        isOpen={isOpenDowngradeConfirmMessage}
+        onClose={() => setIsOpenDowngradeConfirmMessage(false)}
+        onOk={handleDelete}
+      />
+
+      <ConfirmMessage
+        description="Aure you sure you want to delete your account?"
+        okText="Delete"
+        isOpen={isOpenDeleteConfirmMessage}
+        onClose={() => setIsOpenDeleteConfirmMessage(false)}
+        onOk={handleDelete}
+      />
     </div>
   );
 }

@@ -222,10 +222,16 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
     setCurrentPlan(plans.filter(plan => plan.name === subscriptionStatus)[0]);
   }, [plans, subscriptionStatus]);
 
-  const handleDowngrade = async (planName: string) => {
-    const supabase = createClient();
-    const userId = await getEffectiveUserId({ targetUserId: null, supabase });
-    await supabase.from('users').update({ subscription_status: planName }).eq('id', userId);
+  const handleDowngrade = async (priceId: string, planName: string) => {
+    const response = await fetch("/api/subscribe", {
+      method: "PUT",
+      body: JSON.stringify({ priceId, subscription_status: planName })
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    setSubscriptionStatus(planName || "FREE");
   }
 
   const handleUpgrade = async (priceId: string) => {
@@ -253,7 +259,7 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
 
   const handleSubscribe = async (priceId: string, planName: string) => {
     if (planOrder[planName] < planOrder[subscriptionStatus!]) {
-      handleDowngrade(planName);
+      handleDowngrade(priceId, planName);
     } else {
       handleUpgrade(priceId);
     }
