@@ -11,6 +11,7 @@ type DraggableBlogGroupProps = {
   blogGroup: BlogGroupType;
   index: number,
   moveBlogGroup: any;
+  enabled: boolean;
 }
 
 const DraggableBlogGroup: React.FC<DraggableBlogGroupProps> = ({
@@ -18,7 +19,8 @@ const DraggableBlogGroup: React.FC<DraggableBlogGroupProps> = ({
   onDelete,
   blogGroup,
   index,
-  moveBlogGroup
+  moveBlogGroup,
+  enabled,
 }) => {
   const [, ref] = useDrag({
     type: ItemType.BLOG_GROUP,
@@ -37,15 +39,16 @@ const DraggableBlogGroup: React.FC<DraggableBlogGroupProps> = ({
 
   return (
     <div
-      ref={(node) => {
+      ref={enabled ? (node) => {
         if (node) ref(node);
         drop(node);
-      }}
+      } : undefined}
     >
       <BlogGroup
         onUpdate={onUpdate}
         onDelete={onDelete}
-        {...blogGroup}
+        enabled={enabled}
+        group={blogGroup}
       />
     </div>
   );

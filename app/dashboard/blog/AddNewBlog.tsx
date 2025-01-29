@@ -8,13 +8,15 @@ type AddNewBlogProps = {
   onAdd: (blog: any) => void;
   username: string;
   targetUserId: string | null;
+  enabled?: boolean;
 }
 
 const AddNewBlog: React.FC<AddNewBlogProps> = ({
   group_id,
   onAdd,
   username,
-  targetUserId
+  targetUserId,
+  enabled = false,
 }: AddNewBlogProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -65,7 +67,7 @@ const AddNewBlog: React.FC<AddNewBlogProps> = ({
 
   return (
     <>
-      <FullRoundedButton onClick={openModal} className="mb-4">Add Blog</FullRoundedButton>
+      <FullRoundedButton onClick={enabled ? openModal : undefined} className="mb-4">Add Blog</FullRoundedButton>
 
       <AddBlogModal
         username={username}

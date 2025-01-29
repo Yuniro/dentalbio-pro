@@ -11,6 +11,7 @@ type BlogCardProps = {
   content?: string;
   slug?: string;
   enabled?: boolean;
+  proAvailable?: boolean;
   onUpdate: (blog: BlogType, image: null) => void;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
@@ -23,6 +24,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
   content,
   slug,
   enabled,
+  proAvailable,
   onUpdate,
   onEditItem,
   onDelete,
@@ -60,7 +62,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
             <PencilSimple
               size={18}
               className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-              onClick={() => onEditItem(id)}
+              onClick={proAvailable ? () => onEditItem(id) : undefined}
             />
           </div>
 
@@ -70,7 +72,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
 
         {/* Trash Button */}
         <div className="flex items-center">
-          <div onClick={() => setIsOpenConfirmMessage(true)}>
+          <div onClick={proAvailable ? () => setIsOpenConfirmMessage(true) : undefined}>
             <Trash size={20} className="cursor-pointer hover:text-red-700" />
           </div>
 
@@ -90,6 +92,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
               // id={`flexSwitchCheckChecked-${link.link_id}`}
               checked={isActive}
               onChange={toggleIsActive}
+              disabled={!proAvailable}
             />
           </div>
         </div>

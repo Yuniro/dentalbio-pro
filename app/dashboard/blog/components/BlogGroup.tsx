@@ -5,15 +5,18 @@ import { CaretDown, CaretUp, PencilSimple, Spinner, Trash } from "@phosphor-icon
 import { useEffect, useReducer, useState } from "react";
 import LabeledInput from "../../components/LabeledInput";
 
-type BlogGroupProps = BlogGroupType & {
+type BlogGroupProps = {
+  enabled: boolean;
   onUpdate: ({ id, name, enabled }: { id: string, name?: string, enabled?: boolean }) => void;
   onDelete: ({ id }: { id: string }) => void;
+  group: BlogGroupType;
 }
 
 const BlogGroup: React.FC<BlogGroupProps> = ({
+  enabled,
   onUpdate,
   onDelete,
-  ...group
+  group,
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isActive, toggleIsActive] = useReducer((prevState) => !prevState, group.enabled!);
@@ -90,7 +93,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
               <PencilSimple
                 size={18}
                 className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-                onClick={() => setIsEditing(true)}
+                onClick={enabled ? () => setIsEditing(true) : undefined}
               />
             </div>
 
@@ -100,7 +103,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
 
           {/* Trash Button */}
           <div className="flex items-center gap-2">
-            <div onClick={() => setIsOpenConfirmMessage(true)}>
+            <div onClick={enabled ? () => setIsOpenConfirmMessage(true) : undefined}>
               <Trash size={20} className="cursor-pointer hover:text-red-700" />
             </div>
 
@@ -112,6 +115,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
                 // id={`flexSwitchCheckChecked-${link.link_id}`}
                 checked={isActive}
                 onChange={toggleIsActive}
+                disabled={!enabled}
               />
             </div>
           </div>

@@ -1,25 +1,10 @@
-import { AdminServer } from "@/utils/functions/useAdminServer";
-import { createClient } from "@/utils/supabase/server";
-import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { redirect } from "next/navigation";
 import VerifyStatus from "./components/verifyStatus";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
+import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 const Verification = async () => {
-  const supabase = createClient();
-
-  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
-
-  const { data: userData, error: userError } = await supabase
-    .from("users")
-    .select("username, subscription_status, role")
-    .eq("id", userId)
-    .single();
-
-  if (!userData)
-    return redirect("/dashboard");
-
-  const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
+  const { subscriptionStatus } = await getAuthorizedUser();
+  const proAvailable = ["PRO", "PREMIUM PRO"].includes(subscriptionStatus);
 
   return (
     <div className='px-10'>
@@ -33,7 +18,7 @@ const Verification = async () => {
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <VerifyStatus />
+        <VerifyStatus enabled={proAvailable}/>
       </div>
     </div>
   );

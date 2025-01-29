@@ -2,8 +2,17 @@
 import React, { useState } from "react";
 import LabeledInput from "../../components/LabeledInput";
 import { Spinner } from "@phosphor-icons/react/dist/ssr";
+import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 
-export default function AddNewGroupForm({ onAdd, targetUserId }: { onAdd: (group: BlogGroupType) => void, targetUserId: string | null }) {
+export default function AddNewGroupForm({
+  onAdd,
+  targetUserId,
+  enabled = false,
+}: {
+  onAdd: (group: BlogGroupType) => void,
+  targetUserId: string | null;
+  enabled?: boolean;
+}) {
   const [heading, setHeading] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showForm, setShowForm] = useState(false); // State to toggle form visibility
@@ -37,9 +46,9 @@ export default function AddNewGroupForm({ onAdd, targetUserId }: { onAdd: (group
     <div className="w-full">
       {/* Button to toggle the form */}
       {!showForm && (
-        <div className="add-btn">
-          <button onClick={() => setShowForm(true)}>Add New Group</button>
-        </div>
+        <>
+          <FullRoundedButton className="w-full mb-4 py-3 text-xl" onClick={() => setShowForm(true)} disabled={!enabled}>Add New Group</FullRoundedButton>
+        </>
       )}
 
       {/* Form to add a new link group */}

@@ -57,7 +57,6 @@ export default function Sidebar() {
     });
 
     const data = await response.json();
-    console.log(data);
 
     setProAvailable(false);
     setPremiumProAvailable(false);
@@ -106,8 +105,6 @@ export default function Sidebar() {
     Cookies.set(COOKIE_USERNAME_KEY, fetchedUsername, { expires: 7 });
     setUsername(fetchedUsername);
     setUserSubscriptionStatus(userRecord.subscription_status);
-
-    console.log(userRecord.subscription_status);
 
     if ((userRecord.subscription_status === "PRO" || userRecord.subscription_status === "PREMIUM PRO"))
       setProAvailable(true);

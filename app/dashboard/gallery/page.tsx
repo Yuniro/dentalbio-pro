@@ -1,26 +1,11 @@
 import React from "react"
 import ManageGalleries from "./ManageGalleries"
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { AdminServer } from "@/utils/functions/useAdminServer";
-import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
+import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 const Gallery = async () => {
-  const supabase = createClient();
-
-  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
-
-  const { data: userData, error: userError } = await supabase
-    .from("users")
-    .select("username, subscription_status, role")
-    .eq("id", userId)
-    .single();
-
-  if (!userData)
-    return redirect("/dashboard");
-
-  const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
+  const { subscriptionStatus, isAdmin, userId } = await getAuthorizedUser();
+  const proAvailable = ["PRO", "PREMIUM PRO"].includes(subscriptionStatus);
 
   return (
     <div className='px-10'>
@@ -34,7 +19,7 @@ const Gallery = async () => {
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <ManageGalleries targetUserId={(userId === AdminServer.getTargetUserId()) && userId} />
+        <ManageGalleries targetUserId={isAdmin ? userId : undefined} />
       </div>
     </div>
   )

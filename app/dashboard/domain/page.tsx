@@ -1,26 +1,11 @@
 import React from "react";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { AdminServer } from "@/utils/functions/useAdminServer";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 import DomainComponent from "./DomainComponent";
+import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 const Domain = async () => {
-	const supabase = createClient();
-
-	const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
-
-	const { data: userData, error: userError } = await supabase
-		.from("users")
-		.select("username, subscription_status")
-		.eq("id", userId)
-		.single();
-
-	if (!userData)
-		return redirect("/dashboard");
-
-	const premiumProAvailable = (userData.subscription_status === "PREMIUM PRO");
+	const { subscriptionStatus, isAdmin, userId } = await getAuthorizedUser();
+	const premiumProAvailable = subscriptionStatus === "PREMIUM PRO";
 
 	return (
 		<div className="px-10">
@@ -34,7 +19,7 @@ const Domain = async () => {
 				</>}
 
 				<div className={`${premiumProAvailable ? "" : "opacity-40"}`}>
-					<DomainComponent targetUserId={(userId === AdminServer.getTargetUserId()) && userId} enabled={premiumProAvailable} />
+					<DomainComponent targetUserId={isAdmin ? userId : undefined} enabled={premiumProAvailable} />
 				</div>
 		</div>
 	)

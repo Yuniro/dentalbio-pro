@@ -5,19 +5,17 @@ import AddNewGroupForm from "./components/AddNewGroupForm";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DraggableBlogGroup from "./components/DraggableBlogGroup";
-import { arraysRankingAreEqual } from "@/utils/function_utils";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import ManageBlogs from "./ManageBlogs";
 import SkeletonLoader from "@/app/components/Loader/Loader";
-import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { AdminServer } from "@/utils/functions/useAdminServer";
 
 type ManageBlogGroupProps = {
   username: string;
   targetUserId: string | null;
+  enabled?: boolean;
 }
 
-const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username, targetUserId }) => {
+const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username, targetUserId, enabled = false }) => {
   const [blogGroups, setBlogGroups] = useState<BlogGroupType[] | null>(null);
   const [initialBlogGroups, setInitialBlogGroups] = useState<BlogGroupType[]>([]);
 
@@ -137,7 +135,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username, targetUser
 
   return (
     <div>
-      <AddNewGroupForm onAdd={handleAdd} targetUserId={targetUserId} />
+      <AddNewGroupForm onAdd={handleAdd} targetUserId={targetUserId} enabled={enabled} />
 
       <DndProvider backend={HTML5Backend}>
         {blogGroups && blogGroups.map((group, index) => {
@@ -150,6 +148,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username, targetUser
                 onUpdate={handleUpdate}
                 onDelete={handleDelete}
                 moveBlogGroup={moveBlogGroup}
+                enabled={enabled}
               />
               <ManageBlogs
                 itemType={index}
@@ -157,6 +156,7 @@ const ManageBlogGroups: React.FC<ManageBlogGroupProps> = ({ username, targetUser
                 fetchedBlogs={group.blogs!}
                 username={username}
                 targetUserId={targetUserId!}
+                enabled={enabled}
               />
               {(blogGroups.length > (index + 1)) &&
                 <hr className="my-8" />}

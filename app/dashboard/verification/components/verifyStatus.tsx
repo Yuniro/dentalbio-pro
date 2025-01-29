@@ -13,7 +13,11 @@ import { useAdmin } from "@/utils/functions/useAdmin";
 
 type SessionType = "pending" | "approved" | "declined" | "not_started";
 
-const VerifyStatus: React.FC = () => {
+type VerifyStatusProps = {
+  enabled: boolean;
+}
+
+const VerifyStatus: React.FC<VerifyStatusProps> = ({ enabled }) => {
   const [userData, setUserData] = useState<UserType | null>(null);
   const [sessionStatus, setSessionStatus] = useState<SessionType | null>(null);
   const { triggerReload } = usePreview();
@@ -179,10 +183,8 @@ const VerifyStatus: React.FC = () => {
           </div>
           <div className="flex justify-end my-4">
             <VerifyButton
-              userId={userData.id!}
-              sessionUrl={userData.veriff_session_url}
-              sessionCreatedAt={userData.session_created_at}
               text="Try again"
+              enabled={enabled}
             />
           </div>
         </>}
@@ -238,9 +240,7 @@ const VerifyStatus: React.FC = () => {
           </div>
           <div className="flex justify-end my-4">
             <VerifyButton
-              userId={userData.id!}
-              sessionUrl={userData.veriff_session_url}
-              sessionCreatedAt={userData.session_created_at}
+              enabled={enabled}
             />
           </div>
         </>}

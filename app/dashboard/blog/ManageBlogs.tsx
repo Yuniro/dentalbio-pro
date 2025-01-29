@@ -16,7 +16,8 @@ function DraggableBlogCard({
   onUpdate,
   onDelete,
   onEditItem,
-  moveBlog
+  moveBlog,
+  enabled,
 }: {
   username: string;
   blog: BlogType,
@@ -26,6 +27,7 @@ function DraggableBlogCard({
   onDelete: any;
   onEditItem: any;
   moveBlog: any;
+  enabled: boolean;
 }) {
   const [, ref] = useDrag({
     type: "ItemType.BLOG" + itemType,
@@ -44,16 +46,17 @@ function DraggableBlogCard({
 
   return (
     <div
-      ref={(node) => {
+      ref={enabled ? (node) => {
         if (node) ref(node);
         drop(node);
-      }}
+      } : undefined}
     >
       <BlogCard
         username={username}
         onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
+        proAvailable={enabled}
         {...blog}
       />
     </div>
@@ -67,12 +70,14 @@ const ManageBlogs = ({
   username,
   fetchedBlogs,
   targetUserId,
+  enabled,
 }: {
   itemType: number;
   group_id: string;
   username: string;
   fetchedBlogs: BlogType[];
   targetUserId: string;
+  enabled: boolean;
 }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [blogs, setBlogs] = useState<any[] | null>(null);
@@ -231,6 +236,7 @@ const ManageBlogs = ({
               onDelete={handleDelete}
               onEditItem={handleEditItem}
               moveBlog={moveBlog}
+              enabled={enabled}
             />
           )) :
           <div className='pb-10 text-lg text-gray-400 text-center'>There is no blog to show</div> :
@@ -238,7 +244,7 @@ const ManageBlogs = ({
       {/* </DndProvider> */}
 
       <div className="flex justify-end mt-6">
-        <AddNewBlog group_id={group_id} onAdd={handleAdd} username={username} targetUserId={targetUserId} />
+        <AddNewBlog group_id={group_id} onAdd={handleAdd} username={username} targetUserId={targetUserId} enabled={enabled} />
       </div>
 
       <EditBlogModal

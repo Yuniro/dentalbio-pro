@@ -1,26 +1,11 @@
 import React from "react"
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 import ManageBlogGroups from "./ManageBlogGroups";
-import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { AdminServer } from "@/utils/functions/useAdminServer";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
+import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 const Blog = async () => {
-  const supabase = createClient();
-
-  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
-
-  const { data: userData, error: userError } = await supabase
-    .from("users")
-    .select("username, subscription_status")
-    .eq("id", userId)
-    .single();
-
-  if (!userData)
-    return redirect("/dashboard");
-
-  const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
+  const { username, subscriptionStatus, isAdmin, userId } = await getAuthorizedUser();
+  const proAvailable = ["PRO", "PREMIUM PRO"].includes(subscriptionStatus);
 
   return (
     <div className='px-10'>
@@ -34,7 +19,7 @@ const Blog = async () => {
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <ManageBlogGroups username={userData.username} targetUserId={(userId === AdminServer.getTargetUserId()) && userId} />
+        <ManageBlogGroups username={username} targetUserId={isAdmin ? userId : undefined} enabled={proAvailable} />
       </div>
     </div>
   )
