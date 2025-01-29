@@ -33,6 +33,8 @@ const config: Config = {
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in forwards',
         'fade-out': 'fadeOut 0.3s ease-out forwards',
+        'fade-in-short': 'fadeIn 0.1s ease-in forwards',
+        'fade-out-short': 'fadeOut 0.1s ease-out forwards',
       },
     },
     screens: {

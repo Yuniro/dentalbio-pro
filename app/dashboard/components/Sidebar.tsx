@@ -289,14 +289,6 @@ export default function Sidebar() {
                   onClick={handleClose}
                 />
                 <SidebarItem
-                  label="Branding"
-                  link="/dashboard/branding"
-                  isActive={pathname === "/dashboard/branding"}
-                  enabled={premiumProAvailable}
-                  Icon={Medal}
-                  onClick={handleClose}
-                />
-                <SidebarItem
                   label="Settings"
                   link="/dashboard/settings"
                   isActive={pathname === "/dashboard/settings"}

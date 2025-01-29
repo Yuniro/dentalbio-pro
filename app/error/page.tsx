@@ -1,8 +1,6 @@
 import { Manrope } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -35,8 +33,6 @@ export default function ErrorComponent() {
           className="px-4 pt-20"
         />
       </Link>
-
-      <ToastContainer />
     </div>
   );
 }

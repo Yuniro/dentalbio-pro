@@ -79,7 +79,7 @@ const ManageIndividualProducts = ({ targetUserId }: { targetUserId: string | nul
   useEffect(() => {
     const fetchIndividualProducts = async () => {
       const query = targetUserId ? `?userId=${targetUserId}&isAdmin=true` : "";
-      
+
       const response = await fetch(`/api/individual-products${query}`, {
         method: 'GET'
       });
@@ -208,24 +208,24 @@ const ManageIndividualProducts = ({ targetUserId }: { targetUserId: string | nul
       <DndProvider backend={HTML5Backend}>
         {products ?
           products.length > 0 ?
-          products.map((product, index) => (
-            <DraggableProductCard
-              key={product.id}
-              index={index}
-              product={product}
-              itemType={itemType}
-              onUpdate={handleEdit}
-              onDelete={handleDelete}
-              onEditItem={handleEditItem}
-              moveProduct={moveProduct}
-            />
-          )) :
-          <div className='pb-10 text-lg text-gray-400 text-center'>There is no product to show</div> :
-        <SkeletonLoader />}
+            products.map((product, index) => (
+              <DraggableProductCard
+                key={product.id}
+                index={index}
+                product={product}
+                itemType={itemType}
+                onUpdate={handleEdit}
+                onDelete={handleDelete}
+                onEditItem={handleEditItem}
+                moveProduct={moveProduct}
+              />
+            )) :
+            <div className='pb-10 text-lg text-gray-400 text-center'>There is no product to show</div> :
+          <SkeletonLoader />}
       </DndProvider>
-
+      
       <div className="flex justify-end mt-6">
-        <AddIndividualProduct onAdd={handleAdd} />
+        <AddIndividualProduct targetUserId={targetUserId!} onAdd={handleAdd} />
       </div>
 
       <AddIndividualProductModal
@@ -234,7 +234,7 @@ const ManageIndividualProducts = ({ targetUserId }: { targetUserId: string | nul
         onSubmit={handleEdit}
         {...editingProduct}
       />
-    </div>
+    </div >
   );
 };
 

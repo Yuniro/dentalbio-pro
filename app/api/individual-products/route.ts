@@ -39,13 +39,21 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const { name, link, platform, image_url, price, currency } = await request.json();
+  const { name, link, platform, image_url, price, currency, targetUserId } = await request.json();
 
   try {
     const supabase = createClient();
 
     const userData = await getUserInfo({ supabase });
-    const userId = userData?.id;
+
+    if (!((userData.subscription_status === "PRO") || (userData.subscription_status === "PREMIUM PRO") || (new Date(userData.trial_end) > new Date())))
+      return NextResponse.json({ error: "Please upgrade membership!" });
+
+    if (targetUserId && userData.role !== "admin")
+      return NextResponse.json({ error: "Not authorized" });
+
+    const userId = targetUserId || userData?.id;
+    
     const maxRank = await getMaxRank({ supabase, table: "products", field: "user_id", value: userId }) + 1;
 
     const { data, error } = await supabase

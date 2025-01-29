@@ -1,14 +1,20 @@
 import { createClient } from "contentful";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import { ToastContainer, toast } from 'react-toastify';
+
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import { PreviewProvider } from "./contexts/PreviewContext";
 import { NavbarProvider } from "./contexts/NavbarContext";
 import { ErrorProvider } from "./contexts/ErrorContext";
+import { MessageProvider } from "./contexts/MessageContext";
 import composeProviders from "@/utils/provider/ComposeProviders";
+import Message from "./components/Message";
 
-const CombinedProviders = composeProviders(PreviewProvider, NavbarProvider, ErrorProvider);
+import "./globals.css";
+import 'react-toastify/dist/ReactToastify.css';
+
+const CombinedProviders = composeProviders(PreviewProvider, NavbarProvider, ErrorProvider, MessageProvider);
 
 // Define the type for your content type fields
 interface LandingPageFields {
@@ -83,7 +89,11 @@ export default function RootLayout({
       <body className={`${inter.className} `}>
         {" "}
         <GoogleAnalytics ga_id={"G-987STTWJ02"} />
-        <CombinedProviders>{children}</CombinedProviders>
+        <CombinedProviders>
+          {children}
+          <Message />
+          <ToastContainer />
+        </CombinedProviders>
       </body>
     </html>
   );

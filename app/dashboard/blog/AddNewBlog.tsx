@@ -48,19 +48,17 @@ const AddNewBlog: React.FC<AddNewBlogProps> = ({
 
   const handleSubmit = async (formData: { title: string; content: string; image: File | null; meta_title: string; meta_description: string; }) => {
     const image_url = formData.image ? await uploadImage(formData.image) : "";
-    // const image_url = '';
 
     const response = await fetch('/api/blogs', {
       method: 'POST',
-      body: JSON.stringify({ ...formData, image_url }),
+      body: JSON.stringify({ ...formData, image_url, targetUserId }),
     });
 
     const result = await response.json();
     if (result.error) {
-      console.log(result.error);
+      console.error(result.error);
     } else {
       onAdd(result);
-
       closeModal();
     }
   };

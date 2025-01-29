@@ -5,10 +5,12 @@ import AddIndividualProductModal from "./AddIndividualProductModal";
 
 type AddNewProductProps = {
   onAdd: (product: any) => void;
+  targetUserId: string;
 }
 
 const AddIndividualProduct: React.FC<AddNewProductProps> = ({
   onAdd,
+  targetUserId
 }: AddNewProductProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -45,7 +47,7 @@ const AddIndividualProduct: React.FC<AddNewProductProps> = ({
 
     const response = await fetch('/api/individual-products', {
       method: 'POST',
-      body: JSON.stringify({ ...formData, image_url }),
+      body: JSON.stringify({ ...formData, image_url, targetUserId }),
     });
 
     const result = await response.json();

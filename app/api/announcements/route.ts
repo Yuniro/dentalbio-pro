@@ -96,24 +96,3 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }
-
-// export async function DELETE(request: Request) {
-//     const { id } = await request.json();
-
-//     try {
-//         const supabase = createClient();
-
-//         const { error } = await supabase
-//             .from('settings')
-//             .delete()
-//             .eq('id', id);
-
-//         if (error) {
-//             return NextResponse.json({ error: error.message }, { status: 400 });
-//         }
-
-//         return NextResponse.json({ status: 'success' });
-//     } catch (error) {
-//         return NextResponse.json({ error: (error as Error).message }, { status: 500 });
-//     }
-// }

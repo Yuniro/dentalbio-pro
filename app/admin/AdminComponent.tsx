@@ -359,7 +359,7 @@ const AdminComponent: React.FC = () => {
             className="shadow-md"
           >
             <Megaphone size={22} className="mr-1" />
-            Announcements
+            Universal Message
           </FullRoundedButton>
 
           {isAnnouncementEditorOpen && (

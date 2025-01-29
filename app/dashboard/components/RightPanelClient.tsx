@@ -3,15 +3,70 @@
 import React, { useRef, useEffect, useState } from "react";
 import { ArrowsClockwise } from "phosphor-react";
 import { usePreview } from "@/app/contexts/PreviewContext";
+import { LockSimple } from "@phosphor-icons/react/dist/ssr";
+import { useAdmin } from "@/utils/functions/useAdmin";
+import { useRouter } from "next/navigation";
+import { useMessage } from "@/app/contexts/MessageContext";
+import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
+import Link from "next/link";
+import { showErrorToast, showSuccessToast } from "@/utils/Toast";
 
 const RightPanelClient = ({ username }: { username: string }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isReloading, setIsReloading] = useState(false);
+  const [isUsingBrand, setIsUsingBrand] = useState<boolean>(true);
+  const [originalBrandStatus, setOriginalBrandStatus] = useState<boolean>(true);
+  const [premiumProAvailable, setPremiumProAvailable] = useState<boolean>(false);
+
+  const { setNotificationMessage } = useMessage();
+
   const { reloadKey } = usePreview();
+  const { getTargetUserId } = useAdmin();
+  const router = useRouter();
+
+  const handleUpdate = async () => {
+    const response = await fetch("/api/user", {
+      method: "PUT",
+      body: JSON.stringify({ targetUserId: getTargetUserId(), use_dental_brand: isUsingBrand })
+    })
+
+    const data = await response.json();
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      showSuccessToast("Success!!!");
+    }
+  }
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const response = await fetch('/api/user', {
+        method: "POST",
+        body: JSON.stringify({ targetUserId: getTargetUserId() })
+      })
+
+      const data = await response.json();
+      if (data.error) {
+        console.error(data.error);
+        router.push("/login");
+      } else {
+        setOriginalBrandStatus(data.use_dental_brand);
+        setPremiumProAvailable(data.subscription_status === "PREMIUM PRO");
+      }
+    }
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     handleRefreshClick();
   }, [reloadKey])
+
+  useEffect(() => {
+    if (isUsingBrand !== originalBrandStatus) {
+      handleUpdate();
+    }
+  }, [isUsingBrand])
 
   // Client-side function to reload iframe and show spinner
   const handleRefreshClick = async () => {
@@ -25,6 +80,25 @@ const RightPanelClient = ({ username }: { username: string }) => {
       };
     }
   };
+
+  const handleHideLogo = async () => {
+    if (premiumProAvailable) {
+      setIsUsingBrand((prev) => {
+        return !prev;
+      })
+    } else {
+      setNotificationMessage({
+        message: "Upgrade your plan to use hiding logo feature",
+        extraButtons: (
+          <>
+            <Link href="/upgrade" className="no-underline">
+              <FullRoundedButton>Upgrade</FullRoundedButton>
+            </Link>
+          </>
+        )
+      });
+    }
+  }
 
   // Global event listener to reload iframe (triggered from anywhere)
   useEffect(() => {
@@ -66,6 +140,11 @@ const RightPanelClient = ({ username }: { username: string }) => {
             />{" "}
           </button>
         </form>
+        <div className="absolute left-1/2 bottom-24 transform -translate-x-1/2 flex justify-center items-center gap-2 cursor-pointer" onClick={handleHideLogo}>
+          <span className="text-base text-gray-600 font-medium whitespace-nowrap">{isUsingBrand ? "Hide" : "Show"} Dentalbio logo</span>
+          {!premiumProAvailable &&
+            <LockSimple color="#4b5563" weight="bold" />}
+        </div>
       </div>
       <div className="footer-logo text-center mb-0 -mt-40 flex flex-col items-center justify-center">
         <a href="/" target="_blank">
