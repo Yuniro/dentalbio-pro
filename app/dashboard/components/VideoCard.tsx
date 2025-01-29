@@ -8,12 +8,14 @@ type VideoCardProps = VideoType & {
   onUpdate: (video: VideoType, image: null) => void;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
+  proAvailable: boolean;
 }
 
 const VideoCard: React.FC<VideoCardProps> = ({
   onUpdate,
   onEditItem,
   onDelete,
+  proAvailable = true,
   ...videoProps
 }: VideoCardProps) => {
   const [isOpenConfirmMessage, setIsOpenConfirmMessage] = useState<boolean>(false);
@@ -49,7 +51,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
             <PencilSimple
               size={18}
               className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-              onClick={() => onEditItem(videoProps.id!)}
+              onClick={proAvailable ? () => onEditItem(videoProps.id!) : undefined}
             />
           </div>
 
@@ -59,7 +61,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
         {/* Trash Button */}
         <div className="flex items-center gap-2">
-          <div onClick={() => setIsOpenConfirmMessage(true)}>
+          <div onClick={proAvailable ? () => setIsOpenConfirmMessage(true) : undefined}>
             <Trash size={20} className="cursor-pointer hover:text-red-700" />
           </div>
 
@@ -79,6 +81,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
               // id={`flexSwitchCheckChecked-${link.link_id}`}
               checked={isActive}
               onChange={toggleIsActive}
+              disabled={!proAvailable}
             />
           </div>
         </div>

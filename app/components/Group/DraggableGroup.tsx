@@ -9,6 +9,7 @@ type DraggableGroupProps = {
   index: number,
   moveGroup: any;
   group_name: string;
+  enabled?: boolean;
 }
 
 const DraggableGroup: React.FC<DraggableGroupProps> = ({
@@ -17,7 +18,8 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
   group,
   index,
   moveGroup,
-  group_name
+  group_name,
+  enabled = false,
 }) => {
   const [, ref] = useDrag({
     type: group_name,
@@ -36,14 +38,15 @@ const DraggableGroup: React.FC<DraggableGroupProps> = ({
 
   return (
     <div
-      ref={(node) => {
+      ref={enabled ? (node) => {
         if (node) ref(node);
         drop(node);
-      }}
+      } : undefined}
     >
       <Group
         onUpdate={onUpdate}
         onDelete={onDelete}
+        groupEnabled={enabled}
         {...group}
       />
     </div>

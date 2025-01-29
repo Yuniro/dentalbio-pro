@@ -14,7 +14,8 @@ function DraggableVideoCard({
   onUpdate,
   onDelete,
   onEditItem,
-  moveVideo
+  moveVideo,
+  enabled
 }: {
   video: VideoType,
   itemType: number;
@@ -23,6 +24,7 @@ function DraggableVideoCard({
   onDelete: any;
   onEditItem: any;
   moveVideo: any;
+  enabled: boolean;
 }) {
   const [, ref] = useDrag({
     type: "ItemType.BLOG" + itemType,
@@ -41,15 +43,16 @@ function DraggableVideoCard({
 
   return (
     <div
-      ref={(node) => {
+      ref={enabled ? (node) => {
         if (node) ref(node);
         drop(node);
-      }}
+      } : undefined}
     >
       <VideoCard
         onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
+        proAvailable={enabled}
         {...video}
       />
     </div>
@@ -60,11 +63,13 @@ function DraggableVideoCard({
 const ManageVideos = ({
   itemType,
   group_id,
-  fetchedVideos
+  fetchedVideos,
+  enabled = true
 }: {
   itemType: number;
   group_id: string;
-  fetchedVideos: VideoType[]
+  fetchedVideos: VideoType[];
+  enabled: boolean;
 }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [videos, setVideos] = useState<any[] | null>(null);
@@ -190,6 +195,7 @@ const ManageVideos = ({
               onDelete={handleDelete}
               onEditItem={handleEditItem}
               moveVideo={moveVideo}
+              enabled={enabled}
             />
           )) :
           <div className='pb-10 text-lg text-gray-400 text-center'>There is no video to show</div> :

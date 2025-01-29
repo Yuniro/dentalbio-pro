@@ -19,7 +19,7 @@ const Video = async () => {
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <ManageVideoGroups targetUserId={isAdmin ? userId : undefined} />
+        <ManageVideoGroups targetUserId={isAdmin ? userId : undefined} enabled={false} />
       </div>
     </div>
   )

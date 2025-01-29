@@ -6,11 +6,13 @@ import LabeledInput from "@/app/dashboard/components/LabeledInput";
 export default function AddNewGroupForm({
   type,
   onAdd,
-  targetUserId
+  targetUserId,
+  enabled = true,
 }: {
   type: string;
   onAdd: (group: GroupType) => void;
   targetUserId: string | null;
+  enabled?: boolean;
 }) {
   const [heading, setHeading] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +47,7 @@ export default function AddNewGroupForm({
       {/* Button to toggle the form */}
       {!showForm && (
         <div className="add-btn">
-          <button onClick={() => setShowForm(true)}>Add New Group</button>
+          <button onClick={() => setShowForm(true)} disabled={!enabled}>Add New Group</button>
         </div>
       )}
 

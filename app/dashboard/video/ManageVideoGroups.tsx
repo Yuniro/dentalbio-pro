@@ -10,7 +10,12 @@ import SkeletonLoader from "@/app/components/Loader/Loader";
 import DraggableGroup from "@/app/components/Group/DraggableGroup";
 import AddNewGroupForm from "@/app/components/Group/AddNewGroupForm";
 
-const ManageGroups: React.FC<{ targetUserId: string | null }> = ({ targetUserId }) => {
+type ManageGroupTypes = {
+  targetUserId: string | null;
+  enabled: boolean;
+}
+
+const ManageGroups: React.FC<ManageGroupTypes> = ({ targetUserId, enabled = true }) => {
   const [groups, setGroups] = useState<GroupType[] | null>(null);
   const [initialGroups, setInitialGroups] = useState<GroupType[]>([]);
 
@@ -130,7 +135,7 @@ const ManageGroups: React.FC<{ targetUserId: string | null }> = ({ targetUserId 
 
   return (
     <div>
-      <AddNewGroupForm onAdd={handleAdd} type="videos" targetUserId={targetUserId} />
+      <AddNewGroupForm onAdd={handleAdd} type="videos" targetUserId={targetUserId} enabled={enabled} />
 
       <DndProvider backend={HTML5Backend}>
         {groups && groups.map((group, index) => {
@@ -144,11 +149,13 @@ const ManageGroups: React.FC<{ targetUserId: string | null }> = ({ targetUserId 
                 onDelete={handleDelete}
                 moveGroup={moveGroup}
                 group_name="VIDEO_GROUP"
+                enabled={enabled}
               />
               <ManageVideos
                 itemType={index}
                 group_id={group.id}
                 fetchedVideos={group.datas!}
+                enabled={enabled}
               />
               {(groups.length > (index + 1)) &&
                 <hr className="my-8" />}

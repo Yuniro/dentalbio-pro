@@ -8,11 +8,13 @@ import { useEffect, useReducer, useState } from "react";
 type BlogGroupProps = BlogGroupType & {
   onUpdate: ({ id, name, enabled }: { id: string, name?: string, enabled?: boolean }) => void;
   onDelete: ({ id }: { id: string }) => void;
+  groupEnabled?: boolean;
 }
 
 const BlogGroup: React.FC<BlogGroupProps> = ({
   onUpdate,
   onDelete,
+  groupEnabled = false,
   ...group
 }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -90,7 +92,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
               <PencilSimple
                 size={18}
                 className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-                onClick={() => setIsEditing(true)}
+                onClick={groupEnabled ? () => setIsEditing(true) : undefined}
               />
             </div>
 
@@ -100,7 +102,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
 
           {/* Trash Button */}
           <div className="flex items-center gap-2">
-            <div onClick={() => setIsOpenConfirmMessage(true)}>
+            <div onClick={groupEnabled ? () => setIsOpenConfirmMessage(true) : undefined}>
               <Trash size={20} className="cursor-pointer hover:text-red-700" />
             </div>
 
@@ -112,6 +114,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
                 // id={`flexSwitchCheckChecked-${link.link_id}`}
                 checked={isActive}
                 onChange={toggleIsActive}
+                disabled={!groupEnabled}
               />
             </div>
           </div>
