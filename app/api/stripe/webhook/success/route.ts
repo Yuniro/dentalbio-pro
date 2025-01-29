@@ -3,6 +3,8 @@ import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
+export const dynamic = "force-dynamic";
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-06-20",
 });
@@ -72,7 +74,6 @@ export async function GET(request: Request) {
 async function getProductInfo(productId: string) {
   try {
     const product = await stripe.products.retrieve(productId);
-    // console.log('Product information:', product);
     return product;
   } catch (error) {
     console.error('Error retrieving product:', error);

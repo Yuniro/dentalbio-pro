@@ -1,10 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
-import Head from 'next/head'; // For SEO Meta Tags
 import { notFound } from 'next/navigation'; // Used to show 404 if blog not found
 import Header from '../../components/Header';
 import WorkLocation from '../../components/WorkLocation';
 import Footer from '../../components/Footer';
-import { unstable_noStore } from 'next/cache';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../../link-page-responsive.css";
@@ -77,7 +75,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   // Fetch the user from Supabase based on the username slug
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select("id, position, first_name, last_name, username, title, gdc_no, qualification, isVerified")
+    .select("id, position, first_name, last_name, username, title, gdc_no, qualification, isVerified, use_dental_brand")
     .eq("id", blogGroup?.user_id)
     .single();
 
@@ -99,6 +97,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
           contact_email={dentistry?.contact_email}
           isOtherPage={true}
           isVerified={user?.isVerified}
+          useDentalBrand={user?.use_dental_brand}
         />
 
         <div className='text-center mt-20'>
@@ -126,28 +125,29 @@ export default async function BlogPage({ params }: { params: { slug: string } })
             </div>
           </div>
 
-          <div className='text-[#9d9d9d] text-[14px] break-words' dangerouslySetInnerHTML={{ __html: (blog[0].content)}}></div>
-      </div>
+          <div className='text-[#9d9d9d] text-[14px] break-words' dangerouslySetInnerHTML={{ __html: (blog[0].content) }}></div>
+        </div>
 
-      <div className='w-full flex justify-center mt-4 mb-6'>
-        <Link
-          href={`/${user?.username}`}
-          className='w-[93px] h-[41px] rounded-[10px] border text-[14px] text-center no-underline text-black px-6 py-2'
-        >
-          <span>Back</span>
-        </Link>
-      </div>
+        <div className='w-full flex justify-center mt-4 mb-6'>
+          <Link
+            href={`/${user?.username}`}
+            className='w-[93px] h-[41px] rounded-[10px] border text-[14px] text-center no-underline text-black px-6 py-2'
+          >
+            <span>Back</span>
+          </Link>
+        </div>
 
-      <WorkLocation dentistry={dentistry} />
-      {dentistry &&
-        <Footer
-          dentistryId={dentistry.dentistry_id}
-          bookingLink={dentistry?.booking_link}
-          contact_email={dentistry?.contact_email}
-          username={user?.username}
-          title={dentistry?.about_title}
-        />}
-    </div>
+        <WorkLocation dentistry={dentistry} />
+        {dentistry &&
+          <Footer
+            dentistryId={dentistry.dentistry_id}
+            bookingLink={dentistry?.booking_link}
+            contact_email={dentistry?.contact_email}
+            username={user?.username}
+            title={dentistry?.about_title}
+            useDentalBrand={user?.use_dental_brand}
+          />}
+      </div>
     </div >
   );
 }

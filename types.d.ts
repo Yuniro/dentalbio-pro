@@ -133,5 +133,15 @@ type UserType = {
   veriff_session_url?: string;
   session_id?: Date;
   session_created_at?: Date;
+  domain?: string;
+  use_dental_brand?: boolean;
   created_at?: Date;
+}
+
+type Platform = "facebook" | "twitter" | "instagram" | "tiktok";
+
+type ValidationResult = {
+  valid: boolean;
+  message: string;
+  url?: string;
 }

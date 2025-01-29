@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useMessage } from "@/app/contexts/MessageContext";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import Link from "next/link";
-import { showErrorToast, showSuccessToast } from "@/utils/Toast";
 
 const RightPanelClient = ({ username }: { username: string }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);

@@ -294,3 +294,10 @@ export const navItemNames = [
   "Reviews",
   "Shop",
 ]
+
+export const platformBaseUrls: Record<Platform, string> = {
+  facebook: "https://www.facebook.com/",
+  twitter: "https://twitter.com/",
+  instagram: "https://www.instagram.com/",
+  tiktok: "https://www.tiktok.com/@"
+};
