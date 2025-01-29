@@ -4,7 +4,6 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import AddNewGallery from './AddNewGallery';
 import SkeletonLoader from '@/app/components/Loader/Loader';
-import { arraysRankingAreEqual } from '@/utils/function_utils';
 import GalleryCard from './components/GalleryCard';
 import EditGalleryModal from './components/EditGalleryModal';
 import { usePreview } from '@/app/contexts/PreviewContext';
@@ -19,7 +18,8 @@ function DraggableGalleryCard({
   onUpdate,
   onDelete,
   onEditItem,
-  moveGallery
+  moveGallery,
+  enabled
 }: {
   gallery: GalleryType,
   index: number;
@@ -27,6 +27,7 @@ function DraggableGalleryCard({
   onDelete: any;
   onEditItem: any;
   moveGallery: any;
+  enabled: boolean;
 }) {
   const [, ref] = useDrag({
     type: ItemType.BLOG,
@@ -45,15 +46,16 @@ function DraggableGalleryCard({
 
   return (
     <div
-      ref={(node) => {
+      ref={enabled ? (node) => {
         if (node) ref(node);
         drop(node);
-      }}
+      } : undefined}
     >
       <GalleryCard
         onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
+        proAvailable={!enabled}
         {...gallery}
       />
     </div>
@@ -61,7 +63,7 @@ function DraggableGalleryCard({
 }
 
 
-const ManageGalleries = ({ targetUserId }: { targetUserId: string | null }) => {
+const ManageGalleries = ({ targetUserId, enabled = false }: { targetUserId: string | null, enabled?: boolean; }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [galleries, setGalleries] = useState<any[] | null>(null);
   const [initialGalleries, setInitialGalleries] = useState<any[] | null>(null);
@@ -225,6 +227,7 @@ const ManageGalleries = ({ targetUserId }: { targetUserId: string | null }) => {
                 onDelete={handleDelete}
                 onEditItem={handleEditItem}
                 moveGallery={moveGallery}
+                enabled={enabled}
               />
             )) :
             <div className='py-10 text-lg text-gray-400 text-center'>There is no gallery to show</div> :
@@ -232,7 +235,7 @@ const ManageGalleries = ({ targetUserId }: { targetUserId: string | null }) => {
       </DndProvider>
 
       <div className="flex justify-end mt-6">
-        <AddNewGallery onAdd={handleAdd} targetUserId={targetUserId} />
+        <AddNewGallery onAdd={handleAdd} targetUserId={targetUserId} enabled={enabled} />
       </div>
 
       <EditGalleryModal

@@ -19,7 +19,7 @@ const Gallery = async () => {
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <ManageGalleries targetUserId={isAdmin ? userId : undefined} />
+        <ManageGalleries targetUserId={isAdmin ? userId : undefined} enabled={proAvailable} />
       </div>
     </div>
   )

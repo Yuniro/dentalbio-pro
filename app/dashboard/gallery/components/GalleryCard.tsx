@@ -13,6 +13,7 @@ type GalleryCardProps = {
   after_image_label?: string;
   created?: Date;
   enabled?: boolean;
+  proAvailable?: boolean;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
   onUpdate: (gallery: GalleryType, before_image_file: null, after_image_file: null) => void;
@@ -27,6 +28,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
   after_image_label,
   enabled,
   created,
+  proAvailable,
   onUpdate,
   onEditItem,
   onDelete,
@@ -66,7 +68,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
                 <PencilSimple
                   size={18}
                   className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-                  onClick={() => onEditItem(id)}
+                  onClick={proAvailable ? () => onEditItem(id) : undefined}
                 />
               </div>
 
@@ -75,7 +77,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
 
             {/* Trash Button */}
             <div className="flex items-center gap-2">
-              <div onClick={() => setIsOpenConfirmMessage(true)}>
+              <div onClick={proAvailable ? () => setIsOpenConfirmMessage(true) : undefined}>
                 <Trash size={20} className="cursor-pointer hover:text-red-700" />
               </div>
 
@@ -87,6 +89,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
                   // id={`flexSwitchCheckChecked-${link.link_id}`}
                   checked={isActive}
                   onChange={toggleIsActive}
+                  disabled={!proAvailable}
                 />
               </div>
             </div>

@@ -6,11 +6,13 @@ import AddGalleryModal from "./components/AddGalleryModal";
 type AddNewGalleryProps = {
   onAdd: (gallery: any) => void;
   targetUserId: string | null;
+  enabled?: boolean;
 }
 
 const AddNewGallery: React.FC<AddNewGalleryProps> = ({
   onAdd,
-  targetUserId
+  targetUserId,
+  enabled = true,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -64,7 +66,7 @@ const AddNewGallery: React.FC<AddNewGalleryProps> = ({
 
   return (
     <>
-      <FullRoundedButton onClick={openModal}>Add Gallery</FullRoundedButton>
+      <FullRoundedButton onClick={openModal} disabled={!enabled}>Add Gallery</FullRoundedButton>
 
       <AddGalleryModal
         isOpen={isModalOpen}
