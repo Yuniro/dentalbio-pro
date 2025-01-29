@@ -126,6 +126,7 @@ export default async function HomePage({ params }: PageProps) {
             dentistry_id={dentistry.dentistry_id}
             contact_email={dentistry.contact_email}
             isVerified={user.isVerified}
+            useDentalBrand={user.use_dental_brand}
           />
 
           {dentistry.about_title && (

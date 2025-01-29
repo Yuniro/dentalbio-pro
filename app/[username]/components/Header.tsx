@@ -18,13 +18,15 @@ export default function Header({
   dentistry_id,
   contact_email,
   isOtherPage,
-  isVerified
+  isVerified,
+  useDentalBrand = true,
 }: {
   username: string;
   dentistry_id: string;
   contact_email: string;
   isOtherPage?: boolean;
   isVerified: boolean;
+  useDentalBrand: boolean;
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
@@ -154,7 +156,7 @@ export default function Header({
           id="onscroll-header-mobile"
         >
           {/* Logo disappears on scroll */}
-          {!scrolled && (
+          {(!scrolled && useDentalBrand) && (
             <a href="/" id="header_logo">
               <Image
                 src="/logo.svg"
@@ -167,7 +169,7 @@ export default function Header({
           )}
 
           {/* Username visible on scroll */}
-          <div className={`${scrolled ? "d-block" : "d-none"}`}>
+          <div className={`${(scrolled || !useDentalBrand) ? "d-block" : "d-none"}`}>
             <div className="flex align-items-center gap-[5px] justify-content-center">
               <h6 className="fw-medium max-w-32 truncate">@{username}</h6>
               {isVerified && <VerificationBadge direction="right" />}

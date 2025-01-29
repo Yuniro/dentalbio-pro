@@ -23,6 +23,7 @@ const RightPanelClient = ({ username }: { username: string }) => {
   const { reloadKey } = usePreview();
   const { getTargetUserId } = useAdmin();
   const router = useRouter();
+  const { triggerReload } = usePreview();
 
   const handleUpdate = async () => {
     const response = await fetch("/api/user", {
@@ -34,7 +35,9 @@ const RightPanelClient = ({ username }: { username: string }) => {
     if (data.error) {
       console.error(data.error);
     } else {
-      showSuccessToast("Success!!!");
+      triggerReload();
+      setOriginalBrandStatus(data.use_dental_brand);
+      // showSuccessToast("Success!!!");
     }
   }
 
@@ -51,6 +54,7 @@ const RightPanelClient = ({ username }: { username: string }) => {
         router.push("/login");
       } else {
         setOriginalBrandStatus(data.use_dental_brand);
+        setIsUsingBrand(data.use_dental_brand);
         setPremiumProAvailable(data.subscription_status === "PREMIUM PRO");
       }
     }
