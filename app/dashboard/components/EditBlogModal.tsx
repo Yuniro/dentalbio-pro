@@ -36,11 +36,11 @@ const EditBlogModal: React.FC<ModalProps> = ({
     setSelectedImage(null);
     setIsUploading(false);
     setFormData(props);
-    
+
     if (isOpen) {
       // Get the scrollbar width
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      
+
       // Prevent scrolling and adjust padding
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = `${scrollbarWidth}px`;
@@ -118,9 +118,9 @@ const EditBlogModal: React.FC<ModalProps> = ({
 
   return (
     <>
-      {isOpen && (
+      {isOpen &&
         <div
-          className="modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center"
+          className={`modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center ${isOpen ? "animate-fade-in-short" : "animate-fade-out-short"}`}
           onMouseDown={onClose}
         >
           <div
@@ -176,8 +176,7 @@ const EditBlogModal: React.FC<ModalProps> = ({
               </div>
             </form>
           </div>
-        </div>
-      )}
+        </div>}
     </>
   );
 };

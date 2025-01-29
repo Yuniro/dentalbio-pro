@@ -93,9 +93,9 @@ const AddIndividualProductModal: React.FC<ModalProps> = ({
 
   return (
     <>
-      {isOpen && (
+      {isOpen &&
         <div
-          className="modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center"
+          className={`modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center ${isOpen ? "animate-fade-in-short" : "animate-fade-out-short"}`}
           onMouseDown={onClose}
         >
           <div
@@ -186,8 +186,7 @@ const AddIndividualProductModal: React.FC<ModalProps> = ({
               </div>
             </form>
           </div>
-        </div>
-      )}
+        </div>}
     </>
   );
 };

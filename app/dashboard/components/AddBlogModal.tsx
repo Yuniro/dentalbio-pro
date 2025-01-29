@@ -60,7 +60,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ group_id, username, isOpen, onClos
     if (isOpen) {
       // Get the scrollbar width
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      
+
       // Prevent scrolling and adjust padding
       document.body.style.overflow = "hidden";
       document.body.style.paddingRight = `${scrollbarWidth}px`;
@@ -141,9 +141,9 @@ const AddBlogModal: React.FC<ModalProps> = ({ group_id, username, isOpen, onClos
 
   return (
     <>
-      {isOpen && (
+      {isOpen &&
         <div
-          className="modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center"
+          className={`modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center ${isOpen ? "animate-fade-in-short" : "animate-fade-out-short"}`}
           onMouseDown={onClose}
         >
           <div
@@ -163,14 +163,6 @@ const AddBlogModal: React.FC<ModalProps> = ({ group_id, username, isOpen, onClos
                 <RichTextEditor
                   value={formData.content}
                   onChange={handleContentChange} />
-                {/* <LimitedTextArea
-                  placeholder="Content"
-                  name="content"
-                  value={formData.content}
-                  onChange={handleChange}
-                  limit={5000}
-                  required
-                /> */}
                 <ImageUploader onFileChange={handleFileChange} text="Add Image (optional)" />
                 <LabeledInput
                   label="Meta Title"
@@ -208,8 +200,7 @@ const AddBlogModal: React.FC<ModalProps> = ({ group_id, username, isOpen, onClos
               </div>
             </form>
           </div>
-        </div>
-      )}
+        </div>}
     </>
   );
 };

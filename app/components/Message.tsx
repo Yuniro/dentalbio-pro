@@ -8,11 +8,10 @@ const Message: React.FC = () => {
 
   return (
     <>
-      {/* {messageStatus.isOpen && ( */}
+      {messageStatus.isOpen && (
         <div
-          className={`modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 top-0 left-0 right-0 bottom-0 flex justify-center items-center ${
-            messageStatus.isOpen ? "animate-fade-in-short" : "animate-fade-out-short"
-          }`}
+          className={`modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 top-0 left-0 right-0 bottom-0 flex justify-center items-center ${messageStatus.isOpen ? "animate-fade-in-short" : "animate-fade-out-short"
+            }`}
           onMouseDown={closeMessage}
         >
           <div
@@ -28,7 +27,7 @@ const Message: React.FC = () => {
             </div>
           </div>
         </div>
-      {/* )} */}
+      )}
     </>
   )
 }

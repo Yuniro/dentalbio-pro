@@ -52,7 +52,9 @@ export async function PUT(request: Request) {
     const { data, error } = await supabase
       .from('users')
       .update({ domain, use_dental_brand })
-      .eq('id', userId);
+      .eq('id', userId)
+      .select('*')
+      .single();
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });

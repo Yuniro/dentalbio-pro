@@ -24,8 +24,11 @@ const ConfirmMessage: React.FC<ModalProps> = ({
 
   return (
     <>
-      {isOpen && (
-        <div className="modal-overlay cursor-pointer fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center" onMouseDown={onClose}>
+      {isOpen &&
+        <div
+          className={`modal-overlay cursor-pointer fixed bg-[#00000080] z-10 left-0 top-0 right-0 bottom-0 flex justify-center items-center  ${isOpen ? "animate-fade-in-short" : "animate-fade-out-short"}`}
+          onMouseDown={onClose}
+        >
           <div className="bg-white p-4 cursor-auto rounded-[26px]" onMouseDown={(e) => e.stopPropagation()}>
             <div className="pb-4 text-lg">{description}</div>
             <div className="flex justify-end gap-2">
@@ -33,8 +36,7 @@ const ConfirmMessage: React.FC<ModalProps> = ({
               <FullRoundedButton buttonType="ghost" onClick={onClose}>{cancelText ? cancelText : "Close"}</FullRoundedButton>
             </div>
           </div>
-        </div>
-      )}
+        </div>}
     </>
   );
 };
