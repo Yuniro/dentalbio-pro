@@ -165,11 +165,11 @@ export default function ProfileDetail({
   return (
     <>
       <div className="profile-detail-wrapper">
-        <div className="user-profile text-center">
+        <div className="flex justify-center mt-8 mb-4">
           <img
             src={profilePicUrl || "/placeholder.png"}
             alt="user"
-            className="img-fluid mx-auto w-full h-full object-cover"
+            className="w-28 aspect-square rounded-full"
           />
         </div>
         <div className="text-center">
