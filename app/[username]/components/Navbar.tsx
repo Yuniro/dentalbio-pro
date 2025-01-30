@@ -4,9 +4,10 @@ import React from "react";
 
 type NavbarProps = {
   toggleShopOpen: () => void;
+  isFreePlan: boolean;
 }
 
-export default function Navbar({ toggleShopOpen }: NavbarProps) {
+export default function Navbar({ toggleShopOpen, isFreePlan }: NavbarProps) {
   const { navState } = useNavbar();
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, target: string) => {
@@ -34,7 +35,7 @@ export default function Navbar({ toggleShopOpen }: NavbarProps) {
                   <a className="nav-link active" aria-current="page" href="#links" onClick={e => handleScroll(e, "#links")}>
                     Links
                   </a>
-                  </li>}
+                </li>}
                 {navState.Blog && <li className="nav-item">
                   <a className="nav-link" href="#blog" onClick={e => handleScroll(e, "#blog")}>
                     Blog
@@ -53,6 +54,11 @@ export default function Navbar({ toggleShopOpen }: NavbarProps) {
                 {navState.Reviews && <li className="nav-item">
                   <a className="nav-link" href="#review" onClick={e => handleScroll(e, "#review")}>
                     Reviews
+                  </a>
+                </li>}
+                {(navState.Location && isFreePlan) && <li className="nav-item">
+                  <a className="nav-link" href="#location" onClick={e => handleScroll(e, "#location")}>
+                    Location
                   </a>
                 </li>}
                 {navState.Shop && <li className="nav-item">

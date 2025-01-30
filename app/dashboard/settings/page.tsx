@@ -7,6 +7,8 @@ import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { titles } from "@/utils/global_constants";
 import { AdminServer } from "@/utils/functions/useAdminServer";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import DeleteBio from "./DeleteBio";
+import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 // Fetch authenticated user details
 async function getUserDetails() {
@@ -57,6 +59,24 @@ async function updateUserDetails(formData: FormData) {
   if (updateError) {
     return redirect("/error?message=failed_to_update_user_details");
   }
+}
+
+const handleDelete = async () => {
+  "use server"
+  const { userId } = await getAuthorizedUser();
+
+  const response = await fetch('/api/dentistry', {
+    method: 'DELETE',
+    body: JSON.stringify({ id: userId })
+  });
+
+  const data = await response.json();
+
+  if (data.error) {
+    console.error(data.error);
+  }
+
+  return redirect("/success");
 }
 
 // Main page component
@@ -135,6 +155,8 @@ export default async function SettingsPage() {
         <hr className="mb-10 border-neutral-400" />
 
         <ForgotPasswordForm defaultEmail={user.email} />
+
+        <DeleteBio handleDelete={handleDelete} />
       </div>
     </div>
   );

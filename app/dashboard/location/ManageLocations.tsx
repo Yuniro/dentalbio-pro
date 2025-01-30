@@ -7,11 +7,13 @@ import AddLocation from "./AddLocation";
 type ManageLocationsProps = {
   locations: any[] | null;
   updateLocation: (locationData: LocationType, location_id: string) => void;
+  proAvailable: boolean;
 }
 
 const ManageLocations: React.FC<ManageLocationsProps> = ({
   locations,
   updateLocation,
+  proAvailable = false,
 }) => {
   const [existingLocations, setExistingLocations] = useState<any[] | null>(null);
   const { triggerReload } = usePreview();
@@ -52,9 +54,13 @@ const ManageLocations: React.FC<ManageLocationsProps> = ({
 
   return (
     <>
-      <AddLocation onAddressAdd={addAddress}/>
+      <AddLocation onAddressAdd={addAddress} />
+      {!proAvailable &&
+        <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
+          Upgrade your membership to add multiple locations
+        </div>}
       {existingLocations?.map((location, index) => (
-        <AddressItem {...location} key={location.location_id} onAddressChange={updateLocation} onDelete={deleteLocation}/>
+        <AddressItem {...location} key={location.location_id} onAddressChange={updateLocation} onDelete={deleteLocation} />
       ))}
     </>
   )

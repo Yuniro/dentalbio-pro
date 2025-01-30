@@ -2,10 +2,11 @@
 import { createClient } from "@/utils/supabase/client";
 import GoogleMapAutocomplete from "./GoogleMapAutocomplete";
 import { redirect } from "next/navigation";
-import { getDentistryInfo, getUserInfo } from "@/utils/userInfo";
+import { getDentistryInfo } from "@/utils/userInfo";
 import { useState } from "react";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { useAdmin } from "@/utils/functions/useAdmin";
+import { showErrorToast } from "@/utils/Toast";
 
 type AddLocationProps = {
   onAddressAdd: (location: LocationType) => void;
@@ -65,6 +66,8 @@ const AddLocation: React.FC<AddLocationProps> = ({
 
       onAddressAdd({ ...newLocation, location_id: insertedLocation.location_id });
       setAddress("");
+    } else {
+      showErrorToast("You need to upgrade your membership to access the multiple location feature.")
     }
   }
 

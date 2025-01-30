@@ -29,7 +29,6 @@ export default function Sidebar() {
   const [proAvailable, setProAvailable] = useState<boolean>(false);
   const [premiumProAvailable, setPremiumProAvailable] = useState<boolean>(false);
   const [isOpenDowngradeConfirmMessage, setIsOpenDowngradeConfirmMessage] = useState<boolean>(false);
-  const [isOpenDeleteConfirmMessage, setIsOpenDeleteConfirmMessage] = useState<boolean>(false);
 
   const pathname = usePathname();
 
@@ -60,25 +59,6 @@ export default function Sidebar() {
 
     setProAvailable(false);
     setPremiumProAvailable(false);
-  }
-
-  const handleDelete = async () => {
-    const supabase = createClient();
-
-    const userId = await getEffectiveUserId({ targetUserId: getTargetUserId(), supabase });
-
-    const response = await fetch('/api/dentistry', {
-      method: 'DELETE',
-      body: JSON.stringify({ id: userId })
-    });
-
-    const data = await response.json();
-
-    if (data.error) {
-      console.error(data.error);
-    }
-
-    router.push("/success");
   }
 
   // Function to toggle the sidebar visibility
@@ -325,8 +305,6 @@ export default function Sidebar() {
       {proAvailable &&
         <FullRoundedButton onClick={() => setIsOpenDowngradeConfirmMessage(true)} buttonType="warning" className="w-full my-4 text-[20px]">Cancel Current Plan</FullRoundedButton>}
 
-      <FullRoundedButton onClick={() => setIsOpenDeleteConfirmMessage(true)} buttonType="danger" className="w-full my-4 text-[20px]">Delete Bio</FullRoundedButton>
-
       <div className="memberpanel-profile flex items-center justify-start">
         <img
           src={profilePicUrl || "/placeholder.png"}
@@ -342,14 +320,6 @@ export default function Sidebar() {
         isOpen={isOpenDowngradeConfirmMessage}
         onClose={() => setIsOpenDowngradeConfirmMessage(false)}
         onOk={handleDowngrade}
-      />
-
-      <ConfirmMessage
-        description="Aure you sure you want to delete your account?"
-        okText="Delete"
-        isOpen={isOpenDeleteConfirmMessage}
-        onClose={() => setIsOpenDeleteConfirmMessage(false)}
-        onOk={handleDelete}
       />
     </div>
   );

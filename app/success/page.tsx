@@ -77,15 +77,16 @@ export default async function DashboardPage() {
             <div className="w-full flex justify-end items-center px-3">
               <SignOutForm /> {/* Use the client-side sign-out component */}
             </div>
-            <div className="w-full flex justify-end items-center px-3">
-              <Link
-                href="/admin"
-                className="flex items-center gap-2 hover:bg-gray-200 text-dark px-3 py-2 rounded-lg text-sm font-light transition-all"
-              >
-                <User className="h-5 w-5" />
-                Admin
-              </Link>
-            </div>
+            {user.role === "admin" && (
+              <div className="w-full flex justify-end items-center px-3">
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-2 hover:bg-gray-200 text-dark px-3 py-2 rounded-lg text-sm font-light transition-all"
+                >
+                  <User className="h-5 w-5" />
+                  Admin
+                </Link>
+              </div>)}
             <div className="max-w-screen-2xl w-full mt-5 text-center flex flex-col items-center justify-center px-5 lg:px-32 mx-auto">
               <span className="text-xl md:text-2xl lg:text-3xl font-semibold leading-snug text-primary-orange-1 pb-6">
                 Welcome, {first_name}!
@@ -190,7 +191,7 @@ export default async function DashboardPage() {
           <div className="w-full flex justify-end items-center px-3">
             {/* Show the Manage Subscription button for subscribed users */}
             {/* <form action="" method="POST"> */}
-              {/* <button
+            {/* <button
                 onClick={handleManageSubscription}
                 className="hover:bg-gray-200 text-dark px-3 py-2 rounded-lg text-sm font-light transition-all"
               >

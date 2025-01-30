@@ -91,7 +91,7 @@ const RightPanelClient = ({ username }: { username: string }) => {
       })
     } else {
       setNotificationMessage({
-        message: "Upgrade your plan to use hiding logo feature",
+        message: "Upgrade your plan to hide the Dentalbio logo",
         extraButtons: (
           <>
             <Link href="/upgrade" className="no-underline">

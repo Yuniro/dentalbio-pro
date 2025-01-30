@@ -137,11 +137,18 @@ export default function Header({
               >
                 <span>Back</span>
               </Link>}
-            <a href="#location" className="no-underline" onClick={e => handleScroll(e, "#location")} id="onscroll-hide-contact-btn">
-              <FullRoundedButton className={`py-2 ${navState.Location ? "" : "bg-[#BFBFBF]"}`} buttonType={navState.Location ? "primary" : "ghost"}>
-                Contact me
-              </FullRoundedButton>
-            </a>
+            {navState.Location ?
+              <a href="#location" className="no-underline" onClick={e => handleScroll(e, "#location")}>
+                <FullRoundedButton className="py-2">
+                  Contact me
+                </FullRoundedButton>
+              </a> :
+              (contact_email &&
+                <a href="mailto:${contact_email}" className="no-underline" target="_blank">
+                  <FullRoundedButton className="py-2" >
+                    Contact me
+                  </FullRoundedButton>
+                </a>)}
 
             <ShareModal username={username} />
           </div>

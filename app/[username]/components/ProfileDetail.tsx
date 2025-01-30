@@ -16,6 +16,7 @@ export default function ProfileDetail({
   description,
   dentistry_id,
   isVerified,
+  isFreePlan,
 }: {
   userId: string;
   username: string;
@@ -26,6 +27,7 @@ export default function ProfileDetail({
   description: string;
   dentistry_id: string;
   isVerified: boolean;
+  isFreePlan: boolean;
 }) {
   const [productGroups, setProductGroups] = useState<GroupType[]>([]);
   const [products, setProducts] = useState<IndividualProductType[]>([]);
@@ -187,7 +189,7 @@ export default function ProfileDetail({
         </div>
       </div>
 
-      <Navbar toggleShopOpen={toggleShopOpen} />
+      <Navbar toggleShopOpen={toggleShopOpen} isFreePlan={isFreePlan} />
 
       {/* {productGroups.length > 0 && <div className={`flex flex-wrap pb-4 ${isShopOpen ? 'animate-fade-in' : 'animate-fade-out'}`}>
         {productGroups.map((group) => <ProductList key={group.id} products={group.datas!} />)}

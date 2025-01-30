@@ -256,12 +256,12 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
 
   return (
     <div className="relative w-full">
-      <div className="flex  bg-transparent flex-col md:flex-row justify-center md:justify-between items-center md:items-start gap-5 mb-10 md:mb-20 mt-20 md:mt-32 max-w-7xl mx-auto">
-        <h2 className="text-2xl md:text-5xl font-medium z-[9999] text-center md:text-left">
-          Unlock Premium Pro features and SEO benefits
+      <div className="flex items-center bg-transparent flex-col md:flex-row justify-center md:justify-between gap-5 pb-10 md:pb-20 pt-20 md:pt-28 max-w-7xl mx-auto">
+        <h2 className="text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-medium z-[9999] text-center">
+          Unlock Pro features and SEO benefits
         </h2>
 
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center items-center gap-3">
           <button
             className={`${billingCycle === "annually"
               ? " text-dark"

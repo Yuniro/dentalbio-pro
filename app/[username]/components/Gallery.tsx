@@ -1,8 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Plus, Minus } from "phosphor-react"; // Import Phosphor Icons
-import { createClient } from "@/utils/supabase/client";
-import Collapse from "./Collapse";
 import GalleryImage from "./GalleryImage";
 import { useNavbar } from "@/app/contexts/NavbarContext";
 

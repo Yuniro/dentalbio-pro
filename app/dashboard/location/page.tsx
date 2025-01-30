@@ -82,13 +82,8 @@ export default async function Location() {
 
   return (
     <div className="memberpanel-details-wrapper">
-      {!proAvailable &&
-        <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
-          Upgrade your membership to use multiple location feature
-        </div>}
-
       <MapLoader />
-      <ManageLocations locations={locations} updateLocation={updateLocation} />
+      <ManageLocations locations={locations} updateLocation={updateLocation} proAvailable={proAvailable}/>
     </div>
   );
 }

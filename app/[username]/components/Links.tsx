@@ -35,7 +35,7 @@ export default function Links({ dentistryId }: { dentistryId: string }) {
       }
 
       linkGroupsData.forEach((group: any) => {
-        if (group.dentistry_links.length > 0) {
+        if (group.dentistry_links.filter((dentistryLink: any) => dentistryLink.links.is_active !== false).length > 0) {
           setNavItemState("Links", true);
         }
       });
@@ -62,7 +62,7 @@ export default function Links({ dentistryId }: { dentistryId: string }) {
     <section id="links">
       {linkGroups.map((group) => (
         <div key={group.link_group_id}>
-          {(group.dentistry_links.length > 0) &&
+          {(group.dentistry_links.filter((dentistryLink: any) => dentistryLink.links.is_active !== false).length > 0) &&
             <div className="row section-wrapper-meditation">
               <h1 className="text-center section-heading-meditation text-[23px] md:text-[26px] font-semibold">
                 {group.heading || "Untitled Group"}

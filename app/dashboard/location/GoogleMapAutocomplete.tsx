@@ -267,8 +267,8 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
           </div>
         </div>
 
-        <input type="hidden" name="full_address" value={inputAddress} />
-        <input type="hidden" name="country" value={country} />
+        <input type="hidden" name="full_address" value={inputAddress} required />
+        <input type="hidden" name="country" value={country} required />
         <div className={inputAddress ? "block" : "hidden"}>
           <LabeledInput
             label='City'
@@ -276,18 +276,21 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
             value={city}
             onChange={e => setCity(e.target.value)}
             className="w-full"
+            required
           />
         </div>
-        <input type="hidden" name="area" value={area} />
+        <input type="hidden" name="area" value={area} required />
         <input
           type="hidden"
           name="latitude"
           value={latitude ? latitude.toString() : ""}
+          required
         />
         <input
           type="hidden"
           name="longitude"
           value={longitude ? longitude.toString() : ""}
+          required
         />
       </div >
 
