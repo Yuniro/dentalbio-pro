@@ -10,12 +10,14 @@ type ProductCardProps = ProductType & {
   onUpdate: (product: ProductType, image: null) => void;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
+  proAvailable: boolean;
 }
 
 const InvidualProductCard: React.FC<ProductCardProps> = ({
   onUpdate,
   onEditItem,
   onDelete,
+  proAvailable,
   ...productProps
 }: ProductCardProps) => {
   const [isOpenConfirmMessage, setIsOpenConfirmMessage] = useState<boolean>(false);
@@ -60,11 +62,12 @@ const InvidualProductCard: React.FC<ProductCardProps> = ({
 
           {/* Content Row */}
           <div className="flex justify-end items-center gap-2">
-            <PencilSimple
-              size={18}
-              className="cursor-pointer hover:text-primary-1"
-              onClick={() => onEditItem(productProps.id!)}
-            />
+            <button className="enabled:hover:text-primary-1" disabled={!proAvailable}>
+              <PencilSimple
+                size={18}
+                onClick={proAvailable ? () => onEditItem(productProps.id!) : undefined}
+              />
+            </button>
 
             <Link
               href={productProps.link!}
@@ -74,9 +77,9 @@ const InvidualProductCard: React.FC<ProductCardProps> = ({
               <ArrowSquareOut size={20} />
             </Link>
 
-            <div onClick={() => setIsOpenConfirmMessage(true)}>
-              <Trash size={20} className="cursor-pointer hover:text-red-700" />
-            </div>
+            <button className="enabled:hover:text-red-700" onClick={() => setIsOpenConfirmMessage(true)} disabled={!proAvailable}>
+              <Trash size={20} />
+            </button>
 
             <div className="form-check form-switch custom-form-check">
               <input
@@ -86,6 +89,7 @@ const InvidualProductCard: React.FC<ProductCardProps> = ({
                 // id={`flexSwitchCheckChecked-${link.link_id}`}
                 checked={isActive}
                 onChange={toggleIsActive}
+                disabled={!proAvailable}
               />
             </div>
           </div>

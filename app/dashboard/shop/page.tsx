@@ -19,7 +19,7 @@ const Product = async () => {
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <ManageIndividualProducts targetUserId={isAdmin ? userId : undefined} />
+        <ManageIndividualProducts targetUserId={isAdmin ? userId : undefined} enabled={proAvailable} />
       </div>
     </div>
   )

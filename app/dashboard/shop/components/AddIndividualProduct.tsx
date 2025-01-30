@@ -6,11 +6,13 @@ import AddIndividualProductModal from "./AddIndividualProductModal";
 type AddNewProductProps = {
   onAdd: (product: any) => void;
   targetUserId: string;
+  enabled: boolean;
 }
 
 const AddIndividualProduct: React.FC<AddNewProductProps> = ({
   onAdd,
-  targetUserId
+  targetUserId,
+  enabled,
 }: AddNewProductProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -62,7 +64,7 @@ const AddIndividualProduct: React.FC<AddNewProductProps> = ({
 
   return (
     <>
-      <FullRoundedButton onClick={openModal} className="mb-4">Add Product</FullRoundedButton>
+      <FullRoundedButton onClick={openModal} className="mb-4" disabled={!enabled}>Add Product</FullRoundedButton>
 
       <AddIndividualProductModal
         isOpen={isModalOpen}

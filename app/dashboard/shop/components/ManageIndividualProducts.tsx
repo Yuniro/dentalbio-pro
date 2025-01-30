@@ -15,7 +15,8 @@ function DraggableProductCard({
   onUpdate,
   onDelete,
   onEditItem,
-  moveProduct
+  moveProduct,
+  enabled,
 }: {
   product: ProductType,
   itemType: number;
@@ -24,6 +25,7 @@ function DraggableProductCard({
   onDelete: any;
   onEditItem: any;
   moveProduct: any;
+  enabled: boolean;
 }) {
   const [, ref] = useDrag({
     type: "ItemType.BLOG" + itemType,
@@ -42,23 +44,23 @@ function DraggableProductCard({
 
   return (
     <div
-      ref={(node) => {
+      ref={enabled ? (node) => {
         if (node) ref(node);
         drop(node);
-      }}
+      } : undefined}
     >
       <InvidualProductCard
         onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
+        proAvailable={enabled}
         {...product}
       />
     </div>
   );
 }
 
-
-const ManageIndividualProducts = ({ targetUserId }: { targetUserId: string | null }) => {
+const ManageIndividualProducts = ({ targetUserId, enabled = true }: { targetUserId: string | null; enabled: boolean; }) => {
   const [itemType] = useState<number>(1);
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [products, setProducts] = useState<any[] | null>(null);
@@ -218,6 +220,7 @@ const ManageIndividualProducts = ({ targetUserId }: { targetUserId: string | nul
                 onDelete={handleDelete}
                 onEditItem={handleEditItem}
                 moveProduct={moveProduct}
+                enabled={enabled}
               />
             )) :
             <div className='pb-10 text-lg text-gray-400 text-center'>There is no product to show</div> :
@@ -225,7 +228,7 @@ const ManageIndividualProducts = ({ targetUserId }: { targetUserId: string | nul
       </DndProvider>
       
       <div className="flex justify-end mt-6">
-        <AddIndividualProduct targetUserId={targetUserId!} onAdd={handleAdd} />
+        <AddIndividualProduct targetUserId={targetUserId!} onAdd={handleAdd} enabled={enabled} />
       </div>
 
       <AddIndividualProductModal
