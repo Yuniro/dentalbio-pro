@@ -6,7 +6,11 @@ import "../../globals.css";
 import MapComponent from "./MapComponent";
 import { useNavbar } from "@/app/contexts/NavbarContext";
 
-export default function WorkLocation({ dentistry }: { dentistry: any }) {
+export default function WorkLocation({
+  dentistry,
+}: {
+  dentistry: any;
+}) {
   const [locations, setLocations] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(true);
   const { setNavItemState } = useNavbar();
@@ -54,7 +58,7 @@ export default function WorkLocation({ dentistry }: { dentistry: any }) {
     <div id="location">
       {(locations && locations.length > 0) ? (
         <div className="row section-wrapper-work">
-          <h1 className="text-center text-[23px] md:text-[26px] font-semibold pb-8">Where I work</h1>
+          <h1 className="text-center text-[23px] md:text-[26px] font-semibold pb-8">{dentistry.location_title}</h1>
 
           {locations?.map((location) =>
             <div className="col-12 map-wrapper" key={location.location_id}>

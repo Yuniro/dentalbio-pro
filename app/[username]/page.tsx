@@ -76,7 +76,7 @@ export default async function HomePage({ params }: PageProps) {
   // Fetch the dentistry data using the user's ID
   const { data: dentistry, error: dentistryError } = await supabase
     .from("dentistries")
-    .select("dentistry_id, about_title, about_text, phone, booking_link, contact_email, booking_link_enabled")
+    .select("dentistry_id, about_title, about_text, phone, booking_link, contact_email, booking_link_enabled, location_title")
     .eq("user_id", user.id)
     .single();
 

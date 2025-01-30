@@ -4,13 +4,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
-import { User, Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple } from "phosphor-react";
-import { CheckSquare, Globe, Image, LockSimple, Medal, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
-import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
+import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple } from "phosphor-react";
+import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
 import { useAdmin } from "@/utils/functions/useAdmin";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
-import { sendDowngradePlanMail } from "@/utils/mails/sendDowngradePlanMail";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
+import SignOutForm from "./Signout";
 
 // Constants for storing keys in cookies
 const COOKIE_USERNAME_KEY = "username";
@@ -181,13 +180,6 @@ export default function Sidebar() {
                   Icon={House}
                   onClick={handleClose}
                 />
-                {/* <SidebarItem
-                  label="Profile"
-                  link="/dashboard/profile"
-                  isActive={pathname === "/dashboard/profile"}
-                  Icon={User}
-                  onClick={handleClose}
-                /> */}
                 <SidebarItem
                   label="Locations"
                   link="/dashboard/location"
@@ -313,6 +305,8 @@ export default function Sidebar() {
         />
         <p className="fw-bold mb-0">@{username ? username : "loading..."}</p>
       </div>
+
+      <SignOutForm />
 
       <ConfirmMessage
         description="Aure you sure you want to downgrade your plan?"

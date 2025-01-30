@@ -16,7 +16,9 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
   const [locationTitle, setLocationTitle] = useState<string>(dentistry.location_title || "");
 
   const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
+    if (e.target.value === "Student") {
+      setLocationTitle("Where I study");
+    }
   }
 
   return (
