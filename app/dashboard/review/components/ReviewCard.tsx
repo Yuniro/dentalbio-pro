@@ -9,6 +9,7 @@ type ReviewCardProps = {
   content?: string;
   slug?: string;
   enabled?: boolean;
+  proAvailable: boolean;
   onUpdate: (review: ReviewType, image: null) => void;
   onEditItem: (id: string) => void;
   onDelete: (id: string) => void;
@@ -20,6 +21,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
   content,
   slug,
   enabled,
+  proAvailable,
   onUpdate,
   onEditItem,
   onDelete,
@@ -54,11 +56,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
           {/* Title Row */}
           <div className="flex flex-1 items-center truncate gap-2">
             <div className="text-primary-1 font-bold truncate">{reviewer_name}</div>
-            <PencilSimple
-              size={18}
-              className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-              onClick={() => onEditItem(id!)}
-            />
+            <button className="flex-shrink-0 enabled:hover:text-primary-1" onClick={() => onEditItem(id!)} disabled={!proAvailable}>
+              <PencilSimple size={18} />
+            </button>
           </div>
 
           {/* Content Row */}
@@ -67,9 +67,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
 
         {/* Trash Button */}
         <div className="flex items-center gap-2">
-          <div onClick={() => setIsOpenConfirmMessage(true)}>
-            <Trash size={20} className="cursor-pointer hover:text-red-700" />
-          </div>
+          <button onClick={() => setIsOpenConfirmMessage(true)} className="enabled:hover:text-red-700" disabled={!proAvailable}>
+            <Trash size={20} />
+          </button>
 
           <div className="form-check form-switch custom-form-check">
             <input
@@ -79,6 +79,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
               // id={`flexSwitchCheckChecked-${link.link_id}`}
               checked={isActive}
               onChange={toggleIsActive}
+              disabled={!proAvailable}
             />
           </div>
         </div>

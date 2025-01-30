@@ -205,7 +205,8 @@ const ManageIndividualProducts = ({ targetUserId, enabled = true }: { targetUser
 
   return (
     <div className='my-4'>
-      <h4 className='mb-6'>My Products</h4>
+      {enabled &&
+        <h4 className='mb-6'>My Products</h4>}
 
       <DndProvider backend={HTML5Backend}>
         {products ?
@@ -226,7 +227,7 @@ const ManageIndividualProducts = ({ targetUserId, enabled = true }: { targetUser
             <div className='pb-10 text-lg text-gray-400 text-center'>There is no product to show</div> :
           <SkeletonLoader />}
       </DndProvider>
-      
+
       <div className="flex justify-end mt-6">
         <AddIndividualProduct targetUserId={targetUserId!} onAdd={handleAdd} enabled={enabled} />
       </div>

@@ -21,7 +21,8 @@ function DraggableReviewCard({
   onUpdate,
   onDelete,
   onEditItem,
-  moveReview
+  moveReview,
+  enabled,
 }: {
   review: ReviewType,
   index: number;
@@ -29,6 +30,7 @@ function DraggableReviewCard({
   onDelete: any;
   onEditItem: any;
   moveReview: any;
+  enabled: boolean;
 }) {
   const [, ref] = useDrag({
     type: ItemType.BLOG,
@@ -47,15 +49,16 @@ function DraggableReviewCard({
 
   return (
     <div
-      ref={(node) => {
+      ref={enabled ? (node) => {
         if (node) ref(node);
         drop(node);
-      }}
+      } : undefined}
     >
       <ReviewCard
         onUpdate={onUpdate}
         onDelete={onDelete}
         onEditItem={onEditItem}
+        proAvailable={enabled}
         {...review}
       />
     </div>
@@ -63,7 +66,7 @@ function DraggableReviewCard({
 }
 
 
-const ManageReviews = ({ targetUserId }: { targetUserId: string | null }) => {
+const ManageReviews = ({ targetUserId, enabled = false }: { targetUserId: string | null; enabled: boolean; }) => {
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [reviews, setReviews] = useState<any[] | null>(null);
   const [initialReviews, setInitialReviews] = useState<any[] | null>(null);
@@ -251,6 +254,9 @@ const ManageReviews = ({ targetUserId }: { targetUserId: string | null }) => {
 
   return (
     <div>
+      {enabled &&
+        <h4 className='mt-4 mb-6'>Reviews</h4>}
+
       <DndProvider backend={HTML5Backend}>
         {reviews ?
           reviews.length > 0 ?
@@ -263,6 +269,7 @@ const ManageReviews = ({ targetUserId }: { targetUserId: string | null }) => {
                 onDelete={handleDelete}
                 onEditItem={handleEditItem}
                 moveReview={moveReview}
+                enabled={enabled}
               />
             )) :
             <div className='py-10 text-lg text-gray-400 text-center'>There is no review to show</div> :
@@ -270,7 +277,7 @@ const ManageReviews = ({ targetUserId }: { targetUserId: string | null }) => {
       </DndProvider>
 
       <div className="flex justify-end mt-6">
-        <AddNewReview onAdd={handleAdd} targetUserId={targetUserId} />
+        <AddNewReview onAdd={handleAdd} targetUserId={targetUserId} enabled={enabled} />
       </div>
 
       <div>
@@ -285,9 +292,10 @@ const ManageReviews = ({ targetUserId }: { targetUserId: string | null }) => {
             name="external_link"
             value={externalLink}
             onChange={e => setExternalLink(e.target.value)}
+            disabled={!enabled}
           />
           <div className='flex justify-end'>
-            <FullRoundedButton isLoading={isLoading} type='submit'> Save</FullRoundedButton>
+            <FullRoundedButton isLoading={isLoading} type='submit' disabled={!enabled}> Save</FullRoundedButton>
           </div>
         </form>
       </div>

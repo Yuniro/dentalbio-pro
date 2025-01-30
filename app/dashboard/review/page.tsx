@@ -34,7 +34,7 @@ const Review = async () => {
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <ManageReviews targetUserId={(userId === AdminServer.getTargetUserId()) && userId} />
+        <ManageReviews targetUserId={(userId === AdminServer.getTargetUserId()) && userId} enabled={proAvailable} />
       </div>
     </div>
   )

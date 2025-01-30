@@ -33,7 +33,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     await onUpdate({ id: group.id, name: heading });
 
     setIsLoading(false);
@@ -90,11 +90,11 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
             {/* Title Row */}
             <div className="flex flex-1 items-center justify-center truncate gap-2">
               <div className="text-primary-1 font-bold truncate">{group.name}</div>
+              <button className="flex-shrink-0 enabled:hover:text-primary-1" onClick={() => setIsEditing(true)} disabled={!enabled}>
               <PencilSimple
                 size={18}
-                className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-                onClick={enabled ? () => setIsEditing(true) : undefined}
               />
+              </button>
             </div>
 
             {/* Content Row */}
@@ -103,9 +103,9 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
 
           {/* Trash Button */}
           <div className="flex items-center gap-2">
-            <div onClick={enabled ? () => setIsOpenConfirmMessage(true) : undefined}>
-              <Trash size={20} className="cursor-pointer hover:text-red-700" />
-            </div>
+            <button onClick={() => setIsOpenConfirmMessage(true)} className="enabled:hover:text-red-700" disabled={!enabled}>
+              <Trash size={20} />
+            </button>
 
             <div className="form-check form-switch custom-form-check">
               <input

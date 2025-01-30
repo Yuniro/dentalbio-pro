@@ -59,11 +59,11 @@ const BlogCard: React.FC<BlogCardProps> = ({
           {/* Title Row */}
           <div className="flex flex-1 items-center truncate gap-2">
             <div className="text-primary-1 font-bold truncate">{title}</div>
-            <PencilSimple
-              size={18}
-              className="cursor-pointer flex-shrink-0 hover:text-primary-1"
-              onClick={proAvailable ? () => onEditItem(id) : undefined}
-            />
+            <button className="flex-shrink-0 enabled:hover:text-primary-1" onClick={() => onEditItem(id)} disabled={!proAvailable}>
+              <PencilSimple
+                size={18}
+              />
+            </button>
           </div>
 
           {/* Content Row */}
@@ -72,9 +72,9 @@ const BlogCard: React.FC<BlogCardProps> = ({
 
         {/* Trash Button */}
         <div className="flex items-center">
-          <div onClick={proAvailable ? () => setIsOpenConfirmMessage(true) : undefined}>
-            <Trash size={20} className="cursor-pointer hover:text-red-700" />
-          </div>
+          <button onClick={() => setIsOpenConfirmMessage(true)} disabled={!proAvailable} className="enabled:hover:text-red-700">
+            <Trash size={20} />
+          </button>
 
           <Link
             href={`/${username}/blog/${slug}`}

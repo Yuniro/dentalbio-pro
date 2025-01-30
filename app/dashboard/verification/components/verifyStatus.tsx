@@ -192,7 +192,7 @@ const VerifyStatus: React.FC<VerifyStatusProps> = ({ enabled }) => {
       {(sessionStatus === "not_started") &&
         <>
           <div className="p-6 bg-white rounded-[26px]">
-            <h3 className="text-base">You don't verified your identity</h3>
+            <h3 className="text-base">You haven't verified your identity yet</h3>
             <p className="text-gray-500">How to verify your identity to keep the community safe for everyone:</p>
             <div className="text-gray-500">
 

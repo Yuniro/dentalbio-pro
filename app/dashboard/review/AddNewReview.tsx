@@ -6,11 +6,13 @@ import AddReviewModal from "./components/AddReviewModal";
 type AddNewReviewProps = {
   onAdd: (review: any) => void;
   targetUserId: string | null;
+  enabled: boolean;
 }
 
 const AddNewReview: React.FC<AddNewReviewProps> = ({
   onAdd,
-  targetUserId
+  targetUserId,
+  enabled,
 }: AddNewReviewProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -63,7 +65,7 @@ const AddNewReview: React.FC<AddNewReviewProps> = ({
 
   return (
     <>
-      <FullRoundedButton onClick={openModal} className="mb-4">Add Review</FullRoundedButton>
+      <FullRoundedButton onClick={openModal} className="mb-4" disabled={!enabled}>Add Review</FullRoundedButton>
 
       <AddReviewModal
         isOpen={isModalOpen}
