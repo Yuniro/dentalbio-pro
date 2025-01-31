@@ -1,6 +1,6 @@
 import React from "react";
-import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 import DomainComponent from "./DomainComponent";
+import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 const Domain = async () => {

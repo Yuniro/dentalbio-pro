@@ -249,14 +249,14 @@ export default function Sidebar() {
                   Icon={SealCheck}
                   onClick={handleClose}
                 />
-                <SidebarItem
+                {/* <SidebarItem
                   label="Domain Name"
                   link="/dashboard/domain"
                   isActive={pathname === "/dashboard/domain"}
                   enabled={premiumProAvailable}
                   Icon={Globe}
                   onClick={handleClose}
-                />
+                /> */}
                 <SidebarItem
                   label="Settings"
                   link="/dashboard/settings"
