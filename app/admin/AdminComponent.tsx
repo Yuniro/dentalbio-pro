@@ -158,7 +158,7 @@ const AdminComponent: React.FC = () => {
 
     const response = await fetch("/api/announcements", {
       method: "PUT",
-      body: JSON.stringify(announcements)
+      body: JSON.stringify(tempAnnouncements)
     });
 
     const data = response.json();
@@ -384,6 +384,7 @@ const AdminComponent: React.FC = () => {
                     name="content"
                     type="text"
                     value={tempAnnouncements.content}
+                    onChange={handleAnnouncementsChange}
                   />
                 </div>
               </div>

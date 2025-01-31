@@ -72,8 +72,8 @@ const LoginPage = () => {
         setErrorMessage("Too many unsuccessful attempts.");
         setSubErrorMessage("Please wait a few minutes before trying again.");
       } else {
-        setErrorMessage("Incorrect username or password.");
-        setSubErrorMessage("Please try again.");
+        setErrorMessage(result.error);
+        // setSubErrorMessage("Please try again.");
       }
     } else {
       // Reset attempts on successful login

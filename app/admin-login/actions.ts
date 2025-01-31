@@ -21,16 +21,20 @@ export async function login(formData: FormData) {
     return { error: error.message };
   }
 
-  const { isAdmin } = await getAuthorizedUser();
+  const { data: userData } = await supabase
+    .from("users")
+    .select("role")
+    .eq("email", data.email)
+    .single();
 
-  console.log(isAdmin);
+  const isAdmin = (userData!.role === "admin");
 
-  // if (isAdmin) {
+  if (isAdmin) {
     revalidatePath("/", "layout");
     redirect("/admin");
-  // } else {
-  //   const { error } = await supabase.auth.signOut();
+  } else {
+    const { error } = await supabase.auth.signOut();
 
-  //   return { error: "Access is restricted to admin users only."}
-  // }
+    return { error: "Access is restricted to admin users only."}
+  }
 }
