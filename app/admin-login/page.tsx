@@ -100,8 +100,8 @@ const LoginPage = () => {
               type="email"
               name="email"
               placeholder="Enter your email"
-              required
               className="w-full bg-transparent text-2xl text-dark px-4 py-1.5 outline-none placeholder-neutral-500"
+              required
             />
           </div>
         </div>
@@ -113,8 +113,8 @@ const LoginPage = () => {
               type="password"
               name="password"
               placeholder="Enter your password"
-              required
               className="w-full bg-transparent text-2xl text-dark px-4 py-1.5 outline-none placeholder-neutral-500"
+              required
             />
           </div>
         </div>
