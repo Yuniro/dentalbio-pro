@@ -61,31 +61,31 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
       return;
     }
 
-    updateVercelRedirects(userData.username!, domain);
-
-    // addDomainToVercel(domain);
+    addDomainToVercel(domain);
   }
 
-  // const addDomainToVercel = async (domain: string) => {
-  //   const response = await fetch("https://api/vercel.com/v4/domains", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${process.env.VERCEL_TOKEN}`
-  //     },
-  //     body: JSON.stringify({
-  //       name: domain,
-  //       projectId: process.env.VERCEL_PROJECT_ID,
-  //     })
-  //   })
+  const addDomainToVercel = async (domain: string) => {
+    const response = await fetch("https://api/vercel.com/v4/domains", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.VERCEL_TOKEN}`
+      },
+      body: JSON.stringify({
+        name: domain,
+        projectId: process.env.VERCEL_PROJECT_ID,
+      })
+    })
 
-  //   const data = await response.json();
+    const data = await response.json();
 
-  //   if (data.error) {
-  //     console.error(data.error);
-  //   } else {
-  //     console.log("Added domain to Vercel successfully!")
-  //   }
-  // }
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      updateVercelRedirects(userData.username!, domain);
+
+      console.log("Added domain to Vercel successfully!")
+    }
+  }
 
   const generateCode = () => {
     setVerificationCode(generateVerificationCode());
