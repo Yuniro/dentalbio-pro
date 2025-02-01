@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import LabeledInput from "../components/LabeledInput";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import { generateVerificationCode } from "@/utils/functions/generateVerificationCode";
+import { updateVercelRedirects } from "@/utils/vercel/updateVercelRedirects";
 
 type DomainComponentProps = {
   enabled: boolean;
@@ -12,6 +13,7 @@ type DomainComponentProps = {
 
 const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userData, setUserData] = useState<UserType>({});
   const [domain, setDomain] = useState<string>("");
   const [verificationCode, setVerificationCode] = useState<string>("");
 
@@ -23,7 +25,9 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
       });
 
       const data = await response.json();
+      setUserData(data);
       setDomain(data.domain);
+      setVerificationCode(data.domain_verification_code);
     }
 
     fetchUserDomain();
@@ -43,21 +47,45 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
 
     const domain = formData.get("domain") as string;
 
-    const response = await fetch("/api/user", {
-      method: "PUT",
+    const response = await fetch("/api/domain/verify", {
+      method: "POST",
       body: JSON.stringify({ targetUserId, domain, verificationCode })
     });
 
     const data = await response.json();
 
+    setIsLoading(false);
+
     if (data.error) {
       console.error(data.error);
-    } else {
-
+      return;
     }
 
-    setIsLoading(false);
+    updateVercelRedirects(userData.username!, domain);
+
+    // addDomainToVercel(domain);
   }
+
+  // const addDomainToVercel = async (domain: string) => {
+  //   const response = await fetch("https://api/vercel.com/v4/domains", {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${process.env.VERCEL_TOKEN}`
+  //     },
+  //     body: JSON.stringify({
+  //       name: domain,
+  //       projectId: process.env.VERCEL_PROJECT_ID,
+  //     })
+  //   })
+
+  //   const data = await response.json();
+
+  //   if (data.error) {
+  //     console.error(data.error);
+  //   } else {
+  //     console.log("Added domain to Vercel successfully!")
+  //   }
+  // }
 
   const generateCode = () => {
     setVerificationCode(generateVerificationCode());

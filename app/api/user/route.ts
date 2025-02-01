@@ -45,14 +45,11 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "You are not authorized to this action!"});
 
     const userId = targetUserId || userData.id;
-
-    const domain = body.domain || null;
-    const domain_verification_code = body.verificationCode || null;
     const use_dental_brand = body.use_dental_brand ?? true;
 
     const { data, error } = await supabase
       .from('users')
-      .update({ domain, domain_verification_code, use_dental_brand })
+      .update({ use_dental_brand })
       .eq('id', userId)
       .select('*')
       .single();
