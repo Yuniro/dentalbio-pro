@@ -68,11 +68,11 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     const response = await fetch("https://api/vercel.com/v4/domains", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.VERCEL_TOKEN}`
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_VERCEL_API_KEY}`
       },
       body: JSON.stringify({
         name: domain,
-        projectId: process.env.VERCEL_PROJECT_ID,
+        projectId: process.env.NEXT_PUBLIC_VERCEL_PROJECT_ID,
       })
     })
 
