@@ -34,6 +34,7 @@
     "framer-motion": "^11.5.4",
     "mapbox-gl": "^3.9.0",
     "next": "14.2.8",
+    "node-dns": "^0.1.0",
     "nodemailer": "^6.9.15",
     "phosphor-react": "^1.4.1",
     "quill": "^2.0.3",

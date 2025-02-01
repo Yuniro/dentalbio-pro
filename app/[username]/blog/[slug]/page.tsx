@@ -82,7 +82,7 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   // Fetch the dentistry data using the user's ID
   const { data: dentistry, error: dentistryError } = await supabase
     .from("dentistries")
-    .select("dentistry_id, about_title, about_text, phone, booking_link, contact_email")
+    .select("dentistry_id, about_title, about_text, phone, booking_link, contact_email, location_title")
     .eq("user_id", user?.id)
     .single();
 

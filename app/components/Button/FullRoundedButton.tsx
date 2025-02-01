@@ -20,7 +20,7 @@ const FullRoundedButton: React.FC<FullRoundedButtonProps> = ({
       className={(className ? className : "") + 
         (buttonType === 'danger' ? " bg-red-500  enabled:hover:bg-red-800" :
         buttonType === 'ghost' ? " bg-gray-500 enabled:hover:bg-gray-400" :
-        buttonType === 'warning' ? " bg-[#DE8A6D] enabled:hover:bg-[#f58661]" :
+        buttonType === 'warning' ? " bg-[#DE8A6D] enabled:hover:bg-[#c46a4c]" :
         " bg-primary-1 enabled:hover:bg-[#302a83]" ) + " flex justify-center items-center px-[20px] py-[10px] font-bold text-white rounded-[26px] transition-all ease-in-out "}
       disabled={isLoading}
       {...props}

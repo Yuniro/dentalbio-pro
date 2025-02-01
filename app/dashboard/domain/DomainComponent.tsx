@@ -2,8 +2,8 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import LabeledInput from "../components/LabeledInput";
-import { useAdmin } from "@/utils/functions/useAdmin";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
+import { generateVerificationCode } from "@/utils/functions/generateVerificationCode";
 
 type DomainComponentProps = {
   enabled: boolean;
@@ -11,10 +11,9 @@ type DomainComponentProps = {
 }
 
 const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId }) => {
-  const { getTargetUserId } = useAdmin();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [domain, setDomain] = useState<string>("");
+  const [verificationCode, setVerificationCode] = useState<string>("");
 
   useEffect(() => {
     const fetchUserDomain = async () => {
@@ -26,10 +25,16 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
       const data = await response.json();
       setDomain(data.domain);
     }
+
+    fetchUserDomain();
   }, [])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!verificationCode) {
+      return;
+    }
 
     setIsLoading(true);
 
@@ -37,11 +42,10 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     const formData = new FormData(form);
 
     const domain = formData.get("domain") as string;
-    console.log(domain);
 
     const response = await fetch("/api/user", {
       method: "PUT",
-      body: JSON.stringify({ targetUserId: getTargetUserId(), domain })
+      body: JSON.stringify({ targetUserId, domain, verificationCode })
     });
 
     const data = await response.json();
@@ -53,6 +57,10 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     }
 
     setIsLoading(false);
+  }
+
+  const generateCode = () => {
+    setVerificationCode(generateVerificationCode());
   }
 
   return (
@@ -70,6 +78,18 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
           value={domain}
           onChange={e => setDomain(e.target.value)}
         />
+
+        <div className="flex w-full justify-between items-center gap-2">
+          <LabeledInput
+            label="Verification Code"
+            name="verification_code"
+            value={verificationCode}
+            readOnly
+            required
+          />
+
+          <FullRoundedButton onClick={generateCode} className="mb-3" type="button" buttonType="warning">Generate</FullRoundedButton>
+        </div>
 
         <div className="flex justify-end">
           <FullRoundedButton isLoading={isLoading} type="submit">Save</FullRoundedButton>
