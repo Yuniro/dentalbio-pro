@@ -49,7 +49,7 @@ export default function Services({ dentistryId }: { dentistryId: string }) {
 
   // Show loading message while fetching data
   if (loading) {
-    return <h2 className="section-heading-treatment">Loading treatments...</h2>;
+    return <h2 className="section-heading-treatment">Loading services...</h2>;
   }
 
   // If no treatments are available, show a placeholder message
