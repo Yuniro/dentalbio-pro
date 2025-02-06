@@ -585,7 +585,7 @@ const AdminComponent: React.FC = () => {
                           <button
                             onClick={() => upgradePlan(row.id)}
                             className="text-gray-600 hover:text-primary-1 transition-colors inline-flex"
-                            title="View Dashboard"
+                            title="Change Plan"
                           >
                             <CloudArrowUp weight="fill" size={20} />
                           </button>
