@@ -32,6 +32,8 @@ export default function Page() {
     title: "",
     firstName: "",
     lastName: "",
+    birthday: "",
+    offerCode: "",
     position: "",
     country: "",
     email: "",
@@ -86,7 +88,9 @@ export default function Page() {
       formData.title &&
       formData.firstName &&
       formData.lastName &&
+      formData.birthday &&
       formData.position &&
+      formData.offerCode &&
       formData.country &&
       formData.email &&
       formData.password &&
@@ -226,7 +230,9 @@ export default function Page() {
             username,
             first_name: formData.firstName,
             last_name: formData.lastName,
+            birthday: formData.birthday,
             position: formData.position,
+            offerCode: formData.offerCode,
             country: formData.country,
             title: formData.title,
           },
@@ -305,11 +311,22 @@ export default function Page() {
                 onChange={(value) => handleInputChange("lastName", value)}
                 placeholder="Last Name"
               />
+              <CustomInput 
+                value={formData.birthday}
+                onChange={(value) => handleInputChange("birthday", value)}
+                type="date"
+                placeholder="00/00/0000"
+              />
               <Dropdown
                 selected={formData.position}
                 onSelect={(value) => handleInputChange("position", value)}
                 options={positions}
                 label="Position"
+              />
+              <CustomInput 
+                value={formData.offerCode}
+                onChange={(value) => handleInputChange("offerCode", value)}
+                placeholder="OfferCode"
               />
               <Country
                 selected={formData.country}
