@@ -188,7 +188,7 @@ export async function POST(req: Request) {
                         👋 Hello ${firstName},
                       </p>
                       <p style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin: 20px 0;">
-                        Your Dentalbio pre-launch username <span style="color: #f1852f">@${username}</span> registration has been successful! 📣
+                        Your Dentalbio username <span style="color: #f1852f">@${username}</span> registration has been successful! 📣
                       </p>
                       <p style="font-size: 16px; font-weight: 300; color: #1c1c21; line-height: 1.7; margin-top: 30px;">
                         Website: <span style="font-weight: bold; color: #5046db;">dental.bio/<span style="color: #f1852f">${username}</span></span>
@@ -203,7 +203,7 @@ export async function POST(req: Request) {
                         Location: ${location}
                       </p>
                       <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 20px 0; margin-top: 30px;">
-                        We will let you know when we launch so you can log in and start customising your Dentalbio!
+                        You can start building your Dentalbio now!
                       </p>
                     </td>
                   </tr>
