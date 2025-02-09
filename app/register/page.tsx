@@ -33,8 +33,8 @@ export default function Page() {
     firstName: "",
     lastName: "",
     birthday: "",
-    position: "",
     offerCode: "",
+    position: "",
     country: "",
     email: "",
     password: "",
@@ -89,8 +89,8 @@ export default function Page() {
       formData.firstName &&
       formData.lastName &&
       formData.birthday &&
-      formData.offerCode &&
       formData.position &&
+      formData.offerCode &&
       formData.country &&
       formData.email &&
       formData.password &&
@@ -315,7 +315,7 @@ export default function Page() {
                 value={formData.birthday}
                 onChange={(value) => handleInputChange("birthday", value)}
                 type="date"
-                placeholder="01/01/2000"
+                placeholder="00/00/0000"
               />
               <Dropdown
                 selected={formData.position}
