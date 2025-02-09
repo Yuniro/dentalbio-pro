@@ -63,9 +63,6 @@ const AdminComponent: React.FC = () => {
       });
 
       const userList = await response.json();
-
-      console.log(userList);
-
       setData(userList.data);
       setTotal(userList.count);
     } catch (error) {
@@ -115,6 +112,17 @@ const AdminComponent: React.FC = () => {
       setTempAnnouncements(fetchData);
     }
 
+    const fetchOfferCode = async () => {
+      const response = await fetch('/api/offer-code', {
+        method: 'GET',
+      });
+
+      const fetchData = await response.json();
+      setOfferCode(fetchData.value);
+      setTempOfferCode(fetchData.value);
+    }
+
+    fetchOfferCode();
     fetchAnnouncements();
   }, [])
 
@@ -181,7 +189,7 @@ const AdminComponent: React.FC = () => {
     setOfferCode(tempOfferCode);
     setIsSaving(true);
 
-    const response = await fetch('/api/offerCode', {
+    const response = await fetch('/api/offer-code', {
       method: "PUT",
       body: JSON.stringify(tempOfferCode)
     });
