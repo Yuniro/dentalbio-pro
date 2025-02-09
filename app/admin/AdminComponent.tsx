@@ -6,7 +6,7 @@ import VerificationBadge from "../components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
 import Link from "next/link";
-import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, SealCheck } from "@phosphor-icons/react/dist/ssr";
 import FullRoundedButton from "../components/Button/FullRoundedButton";
 import LabeledInput from "../dashboard/components/LabeledInput";
 import ConfirmMessage from "../components/Modal/ConfirmMessagel";
@@ -32,13 +32,17 @@ const AdminComponent: React.FC = () => {
   const [total, setTotal] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isAnnouncementEditorOpen, setIsAnnouncementEditorOpen] = useState(false);
+  const [isOfferCodeOpen, setIsOfferCodeOpen] = useState(false);
   const [tempFilters, setTempFilters] = useState<Record<string, string>>({}); // Temporary filters
   const [announcements, setAnnouncements] = useState({ title: '', content: '' })
   const [tempAnnouncements, setTempAnnouncements] = useState({ title: '', content: '' });
-  const [isOpenUpgradePlanModal, setIsOpenUpgradePlanModal] = useState(false);  
+  const [isOpenUpgradePlanModal, setIsOpenUpgradePlanModal] = useState(false);
   const [upgradeUser, setUpgradeUser] = useState(null);
+  const [offerCode, setOfferCode] = useState("")
+  const [tempOfferCode, setTempOfferCode] = useState("")
 
   const announcementsRef = useRef(announcements);
+  const offerCodeRef = useRef(offerCode)
 
   // Add page size options
   const pageSizeOptions = [10, 15, 20, 25];
@@ -93,6 +97,7 @@ const AdminComponent: React.FC = () => {
 
   useEffect(() => {
     announcementsRef.current = announcements;
+    offerCodeRef.current = offerCode
   }, [announcements])
 
   useEffect(() => {
@@ -129,6 +134,11 @@ const AdminComponent: React.FC = () => {
     }));
   };
 
+  const handleOfferCodeChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { value } = e.target;
+    setTempOfferCode(value)
+  }
+
   const applyFilters = () => {
     setFilters(tempFilters);
     setPage(1);
@@ -141,7 +151,7 @@ const AdminComponent: React.FC = () => {
   };
 
   const handleUpdateUser = (id: string, subscription_status: string) => {
-    setData((prev: any ) => {
+    setData((prev: any) => {
       const updatedData = prev.map((user: any) => {
         if (user.id === id) {
           return { ...user, subscription_status };
@@ -167,9 +177,29 @@ const AdminComponent: React.FC = () => {
     setIsSaving(false);
   }
 
+  const applyOfferCode = async () => {
+    setOfferCode(tempOfferCode);
+    setIsSaving(true);
+
+    const response = await fetch('/api/offerCode', {
+      method: "PUT",
+      body: JSON.stringify(tempOfferCode)
+    });
+
+    const data = response.json();
+
+    setIsOfferCodeOpen(false);
+    setIsSaving(false)
+  }
+
   const cancelAnnouncements = () => {
     setTempAnnouncements(announcementsRef.current);
     setIsAnnouncementEditorOpen(false);
+  }
+
+  const cancelOfferCode = () => {
+    setTempOfferCode(offerCodeRef.current);
+    setIsOfferCodeOpen(false);
   }
 
   // Close dropdown when clicking outside
@@ -180,6 +210,10 @@ const AdminComponent: React.FC = () => {
 
       const announcementEditor = document.getElementById('announcement-editor');
       const announcementButton = document.getElementById('announcement-button');
+
+      const offerCodeEditor = document.getElementById('offerCode-editor');
+      const offerCodeButton = document.getElementById('offerCode-button');
+      
       if (
         dropdown &&
         !dropdown.contains(event.target as Node) &&
@@ -195,6 +229,12 @@ const AdminComponent: React.FC = () => {
       ) {
         cancelAnnouncements();
       }
+
+      if (
+        offerCodeEditor &&
+        !offerCodeEditor.contains(event.target as Node) &&
+        !offerCodeButton?.contains(event.target as Node)
+      ) cancelOfferCode();
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -232,7 +272,7 @@ const AdminComponent: React.FC = () => {
   const upgradePlan = (userId: string) => {
     const user = data.find((user: any) => user.id === userId);
     if (user) {
-      setUpgradeUser(user );
+      setUpgradeUser(user);
       setIsOpenUpgradePlanModal(true);
     }
   }
@@ -352,7 +392,7 @@ const AdminComponent: React.FC = () => {
           )}
         </div>
 
-        <div className="relative flex-grow w-full sm:w-auto">
+        <div className="relative w-full sm:w-auto">
           <FullRoundedButton
             id="announcement-button"
             onClick={() => setIsAnnouncementEditorOpen(!isAnnouncementEditorOpen)}
@@ -400,6 +440,54 @@ const AdminComponent: React.FC = () => {
                 <FullRoundedButton
                   isLoading={isSaving}
                   onClick={applyAnnouncements}
+                >
+                  Save
+                </FullRoundedButton>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="relative flex-grow w-full sm:w-auto">
+          <FullRoundedButton
+            id="offerCode-button"
+            onClick={() => setIsOfferCodeOpen(!isOfferCodeOpen)}
+            className="shadow-md"
+          >
+            <SealCheck size={22} className="mr-1" />
+              OfferCode
+          </FullRoundedButton>
+          {isOfferCodeOpen && (
+            <div
+              id="offerCode-editor"
+              className="absolute left-0 mt-2 w-full sm:w-96 bg-[#f1f1f3] border rounded-[26px] shadow-xl z-10"
+            >
+              <div className="p-4">
+                <h3 className="font-semibold mb-4 text-gray-700">Manage OfferCode</h3>
+
+                {/* Text inputs */}
+                <div className="space-y-3">
+                  <LabeledInput
+                    label="OfferCode"
+                    name="offerCode"
+                    type="text"
+                    value={tempOfferCode}
+                    onChange={handleOfferCodeChange}
+                  />
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className="border-t p-4 flex justify-end space-x-2 bg-gray-50 rounded-b-[26px]">
+                <FullRoundedButton
+                  onClick={cancelOfferCode}
+                  buttonType="danger"
+                >
+                  Cancel
+                </FullRoundedButton>
+                <FullRoundedButton
+                  isLoading={isSaving}
+                  onClick={applyOfferCode}
                 >
                   Save
                 </FullRoundedButton>
@@ -607,6 +695,8 @@ const AdminComponent: React.FC = () => {
         </table>
       </div>
 
+
+
       <ConfirmMessage
         description="Aure you sure you want to delete the user?"
         okText="Delete"
@@ -620,7 +710,7 @@ const AdminComponent: React.FC = () => {
         onClose={() => setIsOpenUpgradePlanModal(false)}
         user={upgradeUser}
         onSuccess={handleUpdateUser}
-      />  
+      />
     </div>
   );
 }
