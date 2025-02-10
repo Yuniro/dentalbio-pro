@@ -6,22 +6,14 @@ import React, { useState } from "react";
 import Dropdown from "./Dropdown";
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
-import { createClient } from "@supabase/supabase-js";
 import ClaimForm from "../components/home-page/ClaimForm";
 import Country from "./Country";
 import Image from "next/image";
 import Link from "next/link";
 import ErrorMessage from "../components/ErrorMessage";
-import Navbar from "../components/Navbar";
 import { countries, positions, titles } from "@/utils/global_constants";
 
 const manrope = Manrope({ subsets: ["latin"] });
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -58,25 +50,6 @@ export default function Page() {
     return emailRegex.test(email);
   };
 
-  // Check if email is already in use in the database
-  const checkEmailInUse = async (email: string) => {
-    try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("email")
-        .eq("email", email)
-        .single();
-
-      if (error && error.code === "PGRST116") {
-        return false; // Email is not in use
-      }
-      return true; // Email is already in use
-    } catch (err) {
-      console.error("Error checking email availability:", err);
-      return false;
-    }
-  };
-
   // Validate password length
   const validatePassword = (password: string) => {
     return password.length >= 6;
@@ -98,144 +71,70 @@ export default function Page() {
     );
   };
 
-  const checkUsernameAvailability = async (username: string) => {
-    try {
-      // Convert the username to lowercase for case-insensitive checking
-      const loweredUsername = username.toLowerCase();
-  
-      // Perform a case-insensitive check using ilike
-      const { data, error } = await supabase
-        .from("users")
-        .select("username")
-        .ilike("username", loweredUsername) // Case-insensitive check
-        .single();
-  
-      if (error && error.code === "PGRST116") {
-        return true; // Username is available
-      }
-  
-      return false; // Username is already taken
-    } catch (err) {
-      console.error("Error checking username availability:", err);
-      return false;
-    }
-  };
-  
-
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     // Check if all fields are filled
     if (!validateAllFields()) {
       setErrorMessage("Oops! It looks like you missed some fields.");
       setSubErrorMessage("Complete the form and try again.");
       return;
     }
-  
+
     // Validate email and password
     if (!validateEmail(formData.email)) {
-      setErrorMessage("Your email doesn’t seem to be valid.");
+      setErrorMessage("Your email doesn't seem to be valid.");
       setSubErrorMessage("Check for typos and try again.");
       return;
     }
-  
+
     if (!validatePassword(formData.password)) {
       setErrorMessage("Password too short.");
       setSubErrorMessage("Make sure it's 6 characters or longer.");
       return;
     }
-  
+
     // Validate that passwords match
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Your passwords don’t match.");
+      setErrorMessage("Your passwords don't match.");
       setSubErrorMessage("Try typing them again.");
       return;
     }
-  
+
     setLoading(true);
     setErrorMessage(null);
-  
-    // Check if email is already in use
-    const isEmailInUse = await checkEmailInUse(formData.email);
-    if (isEmailInUse) {
-      setErrorMessage("An account with this email already exists.");
-      setSubErrorMessage("Try logging in instead.");
-      setLoading(false);
-      return;
-    }
-  
-    // Check if username is available
-    const isAvailable = await checkUsernameAvailability(usernameFromUrl || "");
-    if (!isAvailable) {
-      setErrorMessage("Oops! That username is taken.");
-      setSubErrorMessage("Choose a different one or get creative!");
-      setLoading(false);
-      return;
-    }
-  
-    // Proceed with registration
-    const emailSent = await sendRegistrationEmail(
-      formData.email,
-      formData.password,
-      usernameFromUrl || ""
-    );
-  
-    if (emailSent) {
-      router.push(
-        `/register/success?username=${encodeURIComponent(
-          usernameFromUrl || ""
-        )}`
-      );
+
+    // Send registration data to the API
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+        username: usernameFromUrl || "",
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        birthday: formData.birthday,
+        position: formData.position,
+        offerCode: formData.offerCode,
+        country: formData.country,
+        title: formData.title,
+        redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm`,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      router.push(`/register/success?username=${encodeURIComponent(usernameFromUrl || "")}`);
     } else {
-      setErrorMessage(
-        "There was an issue sending the registration email. Please try again."
-      );
+        setErrorMessage(data.error || "There was an issue with registration.");
+        setSubErrorMessage("Please try again.");
     }
-  
     setLoading(false);
-  };
-  
-
-  // Send registration email via Supabase
-  const sendRegistrationEmail = async (
-    email: string,
-    password: string,
-    username: string
-  ) => {
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            username,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            birthday: formData.birthday,
-            position: formData.position,
-            offer_code: formData.offerCode,
-            country: formData.country, 
-            title: formData.title,
-          },
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm`,
-        },
-      });
-
-      if (error) {
-        if (error.message.includes("already registered")) {
-          setErrorMessage("An account with this email already exists.");
-          setSubErrorMessage("Try logging in instead.");
-        } else {
-          console.error("Error sending registration email:", error.message);
-        }
-        return false;
-      }
-      return true;
-    } catch (err) {
-      console.error("Unexpected error during sign-up:", err);
-      return false;
-    }
   };
 
   return (
@@ -293,7 +192,7 @@ export default function Page() {
                 onChange={(value) => handleInputChange("lastName", value)}
                 placeholder="Last Name"
               />
-              <CustomInput 
+              <CustomInput
                 value={formData.birthday}
                 onChange={(value) => handleInputChange("birthday", value)}
                 type="date"
@@ -305,7 +204,7 @@ export default function Page() {
                 options={positions}
                 label="Position"
               />
-              <CustomInput 
+              <CustomInput
                 value={formData.offerCode}
                 onChange={(value) => handleInputChange("offerCode", value)}
                 placeholder="OfferCode (optional)"
