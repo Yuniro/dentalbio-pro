@@ -28,7 +28,7 @@ export default async function DashboardPage() {
   }
 
   const email = userData.user.email ?? "";
-  const { username, first_name, last_name, birthday, offer_code, title, country, position } =
+  const { username, first_name, last_name, birthday, offer_code, title, country, position, trial_end, subscription_status } =
     userData.user.user_metadata;
   
   // Fetch the user's data including subscription status and username
@@ -52,6 +52,8 @@ export default async function DashboardPage() {
       birthday,
       offer_code,
       title,
+      trial_end,
+      subscription_status,
       country,
       position,
     })

@@ -1,6 +1,29 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
+const calculateAge = (birthday: Date) => {
+    const today = new Date();
+    const birthDate = new Date(birthday); // Convert birthday string to Date if necessary
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // If the current month is before the birth month, or it's the birth month but the current day is before the birthday
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+        age--; // Subtract 1 from age
+    }
+
+    return age;
+}
+
+const addMonthsToCurrentDate = (months: number) => {
+    const today = new Date();
+    today.setMonth(today.getMonth() + months);
+
+    if (today.getDate() !== new Date().getDate()) today.setDate(0)
+    return today;
+  }
+
 export async function POST(request: Request) {
     const supabase = createClient();
     const {
@@ -53,6 +76,17 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Username is already taken." }, { status: 400 });
         }
 
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/offer-code`, { method: 'GET' })
+        const serverOfferCode = await response.json()
+
+        if (!response.ok) {
+            return NextResponse.json({ error: "Can't get offerCode from the admin" }, { status: 400 })
+        }
+
+        const trialEndDate = () => {
+            return (calculateAge(birthday) <= 27 && position === "Student" && offerCode === serverOfferCode.value) ? addMonthsToCurrentDate(6) : addMonthsToCurrentDate(3)
+        }
+
         // Sign up the user with Supabase
         const { error } = await supabase.auth.signUp({
             email,
@@ -65,6 +99,8 @@ export async function POST(request: Request) {
                     birthday,
                     position,
                     offer_code: offerCode,
+                    subscription_status: "PRO",
+                    trial_end: trialEndDate(),
                     country,
                     title,
                 },
