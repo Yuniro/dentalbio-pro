@@ -4,11 +4,11 @@ import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 const Verification = async () => {
   const { subscriptionStatus } = await getAuthorizedUser();
-  const proAvailable = ["PRO", "PREMIUM PRO"].includes(subscriptionStatus);
+  const premiumProAvailable = subscriptionStatus === "PREMIUM PRO";
 
   return (
     <div className='px-10'>
-      {!proAvailable &&
+      {!premiumProAvailable &&
         <>
           <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
             <LockSimple size={22} />
@@ -17,8 +17,8 @@ const Verification = async () => {
           <div className="absolute w-full h-full top-0 left-0 z-10" />
         </>
       }
-      <div className={`${proAvailable ? "" : "opacity-40"}`}>
-        <VerifyStatus enabled={proAvailable}/>
+      <div className={`${premiumProAvailable ? "" : "opacity-40"}`}>
+        <VerifyStatus enabled={premiumProAvailable}/>
       </div>
     </div>
   );

@@ -90,6 +90,8 @@ export default function Sidebar() {
     if (userRecord.subscription_status === "PREMIUM PRO")
       setPremiumProAvailable(true);
 
+    await hasTrialEnded(userRecord.trial_end, userRecord.current_period_end, userId);
+
     // Fetch the `dentistry_id` using the user ID
     const { data: dentistryRecord, error: dentistryError } = await supabase
       .from("dentistries")
@@ -111,6 +113,21 @@ export default function Sidebar() {
     // Fetch the profile picture using the `dentistry_id`
     fetchProfilePicture(fetchedDentistryId);
   };
+
+  const hasTrialEnded = async (trialEndDate: string, currentPeriodEnd: string, userId: string) => {
+    const supabase = createClient();
+    const today = new Date();
+    const trialEnd = new Date(trialEndDate);
+    const subscriptionEnd = new Date(currentPeriodEnd)
+    if (trialEnd < today || subscriptionEnd < today ) {
+      await supabase
+        .from("users")
+        .update({ subscription_status: "FREE" })
+        .eq("id", userId);
+    }
+    setProAvailable(false);
+    setPremiumProAvailable(false);
+  }
 
   // Function to fetch profile picture from Supabase storage using dentistryId
   const fetchProfilePicture = async (dentistryId: string) => {
@@ -245,7 +262,7 @@ export default function Sidebar() {
                   label="Verification"
                   link="/dashboard/verification"
                   isActive={pathname === "/dashboard/verification"}
-                  enabled={proAvailable}
+                  enabled={premiumProAvailable}
                   Icon={SealCheck}
                   onClick={handleClose}
                 />
