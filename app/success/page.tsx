@@ -28,9 +28,9 @@ export default async function DashboardPage() {
   }
 
   const email = userData.user.email ?? "";
-  const { username, first_name, last_name, title, country, position } =
+  const { username, first_name, last_name, birthday, offer_code, title, country, position } =
     userData.user.user_metadata;
-
+  
   // Fetch the user's data including subscription status and username
   const { data: userRecord, error: userError } = await supabase
     .from("users")
@@ -49,6 +49,8 @@ export default async function DashboardPage() {
       email,
       first_name,
       last_name,
+      birthday,
+      offer_code,
       title,
       country,
       position,
@@ -68,6 +70,8 @@ export default async function DashboardPage() {
           firstName={first_name}
           lastName={last_name}
           username={username}
+          birthday={birthday}
+          offer_code={offer_code}
           title={title}
           country={country}
           position={position}

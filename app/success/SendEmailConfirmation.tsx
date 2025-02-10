@@ -5,7 +5,8 @@ export default function SendEmailConfirmation({
   email,
   firstName,
   username,
-
+  birthday,
+  offer_code,
   lastName,
   title,
   country,
@@ -14,6 +15,8 @@ export default function SendEmailConfirmation({
   email: string;
   firstName: string;
   username: string;
+  birthday: Date;
+  offer_code: string;
   lastName: string;
   title: string;
   country: string;
@@ -53,6 +56,8 @@ export default function SendEmailConfirmation({
         firstName,
         username,
         lastName,
+        birthday,
+        offer_code,
         title,
         country,
         position,

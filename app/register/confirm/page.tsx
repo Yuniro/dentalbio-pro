@@ -199,7 +199,7 @@ export default async function ConfirmPage() {
     birthday,
     title,
     country,
-    offerCode,
+    offer_code,
     position,
     email_verified,
   } = user.user_metadata;
@@ -249,7 +249,7 @@ export default async function ConfirmPage() {
       last_name,
       title,
       birthday,
-      offerCode,
+      offer_code,
       country,
       position,
       time_registered: userTime,

@@ -136,6 +136,8 @@ type UserType = {
   domain?: string;
   use_dental_brand?: boolean;
   created_at?: Date;
+  birthday?: Date;
+  offer_code?: string;
 }
 
 type Platform = "facebook" | "twitter" | "instagram" | "tiktok";

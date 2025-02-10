@@ -98,24 +98,6 @@ export default function Page() {
     );
   };
 
-  // Check if username is available in the database
-  // const checkUsernameAvailability = async (username: string) => {
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("users")
-  //       .select("username")
-  //       .eq("username", username)
-  //       .single();
-
-  //     if (error && error.code === "PGRST116") {
-  //       return true; // Username is available
-  //     }
-  //     return false; // Username is already taken
-  //   } catch (err) {
-  //     console.error("Error checking username availability:", err);
-  //     return false;
-  //   }
-  // };
   const checkUsernameAvailability = async (username: string) => {
     try {
       // Convert the username to lowercase for case-insensitive checking
@@ -232,8 +214,8 @@ export default function Page() {
             last_name: formData.lastName,
             birthday: formData.birthday,
             position: formData.position,
-            offerCode: formData.offerCode,
-            country: formData.country,
+            offer_code: formData.offerCode,
+            country: formData.country, 
             title: formData.title,
           },
           emailRedirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm`,
@@ -315,7 +297,7 @@ export default function Page() {
                 value={formData.birthday}
                 onChange={(value) => handleInputChange("birthday", value)}
                 type="date"
-                placeholder="00/00/0000"
+                placeholder="Birthday"
               />
               <Dropdown
                 selected={formData.position}
@@ -326,7 +308,7 @@ export default function Page() {
               <CustomInput 
                 value={formData.offerCode}
                 onChange={(value) => handleInputChange("offerCode", value)}
-                placeholder="OfferCode"
+                placeholder="OfferCode (optional)"
               />
               <Country
                 selected={formData.country}
