@@ -119,7 +119,7 @@ export default function Sidebar() {
     const today = new Date();
     const trialEnd = new Date(trialEndDate);
     const subscriptionEnd = new Date(currentPeriodEnd)
-    if (trialEnd < today || subscriptionEnd < today ) {
+    if (trialEnd < today && subscriptionEnd < today) {
       await supabase
         .from("users")
         .update({ subscription_status: "FREE" })
