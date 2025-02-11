@@ -36,6 +36,40 @@ export async function POST(request: Request) {
   }
 }
 
+export async function GET(request: Request) {
+  try {
+    const supabase = createClient();
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'You should log in.' }, { status: 400 });
+    }
+
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('role')
+      .eq('email', user.email)
+      .single();
+
+    if (userError) {
+      return NextResponse.json({ error: 'User Email is required' }, { status: 400 });
+    }
+
+    if (userData.role !== 'admin') {
+      return NextResponse.json({ error: 'You are not authorized to access this page' }, { status: 400 });
+    }
+
+    const { data } = await supabase
+      .from('users')
+      .select('*')
+
+    return NextResponse.json({ data });
+  } catch (error) {
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
+  }
+}
+
 const fetchTableData = async (
   page: number,
   limit: number,

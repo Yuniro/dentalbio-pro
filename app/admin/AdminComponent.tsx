@@ -6,13 +6,12 @@ import VerificationBadge from "../components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
 import Link from "next/link";
-import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, SealCheck } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, SealCheck, PaperPlane } from "@phosphor-icons/react/dist/ssr";
 import FullRoundedButton from "../components/Button/FullRoundedButton";
 import LabeledInput from "../dashboard/components/LabeledInput";
 import ConfirmMessage from "../components/Modal/ConfirmMessagel";
 import { formatDateAsMMDDYYYY } from "@/utils/formatDate";
 import UpgradePlanModal from "./components/upgradePlanModal";
-import { PreviewProvider } from "../contexts/PreviewContext";
 
 const AdminComponent: React.FC = () => {
   const { errorMessage, setErrorMessage } = useError();
@@ -40,6 +39,7 @@ const AdminComponent: React.FC = () => {
   const [upgradeUser, setUpgradeUser] = useState(null);
   const [offerCode, setOfferCode] = useState("")
   const [tempOfferCode, setTempOfferCode] = useState("")
+  const [sendEmailLoading ,setSendEmailLoading] = useState(false)
 
   const announcementsRef = useRef(announcements);
   const offerCodeRef = useRef(offerCode)
@@ -221,7 +221,7 @@ const AdminComponent: React.FC = () => {
 
       const offerCodeEditor = document.getElementById('offerCode-editor');
       const offerCodeButton = document.getElementById('offerCode-button');
-      
+
       if (
         dropdown &&
         !dropdown.contains(event.target as Node) &&
@@ -286,6 +286,53 @@ const AdminComponent: React.FC = () => {
   }
 
   const totalPages = Math.ceil(total / limit);
+
+  const handleSendEmails = async () => {
+    setSendEmailLoading(true); // Optional: Set loading state
+
+    try {
+      // Fetch all registered users
+      const response = await fetch('/api/user/list', {
+        method: 'GET',
+      });
+
+      const fetchAllUsers = await response.json()
+
+      // Send email to each user
+      for (const user of fetchAllUsers.data) {
+        const emailData = {
+          email: user.email,
+          title: "This is test email", // Customize your email title
+          country: user.country,
+          position: user.position,
+          username: user.username,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          time: new Date().toLocaleString(), // Current time
+          location: "Your Location", // You can fetch or define this
+        };
+
+        // Send email using the API
+        const emailResponse = await fetch('/api/send/all', {
+          method: 'POST',
+          body: JSON.stringify(emailData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!emailResponse.ok) {
+          console.error(`Failed to send email to ${user.email}`);
+        }
+      }
+
+      alert("Emails sent successfully!"); // Notify user of success
+    } catch (error) {
+      console.error("Error sending emails:", error);
+    } finally {
+      setSendEmailLoading(false); // Reset loading state
+    }
+  };
 
   return (
     <div className="p-8 max-w-[1400px] mx-auto">
@@ -456,14 +503,14 @@ const AdminComponent: React.FC = () => {
           )}
         </div>
 
-        <div className="relative flex-grow w-full sm:w-auto">
+        <div className="relative w-full sm:w-auto">
           <FullRoundedButton
             id="offerCode-button"
             onClick={() => setIsOfferCodeOpen(!isOfferCodeOpen)}
             className="shadow-md"
           >
             <SealCheck size={22} className="mr-1" />
-              OfferCode
+            OfferCode
           </FullRoundedButton>
           {isOfferCodeOpen && (
             <div
@@ -502,6 +549,17 @@ const AdminComponent: React.FC = () => {
               </div>
             </div>
           )}
+        </div>
+
+        <div className="relative flex-grow w-full sm:w-auto">
+          <FullRoundedButton
+            onClick={handleSendEmails}
+            className="shadow-md"
+            isLoading={sendEmailLoading}
+          >
+            <PaperPlane size={22} className="mr-1" />
+            SendEmail
+          </FullRoundedButton>
         </div>
 
         {totalPages > 1 &&
@@ -702,8 +760,6 @@ const AdminComponent: React.FC = () => {
           </tbody>
         </table>
       </div>
-
-
 
       <ConfirmMessage
         description="Aure you sure you want to delete the user?"
