@@ -124,9 +124,9 @@ export default function Sidebar() {
         .from("users")
         .update({ subscription_status: "FREE" })
         .eq("id", userId);
+        setProAvailable(false);
+        setPremiumProAvailable(false);
     }
-    setProAvailable(false);
-    setPremiumProAvailable(false);
   }
 
   // Function to fetch profile picture from Supabase storage using dentistryId
