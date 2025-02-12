@@ -33,28 +33,36 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export const POST = async (request: Request) => {
   const supabase = createClient();
-
   const userId = await getEffectiveUserId({ targetUserId: null, supabase });
   const { priceId, email } = await request.json();
   const APP_URL = process.env.APP_URL || "http://localhost:3000";
-  
-  // Calculate the trial end timestamp for February 1, 2025
-  const trialEndDate = new Date("2025-02-01");
-  const trialEndTimestamp = Math.floor(trialEndDate.getTime() / 1000);
-  
-  const subscription_data = (trialEndTimestamp > (new Date()).getTime() / 1000 + 2 * 24 * 60 * 60) ? {
-    trial_end: trialEndTimestamp,
-  } : {};
-  
-  
-  
-  // const user = await supabase.from('users').select('*').eq('id', userId).single();
-  
-  // const trialEndTimestamp = Math.floor((user.data?.trial_end) ? (new Date(user.data?.trial_end)).getTime() / 1000 : (new Date()).getTime() / 1000 + 31 * 24 * 60 * 60);
-  
-  // const subscription_data = (trialEndTimestamp > (new Date()).getTime() / 1000 + 2 * 24 * 60 * 60) ? {
-  //   trial_end: trialEndTimestamp,
-  // } : {};
+
+  // Fetch the user's trial end date from Supabase
+  const { data: user, error: userError } = await supabase
+    .from('users')
+    .select('trial_end, subscription_status')
+    .eq('id', userId)
+    .single();
+
+  if (userError || !user) {
+    return NextResponse.json({ error: { message: "User not found." } }, { status: 404 });
+  }
+
+  const trialEndDate = new Date(user.trial_end);
+  const today = new Date();
+  const twoDaysFromNow = new Date(today);
+  twoDaysFromNow.setDate(today.getDate() + 2);
+
+  // Check if the trial end date is within the next 2 days
+  const isTrialEndingSoon = trialEndDate > today && trialEndDate <= twoDaysFromNow;
+
+  // Determine subscription data based on trial end date
+  let subscription_data = {};
+  if (isTrialEndingSoon) {
+    subscription_data = {
+      trial_end: Math.floor(trialEndDate.getTime() / 1000),
+    };
+  }
 
   try {
     const session = await stripe.checkout.sessions.create({
