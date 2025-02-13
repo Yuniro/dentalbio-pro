@@ -23,7 +23,7 @@ async function getUserDetails() {
 
   const { data: userRecord, error: userError } = await supabase
     .from("users")
-    .select("id, email, first_name, middle_name, last_name, title, position")
+    .select("*")
     .eq("id", userId)
     .single();
 
@@ -44,11 +44,39 @@ async function updateUserDetails(formData: FormData) {
     return redirect("/login");
   }
 
+  //offer-code check
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/offer-code`, { method: 'GET' });
+  const serverOfferCode = await response.json()
+
+  //birthday
+  const calculateAge = (birthday: string) => {
+    const today = new Date();
+    const birthDate = new Date(birthday); // Convert birthday string to Date if necessary
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // If the current month is before the birth month, or it's the birth month but the current day is before the birthday
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+      age--; // Subtract 1 from age
+    }
+
+    return age;
+  }
+
+  const is_subscription_status = () => {
+    if ((serverOfferCode.value != formData.get("offer_code")) || (calculateAge(formData.get("birthday") as string) > 27)) return "FREE"
+    return "PRO"
+  }
+
   const updatedUserDetails = {
     first_name: formData.get("first_name") as string,
     middle_name: formData.get("middle_name") as string,
     last_name: formData.get("last_name") as string,
     title: formData.get("title") as string,
+    birthday: formData.get("birthday") as string,
+    offer_code: formData.get("offer_code") as string,
+    subscription_status: is_subscription_status()
   };
 
   const { error: updateError } = await supabase
@@ -59,6 +87,8 @@ async function updateUserDetails(formData: FormData) {
   if (updateError) {
     return redirect("/error?message=failed_to_update_user_details");
   }
+
+  return redirect('/dashboard')
 }
 
 const handleDelete = async () => {
@@ -143,6 +173,26 @@ export default async function SettingsPage() {
               className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
               defaultValue={user?.last_name || ""}
               placeholder="Last Name"
+            />
+          </div>
+
+          <div className="mb-3">
+            <h2 className="text-base text-dark">Birthday</h2>
+            <input
+              name="birthday"
+              className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
+              defaultValue={user?.birthday || ""}
+              type="date"
+            />
+          </div>
+
+          <div className="mb-3">
+            <h2 className="text-base text-dark">Offer Code</h2>
+            <input
+              name="offer_code"
+              className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
+              defaultValue={user?.offer_code || ""}
+              placeholder="Offer Code"
             />
           </div>
 
