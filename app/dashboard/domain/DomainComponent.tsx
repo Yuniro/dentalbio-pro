@@ -5,6 +5,7 @@ import LabeledInput from "../components/LabeledInput";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import { generateVerificationCode } from "@/utils/functions/generateVerificationCode";
 import { updateVercelRedirects } from "@/utils/vercel/updateVercelRedirects";
+import Entri, { EntriConfig } from 'entrijs';
 
 type DomainComponentProps = {
   enabled: boolean;
@@ -16,6 +17,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
   const [userData, setUserData] = useState<UserType>({});
   const [domain, setDomain] = useState<string>("");
   const [verificationCode, setVerificationCode] = useState<string>("");
+  const [config, setConfig] = useState<EntriConfig>();
 
   useEffect(() => {
     const fetchUserDomain = async () => {
@@ -31,6 +33,47 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     }
 
     fetchUserDomain();
+    const fetchToken = () => {
+      fetch('https://api.goentri.com/token', {
+        method: 'POST',
+        body: JSON.stringify({
+          applicationId: process.env.NEXT_PUBLIC_ENTRI_APP_ID,
+          secret: process.env.NEXT_PUBLIC_ENTRI_CLIENT_SECRETS
+        }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          setConfig({
+            applicationId: process.env.NEXT_PUBLIC_ENTRI_APP_ID!, // From the Entri dashboard
+            token: data.auth_token, 
+            dnsRecords: [
+              {
+                type: "CNAME",
+                host: "www",
+                value: "m.test.com",
+                ttl: 300,
+              },
+              {
+                type: "TXT",
+                host: "@",
+                value: "sample-txt-record",
+                ttl: 300,
+              },
+              {
+                type: "MX",
+                host: "host",
+                value: "mailhost1.example.com",
+                priority: 10,
+                ttl: 300,
+              }
+            ],
+          })
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    fetchToken();
   }, [])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -93,7 +136,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}>
         <h2 className="text-lg font-semibold text-dark text-start w-full mt-4 mb-0">
           Domain Name
         </h2>
@@ -122,7 +165,9 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
         <div className="flex justify-end">
           <FullRoundedButton isLoading={isLoading} type="submit">Save</FullRoundedButton>
         </div>
-      </form>
+      </form> */}
+
+      <FullRoundedButton type="button" onClick={() => Entri.purchaseDomain(config!)}> Launch Entri </FullRoundedButton>
     </div>
   );
 }
