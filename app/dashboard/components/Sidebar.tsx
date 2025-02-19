@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
-import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple } from "phosphor-react";
-import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video } from "@phosphor-icons/react/dist/ssr";
+import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple, LinkBreak } from "phosphor-react";
+import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video,  } from "@phosphor-icons/react/dist/ssr";
 import { useAdmin } from "@/utils/functions/useAdmin";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
@@ -279,6 +279,13 @@ export default function Sidebar() {
                   link="/dashboard/settings"
                   isActive={pathname === "/dashboard/settings"}
                   Icon={Gear}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Referral Link"
+                  link="/dashboard/referral"
+                  isActive={pathname === "/dashboard/referral"} 
+                  Icon={LinkBreak}
                   onClick={handleClose}
                 />
               </div>

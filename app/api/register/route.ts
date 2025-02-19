@@ -38,6 +38,7 @@ export async function POST(request: Request) {
         country,
         title,
         redirectUrl,
+        inviteUserId,
     } = await request.json();
 
     // Validate input data
@@ -83,8 +84,23 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Can't get offerCode from the admin" }, { status: 400 })
         }
 
-        const trialEndDate = () => {
-            return (calculateAge(birthday) <= 27 && position === "Student" && offerCode === serverOfferCode.value) ? addMonthsToCurrentDate(6) : addMonthsToCurrentDate(3)
+        const trialEndDate = (referralMonths: number) => {
+            return (calculateAge(birthday) <= 27 && position === "Student" && offerCode === serverOfferCode.value) ? addMonthsToCurrentDate(6 + referralMonths) : addMonthsToCurrentDate(3 + referralMonths)
+        }
+
+        // Check if inviteUserId exists
+        let referralUser;
+        if (inviteUserId) {
+            const { data, error } = await supabase
+                .from("users")
+                .select("id")
+                .eq("id", inviteUserId)
+                .single();
+
+            if (error || !data) {
+                return NextResponse.json({ error: "Invalid referral link." }, { status: 400 });
+            }
+            referralUser = data.id;
         }
 
         // Sign up the user with Supabase
@@ -100,7 +116,7 @@ export async function POST(request: Request) {
                     position,
                     offer_code: offerCode,
                     subscription_status: "PRO",
-                    trial_end: trialEndDate(),
+                    trial_end: referralUser ? trialEndDate(1) : trialEndDate(0),
                     country,
                     title,
                 },
