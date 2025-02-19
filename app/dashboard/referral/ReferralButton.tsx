@@ -9,7 +9,8 @@ interface ReferralButtonProps {
 }
 
 const ReferralButton = ({ userId }: ReferralButtonProps) => {
-    const referralLink = `https://dental.bio/api/invite?referral=${userId}`;
+    const APP_URL = process.env.APP_URL || "http://localhost:3000";
+    const referralLink = `${APP_URL}/api/invite?referral=${userId}`;
 
     const copyLink = async() => {
         try {

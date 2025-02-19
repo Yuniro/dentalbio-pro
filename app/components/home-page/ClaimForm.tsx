@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import supabase from "@/app/lib/supabaseClient";
 import ErrorMessage from "../ErrorMessage";
 import { Manrope } from "next/font/google";
@@ -181,6 +181,10 @@ const inappropriatePatterns: string[] = [
 
 
 export default function ClaimForm() {
+
+  const searchParams = useSearchParams();
+  const inviteUserId = searchParams.get("referral");
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const [username, setUsername] = useState<string>("");
@@ -248,7 +252,9 @@ export default function ClaimForm() {
       }
 
       // If the username is available, store the original case-sensitive username and proceed
-      router.push(`/register?username=${encodeURIComponent(username)}`);
+      if (inviteUserId) {
+        router.replace(`/register/?username=${username}&referral=${inviteUserId}`)
+      } else router.replace(`/register/?username=${username}`)
     } catch (err) {
       console.error("Unexpected error:", err);
       setErrorMessage("An unexpected error occurred. Please try again.");
