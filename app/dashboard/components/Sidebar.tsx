@@ -275,17 +275,17 @@ export default function Sidebar() {
                   onClick={handleClose}
                 />
                 <SidebarItem
-                  label="Settings"
-                  link="/dashboard/settings"
-                  isActive={pathname === "/dashboard/settings"}
-                  Icon={Gear}
-                  onClick={handleClose}
-                />
-                <SidebarItem
                   label="Referral Link"
                   link="/dashboard/referral"
                   isActive={pathname === "/dashboard/referral"} 
                   Icon={LinkBreak}
+                  onClick={handleClose}
+                />
+                <SidebarItem
+                  label="Settings"
+                  link="/dashboard/settings"
+                  isActive={pathname === "/dashboard/settings"}
+                  Icon={Gear}
                   onClick={handleClose}
                 />
               </div>
