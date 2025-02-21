@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   try {
     const supabase = createClient();
 
-    const { targetUserId, domain, verificationCode } = body;
+    const { targetUserId, domain } = body;
     const userData = await getUserInfo({ supabase });
 
     if (userData.subscription_status !== "PREMIUM PRO")
