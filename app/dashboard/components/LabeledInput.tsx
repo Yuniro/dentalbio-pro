@@ -90,6 +90,7 @@ const LabeledInput: React.FC<AboutTextProps> = ({
           onBlur={handleBlur}
           id={name}
           name={name}
+          value={value || ""}
           {...props}
         />
       </div>

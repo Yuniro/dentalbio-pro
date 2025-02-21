@@ -84,12 +84,6 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     }
 
     setIsLoading(true);
-
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-
-    const domain = formData.get("domain") as string;
-
     const response = await fetch("/api/domain/verify", {
       method: "POST",
       body: JSON.stringify({ targetUserId, domain, verificationCode })
@@ -136,7 +130,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
 
   return (
     <div>
-      {/* <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <h2 className="text-lg font-semibold text-dark text-start w-full mt-4 mb-0">
           Domain Name
         </h2>
@@ -146,7 +140,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
         <LabeledInput
           label="Domain Name"
           name="domain"
-          value={domain}
+          value={domain || ""}
           onChange={e => setDomain(e.target.value)}
         />
 
@@ -154,7 +148,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
           <LabeledInput
             label="Verification Code"
             name="verification_code"
-            value={verificationCode}
+            value={verificationCode || ""}
             readOnly
             required
           />
@@ -165,7 +159,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
         <div className="flex justify-end">
           <FullRoundedButton isLoading={isLoading} type="submit">Save</FullRoundedButton>
         </div>
-      </form> */}
+      </form>
 
       <FullRoundedButton type="button" onClick={() => Entri.purchaseDomain(config!)}> Launch Entri </FullRoundedButton>
     </div>
