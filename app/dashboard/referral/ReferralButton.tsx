@@ -9,7 +9,7 @@ interface ReferralButtonProps {
 }
 
 const ReferralButton = ({ userId }: ReferralButtonProps) => {
-    const APP_URL = process.env.APP_URL || "http://localhost:3000";
+    const APP_URL = process.env.APP_URL;
     const referralLink = `${APP_URL}/api/invite?referral=${userId}`;
 
     const copyLink = async() => {

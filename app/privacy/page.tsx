@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Privacy() {
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Navbar />
 
       <div className="flex flex-col items-center justify-start h-full w-full overflow-x-clip pt-44 px-10 md:px-20">
@@ -92,6 +92,6 @@ export default function Privacy() {
         </div>
       </div>
       <Footer />
-    </>
+    </Suspense>
   );
 }

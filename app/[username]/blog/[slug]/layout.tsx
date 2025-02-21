@@ -57,38 +57,34 @@ async function fetchBlog(slug: string) {
 export async function generateMetadata({
   params: { username, slug },
 }: {
-  params: { username: string, slug: string };
+  params: { username: string; slug: string };
 }): Promise<Metadata> {
-  const { username: fetchedUsername, dentistry } = await fetchUserAndDentistry(
-    username
-  );
-
+  const { username: fetchedUsername, dentistry } = await fetchUserAndDentistry(username);
+  
   const { meta_title, meta_description, meta_image, content } = await fetchBlog(slug);
-
-  // Set default values for the title and description
+  
   const title = meta_title || dentistry?.about_title || username;
   const authors = [username] as Author[];
   const description = meta_description || content.slice(0, 200);
-
-  // Set Open Graph and Twitter metadata
-  const imageUrl = meta_image || "https://yourdefaultimage.com/default.jpg"; // Default image if no meta_image is provided
+  const imageUrl = meta_image || "https://yourdefaultimage.com/default.jpg";
 
   return {
     title,
     authors,
     description,
-    // openGraph: {
-    //   title,
-    //   description,
-    //   url: `https://yourwebsite.com/${slug}`,
-    //   images: [{ url: imageUrl }],
-    //   type: "article",  // Assuming it's a blog post, change as needed
-    // },
-    // twitter: {
-    //   card: "summary_large_image",  // Large image card
-    //   title,
-    //   description,
-    // },
+    metadataBase: new URL("https://dental.bio"), // Set your base URL here
+    openGraph: {
+      title,
+      description,
+      url: `https://dental.bio/${slug}`,
+      images: [{ url: imageUrl }],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
