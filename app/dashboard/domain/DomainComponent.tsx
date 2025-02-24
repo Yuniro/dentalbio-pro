@@ -94,6 +94,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
 
     if (data.error) {
       console.error(data.error);
+      setIsLoading(false);
       return;
     }
 
@@ -112,7 +113,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
   }
 
   const addDomainToVercel = async (domain: string) => {
-    const response = await fetch("https://api.vercel.com/v4/domains", {
+    const response = await fetch(`https://api.vercel.com/v9/domains`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_VERCEL_API_KEY}`,
@@ -120,7 +121,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
       },
       body: JSON.stringify({
         name: domain,
-        projectId: process.env.NEXT_PUBLIC_VERCEL_PROJECT_ID,
+        // projectId: process.env.NEXT_PUBLIC_VERCEL_PROJECT_ID,
       }),
     });
 

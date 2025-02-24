@@ -18,8 +18,14 @@ export async function POST(request: Request) {
     if (userData.subscription_status !== "PREMIUM PRO")
       return NextResponse.json({ error: "Please upgrade membership!" });
 
-    if (targetUserId && userData.role !== "admin")
-      return NextResponse.json({ error: "You are not authorized to this action!" });
+    // if (targetUserId && userData.role !== "admin")
+    //   return NextResponse.json({ error: "You are not authorized to this action!" });
+
+      const isDomainAvailable = await checkDomainAvailability(domain);
+
+      if (!isDomainAvailable) {
+        return NextResponse.json({ error: "Domain is already taken!" });
+      }
 
 
     const records = await resolveCname(`_verify.${domain}`);
@@ -43,5 +49,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Domain verified failed!" });
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 400 });
+  }
+}
+
+async function checkDomainAvailability(domain: string): Promise<boolean> {
+  try {
+    const result = await promisify(dns.resolve)(domain);
+
+    // If we get results, it means the domain is taken
+    return result.length === 0;
+  } catch (error) {
+    return true;
   }
 }

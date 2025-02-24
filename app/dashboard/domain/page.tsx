@@ -10,7 +10,7 @@ const Domain = async () => {
 	return (
 		<div className="px-10">
 			{premiumProAvailable ?
-				<DomainComponent targetUserId={isAdmin ? userId : undefined} enabled={premiumProAvailable} />
+				<DomainComponent targetUserId={userId} enabled={premiumProAvailable} />
 				:
 				<div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font=semibold my-4">
 					<LockSimple size={22} />
