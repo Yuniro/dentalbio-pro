@@ -12,8 +12,10 @@ import LabeledInput from "../dashboard/components/LabeledInput";
 import ConfirmMessage from "../components/Modal/ConfirmMessagel";
 import { formatDateAsMMDDYYYY } from "@/utils/formatDate";
 import UpgradePlanModal from "./components/upgradePlanModal";
+import { useMessage } from "@/app/contexts/MessageContext";
 
 const AdminComponent: React.FC = () => {
+  const { setNotificationMessage } = useMessage();
   const { errorMessage, setErrorMessage } = useError();
   const { setTargetUserId } = useAdmin();
   const router = useRouter();
@@ -39,7 +41,7 @@ const AdminComponent: React.FC = () => {
   const [upgradeUser, setUpgradeUser] = useState(null);
   const [offerCode, setOfferCode] = useState("")
   const [tempOfferCode, setTempOfferCode] = useState("")
-  const [sendEmailLoading ,setSendEmailLoading] = useState(false)
+  const [sendEmailLoading, setSendEmailLoading] = useState(false)
 
   const announcementsRef = useRef(announcements);
   const offerCodeRef = useRef(offerCode)
@@ -181,6 +183,7 @@ const AdminComponent: React.FC = () => {
 
     const data = response.json();
 
+    setNotificationMessage({ message: "Saved announcements content!", type: 'success' })
     setIsAnnouncementEditorOpen(false);
     setIsSaving(false);
   }
@@ -196,6 +199,9 @@ const AdminComponent: React.FC = () => {
 
     const data = response.json();
 
+    if (!response.ok) setNotificationMessage({ message: "Internal server ERROR", type: "error" })
+
+    setNotificationMessage({ message: "Saved offer code", type: "error" })
     setIsOfferCodeOpen(false);
     setIsSaving(false)
   }
@@ -322,13 +328,13 @@ const AdminComponent: React.FC = () => {
         });
 
         if (!emailResponse.ok) {
-          console.error(`Failed to send email to ${user.email}`);
+          setNotificationMessage({ message: `Failed to send email to ${user.email}`, type: "error" })
         }
       }
 
-      alert("Emails sent successfully!"); // Notify user of success
+      setNotificationMessage({ message: 'Emails sent successfully', type: "success" })
     } catch (error) {
-      console.error("Error sending emails:", error);
+      setNotificationMessage({ message: "Error sending emails", type: "error" })
     } finally {
       setSendEmailLoading(false); // Reset loading state
     }
