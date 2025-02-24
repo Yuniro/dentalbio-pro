@@ -3,22 +3,22 @@
 import React from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import { Copy } from "phosphor-react";
+import { useMessage } from "@/app/contexts/MessageContext";
 
 interface ReferralButtonProps {
-    userId: string
+    referralLink: string
 }
 
-const ReferralButton = ({ userId }: ReferralButtonProps) => {
+const ReferralButton = ({ referralLink }: ReferralButtonProps) => {
+    const { setNotificationMessage } = useMessage();
     const APP_URL = process.env.APP_URL;
-    const referralLink = `${APP_URL}/api/invite?referral=${userId}`;
 
     const copyLink = async() => {
         try {
-            // Use the Clipboard API to copy the referral link to the clipboard
             await navigator.clipboard.writeText(referralLink);
+            setNotificationMessage({ message: "Copied Referral Link!", type: "success" });
         } catch (err) {
-            console.error("Failed to copy referral link:", err);
-            alert("Failed to copy referral link. Please try again.");
+            setNotificationMessage({ message: "Failed to copy referral link. Please try again.", type: "error" });
         }
     };
     

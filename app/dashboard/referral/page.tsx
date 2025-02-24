@@ -20,6 +20,7 @@ const Referral = async () => {
     if (!userData)
         return redirect("/dashboard");
     const referral = '40BAF2'
+    const referralLink = `${process.env.APP_URL}/api/invite?referral=${userId}`
 
     const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
@@ -35,9 +36,12 @@ const Referral = async () => {
                 </>
             }
             <div className={`${proAvailable ? "pt-20" : "opacity-40"}`}>
-                Get a free Dental.bio and one month free && trial 3 months when new user join with my link
+                Get a free Dental.bio and one month free && trial 3 months when new user join with my link:
+                <p className="py-2">
+                    {referralLink}
+                </p>
                 <div className="flex justify-end">
-                    <ReferralButton userId={userId}/>
+                    <ReferralButton referralLink={referralLink} />
                 </div>
             </div>
         </div>
