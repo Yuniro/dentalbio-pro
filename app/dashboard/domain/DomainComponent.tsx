@@ -65,6 +65,12 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
                 value: "mailhost1.example.com",
                 priority: 10,
                 ttl: 300,
+              },
+              {
+                "type": "A",
+                "host": "@",
+                "value": "76.76.21.21",
+                "ttl": 300
               }
             ],
           })
