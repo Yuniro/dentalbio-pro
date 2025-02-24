@@ -6,6 +6,7 @@ import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 // import { generateVerificationCode } from "@/utils/functions/generateVerificationCode";
 import { updateVercelRedirects } from "@/utils/vercel/updateVercelRedirects";
 import Entri, { EntriConfig } from 'entrijs';
+import { useMessage } from "@/app/contexts/MessageContext";
 
 type DomainComponentProps = {
   enabled: boolean;
@@ -13,6 +14,7 @@ type DomainComponentProps = {
 }
 
 const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId }) => {
+  const { setNotificationMessage } = useMessage();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserType>({});
   const [domain, setDomain] = useState<string>("");
@@ -93,6 +95,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     const data = await response.json();
 
     if (data.error) {
+      setNotificationMessage({ message: data.error, extraButtons: null })
       console.error(data.error);
       setIsLoading(false);
       return;
@@ -107,6 +110,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     });
 
     const saveData = await saveResponse.json();
+    setNotificationMessage({ message: "Custom domain added successfully", extraButtons: null })
 
     await addDomainToVercel(domain);
     setIsLoading(false);
@@ -129,8 +133,10 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
 
     if (data.error) {
       console.error(data.error);
+      setNotificationMessage({ message: data.error, extraButtons: null })
     } else {
       await updateVercelRedirects(userData.username!, domain);
+      setNotificationMessage({ message: "Added domain to Vercel successfully!", extraButtons: null })
       console.log("Added domain to Vercel successfully!");
     }
   }
