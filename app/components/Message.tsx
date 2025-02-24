@@ -1,25 +1,55 @@
-'use client'
-import React, { useState } from "react";
-import FullRoundedButton from "./Button/FullRoundedButton";
-import { useMessage } from "../contexts/MessageContext";
+'use client';
+import React from 'react';
+import { CheckCircle, XCircle, Info } from 'phosphor-react'; // Import the required icons
+import FullRoundedButton from './Button/FullRoundedButton';
+import { useMessage } from '../contexts/MessageContext';
 
 const Message: React.FC = () => {
   const { messageStatus, closeMessage } = useMessage();
+
+  const getIcon = (type: string) => {
+    switch (type) {
+      case 'success':
+        return <CheckCircle size={32} className="text-green-500" />;
+      case 'error':
+        return <XCircle size={32} className="text-red-500" />;
+      case 'info':
+        return <Info size={32} className="text-blue-500" />;
+      default:
+        return null;
+    }
+  };
+
+  const getMessageStyle = (type: string) => {
+    switch (type) {
+      case 'success':
+        return 'bg-green-100 border-l-4 border-green-500';
+      case 'error':
+        return 'bg-red-100 border-l-4 border-red-500';
+      case 'info':
+        return 'bg-blue-100 border-l-4 border-blue-500';
+      default:
+        return 'bg-[#F3F3F1]';
+    }
+  };
 
   return (
     <>
       {messageStatus.isOpen && (
         <div
-          className={`modal-overlay overflow-auto fixed bg-[#00000080] cursor-pointer z-10 top-0 left-0 right-0 bottom-0 flex justify-center items-center ${messageStatus.isOpen ? "animate-fade-in-short" : "animate-fade-out-short"
-            }`}
+          className={`modal-overlay overflow-auto fixed inset-0 bg-[#00000080] cursor-pointer z-10 flex justify-center items-center 
+            ${messageStatus.isOpen ? 'animate-fade-in' : 'animate-fade-out'}`}
           onMouseDown={closeMessage}
         >
           <div
-            className="w-[600px] overflow-hidden cursor-auto flex flex-col rounded-[26px] bg-[#F3F3F1] px-10 pt-8 pb-6"
+            className={`max-w-[600px] w-full rounded-[26px] p-8 flex flex-col shadow-lg ${getMessageStyle(messageStatus.type)}`}
             onMouseDown={(e) => e.stopPropagation()}
           >
-            <div className="text-xl">{messageStatus.message}</div>
-            <div className="flex justify-end mt-4 gap-2">
+            <div className="flex items-center space-x-4">
+              {getIcon(messageStatus.type)} {/* Display the appropriate icon */}
+              <div className="text-2xl font-semibold text-gray-800">{messageStatus.message}</div>
+            </div>
+            <div className="flex justify-end gap-4 mt-4">
               {messageStatus.extraButtons}
               <FullRoundedButton onClick={closeMessage} buttonType="danger">
                 Close
@@ -29,7 +59,7 @@ const Message: React.FC = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export default Message;

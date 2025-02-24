@@ -95,7 +95,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     const data = await response.json();
 
     if (data.error) {
-      setNotificationMessage({ message: data.error, extraButtons: null })
+      setNotificationMessage({ message: data.error, type: "error" })
       console.error(data.error);
       setIsLoading(false);
       return;
@@ -110,7 +110,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
     });
 
     const saveData = await saveResponse.json();
-    setNotificationMessage({ message: "Custom domain added successfully", extraButtons: null })
+    setNotificationMessage({ message: "Custom domain added successfully", type: "success" })
 
     await addDomainToVercel(domain);
     setIsLoading(false);
@@ -133,10 +133,10 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
 
     if (data.error) {
       console.error(data.error);
-      setNotificationMessage({ message: data.error, extraButtons: null })
+      setNotificationMessage({ message: data.error, type: "error" })
     } else {
       await updateVercelRedirects(userData.username!, domain);
-      setNotificationMessage({ message: "Added domain to Vercel successfully!", extraButtons: null })
+      setNotificationMessage({ message: "Added domain to Vercel successfully!", type: "success" })
       console.log("Added domain to Vercel successfully!");
     }
   }
