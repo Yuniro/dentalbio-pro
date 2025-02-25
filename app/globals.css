@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.mdl-textfield:not(.is-dirty) input::-webkit-datetime-edit {
+  color: transparent; 
+}
+
+input:focus::-webkit-datetime-edit {
+ color: rgba(255, 255, 255, .46) !important; 
+}
+
+input[type=date]:required:invalid::-webkit-datetime-edit {
+  color: transparent;
+}
+input[type=date]:focus::-webkit-datetime-edit {
+  color: black !important;
+}
+
 .blured-bg {
   background-image: linear-gradient(225deg, #7878ec, #9a59f5 51%, #ef753a 64%);
   opacity: 0.8;

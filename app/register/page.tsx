@@ -198,7 +198,7 @@ export default function Page() {
                 value={formData.birthday}
                 onChange={(value) => handleInputChange("birthday", value)}
                 type="date"
-                placeholder="Birthday"
+                placeholder="dd/mm/yyyy"
               />
               <Dropdown
                 selected={formData.position}
