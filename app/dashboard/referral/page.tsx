@@ -5,6 +5,7 @@ import { AdminServer } from "@/utils/functions/useAdminServer";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 import ReferralButton from "./ReferralButton";
+import InviteEmailForm from "./InviteEmailForm"
 
 const Referral = async () => {
     const supabase = createClient();
@@ -19,11 +20,11 @@ const Referral = async () => {
 
     if (!userData)
         return redirect("/dashboard");
-    const referral = '40BAF2'
     const referralLink = `${process.env.APP_URL}/api/invite?referral=${userId}`
 
     const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
+    
     return (
         <div className='px-10'>
             {!proAvailable &&
@@ -44,6 +45,8 @@ const Referral = async () => {
                     <ReferralButton referralLink={referralLink} />
                 </div>
             </div>
+
+            <InviteEmailForm referralLink={referralLink} username={userData.username} />
         </div>
     )
 }
