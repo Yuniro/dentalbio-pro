@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "./utils/supabaseClient"; // Adjust the path to your Supabase client
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -9,6 +9,8 @@ export default function ForgotPasswordPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [cooldown, setCooldown] = useState<number | null>(null);
+
+  const supabase = createClientComponentClient();
 
   const COOLDOWN_TIME = 60 * 1000; // 1-minute cooldown
 
