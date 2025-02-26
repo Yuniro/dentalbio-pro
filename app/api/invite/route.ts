@@ -81,7 +81,7 @@ export async function POST(request: Request) {
                                 👋 Hey there!
                                 </p>
                                 <p style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin: 20px 0;">
-                                You’ve been invited to join **Dentalbio** and start building your personal dental identity.
+                                You’ve been invited to join <b>Dentalbio</b> and start building your personal dental identity.
                                 <br /><br />
                                 Click the button below to sign up and get started!
                                 </p>
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
                 
                                 <!-- Pro Plan Feature -->
                                 <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin-top: 30px;">
-                                🎁 **Special Offer**: By signing up through this invite link, you’ll receive **1 month of Pro Plan features** absolutely free! Enjoy all the premium features and enhance your Dentalbio experience.
+                                🎁 <b>Special Offer</b>: By signing up through this invite link, you’ll receive <b>1 month of Pro Plan features</b> absolutely free! Enjoy all the premium features and enhance your Dentalbio experience.
                                 </p>
                 
                                 <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 20px 0; margin-top: 30px;">
