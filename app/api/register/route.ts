@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { Resend } from "resend";
+import Stripe from 'stripe';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2024-06-20',
+});
 
 const calculateAge = (birthday: Date) => {
     const today = new Date();
@@ -96,7 +100,7 @@ export async function POST(request: Request) {
         if (inviteUserId) {
             const { data: inviteUserData, error: inviteUserError } = await supabase
                 .from("users")
-                .select("email, trial_end, current_period_end")
+                .select("email, trial_end, current_period_end, subscription_status, subscription_id")
                 .eq("id", inviteUserId)
                 .single();
 
@@ -131,8 +135,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: error.message }, { status: 400 });
         }
 
+        // If the inviter is on a paid Pro Plan, extend their subscription end date
         if (referralUser?.email) {
-
             const now = new Date();
             const trialEndDate = new Date(referralUser.trial_end);
             const currentPeriodEndDate = new Date(referralUser.current_period_end);
@@ -152,6 +156,20 @@ export async function POST(request: Request) {
 
             if (updateInviteeError) {
                 console.error("Error updating inviter's trial end date:", updateInviteeError);
+            }
+
+            const subscriptionId = referralUser.subscription_id; // Assuming you have this field
+
+            if (subscriptionId) {
+                const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+                const updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
+                    items: [{
+                        id: subscription.items.data[0].id,
+                        quantity: 1,
+                    }],
+                    proration_behavior: 'none', // No proration for extending the subscription
+                    billing_cycle_anchor: Math.floor(updatedEndDate.getTime() / 1000) as any, // Reset the billing cycle to now
+                });
             }
 
             await resend.emails.send({
@@ -217,7 +235,7 @@ export async function POST(request: Request) {
                         
                                                     <!-- Pro Plan Feature -->
                                                     <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin-top: 30px;">
-                                                        🎁 <b>Special Offer</b>: Your referral also receives 1 month of Pro Plan features for free! You’re both getting the most out of your Dentalbio experience. 😎
+                                                        🎁 <b>Special Offer</b>: Your referral also receives 1 month of Pro Plan features for free! You're both getting the most out of your Dentalbio experience. 😎
                                                     </p>
                         
                                                     <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 20px 0; margin-top: 30px;">
