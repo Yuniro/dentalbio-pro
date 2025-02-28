@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import AdminComponent from "./AdminComponent";
+import UsersManagement from './UsersManagement';
+import OfferCodeManagement from './OfferCodeManagement';
 
 const Admin = async () => {
   const supabase = createClient();
@@ -21,7 +22,8 @@ const Admin = async () => {
 
   return (
     <>
-      <AdminComponent />
+      <UsersManagement />
+      <OfferCodeManagement />
     </>);
 };
 
