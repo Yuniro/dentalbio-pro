@@ -85,14 +85,14 @@ export async function POST(request: Request) {
         }
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/offer-code`, { method: 'GET' })
-        const serverOfferCode = await response.json()
+        const serverOfferCodes = await response.json()
 
         if (!response.ok) {
             return NextResponse.json({ error: "Can't get offerCode from the admin" }, { status: 400 })
         }
 
         const trialEndDate = (referralMonths: number) => {
-            return (calculateAge(birthday) <= 27 && position === "Student" && offerCode === serverOfferCode.value) ? addMonthsToCurrentDate(6 + referralMonths) : addMonthsToCurrentDate(3 + referralMonths)
+            return (calculateAge(birthday) <= 27 && position === "Student" && serverOfferCodes.some((offer: any) => offer.offer_code === offerCode)) ? addMonthsToCurrentDate(6 + referralMonths) : addMonthsToCurrentDate(3 + referralMonths)
         }
 
         // Check if inviteUserId exists
