@@ -64,7 +64,6 @@ export default function Page() {
       formData.lastName &&
       formData.birthday &&
       formData.position &&
-      formData.offerCode &&
       formData.country &&
       formData.email &&
       formData.password &&
