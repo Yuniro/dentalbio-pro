@@ -215,6 +215,7 @@ export default function Page() {
                 value={formData.offerCode}
                 onChange={(value) => handleInputChange("offerCode", value)}
                 placeholder="Offer Code"
+                labelBottom="If you have received an offer code from your university or colleague, please enter it here."
               />
               <CustomInput
                 value={formData.email}

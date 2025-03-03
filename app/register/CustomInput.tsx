@@ -10,6 +10,7 @@ type CustomInputProps = {
   placeholder: string;
   type?: string;
   name?: string;
+  labelBottom?: string;
 };
 
 export default function CustomInput({
@@ -18,6 +19,7 @@ export default function CustomInput({
   placeholder,
   type = "text",  // Default to text if no type provided
   name,
+  labelBottom
 }: CustomInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -58,6 +60,12 @@ export default function CustomInput({
           <span className="text-gray-500 text-sm ml-2">dd/mm/yyyy</span>
         )}
       </div>
+      {
+        labelBottom &&
+        <div className="text-dark font-medium text-sm mx-10 mt-2">
+          {labelBottom}
+        </div>
+      }
     </div>
   );
 }
