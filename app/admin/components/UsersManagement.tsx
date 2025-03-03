@@ -2,16 +2,16 @@
 'use client'
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import VerificationBadge from "../components/VerificationBadge";
+import VerificationBadge from "../..//components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
 import Link from "next/link";
 import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, PaperPlane, ArrowLeft } from "@phosphor-icons/react/dist/ssr";
-import FullRoundedButton from "../components/Button/FullRoundedButton";
-import LabeledInput from "../dashboard/components/LabeledInput";
-import ConfirmMessage from "../components/Modal/ConfirmMessagel";
+import FullRoundedButton from "../../components/Button/FullRoundedButton";
+import LabeledInput from "../../dashboard/components/LabeledInput";
+import ConfirmMessage from "../../components/Modal/ConfirmMessagel";
 import { formatDateAsMMDDYYYY } from "@/utils/formatDate";
-import UpgradePlanModal from "./components/upgradePlanModal";
+import UpgradePlanModal from "./upgradePlanModal";
 import { useMessage } from "@/app/contexts/MessageContext";
 
 const UsersManagement: React.FC = () => {

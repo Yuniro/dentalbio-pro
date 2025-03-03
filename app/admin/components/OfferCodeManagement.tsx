@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useState } from "react";
 import { PlusCircle, FileText, XCircle, PencilSimple, Trash } from "phosphor-react";
-import FullRoundedButton from "../components/Button/FullRoundedButton";
-import LabeledInput from "../dashboard/components/LabeledInput";
+import FullRoundedButton from "../../components/Button/FullRoundedButton";
+import LabeledInput from "../../dashboard/components/LabeledInput";
 
 type offer = {
     id: number;
