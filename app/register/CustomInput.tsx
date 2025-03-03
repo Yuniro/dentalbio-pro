@@ -17,7 +17,7 @@ export default function CustomInput({
   onChange,
   placeholder,
   type = "text",  // Default to text if no type provided
-  name
+  name,
 }: CustomInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -25,7 +25,7 @@ export default function CustomInput({
     if (type === "date" && inputRef.current) {
       const fp = flatpickr(inputRef.current, {
         dateFormat: "d/m/Y",
-        defaultDate: value || 'today',
+        defaultDate: value,
         onChange: (_, dateStr) => {
           onChange(dateStr)
         },
@@ -45,7 +45,7 @@ export default function CustomInput({
     <div className="relative z-50 left-1/2 top-5 transform -translate-x-1/2 max-w-xl w-full px-5 mt-5">
       <div className="max-w-xl w-full rounded-[40px] border-[0.6px] shadow-sm bg-white bg-opacity-90 backdrop-blur-lg border-neutral-300 py-4 px-3 flex items-center justify-between transition-all duration-300 ease-in-out">
         <input
-          type={type !== "date" ? type : "text"} 
+          type={type !== "date" ? type : "text"}
           name={name ? name : "text"}
           value={value}
           onChange={handleChange}

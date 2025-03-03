@@ -133,8 +133,8 @@ export default function Page() {
     if (response.ok) {
       router.push(`/register/success?username=${encodeURIComponent(usernameFromUrl || "")}`);
     } else {
-        setErrorMessage(data.error || "There was an issue with registration.");
-        setSubErrorMessage("Please try again.");
+      setErrorMessage(data.error || "There was an issue with registration.");
+      setSubErrorMessage("Please try again.");
     }
     setLoading(false);
   };
@@ -198,7 +198,7 @@ export default function Page() {
                 value={formData.birthday}
                 onChange={(value) => handleInputChange("birthday", value)}
                 type="date"
-                placeholder="dd/mm/yyyy"
+                placeholder="Date of Birth"
               />
               <Dropdown
                 selected={formData.position}
@@ -206,16 +206,16 @@ export default function Page() {
                 options={positions}
                 label="Position"
               />
-              <CustomInput
-                value={formData.offerCode}
-                onChange={(value) => handleInputChange("offerCode", value)}
-                placeholder="OfferCode (optional)"
-              />
               <Country
                 selected={formData.country}
                 onSelect={(value) => handleInputChange("country", value)}
                 options={countries}
                 label="Country"
+              />
+              <CustomInput
+                value={formData.offerCode}
+                onChange={(value) => handleInputChange("offerCode", value)}
+                placeholder="Offer Code"
               />
               <CustomInput
                 value={formData.email}
