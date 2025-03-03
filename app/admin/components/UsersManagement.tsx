@@ -1,4 +1,3 @@
-
 'use client'
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -6,7 +5,7 @@ import VerificationBadge from "../..//components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
 import Link from "next/link";
-import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, PaperPlane, ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, PaperPlane, ArrowLeft, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
 import FullRoundedButton from "../../components/Button/FullRoundedButton";
 import LabeledInput from "../../dashboard/components/LabeledInput";
 import ConfirmMessage from "../../components/Modal/ConfirmMessagel";
@@ -37,7 +36,7 @@ const UsersManagement: React.FC = () => {
   const [tempAnnouncements, setTempAnnouncements] = useState({ title: '', content: '' });
   const [isOpenUpgradePlanModal, setIsOpenUpgradePlanModal] = useState(false);
   const [upgradeUser, setUpgradeUser] = useState(null);
-  const [sendEmailLoading, setSendEmailLoading] = useState(false)
+  const [exportLoading, setExportLoading] = useState(false)
 
   const announcementsRef = useRef(announcements);
 
@@ -179,9 +178,6 @@ const UsersManagement: React.FC = () => {
       const announcementEditor = document.getElementById('announcement-editor');
       const announcementButton = document.getElementById('announcement-button');
 
-      const offerCodeEditor = document.getElementById('offerCode-editor');
-      const offerCodeButton = document.getElementById('offerCode-button');
-
       if (
         dropdown &&
         !dropdown.contains(event.target as Node) &&
@@ -241,52 +237,54 @@ const UsersManagement: React.FC = () => {
 
   const totalPages = Math.ceil(total / limit);
 
-  const handleSendEmails = async () => {
-    setSendEmailLoading(true); // Optional: Set loading state
+  const handleExportUsers = async () => {
+    setExportLoading(true);
 
     try {
-      // Fetch all registered users
       const response = await fetch('/api/user/list', {
         method: 'GET',
       });
 
-      const fetchAllUsers = await response.json()
+      const { data }: { data: Array<UserType[]> } = await response.json();
 
-      // Send email to each user
-      for (const user of fetchAllUsers.data) {
-        const emailData = {
-          email: user.email,
-          title: "This is test email", // Customize your email title
-          country: user.country,
-          position: user.position,
-          username: user.username,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          time: new Date().toLocaleString(), // Current time
-          location: "Your Location", // You can fetch or define this
-        };
+      // Convert filtered data to CSV
+      const csvContent = convertToCSV(data);
 
-        // Send email using the API
-        const emailResponse = await fetch('/api/send/all', {
-          method: 'POST',
-          body: JSON.stringify(emailData),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!emailResponse.ok) {
-          setNotificationMessage({ message: `Failed to send email to ${user.email}`, type: "error" })
-        }
-      }
-
-      setNotificationMessage({ message: 'Emails sent successfully', type: "success" })
+      // Trigger download
+      triggerCSVDownload(csvContent, 'users_export.csv');
     } catch (error) {
-      setNotificationMessage({ message: "Error sending emails", type: "error" })
+      setNotificationMessage({ message: "Error exporting users", type: "error" });
     } finally {
-      setSendEmailLoading(false); // Reset loading state
+      setExportLoading(false);
     }
   };
+
+  // Helper function to convert JSON to CSV
+  function convertToCSV<T extends Record<string, any>>(arr: T[]): string {
+    if (arr.length === 0) return '';
+  
+    // Ensure header row is an array of strings
+    const headers: string[] = Object.keys(arr[0]);
+  
+    // Convert each object to an array of values
+    const rows: string[][] = arr.map(item => headers.map(key => String(item[key])));
+  
+    // Combine headers and rows into CSV format
+    return [headers, ...rows].map(row => row.join(',')).join('\n');
+  }
+
+  // Helper function to trigger CSV download
+  function triggerCSVDownload(csvContent: string, fileName: string) {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", fileName);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   return (
     <div className="p-8 max-w-[1400px] mx-auto">
@@ -457,16 +455,16 @@ const UsersManagement: React.FC = () => {
             )}
           </div>
 
-          {/* <div className="relative flex-grow w-full sm:w-auto">
+          <div className="relative flex-grow w-full sm:w-auto">
             <FullRoundedButton
-              onClick={handleSendEmails}
+              onClick={handleExportUsers}
               className="shadow-md"
-              isLoading={sendEmailLoading}
+              isLoading={exportLoading}
             >
-              <PaperPlane size={22} className="mr-1" />
-              SendEmail
+              <DownloadSimple size={22} className="mr-1" />
+              Export Users
             </FullRoundedButton>
-          </div> */}
+          </div>
 
           {totalPages > 1 &&
             <>
