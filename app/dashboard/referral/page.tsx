@@ -14,13 +14,13 @@ const Referral = async () => {
 
     const { data: userData, error: userError } = await supabase
         .from("users")
-        .select("username, subscription_status, role")
+        .select("username, subscription_status, role, first_name")
         .eq("id", userId)
         .single();
 
     if (!userData)
         return redirect("/dashboard");
-    const referralLink = `${process.env.APP_URL}/api/invite?referral=${userId}`
+    const referralLink = `${process.env.APP_URL}/api/invite?referral=${userData.username}`
 
     const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
@@ -37,16 +37,16 @@ const Referral = async () => {
                 </>
             }
             <div className={`${proAvailable ? "pt-20" : "opacity-40"}`}>
-                Get a free Dental.bio and one month free && trial 3 months when new user join with my link:
-                <p className="py-2">
+                Enjoy a free month on your Pro plan every time someone signs up for a Pro plan using your referral link: <br/>
+                <a className="py-2 cursor-pointer">
                     {referralLink}
-                </p>
+                </a>
                 <div className="flex justify-end">
                     <ReferralButton referralLink={referralLink} />
                 </div>
             </div>
 
-            <InviteEmailForm referralLink={referralLink} username={userData.username} />
+            <InviteEmailForm referralLink={referralLink} name={userData.first_name} />
         </div>
     )
 }

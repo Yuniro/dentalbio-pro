@@ -5,12 +5,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
-    const referralId = url.searchParams.get("referral");
+    const referral_username = url.searchParams.get("referral");
     const APP_URL = process.env.APP_URL || "http://localhost:3000";
 
-    if (referralId) {
+    if (referral_username) {
         // Redirect to the register page with the referral ID
-        return NextResponse.redirect(`${APP_URL}/register?referral=${referralId}`);
+        return NextResponse.redirect(`${APP_URL}/register?referral=${referral_username}`);
     }
 
     // If no referral ID is present, you can redirect to a default page or return an error
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-    const { email, referralLink, username } = await request.json();
+    const { email, referralLink, name } = await request.json();
 
     if (!email) {
         return NextResponse.json({ error: "Email is required." }, { status: 400 });
@@ -75,29 +75,21 @@ export async function POST(request: Request) {
                             <tr>
                             <td style="padding: 0 50px;">
                                 <h1 style="font-size: 28px; font-weight: 300; color: #7646ff; line-height: 1.5; margin: 0;">
-                                You're Invited! 🎉
+                                ${name} Invited you to join Dentalbio! 🎉
                                 </h1>
                                 <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 50px 0 0 0;">
                                 👋 Hey there!
                                 </p>
                                 <p style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin: 20px 0;">
-                                You’ve been invited to join <b>Dentalbio</b> and start building your personal dental identity.
+                                ${name} has invited you to join <b>Dentalbio!</b> If you upgrade to the Pro Plan, you'll both receive one month free.
+                                Alternatively, you can start with the Free Plan.
                                 <br /><br />
                                 Click the button below to sign up and get started!
                                 </p>
                 
                                 <!-- Referral Link Button -->
                                 <p>
-                                <a href="${referralLink}" class="btn">Sign Up Now</a>
-                                </p>
-                
-                                <!-- Pro Plan Feature -->
-                                <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin-top: 30px;">
-                                🎁 <b>Special Offer</b>: By signing up through this invite link, you’ll receive <b>1 month of Pro Plan features</b> absolutely free! Enjoy all the premium features and enhance your Dentalbio experience.
-                                </p>
-                
-                                <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 20px 0; margin-top: 30px;">
-                                We can’t wait to have you onboard!
+                                    <a href="${referralLink}" class="btn">Sign Up Now</a>
                                 </p>
                             </td>
                             </tr>

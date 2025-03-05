@@ -25,7 +25,7 @@ const ReferralButton = ({ referralLink }: ReferralButtonProps) => {
     return (
         <FullRoundedButton onClick={copyLink} className="my-3 flex gap-2" type="button" buttonType="primary">
             <Copy size={24} />
-            CopyReferral Link
+            Copy Referral Link
         </FullRoundedButton>
     );
 };

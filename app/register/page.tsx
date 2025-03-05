@@ -18,7 +18,7 @@ const manrope = Manrope({ subsets: ["latin"] });
 export default function Page() {
   const searchParams = useSearchParams();
   const usernameFromUrl = searchParams.get("username");
-  const inviteUserId = searchParams.get("referral");
+  const inviteUserName = searchParams.get("referral");
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -123,7 +123,7 @@ export default function Page() {
         country: formData.country,
         title: formData.title,
         redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm`,
-        inviteUserId,
+        inviteUserName,
       }),
     });
 

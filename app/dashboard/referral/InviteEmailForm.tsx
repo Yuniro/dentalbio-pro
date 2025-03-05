@@ -8,10 +8,10 @@ import LabeledInput from '../components/LabeledInput';
 
 interface ReferralButtonProps {
     referralLink: string,
-    username: string,
+    name: string,
 }
 
-const ReferralButton = ({ referralLink, username }: ReferralButtonProps) => {
+const ReferralButton = ({ referralLink, name }: ReferralButtonProps) => {
     const { setNotificationMessage } = useMessage();
 
     const [email, setEmail] = useState("");
@@ -25,7 +25,7 @@ const ReferralButton = ({ referralLink, username }: ReferralButtonProps) => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, referralLink, username }),
+                body: JSON.stringify({ email, referralLink, name }),
             });
 
             const data = await response.json();

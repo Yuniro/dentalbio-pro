@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         country,
         title,
         redirectUrl,
-        inviteUserId,
+        inviteUserName,
     } = await request.json();
 
     // Validate input data
@@ -95,13 +95,13 @@ export async function POST(request: Request) {
             return (calculateAge(birthday) <= 27 && position === "Student" && serverOfferCodes.some((offer: any) => offer.offer_code === offerCode)) ? addMonthsToCurrentDate(6 + referralMonths) : addMonthsToCurrentDate(3 + referralMonths)
         }
 
-        // Check if inviteUserId exists
+        // Check if inviteUserName exists
         let referralUser;
-        if (inviteUserId) {
+        if (inviteUserName) {
             const { data: inviteUserData, error: inviteUserError } = await supabase
                 .from("users")
                 .select("email, trial_end, current_period_end, subscription_status, subscription_id")
-                .eq("id", inviteUserId)
+                .eq("username", inviteUserName)
                 .single();
 
             if (inviteUserError || !inviteUserData) {
@@ -152,7 +152,7 @@ export async function POST(request: Request) {
                     trial_end: isTrialEnded ? null : updatedEndDate, // Set trial_end to null if they are already past trial
                     current_period_end: isTrialEnded ? updatedEndDate : null, // Update current_period_end
                 })
-                .eq("id", inviteUserId);
+                .eq("username", inviteUserName);
 
             if (updateInviteeError) {
                 console.error("Error updating inviter's trial end date:", updateInviteeError);
