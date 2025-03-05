@@ -38,7 +38,7 @@ const Referral = async () => {
             }
             <div className={`${proAvailable ? "pt-20" : "opacity-40"}`}>
                 Enjoy a free month on your Pro plan every time someone signs up for a Pro plan using your referral link: <br/>
-                <a className="py-2 cursor-pointer">
+                <a className="py-2 cursor-pointer no-underline hover:no-underline">
                     {referralLink}
                 </a>
                 <div className="flex justify-end">

@@ -75,7 +75,7 @@ const planDetails: { [key: string]: PlanDetails } = {
       "Shop tab",
       "Blue tick verification",
       "Custom Domain Integration",
-      "White-Label Branding",
+      "No Dentalbio Logo",
       "Priority Support",
     ],
     orangeFeatures: [
@@ -85,7 +85,7 @@ const planDetails: { [key: string]: PlanDetails } = {
       "Shop tab",
       "Blue tick verification",
       "Custom Domain Integration",
-      "White-Label Branding",
+      "No Dentalbio Logo",
       "Priority Support",
     ],
     cta: "Upgrade plan",

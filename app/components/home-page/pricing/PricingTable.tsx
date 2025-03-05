@@ -81,7 +81,7 @@ export default function PricingTable() {
         "Shop tab",
         "Blue tick verification",
         "Custom Domain Integration",
-        "White-Label Branding",
+        "No Dentalbio Logo",
         "Priority Support",
       ],
       orangeFeatures: [
@@ -91,7 +91,7 @@ export default function PricingTable() {
         "Shop tab",
         "Blue tick verification",
         "Custom Domain Integration",
-        "White-Label Branding",
+        "No Dentalbio Logo",
         "Priority Support",
       ],
       cta: "Sign up",

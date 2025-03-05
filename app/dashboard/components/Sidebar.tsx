@@ -262,7 +262,7 @@ export default function Sidebar() {
                   label="Verification"
                   link="/dashboard/verification"
                   isActive={pathname === "/dashboard/verification"}
-                  enabled={premiumProAvailable}
+                  enabled={proAvailable}
                   Icon={SealCheck}
                   onClick={handleClose}
                 />
@@ -318,8 +318,8 @@ export default function Sidebar() {
         >
           <button>Upgrade now</button>
         </Link>}
-      {proAvailable &&
-        <FullRoundedButton onClick={() => setIsOpenDowngradeConfirmMessage(true)} buttonType="warning" className="w-full my-4 text-[20px]">Cancel Current Plan</FullRoundedButton>}
+      {/* {proAvailable &&
+        <FullRoundedButton onClick={() => setIsOpenDowngradeConfirmMessage(true)} buttonType="warning" className="w-full my-4 text-[20px]">Cancel Current Plan</FullRoundedButton>} */}
 
       <div className="memberpanel-profile flex items-center justify-start">
         <img
@@ -327,7 +327,7 @@ export default function Sidebar() {
           alt="Profile"
           className="img-fluid rounded-full w-16 h-16 object-cover"
         />
-        <p className="fw-bold mb-0">@{username ? username : "loading..."}</p>
+        <a className="fw-bold mb-0 text-black no-underline hover:no-underline" href={`https://dental.bio/${username}`}>@{username ? username : "loading..."}</a>
       </div>
 
       <SignOutForm />
