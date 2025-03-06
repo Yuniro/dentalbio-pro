@@ -106,7 +106,7 @@ const handleDelete = async () => {
     console.error(data.error);
   }
 
-  return redirect("/success");
+  return redirect("/");
 }
 
 // Main page component

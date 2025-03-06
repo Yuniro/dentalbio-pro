@@ -293,7 +293,7 @@ const UsersManagement: React.FC = () => {
           <h1 className="text-2xl font-bold">User Management</h1>
           <FullRoundedButton
             id="offerCode-button"
-            onClick={() => router.push('/success')}
+            onClick={() => router.push('/dashboard')}
             className="shadow-md"
           >
             <ArrowLeft size={20} className="mr-1" />

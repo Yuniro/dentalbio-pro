@@ -23,7 +23,7 @@ export default async function HomePage() {
 
   const user = await checkSession();
   if (user) {
-    return redirect('/success'); // Redirect to success page if logged in
+    return redirect('/dashboard'); // Redirect to success page if logged in
   }
 
 
