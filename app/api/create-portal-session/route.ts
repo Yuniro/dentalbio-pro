@@ -32,13 +32,13 @@ export const POST = async (request: Request) => {
 
     if (userError || !userRecord?.customer_id) {
       console.error('Customer ID not found for user:', email);
-      return NextResponse.redirect('/'); // Or show an error page
+      return NextResponse.redirect('/dashboard'); // Or show an error page
     }
 
     const customerId = userRecord.customer_id;
 
     // Create a Customer Portal session
-    const returnUrl = `${process.env.APP_URL}/`;
+    const returnUrl = `${process.env.APP_URL}/dashboard`;
 
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
@@ -52,6 +52,6 @@ export const POST = async (request: Request) => {
 
   } catch (err: any) {
     console.error('Failed to create portal session:', err.message);
-    return NextResponse.redirect('/'); // Or show an error page
+    return NextResponse.redirect('/dashboard'); // Or show an error page
   }
 };

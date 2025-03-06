@@ -282,7 +282,7 @@ export default async function ConfirmPage() {
     }
 
     // Redirect to the success page after email is successfully sent
-    return redirect("/");
+    return redirect("/dashboard");
   } catch (err) {
     console.error("Unexpected error:", err);
     return redirect("/error?message=unexpected_error");
