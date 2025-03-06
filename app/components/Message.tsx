@@ -23,11 +23,11 @@ const Message: React.FC = () => {
   const getMessageStyle = (type: string) => {
     switch (type) {
       case 'success':
-        return 'bg-green-100 border-l-4 border-green-500';
+        return 'bg-[#F3F3F1] border-l-4 border-green-500';
       case 'error':
-        return 'bg-red-100 border-l-4 border-red-500';
+        return 'bg-[#F3F3F1] border-l-4 border-red-500';
       case 'info':
-        return 'bg-blue-100 border-l-4 border-blue-500';
+        return 'bg-[#F3F3F1] border-l-4 border-blue-500';
       default:
         return 'bg-[#F3F3F1]';
     }

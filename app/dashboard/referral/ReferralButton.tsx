@@ -16,7 +16,7 @@ const ReferralButton = ({ referralLink }: ReferralButtonProps) => {
     const copyLink = async() => {
         try {
             await navigator.clipboard.writeText(referralLink);
-            setNotificationMessage({ message: "Copied Referral Link!", type: "success" });
+            setNotificationMessage({ message: "Referral link copied!", type: "success" });
         } catch (err) {
             setNotificationMessage({ message: "Failed to copy referral link. Please try again.", type: "error" });
         }

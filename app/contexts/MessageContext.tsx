@@ -5,12 +5,12 @@ interface MessageStatus {
   message: string;
   extraButtons: ReactNode | null;
   isOpen: boolean;
-  type: 'success' | 'error' | 'info';
+  type: 'success' | 'error' | 'info' | 'default';
 }
 
 interface MessageContextProps {
   messageStatus: MessageStatus;
-  setNotificationMessage: (status: { message: string; extraButtons?: ReactNode; type: 'success' | 'error' | 'info' }) => void;
+  setNotificationMessage: (status: { message: string; extraButtons?: ReactNode; type: 'success' | 'error' | 'info' | 'default' }) => void;
   closeMessage: () => void;
 }
 
@@ -21,10 +21,10 @@ export const MessageProvider: React.FC<{ children: ReactNode }> = ({ children })
     message: "",
     extraButtons: null,
     isOpen: false,
-    type: 'info',
+    type: 'default',
   });
 
-  const setNotificationMessage = ({ message, extraButtons, type }: { message: string; extraButtons?: ReactNode; type: 'success' | 'error' | 'info' }) => {
+  const setNotificationMessage = ({ message, extraButtons, type }: { message: string; extraButtons?: ReactNode; type: 'success' | 'error' | 'info' | 'default' }) => {
     setMessageStatus({
       message,
       extraButtons,
