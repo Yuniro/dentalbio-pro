@@ -2,7 +2,7 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { Manrope } from "next/font/google";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ErrorMessage from "../components/ErrorMessage";
 import { countries, positions, titles } from "@/utils/global_constants";
+import { getUserLocation } from "../../utils/functions/getUserIp"
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -45,6 +46,15 @@ export default function Page() {
     }));
   };
 
+
+  useEffect( () => {
+    const setInitialCountry = async() => {
+      const country = await getUserLocation();
+      setFormData(prev => ({...prev, country}))
+    }
+
+    setInitialCountry()
+  }, [])
   // Validate email format
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

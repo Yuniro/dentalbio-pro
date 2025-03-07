@@ -13,7 +13,7 @@ import Footer from "./components/Footer";
 import PromoBanner from "./components/PromoBanner";
 import { checkSession } from "@/utils/supabase/checkSession";
 import { redirect } from "next/navigation";
-import SendEmailConfirmation from "./success/SendEmailConfirmation";
+import { getUserLocation } from "../utils/functions/getUserIp"
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -68,8 +68,6 @@ const insertUser = async () => {
     if (insertError) {
       return redirect("/error?message=insert_failed");
     }
-  }
-  if (userRecord) {
     
     const getRemainingMonths = (trialEnd: string) => {
       const now: Date = new Date();
@@ -82,19 +80,6 @@ const insertUser = async () => {
     }
 
     const trialMonths = getRemainingMonths(trial_end)
-
-    const getUserLocation = async() => {
-      try {
-        const response = await fetch(
-          `https://ipinfo.io/json?token=${process.env.NEXT_PUBLIC_IPINFO_TOKEN}`
-        );
-        const data = await response.json();
-        return `${data.city}, ${data.region}, ${data.country}`;
-      } catch (error) {
-        console.error("Error fetching location:", error);
-        return "Unknown"; // Default to "Unknown" if location can't be fetched
-      }
-    }
 
     // Function to send the confirmation email
     const sendConfirmationEmail = async() => {
