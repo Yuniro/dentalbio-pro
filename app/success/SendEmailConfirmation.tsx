@@ -11,6 +11,7 @@ export default function SendEmailConfirmation({
   title,
   country,
   position,
+  trialMonths,
 }: {
   email: string;
   firstName: string;
@@ -21,9 +22,9 @@ export default function SendEmailConfirmation({
   title: string;
   country: string;
   position: string;
+  trialMonths: number;
 }) {
   useEffect(() => {
-    // Function to get user's location using ipinfo.io
     async function getUserLocation() {
       try {
         const response = await fetch(
@@ -63,6 +64,7 @@ export default function SendEmailConfirmation({
         position,
         time: userTime,
         location: userLocation || "Unknown",
+        trialMonths,
       };
 
       const emailResponse = await fetch("/api/send", {
@@ -73,9 +75,9 @@ export default function SendEmailConfirmation({
         },
       });
 
-      if (!emailResponse.ok) {
-        console.error("Error sending confirmation email");
-      }
+      // if (!emailResponse.ok) {
+      //   console.error("Error sending confirmation email");
+      // }
     }
 
     // Call the email sending function on mount

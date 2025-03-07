@@ -67,7 +67,7 @@ export default async function DashboardPage() {
     // After inserting the data, trigger the email confirmation process
     return (
       <>
-        <SendEmailConfirmation
+        {/* <SendEmailConfirmation
           email={email}
           firstName={first_name}
           lastName={last_name}
@@ -77,7 +77,7 @@ export default async function DashboardPage() {
           title={title}
           country={country}
           position={position}
-        />
+        /> */}
         <div className="px-3 py-3 h-screen w-full flex flex-col items-center justify-between">
           <div className="flex flex-col items-start w-full justify-center">
             <div className="w-full flex justify-end items-center px-3">

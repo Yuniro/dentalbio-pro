@@ -1,4 +1,5 @@
 import { createClient } from "contentful";
+import { createClient as supabaseClient } from "@/utils/supabase/server";
 import Navbar from "./components/Navbar";
 import Hero from "./components/home-page/Hero";
 import Section from "./components/home-page/section/Section";
@@ -12,6 +13,7 @@ import Footer from "./components/Footer";
 import PromoBanner from "./components/PromoBanner";
 import { checkSession } from "@/utils/supabase/checkSession";
 import { redirect } from "next/navigation";
+import SendEmailConfirmation from "./success/SendEmailConfirmation";
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -19,13 +21,134 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || "",
 });
 
+
+const insertUser = async () => {
+  const supabase = supabaseClient();
+
+  // Fetch the authenticated user
+  const { data: userData, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !userData?.user) {
+    redirect("/login");
+  }
+
+  const email = userData.user.email ?? "";
+  const { username, first_name, last_name, birthday, offer_code, title, country, position, trial_end, subscription_status } =
+    userData.user.user_metadata;
+
+  // Fetch the user's data including subscription status and username
+  const { data: userRecord, error: userError } = await supabase
+    .from("users")
+    .select("username, subscription_status, first_name, role")
+    .eq("email", email)
+    .single();
+
+  if (userError && userError.code !== "PGRST116") {
+    return redirect("/error");
+  }
+
+  // If no userRecord, insert the user into the database
+  if (!userRecord) {
+    const { data: user, error: insertError } = await supabase.from("users").insert({
+      username,
+      email,
+      first_name,
+      last_name,
+      birthday,
+      offer_code,
+      title,
+      trial_end,
+      subscription_status,
+      country,
+      position,
+    })
+      .select('*')
+      .single();
+
+    if (insertError) {
+      return redirect("/error?message=insert_failed");
+    }
+  }
+  if (userRecord) {
+    
+    const getRemainingMonths = (trialEnd: string) => {
+      const now: Date = new Date();
+      const trialEndDate: Date = new Date(trialEnd); // Convert string to Date object
+
+      const yearsDiff: number = trialEndDate.getFullYear() - now.getFullYear();
+      const monthsDiff: number = trialEndDate.getMonth() - now.getMonth();
+
+      return yearsDiff * 12 + monthsDiff;
+    }
+
+    const trialMonths = getRemainingMonths(trial_end)
+
+    const getUserLocation = async() => {
+      try {
+        const response = await fetch(
+          `https://ipinfo.io/json?token=${process.env.NEXT_PUBLIC_IPINFO_TOKEN}`
+        );
+        const data = await response.json();
+        return `${data.city}, ${data.region}, ${data.country}`;
+      } catch (error) {
+        console.error("Error fetching location:", error);
+        return "Unknown"; // Default to "Unknown" if location can't be fetched
+      }
+    }
+
+    // Function to send the confirmation email
+    const sendConfirmationEmail = async() => {
+      // Get user time
+      const now = new Date();
+      const userTime = now.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZoneName: "short",
+      });
+
+      // Get user location
+      const userLocation = await getUserLocation();
+
+      // Send the confirmation email with time and location
+      const emailData = {
+        email,
+        first_name,
+        username,
+        last_name,
+        birthday,
+        offer_code,
+        title,
+        country,
+        position,
+        time: userTime,
+        location: userLocation || "Unknown",
+        trialMonths,
+      };
+
+      const emailResponse = await fetch(`${process.env.APP_URL}/api/send`, {
+        method: "POST",
+        body: JSON.stringify(emailData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!emailResponse.ok) {
+        console.error("Error sending confirmation email");
+      }
+    }
+    // Call the email sending function on mount
+    await sendConfirmationEmail();
+  }
+}
+
 export default async function HomePage() {
 
   const user = await checkSession();
   if (user) {
-    return redirect('/dashboard'); // Redirect to success page if logged in
+    await insertUser();
+    return redirect('/dashboard')
   }
-
 
   const entryId = process.env.CONTENTFUL_ENTRY_ID;
 
@@ -68,12 +191,12 @@ export default async function HomePage() {
       section_title: heroEntry.fields.sectionTitle || "",
       section_text_items: heroEntry.fields.sectionTextItems
         ? // @ts-ignore
-          heroEntry.fields.sectionTextItems.map(
-            (item: string, index: number) => ({
-              id: index,
-              section_text_item: item,
-            })
-          )
+        heroEntry.fields.sectionTextItems.map(
+          (item: string, index: number) => ({
+            id: index,
+            section_text_item: item,
+          })
+        )
         : [],
     };
   }
@@ -86,12 +209,12 @@ export default async function HomePage() {
       section_title: featuresEntry.fields.sectionTitle || "",
       section_text_items: featuresEntry.fields.sectionTextItems
         ? // @ts-ignore
-          featuresEntry.fields.sectionTextItems.map(
-            (item: string, index: number) => ({
-              id: index,
-              section_text_item: item,
-            })
-          )
+        featuresEntry.fields.sectionTextItems.map(
+          (item: string, index: number) => ({
+            id: index,
+            section_text_item: item,
+          })
+        )
         : [],
     };
   }

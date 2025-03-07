@@ -25,11 +25,9 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
     <>
       <h2 className="text-lg font-semibold mb-3">Name</h2>
       <LabeledInput
-        // id="about_title"
         label="Profile Title"
         defaultValue={dentistry?.about_title || ""}
         name="about_title"
-        // placeholder="Profile Title"
         className="w-full text-base"
       />
 
