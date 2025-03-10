@@ -33,8 +33,9 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
       setDomain(data.domain);
       // setVerificationCode(data.domain_verification_code);
     }
+  
+    enabled && fetchUserDomain()
 
-    fetchUserDomain();
     const fetchToken = () => {
       fetch('https://api.goentri.com/token', {
         method: 'POST',
@@ -81,7 +82,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
           console.error('Error:', error);
         });
     }
-    fetchToken();
+    enabled && fetchToken();
   }, [])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -149,7 +150,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
         </h2>
         <p className="text-sm text-gray-500 my-2 ml-2">If you don't have any own domain, you can buy your domain simply here</p>
         <div className="flex justify-end pt-3">
-          <FullRoundedButton type="button" onClick={() => Entri.purchaseDomain(config!)}> Buy Domain </FullRoundedButton>
+          <FullRoundedButton type="button" onClick={() => Entri.purchaseDomain(config!)} disabled={!enabled}  className={!enabled ? '!bg-gray-500' : ''}> Buy Domain </FullRoundedButton>
         </div>
       </div>
 
@@ -165,6 +166,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
           name="domain"
           value={domain || ""}
           onChange={e => setDomain(e.target.value)}
+          disabled={!enabled}
         />
 
         {/* <div className="flex w-full justify-between items-center gap-2">
@@ -180,7 +182,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
         </div> */}
 
         <div className="flex justify-end pt-3">
-          <FullRoundedButton isLoading={isLoading} type="submit">Save</FullRoundedButton>
+          <FullRoundedButton isLoading={isLoading} type="submit" className={!enabled ? '!bg-gray-500' : ''} disabled={!enabled} >Save</FullRoundedButton>
         </div>
       </form>
 
