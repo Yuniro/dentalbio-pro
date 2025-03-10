@@ -149,7 +149,7 @@ const DomainComponent: React.FC<DomainComponentProps> = ({ enabled, targetUserId
         </h2>
         <p className="text-sm text-gray-500 my-2 ml-2">If you don't have any own domain, you can buy your domain simply here</p>
         <div className="flex justify-end pt-3">
-          <FullRoundedButton type="button" onClick={() => Entri.purchaseDomain(config!)}> Buy Entri Domain </FullRoundedButton>
+          <FullRoundedButton type="button" onClick={() => Entri.purchaseDomain(config!)}> Buy Domain </FullRoundedButton>
         </div>
       </div>
 
