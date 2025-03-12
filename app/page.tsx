@@ -33,7 +33,7 @@ const insertUser = async () => {
   }
 
   const email = userData.user.email ?? "";
-  const { username, first_name, last_name, birthday, offer_code, title, country, position, trial_end, subscription_status } =
+  const { username, first_name, last_name, birthday, offer_code, title, country, position, trial_end, subscription_status, inviteUserName } =
     userData.user.user_metadata;
 
   // Fetch the user's data including subscription status and username
@@ -108,6 +108,7 @@ const insertUser = async () => {
         time: userTime,
         location: userLocation || "Unknown",
         trialMonths,
+        inviteUserName
       };
 
       const emailResponse = await fetch(`${process.env.APP_URL}/api/send`, {
