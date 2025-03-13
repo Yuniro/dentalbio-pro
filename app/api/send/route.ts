@@ -11,8 +11,8 @@ interface EmailData {
     country: string;
     position: string;
     username: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     time: string;
     location: string;
     trialMonths: number;
@@ -26,8 +26,8 @@ export async function POST(req: Request) {
         country,
         position,
         username,
-        firstName,
-        lastName,
+        first_name,
+        last_name,
         time,
         location,
         trialMonths,
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
                                         Welcome to Dentalbio! 🎉
                                     </h1>
                                     <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 50px 0 0 0;">
-                                        Hello <b>${firstName} ${lastName}</b>,
+                                        Hello <b>${first_name} ${last_name}</b>,
                                     </p>
                                     <p style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin: 20px 0;">
                                         Your registration was successful! 🚀 You have secured your Dentalbio username:
@@ -227,8 +227,8 @@ export async function POST(req: Request) {
             text: `A new user has signed up on Dentalbio. 
             
             Title: ${title ? title : ""}
-            First Name: ${firstName ? firstName : ""}
-            Last Name: ${lastName ? lastName : ""}
+            First Name: ${first_name ? first_name : ""}
+            Last Name: ${last_name ? last_name : ""}
             Position: ${position ? position : ""}
             Country: ${country ? country : ""}
 

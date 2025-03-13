@@ -4,18 +4,17 @@ import { getUserLocation } from "@/utils/functions/getUserIp";
 
 export default function SendEmailConfirmation({
   email,
-  firstName,
+  first_name,
   username,
-
-  lastName,
+  last_name,
   title,
   country,
   position,
 }: {
   email: string;
-  firstName: string;
+  first_name: string;
   username: string;
-  lastName: string;
+  last_name: string;
   title: string;
   country: string;
   position: string;
@@ -37,9 +36,9 @@ export default function SendEmailConfirmation({
       // Send the confirmation email with time and location
       const emailData = {
         email,
-        firstName,
+        first_name,
         username,
-        lastName,
+        last_name,
         title,
         country,
         position,
@@ -62,7 +61,7 @@ export default function SendEmailConfirmation({
 
     // Call the email sending function on mount
     sendConfirmationEmail();
-  }, [email, firstName, username]);
+  }, [email, first_name, username]);
 
   return null; // This component does not render any UI
 }
