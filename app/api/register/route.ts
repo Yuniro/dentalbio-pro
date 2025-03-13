@@ -164,15 +164,16 @@ export async function POST(request: Request) {
 
             if (subscriptionId) {
                 const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-                console.log(subscription.items.data, 'subscription__________________-', subscriptionId)
-                // const updatedSubscription = await stripe.subscriptions.update(subscriptionId, {
-                //     items: [{
-                //         id: subscription.items.data[0].id,
-                //         quantity: 1,
-                //     }],
-                //     proration_behavior: 'none', // No proration for extending the subscription
-                //     billing_cycle_anchor: Math.floor(updatedEndDate.getTime() / 1000) as any, // Reset the billing cycle to now
-                // });
+                if (!subscription || subscription.status !== "active") {
+                    console.error("No active subscription found.");
+                    return;
+                }
+                const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
+                    proration_behavior: 'none', // No proration for extending the subscription
+                    trial_end: Math.floor(updatedEndDate.getTime() / 1000) as any, // Reset the billing cycle to now
+                });
+
+                console.log(updatedSubscription, 'updatedSubscription')
             }
         }
         return NextResponse.json({ message: "User registered successfully." }, { status: 200 });
