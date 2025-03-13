@@ -162,19 +162,19 @@ export async function POST(request: Request) {
 
             const subscriptionId = referralUser.subscription_id; // Assuming you have this field
 
-            // if (subscriptionId) {
-            //     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-            //     if (!subscription || subscription.status !== "active") {
-            //         console.error("No active subscription found.");
-            //         return;
-            //     }
-            //     const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
-            //         proration_behavior: 'none', // No proration for extending the subscription
-            //         trial_end: Math.floor(updatedEndDate.getTime() / 1000) as any, // Reset the billing cycle to now
-            //     });
+            if (subscriptionId) {
+                const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+                if (!subscription || subscription.status !== "active") {
+                    console.error("No active subscription found.");
+                    return;
+                }
+                const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
+                    proration_behavior: 'none', // No proration for extending the subscription
+                    trial_end: Math.floor(updatedEndDate.getTime() / 1000) as any, // Reset the billing cycle to now
+                });
 
-            //     console.log(updatedSubscription, 'updatedSubscription')
-            // }
+                console.log("updatedSubscription----------test", updatedSubscription, 'updatedSubscription')
+            }
         }
         return NextResponse.json({ message: "User registered successfully." }, { status: 200 });
     } catch (err) {
