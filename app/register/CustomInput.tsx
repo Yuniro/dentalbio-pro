@@ -25,9 +25,17 @@ export default function CustomInput({
 
   useEffect(() => {
     if (type === "date" && inputRef.current) {
+      const today = new Date();
+      const pastDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+
       const fp = flatpickr(inputRef.current, {
         dateFormat: "d/m/Y",
         defaultDate: value,
+        onOpen: () => {
+          if (!value) {
+            fp.setDate(pastDate, false);
+          }
+        },
         onChange: (_, dateStr) => {
           onChange(dateStr)
         },
