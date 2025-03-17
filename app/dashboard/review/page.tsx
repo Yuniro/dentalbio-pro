@@ -5,6 +5,7 @@ import ManageReviews from "./ManageReviews";
 import { AdminServer } from "@/utils/functions/useAdminServer";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
+import Link from 'next/link'
 
 const Review = async () => {
   const supabase = createClient();
@@ -28,9 +29,10 @@ const Review = async () => {
         <>
           <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
             <LockSimple size={22} />
-            Upgrade your membership to unlock this feature
+            <Link href={'/upgrade'} target="_blank" className="no-underline cursor-pointer">
+              Upgrade your membership to unlock this feature
+            </Link>
           </div>
-          <div className="absolute w-full h-full top-0 left-0 z-10" />
         </>
       }
       <div className={`${proAvailable ? "" : "opacity-40"}`}>

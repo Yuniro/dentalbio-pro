@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import AddressItem from "../components/AddressItem";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import AddLocation from "./AddLocation";
+import Link from 'next/link'
 
 type ManageLocationsProps = {
   locations: any[] | null;
@@ -57,7 +58,9 @@ const ManageLocations: React.FC<ManageLocationsProps> = ({
       <AddLocation onAddressAdd={addAddress} />
       {!proAvailable &&
         <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
-          Upgrade your membership to add multiple locations
+          <Link href={'/upgrade'} target="_blank" className="no-underline cursor-pointer">
+            Upgrade your membership to add multiple locations
+          </Link>
         </div>}
       {existingLocations?.map((location, index) => (
         <AddressItem {...location} key={location.location_id} onAddressChange={updateLocation} onDelete={deleteLocation} />
