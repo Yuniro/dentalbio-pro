@@ -6,25 +6,7 @@ import { createClient } from '@/utils/supabase/server';
 // Initialize Resend with API key from environment variable
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-interface EmailData {
-  email: string;
-  title: string;
-  country: string;
-  position: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  time: string;
-  location: string;
-}
-
 export async function GET(req: Request) {
-  // const {
-  //   email,
-  //   title,
-  //   username,
-  //   firstName,
-  // }: EmailData = await req.json();
 
   const supabase = createClient();
 
@@ -38,7 +20,7 @@ export async function GET(req: Request) {
 
     const { data: users, error } = await supabase
       .from('users')
-      .select('email, username, trial_end')
+      .select('email, username, first_name, trial_end')
       .lte('trial_end', threeDaysFromNow.toISOString());
 
     if (error) {
@@ -46,92 +28,113 @@ export async function GET(req: Request) {
       return NextResponse.json({ message: 'Error fetching users' }, { status: 500 });
     }
 
-    // for (const user of users) {
-    //   // Send HTML email to the user
-    //   const userEmail = await resend.emails.send({
-    //     from: "Dentalbio <noreply@dental.bio>",
-    //     to: [user.email],
-    //     subject: `You have secured dental.bio/${user.username}!`,
-    //     html: `
-    //     <!DOCTYPE html>
-    //     <html lang="en">
-    //       <head>
-    //         <meta charset="UTF-8" />
-    //         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    //         <title>${title}</title>
-    //       </head>
-    //       <body style="background-color: #5046db; height: 100%; margin: 0; padding: 0; width: 100%; font-family: Arial, sans-serif;">
-    //         <table width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #5046db; margin: auto; padding-left: 10px; padding-right: 10px; width: 100%;">
-    //           <tr>
-    //             <td align="center" style="padding: 20px 0; width: 100%;">
-    //               <table cellspacing="0" cellpadding="0" border="0" style="background-color: #fefefe; border-radius: 32px; max-width: 600px; width: 100%; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); margin: 0 auto; table-layout: fixed;">
-    //                 <!-- Top Row with Logo -->
-    //                 <tr>
-    //                   <td style="padding: 50px;">
-    //                     <table cellspacing="0" cellpadding="0" border="0" style="width: auto; margin-left: auto;">
-    //                       <tr>
-    //                         <td style="text-align: right;">
-    //                           <img src="https://cxqkuqtwrtgvoorxidvn.supabase.co/storage/v1/object/public/assets/logo%201.png" alt="Dentalbio Logo" width="150" style="display: block; border: 0; height: auto; line-height: 100%; outline: none;" />
-    //                         </td>
-    //                       </tr>
-    //                     </table>
-    //                   </td>
-    //                 </tr>
-    //                 <!-- Content Section -->
-    //                 <tr>
-    //                   <td style="padding: 0 50px;">
-    //                     <h1 style="font-size: 28px; font-weight: 300; color: #7646ff; line-height: 1.5; margin: 0;">
-    //                       Congratulations <br />
-    //                       <span style="font-size: 28px; font-weight: bold; color: #5046db;">
-    //                         dental.bio/<span style="color: #f1852f">${username}</span>
-    //                       </span>
-    //                       <br />
-    //                       is yours 🎉
-    //                     </h1>
-    //                     <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 50px 0 0 0;">
-    //                       👋 Hello ${firstName},
-    //                     </p>
-    //                     <p style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin: 20px 0;">
-    //                       Your Dentalbio username <span style="color: #f1852f">@${username}</span> registration has already been successful! 📣
-    //                       You can start building your Dentalbio now!
-    //                     </p>
-    //                     <p style="font-size: 16px; font-weight: 300; color: #1c1c21; line-height: 1.7; margin-top: 30px;">
-    //                       Website: <span style="font-weight: bold; color: #5046db;">dental.bio/<span style="color: #f1852f">${username}</span></span>
-    //                     </p>
-    //                     <p style="font-size: 16px; font-weight: 300; color: #1c1c21; line-height: 1.7; margin-top: -10px;">
-    //                       Username: <span style="color: #f1852f">@${username}</span>
-    //                     </p>
-    //                     <p style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 20px 0; margin-top: 30px;">
-    //                       Have a good day!
-    //                     </p>
-    //                   </td>
-    //                 </tr>
-    //                 <!-- Footer -->
-    //                 <tr>
-    //                   <td style="padding: 0 50px; text-align: left; padding-bottom: 50px;">
-    //                     <p style="font-size: 16px; color: #888888; margin-top: 30px;">
-    //                       <span style="color: #5046db; font-weight: bold; line-height: 1.7;">Dentalbio</span><br />
-    //                       <span style="color: #fd8516; line-height: 1.7; font-weight: 300;">Your dental identity, simplified.</span>
-    //                     </p>
-    //                     <p style="color: #1c1c21; opacity: 40%; font-size: 12px; margin-top: 30px; line-height: 1.7;">
-    //                       You received this email because a Dentalbio account was created with this email.
-    //                     </p>
-    //                     <p style="color: #1c1c21; opacity: 40%; font-size: 12px; margin-top: 14px; line-height: 1.7;">
-    //                       Biocloud Ltd, 113 Crawford Street, London, W1H 2JG
-    //                     </p>
-    //                   </td>
-    //                 </tr>
-    //               </table>
-    //             </td>
-    //           </tr>
-    //         </table>
-    //       </body>
-    //     </html>`,
-    //   });
-    // }
-    console.log('-------------------------------+++++++++++++++===========-----------------cron-job.org', users)
+    for (const user of users) {
+      const calculateDaysLeft = () => {
+        const trialEndDate:any = new Date(user.trial_end);
+        const currentDate:any = new Date();
 
-    return NextResponse.json({ message: 'Emails sent=cron-job.org))))))))))))))))))))' },  { status: 200 });
+        const differenceInMillis = trialEndDate - currentDate;
+        const millisecondsPerDay = 1000 * 60 * 60 * 24;
+        const daysLeft = Math.ceil(differenceInMillis / millisecondsPerDay)
+        return daysLeft;
+      }
+
+      const daysLeft = calculateDaysLeft();
+      const title = daysLeft > -1 ? `Your Free Trial is Expiring in ${daysLeft} Days: dental.bio/${user.username}!` : `⛔ Your Dentalbio Trial Has Expired – Upgrade Your Plan Today!`
+
+      // Send HTML email to the user
+      const userEmail = await resend.emails.send({
+        from: "Dentalbio <noreply@dental.bio>",
+        to: [user.email],
+        subject: `${title}`,
+        html: `
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>🚀 ${title}</title>
+        </head>
+
+        <body style="background-color: #f4f4f4; margin: 0; padding: 0; width: 100%; font-family: Arial, sans-serif;">
+          <table width="100%" cellspacing="0" cellpadding="0" border="0"
+            style="background-color: #f4f4f4; padding: 20px; width: 100%;">
+            <tr>
+              <td align="left">
+                <table cellspacing="0" cellpadding="0" border="0"
+                  style="background-color: #ffffff; border-radius: 12px; max-width: 600px; width: 100%; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); margin: 0 auto; padding: 30px;">
+                  
+                  <!-- Logo -->
+                  <tr>
+                    <td align="left">
+                      <img src="https://cxqkuqtwrtgvoorxidvn.supabase.co/storage/v1/object/public/assets/logo%201.png" alt="Dentalbio Logo" width="150" style="display: block; border: 0; margin-bottom: 20px;" />
+                    </td>
+                  </tr>
+
+                  <!-- Heading -->
+                  <tr>
+                    <td align="left">
+                      <h1 style="font-size: 24px; font-weight: bold; color: #5046db; margin: 0;">
+                        Your Free Trial is Ending Soon! ⏳
+                      </h1>
+                    </td>
+                  </tr>
+
+                  <!-- Content -->
+                  <tr>
+                    <td style="padding: 20px 0; text-align: left;">
+                      <p style="font-size: 16px; color: #333; line-height: 1.6; margin: 0;">
+                        👋 Hello <strong>${user.first_name}</strong>,
+                      </p>
+                      <p style="font-size: 16px; color: #333; line-height: 1.6; margin: 20px 0;">
+                        Your Dentalbio trial for <strong style="color: #f1852f;">dental.bio/${user.username}</strong> 
+                        ${daysLeft > -1 ? 'is ending in' : 'has expired'}
+                         <strong>${daysLeft} days</strong> ${daysLeft > -1 ? '' : ' ago'}.
+                      </p>
+                      <p style="font-size: 16px; color: #333; line-height: 1.6; margin: 20px 0;">
+                        Upgrade now to keep your profile live and unlock premium features!
+                      </p>
+
+                      <!-- Upgrade Button -->
+                      <a href="https://${process.env.APP_URL}/upgrade"
+                        style="display: inline-block; background-color: #5046db; color: #ffffff; font-size: 16px; font-weight: bold; text-decoration: none; padding: 12px 24px; border-radius: 6px; margin-top: 20px;">
+                        Upgrade Now
+                      </a>
+
+                      <p style="font-size: 14px; color: #777; margin-top: 20px;">
+                        Need help? Reply to this email or visit our
+                        <a href="https://yourdomain.com/support" style="color: #5046db; text-decoration: none;">Support Center</a>.
+                      </p>
+                    </td>
+                  </tr>
+
+                  <!-- Footer -->
+                  <tr>
+                    <td style="text-align: left; padding-top: 30px;">
+                      <p style="font-size: 14px; color: #888; margin: 0;">
+                        <strong style="color: #5046db;">Dentalbio</strong><br />
+                        <span style="color: #fd8516;">Your dental identity, simplified.</span>
+                      </p>
+                      <p style="font-size: 12px; color: #aaa; margin-top: 20px;">
+                        You received this email because you signed up for a Dentalbio account.
+                      </p>
+                      <p style="font-size: 12px; color: #aaa;">
+                        Biocloud Ltd, 113 Crawford Street, London, W1H 2JG
+                      </p>
+                    </td>
+                  </tr>
+
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>`,
+      });
+    }
+
+    return NextResponse.json({ message: 'Emails sent!' }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to send email" },
