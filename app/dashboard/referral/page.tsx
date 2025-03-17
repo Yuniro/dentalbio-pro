@@ -22,16 +22,16 @@ const Referral = async () => {
     if (!userData)
         return redirect("/dashboard");
     const referralLink = `${process.env.APP_URL}/api/invite?referral=${userData.username}`
-    const isSixMonthsOrMore = () => {
-        const createdAt = new Date(userData.created_at);
-        const trialEnd = new Date(userData.trial_end);
+    // const isSixMonthsOrMore = () => {
+    //     const createdAt = new Date(userData.created_at);
+    //     const trialEnd = new Date(userData.trial_end);
 
-        // Calculate the difference in months
-        const diffInMonths = (trialEnd.getFullYear() - createdAt.getFullYear()) * 12 +
-            (trialEnd.getMonth() - createdAt.getMonth());
+    //     // Calculate the difference in months
+    //     const diffInMonths = (trialEnd.getFullYear() - createdAt.getFullYear()) * 12 +
+    //         (trialEnd.getMonth() - createdAt.getMonth());
 
-        return userData.position === 'Student' && diffInMonths >= 6;
-    }
+    //     return userData.position === 'Student' && diffInMonths >= 6;
+    // }
 
     const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
@@ -51,11 +51,11 @@ const Referral = async () => {
             <div className={`${proAvailable ? "pt-20" : "relative opacity-40"}`}>
                 {!proAvailable &&
                     <div className="absolute w-full h-full top-0 left-0 z-10" />}
-                {isSixMonthsOrMore() &&
+                {/* {isSixMonthsOrMore() &&
                     <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
                         Congrulates! You have unlocked pro plan for 6 months!
                     </div>
-                }
+                } */}
                 Enjoy a free month on your Pro plan every time someone signs up for a Pro plan using your referral link: <br />
                 <a className="py-2 cursor-pointer no-underline hover:no-underline">
                     {referralLink}

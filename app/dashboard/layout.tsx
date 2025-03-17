@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import RightPanel from "./components/RightPanel";
 import Sidebar from "./components/Sidebar";
+import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 import "./styles.css";
 import "./globals.css";
@@ -12,11 +13,12 @@ export const metadata = {
   title: "Dashboard | Dentalbio",
 };
 
-export default function RootLayout({
+const RootLayout = async ({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}) => {
+    const { isMessageStateForStudent } = await getAuthorizedUser();
   return (
     <>
       <div className="member-panel-wrapper">
@@ -24,7 +26,7 @@ export default function RootLayout({
           <div className="row">
             {/* Sidebar */}
             <div className="col-xl-3 col-12 mb-3">
-              <Sidebar />
+              <Sidebar isMessageStateForStudent={isMessageStateForStudent} />
             </div>
             <div className="relative col-xl-6 col-12">{children}</div>
             <RightPanel />
@@ -34,3 +36,5 @@ export default function RootLayout({
     </>
   );
 }
+
+export default RootLayout

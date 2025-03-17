@@ -21,11 +21,11 @@ const Verification = async () => {
       <div className={`${premiumProAvailable ? "" : "relative opacity-40"}`}>
         {!premiumProAvailable &&
           <div className="absolute w-full h-full top-0 left-0 z-10" />}
-        {isMessageStateForStudent &&
+        {/* {isMessageStateForStudent &&
           <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
             Congrulates! You have unlocked pro plan for 6 months!
           </div>
-        }
+        } */}
         <VerifyStatus enabled={premiumProAvailable} />
       </div>
     </div>

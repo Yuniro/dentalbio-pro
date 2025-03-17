@@ -21,16 +21,16 @@ const Review = async () => {
   if (!userData)
     return redirect("/dashboard");
   
-  const isSixMonthsOrMore = () => {
-    const createdAt = new Date(userData.created_at);
-    const trialEnd = new Date(userData.trial_end);
+  // const isSixMonthsOrMore = () => {
+  //   const createdAt = new Date(userData.created_at);
+  //   const trialEnd = new Date(userData.trial_end);
 
-    // Calculate the difference in months
-    const diffInMonths = (trialEnd.getFullYear() - createdAt.getFullYear()) * 12 +
-      (trialEnd.getMonth() - createdAt.getMonth());
+  //   // Calculate the difference in months
+  //   const diffInMonths = (trialEnd.getFullYear() - createdAt.getFullYear()) * 12 +
+  //     (trialEnd.getMonth() - createdAt.getMonth());
 
-    return userData.position === 'Student' && diffInMonths >= 6;
-  }
+  //   return userData.position === 'Student' && diffInMonths >= 6;
+  // }
 
   const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
@@ -49,11 +49,11 @@ const Review = async () => {
       <div className={`${proAvailable ? "" : "relative opacity-40"}`}>
         {!proAvailable &&
           <div className="absolute w-full h-full top-0 left-0 z-10" />}
-        {isSixMonthsOrMore() &&
+        {/* {isSixMonthsOrMore() &&
           <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
             Congrulates! You have unlocked pro plan for 6 months!
           </div>
-        }
+        } */}
         <ManageReviews targetUserId={(userId === AdminServer.getTargetUserId()) && userId} enabled={proAvailable} />
       </div>
     </div>

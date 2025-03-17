@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple, LinkBreak } from "phosphor-react";
-import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video,  } from "@phosphor-icons/react/dist/ssr";
+import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video, } from "@phosphor-icons/react/dist/ssr";
 import { useAdmin } from "@/utils/functions/useAdmin";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
@@ -15,7 +15,7 @@ import SignOutForm from "./Signout";
 const COOKIE_USERNAME_KEY = "username";
 const COOKIE_DENTISTRY_ID_KEY = "dentistry_id";
 
-export default function Sidebar() {
+const Sidebar = ({isMessageStateForStudent}: {isMessageStateForStudent: boolean}) => {
   const { getTargetUserId } = useAdmin();
   const router = useRouter();
 
@@ -124,8 +124,8 @@ export default function Sidebar() {
         .from("users")
         .update({ subscription_status: "FREE" })
         .eq("id", userId);
-        setProAvailable(false);
-        setPremiumProAvailable(false);
+      setProAvailable(false);
+      setPremiumProAvailable(false);
     }
   }
 
@@ -189,6 +189,14 @@ export default function Sidebar() {
                   aria-label="Close"
                 ></button>
               </div>
+              {
+                isMessageStateForStudent &&
+                <div className="memberpanel-sidebar-detail mb-0">
+                  <p className="fw-bold memberpanel-detail-title mb-0">
+                    Congrulates! You have unlocked pro plan for 6 months!
+                  </p>
+                </div>
+              }
               <div className="navbar-nav w-100 flex-column overflow-y-auto">
                 <SidebarItem
                   label="Bio"
@@ -277,7 +285,7 @@ export default function Sidebar() {
                 <SidebarItem
                   label="Referral Link"
                   link="/dashboard/referral"
-                  isActive={pathname === "/dashboard/referral"} 
+                  isActive={pathname === "/dashboard/referral"}
                   Icon={LinkBreak}
                   onClick={handleClose}
                 />
@@ -327,9 +335,9 @@ export default function Sidebar() {
           alt="Profile"
           className="img-fluid rounded-full w-16 h-16 object-cover"
         />
-        <Link 
-          href={`https://dental.bio/${username}`} 
-          target="_blank" 
+        <Link
+          href={`https://dental.bio/${username}`}
+          target="_blank"
           className="fw-bold mb-0 text-black no-underline hover:no-underline"
         >
           @{username ? username : "loading..."}
@@ -386,3 +394,5 @@ const SidebarItem = ({
     </Link>
   );
 };
+
+export default Sidebar;
