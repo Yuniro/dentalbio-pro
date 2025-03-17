@@ -34,6 +34,7 @@ export default function Page() {
     password: "",
     confirmPassword: "",
   });
+  const [isMessageForStudent, setIsMessageForStudent] = useState<boolean>(false)
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [subErrorMessage, setSubErrorMessage] = useState<string | null>(null);
@@ -47,10 +48,10 @@ export default function Page() {
   };
 
 
-  useEffect( () => {
-    const setInitialCountry = async() => {
+  useEffect(() => {
+    const setInitialCountry = async () => {
       const country = await getUserLocation();
-      setFormData(prev => ({...prev, country}))
+      setFormData(prev => ({ ...prev, country }))
     }
 
     setInitialCountry()
@@ -148,6 +149,31 @@ export default function Page() {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const isEligible = () => {
+      // Parse the "dd/mm/YY" format correctly
+      const [day, month, year] = formData.birthday.split("/").map(Number);
+
+      const birthday = new Date(year, month - 1, day); // Month is 0-based
+      const now = new Date();
+
+      // Calculate age
+      let age = now.getFullYear() - birthday.getFullYear();
+
+      // Adjust if birthday hasn't occurred yet this year
+      const hasBirthdayPassed =
+        now.getMonth() > birthday.getMonth() ||
+        (now.getMonth() === birthday.getMonth() && now.getDate() >= birthday.getDate());
+
+      if (!hasBirthdayPassed) {
+        age -= 1;
+      }
+      return age < 27 && formData.position === "Student";
+    }
+
+    setIsMessageForStudent(isEligible())
+  }, [formData.birthday, formData.position])
+
   return (
     <>
       <div
@@ -214,6 +240,8 @@ export default function Page() {
                 onSelect={(value) => handleInputChange("position", value)}
                 options={positions}
                 label="Position"
+                isLabelBottom={isMessageForStudent}
+                labelBottom="Congratulations! You have unlock pro plan for 6 months"
               />
               <Country
                 selected={formData.country}

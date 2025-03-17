@@ -108,7 +108,7 @@
 //   );
 // }
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function ChevDown() {
   return (
@@ -153,6 +153,8 @@ type DropdownProps = {
   onSelect: (value: string) => void;
   options: string[];
   label: string;
+  isLabelBottom?: boolean;
+  labelBottom?: string;
 };
 
 export default function Dropdown({
@@ -160,8 +162,15 @@ export default function Dropdown({
   onSelect,
   options,
   label,
+  isLabelBottom,
+  labelBottom
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLabelBottomState, setIsLableBottomState] = useState(false)
+  
+  useEffect(() => {
+    setIsLableBottomState(true)
+  }, [isLabelBottom])
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -175,9 +184,8 @@ export default function Dropdown({
   return (
     <div className="relative z-50 left-1/2 top-5 transform -translate-x-1/2 max-w-xl w-full px-5 mt-5 text-2xl">
       <div
-        className={`max-w-xl w-full rounded-[40px] border-[0.6px] shadow-sm bg-white bg-opacity-90 backdrop-blur-lg border-neutral-300 py-4 px-3 flex flex-col items-center justify-between transition-all duration-300 ease-in-out ${
-          isOpen ? "h-auto" : "h-[77px]"
-        }`}
+        className={`max-w-xl w-full rounded-[40px] border-[0.6px] shadow-sm bg-white bg-opacity-90 backdrop-blur-lg border-neutral-300 py-4 px-3 flex flex-col items-center justify-between transition-all duration-300 ease-in-out ${isOpen ? "h-auto" : "h-[77px]"
+          }`}
       >
         {/* Header (Selected Option and ChevDown/ChevUp) */}
         <div
@@ -192,9 +200,8 @@ export default function Dropdown({
 
         {/* Dropdown content */}
         <div
-          className={`flex-col items-center justify-center gap-2 w-full overflow-hidden transition-all  duration-300 ease-in-out ${
-            isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-          }`}
+          className={`flex-col items-center justify-center gap-2 w-full overflow-hidden transition-all  duration-300 ease-in-out ${isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+            }`}
           style={{
             transitionProperty: "max-height, opacity",
             transitionDuration: isOpen ? "400ms" : "300ms",
@@ -213,6 +220,12 @@ export default function Dropdown({
           </div>
         </div>
       </div>
+      {
+        isLabelBottom && labelBottom &&
+        <div className="text-dark font-medium text-sm mx-10 mt-2">
+          {labelBottom}
+        </div>
+      }
     </div>
   );
 }
