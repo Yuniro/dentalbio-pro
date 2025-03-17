@@ -18,7 +18,9 @@ const Verification = async () => {
           <LockSimple size={22} />
           Upgrade your membership to unlock this feature
         </Link>}
-      <div className={`${premiumProAvailable ? "" : "opacity-40"}`}>
+      <div className={`${premiumProAvailable ? "" : "relative opacity-40"}`}>
+        {!premiumProAvailable &&
+          <div className="absolute w-full h-full top-0 left-0 z-10" />}
         <VerifyStatus enabled={premiumProAvailable} />
       </div>
     </div>

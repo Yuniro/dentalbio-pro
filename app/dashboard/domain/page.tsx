@@ -18,7 +18,11 @@ const Domain = async () => {
 					</Link>
 				</div>
 			}
-			<DomainComponent targetUserId={isAdmin ? userId : null} enabled={premiumProAvailable} />
+			<div className={`${premiumProAvailable ? "" : "relative opacity-40"}`}>
+				{!premiumProAvailable &&
+					<div className="absolute w-full h-full top-0 left-0 z-10" />}
+				<DomainComponent targetUserId={isAdmin ? userId : null} enabled={premiumProAvailable} />
+			</div>
 		</div>
 	)
 }
