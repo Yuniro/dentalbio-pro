@@ -327,7 +327,13 @@ export default function Sidebar() {
           alt="Profile"
           className="img-fluid rounded-full w-16 h-16 object-cover"
         />
-        <a className="fw-bold mb-0 text-black no-underline hover:no-underline" href={`https://dental.bio/${username}`}>@{username ? username : "loading..."}</a>
+        <Link 
+          href={`https://dental.bio/${username}`} 
+          target="_blank" 
+          className="fw-bold mb-0 text-black no-underline hover:no-underline"
+        >
+          @{username ? username : "loading..."}
+        </Link>
       </div>
 
       <SignOutForm />
