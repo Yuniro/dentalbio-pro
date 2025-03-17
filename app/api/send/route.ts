@@ -41,7 +41,7 @@ export async function POST(req: Request) {
         const userEmail = await resend.emails.send({
             from: "Dentalbio <noreply@dental.bio>",
             to: [email],
-            subject: `You have secured dental.bio/${username}!`,
+            subject: `Student Privileges Unlocked! You've received FREE PRO DentalBio for 6 months!`,
             html: `
       <!DOCTYPE html>
         <html lang="en">
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
                                 </td>
                             </tr>
                             <tr>
-                                <td style="padding: 0 50px; text-align: center;">
+                                <td style="padding: 0 50px; text-align: left;">
                                     <h1 style="font-size: 28px; font-weight: 300; color: #7646ff; line-height: 1.5; margin: 0;">
                                         Welcome to Dentalbio! 🎉
                                     </h1>

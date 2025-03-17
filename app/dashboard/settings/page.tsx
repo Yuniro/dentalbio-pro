@@ -8,6 +8,7 @@ import { titles } from "@/utils/global_constants";
 import { AdminServer } from "@/utils/functions/useAdminServer";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import DeleteBio from "./DeleteBio";
+import DownGradeBio from"./DownGradeBio";
 import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 // Fetch authenticated user details
@@ -205,6 +206,8 @@ export default async function SettingsPage() {
         <hr className="mb-10 border-neutral-400" />
 
         <ForgotPasswordForm defaultEmail={user.email} />
+
+        <DownGradeBio />
 
         <DeleteBio handleDelete={handleDelete} />
       </div>
