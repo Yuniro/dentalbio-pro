@@ -10,7 +10,7 @@ const Message: React.FC = () => {
   const getIcon = (type: string) => {
     switch (type) {
       case 'success':
-        return <CheckCircle size={32} className="text-green-500" />;
+        return <CheckCircle size={32} className="text-primary-1" />;
       case 'error':
         return <XCircle size={32} className="text-red-500" />;
       case 'info':
@@ -23,11 +23,11 @@ const Message: React.FC = () => {
   const getMessageStyle = (type: string) => {
     switch (type) {
       case 'success':
-        return 'bg-[#F3F3F1] border-l-4 border-green-500';
+        return 'bg-[#F3F3F1]';
       case 'error':
-        return 'bg-[#F3F3F1] border-l-4 border-red-500';
+        return 'bg-[#F3F3F1]';
       case 'info':
-        return 'bg-[#F3F3F1] border-l-4 border-blue-500';
+        return 'bg-[#F3F3F1]';
       default:
         return 'bg-[#F3F3F1]';
     }
