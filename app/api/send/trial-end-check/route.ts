@@ -18,7 +18,7 @@ interface EmailData {
   location: string;
 }
 
-export async function handler(req: Request) {
+export async function GET(req: Request) {
   // const {
   //   email,
   //   title,
