@@ -47,7 +47,7 @@ const ReferralButton = ({ referralLink, name }: ReferralButtonProps) => {
                 Send Invite Link
             </h2>
 
-            <div className="text-sm text-gray-500 my-1 ml-2">You can send the referral link to this email!</div>
+            <div className="text-sm text-gray-500 my-1 ml-2">You can send your personalised referral link to a friend using the field below.</div>
             <form onSubmit={handleInvite}>
                 <LabeledInput
                     label="Email"

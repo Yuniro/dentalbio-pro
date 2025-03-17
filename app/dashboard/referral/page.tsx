@@ -8,6 +8,11 @@ import ReferralButton from "./ReferralButton";
 import InviteEmailForm from "./InviteEmailForm"
 import Link from 'next/link'
 
+export const metadata = {
+    title: "Get one month free!",
+    description: 'Get one month free on your Pro Plan for each friend you refer. Your friend will also receive one month free when they sign up using your link. There’s no limit to how many friends you can refer!'
+};
+
 const Referral = async () => {
     const supabase = createClient();
 

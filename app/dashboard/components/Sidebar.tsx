@@ -283,7 +283,7 @@ const Sidebar = ({isMessageStateForStudent}: {isMessageStateForStudent: boolean}
                   onClick={handleClose}
                 />
                 <SidebarItem
-                  label="Referral Link"
+                  label="Get One Month Free"
                   link="/dashboard/referral"
                   isActive={pathname === "/dashboard/referral"}
                   Icon={LinkBreak}
