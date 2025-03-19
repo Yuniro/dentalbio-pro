@@ -33,7 +33,7 @@ export default function CustomInput({
         defaultDate: value,
         onOpen: () => {
           if (!value) {
-            fp.setDate(pastDate, false);
+            fp.setDate(pastDate, true);
           }
         },
         onChange: (_, dateStr) => {
