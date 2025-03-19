@@ -21,7 +21,8 @@ export async function GET(req: Request) {
     const { data: users, error } = await supabase
       .from('users')
       .select('email, username, first_name, trial_end')
-      .lte('trial_end', threeDaysFromNow.toISOString());
+      .gte('trial_end', new Date())
+      .lte('trial_end', threeDaysFromNow.toISOString())
 
     if (error) {
       console.error('Error fetch users:', error);
@@ -30,8 +31,8 @@ export async function GET(req: Request) {
 
     for (const user of users) {
       const calculateDaysLeft = () => {
-        const trialEndDate:any = new Date(user.trial_end);
-        const currentDate:any = new Date();
+        const trialEndDate: any = new Date(user.trial_end);
+        const currentDate: any = new Date();
 
         const differenceInMillis = trialEndDate - currentDate;
         const millisecondsPerDay = 1000 * 60 * 60 * 24;
@@ -40,7 +41,8 @@ export async function GET(req: Request) {
       }
 
       const daysLeft = calculateDaysLeft();
-      const title = daysLeft > -1 ? `Your Free Trial is Expiring in ${daysLeft} Days: dental.bio/${user.username}!` : `⛔ Your Dentalbio Trial Has Expired – Upgrade Your Plan Today!`
+
+      const title = `Your Free Trial is Expiring in ${daysLeft} Days: dental.bio/${user.username}!`
 
       // Send HTML email to the user
       const userEmail = await resend.emails.send({
@@ -89,8 +91,7 @@ export async function GET(req: Request) {
                       </p>
                       <p style="font-size: 16px; color: #333; line-height: 1.6; margin: 20px 0;">
                         Your Dentalbio trial for <strong style="color: #f1852f;">dental.bio/${user.username}</strong> 
-                        ${daysLeft > -1 ? 'is ending in' : 'has expired'}
-                         <strong>${daysLeft} days</strong> ${daysLeft > -1 ? '' : ' ago'}.
+                        is ending in <strong>${daysLeft} days</strong>.
                       </p>
                       <p style="font-size: 16px; color: #333; line-height: 1.6; margin: 20px 0;">
                         Upgrade now to keep your profile live and unlock premium features!
@@ -124,7 +125,6 @@ export async function GET(req: Request) {
                       </p>
                     </td>
                   </tr>
-
                 </table>
               </td>
             </tr>
