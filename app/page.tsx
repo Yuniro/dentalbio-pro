@@ -47,6 +47,11 @@ const insertUser = async () => {
     return redirect("/error");
   }
 
+  const convertToISO = (dateStr: string) => {
+    const [day, month, year] = dateStr.split('/');
+    return `${year}-${month}-${day}`;
+  };
+  
   // If no userRecord, insert the user into the database
   if (!userRecord) {
     const { data: user, error: insertError } = await supabase.from("users").insert({
@@ -54,7 +59,7 @@ const insertUser = async () => {
       email,
       first_name,
       last_name,
-      birthday,
+      birthday: convertToISO(birthday),
       offer_code,
       title,
       trial_end,
