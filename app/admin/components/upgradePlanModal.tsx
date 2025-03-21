@@ -53,7 +53,7 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
     setIsUploading(false);
   }
 
-  const plans = ["Free", "Pro", "Premium Pro"];
+  const plans = ["FREE", "PRO", "PREMIUM PRO"];
 
   return (
     <>
