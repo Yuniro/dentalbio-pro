@@ -23,8 +23,15 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [period_end, setPeriodEnd] = useState<Date | null>(null);
   const [planName, setPlanName] = useState<string>("PRO");
+  const [error, setError] = useState<string>('');
 
   const handleSubmit = async () => {
+    setError('');
+    if (!period_end) {
+      setError('Please select the end date!')
+      return;
+    }
+
     setIsUploading(true);
     const userId = user.id;
 
@@ -37,11 +44,12 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
 
     if (data.error) {
       console.error(data.error);
+      setError(error)
     } else {
       onSuccess(userId, planName);
+      onClose();
+      setError('')
     }
-
-    onClose();
     setIsUploading(false);
   }
 
@@ -117,9 +125,17 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
                 <CustomDatePicker
                   selectedDate={period_end}
                   onChange={setPeriodEnd}
-                  className="w-full mb-4"
+                  className="w-full mb-2 h-[50px]"
                   placeholderText="Period End Date"
+                  disabledDate={new Date()}
                 />
+
+                {
+                  error &&
+                  <div className="text-red-500 text-center text-sm">
+                    {error}
+                  </div>
+                }
 
               </div>
               <div className="flex justify-end gap-2 mt-4">

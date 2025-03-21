@@ -6,9 +6,10 @@ interface DatePickerProps {
   onChange: (date: Date | null) => void;
   className?: string;
   placeholderText?: string;
+  disabledDate?: Date;
 }
 
-const CustomDatePicker: React.FC<DatePickerProps> = ({ selectedDate, onChange, className, placeholderText }) => {
+const CustomDatePicker: React.FC<DatePickerProps> = ({ selectedDate, onChange, className, placeholderText, disabledDate }) => {
   return (
     <DatePicker
       selected={selectedDate}
@@ -21,6 +22,7 @@ const CustomDatePicker: React.FC<DatePickerProps> = ({ selectedDate, onChange, c
         "cursor-pointer hover:bg-blue-100 focus:bg-blue-200 rounded-md"
       }
       wrapperClassName="w-full"
+      minDate={disabledDate}
     />
   );
 };

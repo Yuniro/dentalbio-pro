@@ -241,9 +241,13 @@ function getValidatedSocialInput(input: string, platform: Platform): string {
 
 export default async function Profile() {
   const userId = await getUserId();
+  console.log('checkuserId', userId, 'userId')
   const dentistry = await getOrCreateDentistry(userId);
+  console.log('checkDentistry----------', dentistry)
+
   const socialLinks = await getOrCreateSocialLinks(dentistry.dentistry_id);
   const user = await getUserDetails();
+  console.log('checkUser----------', user)
 
   return (
     <div className="memberpanel-details-wrapper">
