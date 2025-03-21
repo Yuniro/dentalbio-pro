@@ -1,11 +1,12 @@
 // components/AddProductModal.tsx
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import { CaretDown } from "phosphor-react";
 import LabeledInput from "@/app/dashboard/components/LabeledInput";
 import CustomDatePicker from "@/app/components/DatePicker/DatePicker";
 import { createClient } from "@/utils/supabase/client";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
 type ModalProps = {
   isOpen: boolean;
@@ -24,6 +25,10 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
   const [period_end, setPeriodEnd] = useState<Date | null>(null);
   const [planName, setPlanName] = useState<string>("PRO");
   const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    setError('')
+  }, [isOpen])
 
   const handleSubmit = async () => {
     setError('');
@@ -48,7 +53,6 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
     } else {
       onSuccess(userId, planName);
       onClose();
-      setError('')
     }
     setIsUploading(false);
   }
@@ -102,7 +106,7 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
                 </div>
 
                 <h4 className="text-base font-semibold mb-2">Select Plan</h4>
-                <div className="relative mb-2">
+                <div className="relative mb-3">
                   <select
                     name="position"
                     className="w-full appearance-none p-2 rounded-[26px] h-[50px] py-2 text-base px-3 text-neutral-800 pr-10 outline-none cursor-pointer"
@@ -130,12 +134,23 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
                   disabledDate={new Date()}
                 />
 
-                {
-                  error &&
-                  <div className="text-red-500 text-center text-sm">
-                    {error}
+                {error && (
+                  <div className="mt-2 flex items-center justify-center gap-2 text-sm text-red-600 bg-red-100 borde rounded-full p-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 text-red-500"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M8.257 3.099c.366-.77 1.42-.77 1.786 0l6.518 13.717c.334.703-.184 1.484-.964 1.484H2.403c-.78 0-1.298-.78-.964-1.484L8.257 3.1zm.892 10.902a1.15 1.15 0 100 2.3 1.15 1.15 0 000-2.3zM9 8.75a.75.75 0 01.75.75v2.5a.75.75 0 01-1.5 0v-2.5A.75.75 0 019 8.75z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <span>{error}</span>
                   </div>
-                }
+                )}
 
               </div>
               <div className="flex justify-end gap-2 mt-4">
