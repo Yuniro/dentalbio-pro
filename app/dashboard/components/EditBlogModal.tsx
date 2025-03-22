@@ -5,7 +5,6 @@ import LabeledInput from "./LabeledInput";
 import LimitedTextArea from "./LimitedTextArea";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ImageUploader from "./ImageUploader";
-// import RichTextEditor from "@/app/components/TextEditor/RichTextEditor";
 import { convertToSlug } from "@/utils/convertToSlug";
 import dynamic from "next/dynamic";
 
@@ -170,7 +169,6 @@ const EditBlogModal: React.FC<ModalProps> = ({
                 />
               </div>
               <div className="flex justify-end gap-2 mt-4">
-                {/* <SaveButton text="Add Blog" /> */}
                 <FullRoundedButton isLoading={isUploading} type="submit">Update Blog</FullRoundedButton>
                 <FullRoundedButton type="button" buttonType="danger" onClick={onClose}>Close</FullRoundedButton>
               </div>

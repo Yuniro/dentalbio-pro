@@ -259,7 +259,7 @@ export default async function Profile() {
             label="Twitter Name"
             className="w-full text-base pl-5"
             name="twitter_link"
-            defaultValue={extractUsername(socialLinks?.twitter_link, 'twitter') || ""}
+            value={extractUsername(socialLinks?.twitter_link, 'twitter') || ""}
           >
             <TwitterLogo
               size={24}
@@ -271,7 +271,7 @@ export default async function Profile() {
             label="Instagram Name"
             className="w-full text-base pl-5"
             name="instagram_link"
-            defaultValue={extractUsername(socialLinks?.instagram_link, 'instagram') || ""}
+            value={extractUsername(socialLinks?.instagram_link, 'instagram') || ""}
           >
             <InstagramLogo
               size={24}
@@ -283,7 +283,7 @@ export default async function Profile() {
             label="Facebook Name"
             className="w-full text-base pl-5"
             name="facebook_link"
-            defaultValue={extractUsername(socialLinks?.facebook_link, 'facebook') || ""}
+            value={extractUsername(socialLinks?.facebook_link, 'facebook') || ""}
           >
             <FacebookLogo
               size={24}
@@ -295,7 +295,7 @@ export default async function Profile() {
             label="Tiktok Name"
             className="w-full text-base pl-5"
             name="tiktok_link"
-            defaultValue={extractUsername(socialLinks?.tiktok_link, 'tiktok') || ""}
+            value={extractUsername(socialLinks?.tiktok_link, 'tiktok') || ""}
           >
             <TiktokLogo
               size={24}
@@ -308,7 +308,7 @@ export default async function Profile() {
             label="Other Name"
             className="w-full text-base pl-5"
             name="other_link"
-            defaultValue={socialLinks?.other_link || ""}
+            value={socialLinks?.other_link || ""}
           >
             <LinkSimple
               size={24}

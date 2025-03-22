@@ -1,4 +1,3 @@
-// components/LabeledInput.tsx
 'use client'
 import { Info } from '@phosphor-icons/react/dist/ssr';
 import React, { InputHTMLAttributes, useEffect, useState } from 'react';
@@ -70,13 +69,10 @@ const LabeledInput: React.FC<AboutTextProps> = ({
           {label}
           {tooltip &&
             <div
-              // onMouseEnter={showTooltip}
-              // onMouseLeave={hideTooltip}
               className='flex-grow'>
               <Info
                 size={20}
               />
-              {/* {tooltipVisible && */}
               <div className={`absolute w-[400px] bottom-8 -left-5 bg-[#121822] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 ${tooltipVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}>{tooltipText}</div>
             </div>}
         </label>
