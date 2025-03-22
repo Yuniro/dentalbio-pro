@@ -7,7 +7,6 @@ import Cookies from "js-cookie";
 import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple, LinkBreak } from "phosphor-react";
 import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video, } from "@phosphor-icons/react/dist/ssr";
 import { useAdmin } from "@/utils/functions/useAdmin";
-import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import SignOutForm from "./Signout";
 
@@ -22,8 +21,6 @@ const Sidebar = ({isMessageStateForStudent}: {isMessageStateForStudent: boolean}
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [profilePicUrl, setProfilePicUrl] = useState<string | null>(null);
-  const [userSubscriptionStatus, setUserSubscriptionStatus] = useState<string | null>(null);
-  const [dentistryId, setDentistryId] = useState<string | null>(null);
   const [announcements, setAnnouncements] = useState({ title: '', content: '' });
   const [proAvailable, setProAvailable] = useState<boolean>(false);
   const [premiumProAvailable, setPremiumProAvailable] = useState<boolean>(false);
@@ -83,7 +80,6 @@ const Sidebar = ({isMessageStateForStudent}: {isMessageStateForStudent: boolean}
     // Store the username in cookies for future usage
     Cookies.set(COOKIE_USERNAME_KEY, fetchedUsername, { expires: 7 });
     setUsername(fetchedUsername);
-    setUserSubscriptionStatus(userRecord.subscription_status);
 
     if ((userRecord.subscription_status === "PRO" || userRecord.subscription_status === "PREMIUM PRO"))
       setProAvailable(true);
@@ -108,7 +104,6 @@ const Sidebar = ({isMessageStateForStudent}: {isMessageStateForStudent: boolean}
 
     // Store the `dentistry_id` in cookies for future usage
     Cookies.set(COOKIE_DENTISTRY_ID_KEY, fetchedDentistryId, { expires: 7 });
-    setDentistryId(fetchedDentistryId);
 
     // Fetch the profile picture using the `dentistry_id`
     fetchProfilePicture(fetchedDentistryId);

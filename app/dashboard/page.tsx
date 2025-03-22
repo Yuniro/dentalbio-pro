@@ -9,17 +9,9 @@ import {
   LinkSimple,
   TiktokLogo,
   TwitterLogo,
-  Phone,
-  At,
-  CalendarPlus,
-  CaretDown,
-  Certificate,
-  Subtitles,
 } from "@phosphor-icons/react/dist/ssr";
 import ProfilePictureUploader from "./ProfilePictureUploader";
-import LimitedTextArea from "./components/LimitedTextArea";
 import LabeledInput from "./components/LabeledInput";
-import { positions } from "@/utils/global_constants";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { AdminServer } from "@/utils/functions/useAdminServer";
 import { validateSocialMediaInput } from "@/utils/functions/validateSociaMediaInput";
@@ -32,6 +24,7 @@ async function getUserId() {
   try {
     return getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
   } catch (e) {
+    console.log(')))00000000000000---------------------------', e)
     redirect("/login");
   }
 }
@@ -241,24 +234,15 @@ function getValidatedSocialInput(input: string, platform: Platform): string {
 
 export default async function Profile() {
   const userId = await getUserId();
-  console.log('checkuserId', userId, 'userId')
   const dentistry = await getOrCreateDentistry(userId);
-  console.log('checkDentistry----------', dentistry)
 
   const socialLinks = await getOrCreateSocialLinks(dentistry.dentistry_id);
   const user = await getUserDetails();
-  console.log('checkUser----------', user)
 
   return (
     <div className="memberpanel-details-wrapper">
       <div id="columns">
-        {/* <h2 className="text-lg font-semibold text-[#808F99]">Profile Title</h2>
-        <h2 className="text-lg font-semibold mb-3">{dentistry?.about_title || ""}</h2> */}
-        {/* Dentistry Form */}
-
         <ProfilePictureUploader dentistryId={dentistry.dentistry_id} />
-        {/* <CustomizedImageUploader dentistryId={dentistry.dentistry_id} /> */}
-
         <form
           action={onSaveUserAndDentistryData}
           className="mb-6 mt-10"
@@ -276,7 +260,6 @@ export default async function Profile() {
             className="w-full text-base pl-5"
             name="twitter_link"
             defaultValue={extractUsername(socialLinks?.twitter_link, 'twitter') || ""}
-          // placeholder="/username"
           >
             <TwitterLogo
               size={24}
@@ -289,7 +272,6 @@ export default async function Profile() {
             className="w-full text-base pl-5"
             name="instagram_link"
             defaultValue={extractUsername(socialLinks?.instagram_link, 'instagram') || ""}
-          // placeholder="/username"
           >
             <InstagramLogo
               size={24}
@@ -302,7 +284,6 @@ export default async function Profile() {
             className="w-full text-base pl-5"
             name="facebook_link"
             defaultValue={extractUsername(socialLinks?.facebook_link, 'facebook') || ""}
-          // placeholder="/username"
           >
             <FacebookLogo
               size={24}
@@ -315,7 +296,6 @@ export default async function Profile() {
             className="w-full text-base pl-5"
             name="tiktok_link"
             defaultValue={extractUsername(socialLinks?.tiktok_link, 'tiktok') || ""}
-          // placeholder="/username"
           >
             <TiktokLogo
               size={24}
@@ -329,7 +309,6 @@ export default async function Profile() {
             className="w-full text-base pl-5"
             name="other_link"
             defaultValue={socialLinks?.other_link || ""}
-          // placeholder="Other Name"
           >
             <LinkSimple
               size={24}

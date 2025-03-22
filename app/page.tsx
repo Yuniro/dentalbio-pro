@@ -29,6 +29,7 @@ const insertUser = async () => {
   const { data: userData, error: authError } = await supabase.auth.getUser();
 
   if (authError || !userData?.user) {
+    console.log('authError', authError)
     redirect("/login");
   }
 

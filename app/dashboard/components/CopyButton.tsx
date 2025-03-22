@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { createClient } from "@/utils/supabase/client";
-import Cookies from "js-cookie";
+import { useState } from "react";
 
 const CopyButton = ({ username }: { username: string }) => {
   const [isCopied, setIsCopied] = useState(false);

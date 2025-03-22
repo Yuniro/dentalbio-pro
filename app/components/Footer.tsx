@@ -79,16 +79,6 @@ export default function Footer({}: Props) {
           <Link href="/privacy" className="hover:underline">
             Privacy Notice
           </Link>
-          {/* 
-          <Link href="/cookies" className="hover:underline">
-            Cookie Notice
-          </Link>
-          <Link href="/trust" className="hover:underline">
-            Trust Centre
-          </Link>
-          <Link href="/press" className="hover:underline">
-            Press
-          </Link> */}
           <Link
             href={"https://digimax.dental"}
             target="_blank"

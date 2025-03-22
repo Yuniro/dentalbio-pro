@@ -17,7 +17,7 @@ export const POST = async (request: Request) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.redirect('/login');
+      return NextResponse.redirect("/login");
     }
 
     // Use the user's email for lookup
