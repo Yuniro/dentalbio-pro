@@ -26,7 +26,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
       <h2 className="text-lg font-semibold mb-3">Name</h2>
       <LabeledInput
         label="Profile Title"
-        value={dentistry?.about_title || ""}
+        defaultValue={dentistry?.about_title || ""}
         name="about_title"
         className="w-full text-base"
       />
@@ -64,7 +64,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
 
       <LabeledInput
         label="Location Title"
-        value={locationTitle}
+        defaultValue={locationTitle}
         name="location_title"
         onChange={(e) => setLocationTitle(e.target.value)}
         className="w-full text-base pl-5">
@@ -76,7 +76,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
 
       <LabeledInput
         label="GDC / Professional Body Reg No. (optional)"
-        value={user?.gdc_no || ""}
+        defaultValue={user?.gdc_no || ""}
         name="gdc_no"
         className="w-full text-base pl-5">
         <Subtitles
@@ -87,7 +87,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
 
       <LabeledInput
         label="Qualification (optional)"
-        value={user?.qualification || ""}
+        defaultValue={user?.qualification || ""}
         name="qualification"
         className="w-full text-base pl-5">
         <Certificate
@@ -98,7 +98,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
 
       <LabeledInput
         label="Contact Phone (optional)"
-        value={dentistry?.phone || ""}
+        defaultValue={dentistry?.phone || ""}
         name="phone"
         className="w-full text-base pl-5">
         <Phone
@@ -109,7 +109,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
 
       <LabeledInput
         label="Contact Email (optional)"
-        value={dentistry?.contact_email || ""}
+        defaultValue={dentistry?.contact_email || ""}
         name="contact_email"
         type="email"
         className="w-full text-base pl-5">
@@ -124,7 +124,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
           label="Booking Link (optional)"
           className="w-full flex-grow text-base pl-5"
           name="booking_link"
-          value={dentistry?.booking_link || ""}
+          defaultValue={dentistry?.booking_link || ""}
         >
           <CalendarPlus
             size={24}

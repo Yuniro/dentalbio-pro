@@ -74,28 +74,28 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
                 <div>
                   <LabeledInput
                     label="First Name"
-                    value={user.first_name}
+                    defaultValue={user.first_name}
                     name="first_name"
                     className="w-full text-base"
                     readOnly
                   />
                   <LabeledInput
                     label="Last Name"
-                    value={user.last_name}
+                    defaultValue={user.last_name}
                     name="last_name"
                     className="w-full text-base"
                     readOnly
                   />
                   <LabeledInput
                     label="Email"
-                    value={user.email}
+                    defaultValue={user.email}
                     name="email"
                     className="w-full text-base"
                     readOnly
                   />
                   <LabeledInput
                     label="Current Plan"
-                    value={user.subscription_status || "Free"}
+                    defaultValue={user.subscription_status || "Free"}
                     name="subscription_status"
                     className="w-full text-base"
                     readOnly

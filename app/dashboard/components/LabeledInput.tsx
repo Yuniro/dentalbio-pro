@@ -22,76 +22,72 @@ const LabeledInput: React.FC<AboutTextProps> = ({
   className,
   children,
   onChange,
+  value: controlledValue,
+  defaultValue,
   ...props
 }) => {
-  const [value, setValue] = useState<string>(props.value ? props.value as string : props?.defaultValue as string || "");
+  const [value, setValue] = useState<string>(controlledValue as string ?? "");
+
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
 
   useEffect(() => {
-    if (props.value)
-      setValue(props.value as string);
-  }, [props])
+    if (controlledValue !== undefined) {
+      setValue(controlledValue as string);
+    }
+  }, [controlledValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-    if (onChange)
-      onChange(e);
-  }
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    if (value === '') {
-      setIsFocused(false);
+    if (controlledValue === undefined) {
+      setValue(e.target.value);
     }
+    onChange?.(e);
   };
 
-  const showTooltip = () => {
-    setTooltipVisible(true);
-  }
-
-  const hideTooltip = () => {
-    setTooltipVisible(false);
-  }
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => !value && setIsFocused(false);
+  const showTooltip = () => setTooltipVisible(true);
+  const hideTooltip = () => setTooltipVisible(false);
 
   return (
     <div className="mb-3 relative flex-grow">
-      <div className='rounded-[26px] bg-white pt-[20px] pb-2 px-4 h-[50px]'>
+      <div className="rounded-[26px] bg-white pt-[20px] pb-2 px-4 h-[50px]">
         <label
           onMouseEnter={showTooltip}
           onMouseLeave={hideTooltip}
           htmlFor={name}
-          className={`absolute flex items-center gap-1 top-[12px] text-gray-500 transition-all duration-100 ease-linear transform cursor-pointer ${isFocused || value ? '-translate-y-[7px] text-xs' : 'scale-100'} ${children ? "pl-5" : ""}`}
+          className={`absolute flex items-center gap-1 top-[12px] text-gray-500 transition-all duration-100 ease-linear transform cursor-pointer ${isFocused || defaultValue || value ? '-translate-y-[7px] text-xs' : 'scale-100'
+            } ${children ? 'pl-5' : ''}`}
         >
           {label}
-          {tooltip &&
-            <div
-              className='flex-grow'>
-              <Info
-                size={20}
-              />
-              <div className={`absolute w-[400px] bottom-8 -left-5 bg-[#121822] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 ${tooltipVisible ? "opacity-100 visible" : "opacity-0 invisible"}`}>{tooltipText}</div>
-            </div>}
+          {tooltip && (
+            <div className="flex-grow">
+              <Info size={20} />
+              <div
+                className={`absolute w-[400px] bottom-8 -left-5 bg-[#121822] text-white p-2 z-50 text-sm rounded-lg transition-opacity duration-300 ${tooltipVisible ? 'opacity-100 visible' : 'opacity-0 invisible'
+                  }`}
+              >
+                {tooltipText}
+              </div>
+            </div>
+          )}
         </label>
-
         {children}
         <input
           className={`w-full placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal ${className}`}
-          placeholder={isFocused || value ? placeholder : ''}
+          placeholder={isFocused || value || defaultValue ? placeholder : ''}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
           id={name}
           name={name}
-          value={value || ""}
+          value={controlledValue !== undefined ? value : undefined}
+          defaultValue={controlledValue === undefined ? defaultValue : undefined}
           {...props}
         />
       </div>
     </div>
   );
-}
+};
 
 export default LabeledInput;
