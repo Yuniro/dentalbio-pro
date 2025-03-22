@@ -136,11 +136,11 @@ const UsersManagement: React.FC = () => {
     setIsFilterOpen(false);
   };
 
-  const handleUpdateUser = (id: string, subscription_status: string) => {
+  const handleUpdateUser = (id: string, subscription_status: string, current_period_end: Date) => {
     setData((prev: any) => {
       const updatedData = prev.map((user: any) => {
         if (user.id === id) {
-          return { ...user, subscription_status };
+          return { ...user, subscription_status, current_period_end };
         }
         return user;
       });

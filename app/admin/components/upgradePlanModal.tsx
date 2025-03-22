@@ -1,17 +1,13 @@
-// components/AddProductModal.tsx
-
 import { useState, useEffect } from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import { CaretDown } from "phosphor-react";
 import LabeledInput from "@/app/dashboard/components/LabeledInput";
 import CustomDatePicker from "@/app/components/DatePicker/DatePicker";
-import { createClient } from "@/utils/supabase/client";
-import ErrorMessage from "@/app/components/ErrorMessage";
 
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (id: string, subscription_status: string) => void;
+  onSuccess: (id: string, subscription_status: string, current_period_end: Date) => void;
   user: any;
 }
 
@@ -28,6 +24,7 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
 
   useEffect(() => {
     setError('')
+    setPeriodEnd(null)
   }, [isOpen])
 
   const handleSubmit = async () => {
@@ -51,7 +48,7 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
       console.error(data.error);
       setError(error)
     } else {
-      onSuccess(userId, planName);
+      onSuccess(userId, planName, period_end);
       onClose();
     }
     setIsUploading(false);
