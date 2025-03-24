@@ -102,13 +102,13 @@ const ShareModal: React.FC<ShareModalProps> = ({ username }) => {
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 {/* Modal header (Desktop - md and above) */}
-                <div className="block modal-header border-0 custom-modal-header py-4 mx-6">
-                  <h5 className="offcanvas-title w-100 text-center fw-medium">
+                <div className="py-4 px-6 mx-6 flex justify-center items-center">
+                  <h5 className="text-center font-medium flex-1">
                     @{username}
                   </h5>
                   <button
                     type="button"
-                    className="btn-close"
+                    className="btn-close text-xs"
                     onClick={closeModal}
                   ></button>
                 </div>
