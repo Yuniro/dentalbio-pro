@@ -186,8 +186,8 @@ const Sidebar = ({isMessageStateForStudent}: {isMessageStateForStudent: boolean}
               </div>
               {
                 isMessageStateForStudent &&
-                <div className="memberpanel-sidebar-detail mb-0">
-                  <p className="fw-bold memberpanel-detail-title mb-0">
+                <div className="bg-[#e8edf2] rounded-[20px] px-8 py-5">
+                  <p className="font-bold">
                     Congrulates! You have unlocked pro plan for 6 months!
                   </p>
                 </div>
@@ -306,13 +306,12 @@ const Sidebar = ({isMessageStateForStudent}: {isMessageStateForStudent: boolean}
       )}
 
       {announcements.title &&
-        <div className="memberpanel-sidebar-detail">
-          <p className="fw-bold memberpanel-detail-title">
+        <div className="bg-[#e8edf2] rounded-[20px] px-8 py-5 mb-6">
+          <p className="font-bold mb-4">
             {announcements.title}
           </p>
           <p className="mb-0">{announcements.content}</p>
         </div>}
-
       {!premiumProAvailable &&
         <Link
           href={"/upgrade"}

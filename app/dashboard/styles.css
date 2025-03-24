@@ -1194,10 +1194,10 @@ input:focus {
     height: 100%;
 }
 
-.member-panel-wrapper {
+/* .member-panel-wrapper {
     padding: 40px 0;
     background-color: #f3f3f1;
-}
+} */
 
 .memberpanel-details-wrapper {
     padding: 0 43px 0 43px;
@@ -1416,9 +1416,9 @@ iframe::-webkit-scrollbar-thumb {
     margin-bottom: 23px;
 }
 
-.memberpanel-detail-title {
+/* .memberpanel-detail-title {
     padding-bottom: 3px;
-}
+} */
 
 .add-btn.upgrade-now-btn button {
     margin-bottom: 23px;

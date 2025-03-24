@@ -7,14 +7,14 @@
    
 }
 
-@media(max-width:1199px){
+/* @media(max-width:1199px){
     .memberpanel-details-wrapper {
         padding: 0;
     }
     .container.member-container{
         max-width: 768px;
     }
-}
+} */
 
 @media (max-width: 1024px) {
     .success-wrapper h2 {

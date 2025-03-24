@@ -21,7 +21,7 @@ export default function SignOutForm() {
     <FullRoundedButton
       onClick={handleSignOut}
       buttonType="danger"
-      className="w-full my-4"
+      className="w-full my-6"
     >
       Sign Out
       <SignOut size={22} weight="bold" className="ml-2" />
