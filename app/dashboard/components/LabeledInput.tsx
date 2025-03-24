@@ -57,7 +57,7 @@ const LabeledInput: React.FC<AboutTextProps> = ({
           onMouseLeave={hideTooltip}
           htmlFor={name}
           className={`absolute flex items-center gap-1 top-[12px] text-gray-500 transition-all duration-100 ease-linear transform cursor-pointer ${isFocused || defaultValue || value ? '-translate-y-[7px] text-xs' : 'scale-100'
-            } ${children ? 'pl-5' : ''}`}
+            } ${children ? 'pl-7' : ''}`}
         >
           {label}
           {tooltip && (

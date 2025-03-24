@@ -257,7 +257,7 @@ export default async function Profile() {
 
           <LabeledInput
             label="Twitter Name"
-            className="w-full text-base pl-5"
+            className="w-full text-base pl-7"
             name="twitter_link"
             defaultValue={extractUsername(socialLinks?.twitter_link, 'twitter') || ""}
           >
@@ -269,7 +269,7 @@ export default async function Profile() {
 
           <LabeledInput
             label="Instagram Name"
-            className="w-full text-base pl-5"
+            className="w-full text-base pl-7"
             name="instagram_link"
             defaultValue={extractUsername(socialLinks?.instagram_link, 'instagram') || ""}
           >
@@ -281,7 +281,7 @@ export default async function Profile() {
 
           <LabeledInput
             label="Facebook Name"
-            className="w-full text-base pl-5"
+            className="w-full text-base pl-7"
             name="facebook_link"
             defaultValue={extractUsername(socialLinks?.facebook_link, 'facebook') || ""}
           >
@@ -293,7 +293,7 @@ export default async function Profile() {
 
           <LabeledInput
             label="Tiktok Name"
-            className="w-full text-base pl-5"
+            className="w-full text-base pl-7"
             name="tiktok_link"
             defaultValue={extractUsername(socialLinks?.tiktok_link, 'tiktok') || ""}
           >
@@ -306,7 +306,7 @@ export default async function Profile() {
 
           <LabeledInput
             label="Other Name"
-            className="w-full text-base pl-5"
+            className="w-full text-base pl-7"
             name="other_link"
             defaultValue={socialLinks?.other_link || ""}
           >

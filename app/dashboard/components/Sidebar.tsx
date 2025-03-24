@@ -297,7 +297,7 @@ interface SidebarItemsProps {
 
 const SidebarItems = ({ setIsOpen, proAvailable, premiumProAvailable }: SidebarItemsProps) => {
   const sidebarItems = [
-    { label: "Bio", link: "/dashboard/", enabled: true, Icon: House, },
+    { label: "Bio", link: "/dashboard", enabled: true, Icon: House, },
     { label: "Locations", link: "/dashboard/location", enabled: true, Icon: MapPin, },
     { label: "Treatments / Services", link: "/dashboard/treatments", enabled: true, Icon: Heart, },
     { label: "Links", link: "/dashboard/links", enabled: true, Icon: LinkSimple, },

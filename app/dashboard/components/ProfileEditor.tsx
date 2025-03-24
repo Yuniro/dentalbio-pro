@@ -67,7 +67,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
         defaultValue={locationTitle}
         name="location_title"
         onChange={(e) => setLocationTitle(e.target.value)}
-        className="w-full text-base pl-5">
+        className="w-full text-base pl-7">
         <Subtitles
           size={24}
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
@@ -78,7 +78,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
         label="GDC / Professional Body Reg No. (optional)"
         defaultValue={user?.gdc_no || ""}
         name="gdc_no"
-        className="w-full text-base pl-5">
+        className="w-full text-base pl-7">
         <Subtitles
           size={24}
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
@@ -89,7 +89,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
         label="Qualification (optional)"
         defaultValue={user?.qualification || ""}
         name="qualification"
-        className="w-full text-base pl-5">
+        className="w-full text-base pl-7">
         <Certificate
           size={24}
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
@@ -100,7 +100,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
         label="Contact Phone (optional)"
         defaultValue={dentistry?.phone || ""}
         name="phone"
-        className="w-full text-base pl-5">
+        className="w-full text-base pl-7">
         <Phone
           size={24}
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
@@ -112,7 +112,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
         defaultValue={dentistry?.contact_email || ""}
         name="contact_email"
         type="email"
-        className="w-full text-base pl-5">
+        className="w-full text-base pl-7">
         <At
           size={24}
           className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
@@ -122,7 +122,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
       <div className="w-full flex justify-between items-center gap-3">
         <LabeledInput
           label="Booking Link (optional)"
-          className="w-full flex-grow text-base pl-5"
+          className="w-full flex-grow text-base pl-7"
           name="booking_link"
           defaultValue={dentistry?.booking_link || ""}
         >
@@ -131,17 +131,10 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
           />
         </LabeledInput>
-
-        <div className="form-check form-switch custom-form-check mb-3">
-          <input
-            className="form-check-input cursor-pointer"
-            type="checkbox"
-            role="switch"
-            id="booking_link_enabled"
-            name="booking_link_enabled"
-            // checked={dentistry.booking_link_enabled}
-            defaultChecked={dentistry.booking_link_enabled}
-          />
+        <div className="relative inline-block w-11 h-5">
+          <input defaultChecked={dentistry.booking_link_enabled} id="switch-component-blue" type="checkbox" className="peer appearance-none w-8 h-5 bg-white rounded-full checked:bg-[#7d71e5] cursor-pointer transition-colors duration-300" />
+          <label htmlFor="switch-component-blue" className="absolute top-0 left-0 w-[14px] h-[14px] mt-[3px] bg-[#BFBFBF] rounded-full shadow-sm transition-transform duration-300 peer-checked:translate-x-4 peer-checked:border-grey-500 cursor-pointer">
+          </label>
         </div>
       </div>
 
