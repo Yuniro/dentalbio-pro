@@ -37,10 +37,10 @@ const RootLayout = async ({
       <div className="flex flex-1 container mx-auto px-4">
         <div className="flex flex-col xxl:flex-row w-full items-center xxl:items-start">
           {/* Sidebar */}
-          <div className="w-full md:w-[768px] xxl:w-1/4 mb-3">
+          <div className="w-full md:w-[768px] xxl:w-1/4 mb-3 px-3">
             <Sidebar isMessageStateForStudent={isMessageStateForStudent} />
           </div>
-          <div className="relative w-full md:w-[768px] xxl:w-1/2">{children}</div>
+          <div className="relative w-full md:w-[768px] xxl:w-1/2 px-3">{children}</div>
           <RightPanel />
         </div>
       </div>

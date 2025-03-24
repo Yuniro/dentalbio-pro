@@ -1409,12 +1409,12 @@ iframe::-webkit-scrollbar-thumb {
     padding: 21px 16px 25px 16px;
 }
 
-.memberpanel-sidebar-detail {
+/* .memberpanel-sidebar-detail {
     background-color: #e8edf2;
     border-radius: 20px;
     padding: 21px 31px 25px 30px;
     margin-bottom: 23px;
-}
+} */
 
 /* .memberpanel-detail-title {
     padding-bottom: 3px;
