@@ -1,51 +1,8 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-// function Hamburger() {
-//   return (
-//     <svg
-//       xmlns="http://www.w3.org/2000/svg"
-//       fill="none"
-//       viewBox="0 0 24 24"
-//       strokeWidth={1.5}
-//       stroke="currentColor"
-//       className="size-6"
-//     >
-//       <path
-//         strokeLinecap="round"
-//         strokeLinejoin="round"
-//         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-//       />
-//     </svg>
-//   );
-// }
-// function CloseIcon() {
-//   return (
-//     <svg
-//       xmlns="http://www.w3.org/2000/svg"
-//       fill="none"
-//       viewBox="0 0 24 24"
-//       strokeWidth={1.5}
-//       stroke="currentColor"
-//       className="size-6"
-//     >
-//       <path
-//         strokeLinecap="round"
-//         strokeLinejoin="round"
-//         d="M6 18 18 6M6 6l12 12"
-//       />
-//     </svg>
-//   );
-// }
-
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  // const toggleMenu = () => {
-  //   setIsOpen(!isOpen);
-  // };
 
   return (
     <nav className="fixed z-[999999999] left-1/2 top-4 transform -translate-x-1/2 md:max-w-[600px] max-w-lg w-full px-5">

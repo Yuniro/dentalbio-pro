@@ -11,7 +11,7 @@ body {
     font-family: "Inter", sans-serif;
     /* font-family: "Manrope", sans-serif; */
     color: #000000 !important;
-    background-color: var(--bg-gray-color);
+    background-color: white;
 }
 
 :root {
