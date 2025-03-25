@@ -3,6 +3,7 @@ import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import { ArrowSquareOut, CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import React, { useEffect, useReducer, useState } from "react"
+import Switcher from "@/app/components/Switcher"
 
 type BlogCardProps = {
   username: string;
@@ -83,18 +84,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
           >
             <ArrowSquareOut size={20} />
           </Link>
-
-          <div className="form-check form-switch custom-form-check">
-            <input
-              className="form-check-input cursor-pointer"
-              type="checkbox"
-              role="switch"
-              // id={`flexSwitchCheckChecked-${link.link_id}`}
-              checked={isActive}
-              onChange={toggleIsActive}
-              disabled={!proAvailable}
-            />
-          </div>
+          <Switcher isChecked={isActive} onToggle={toggleIsActive} disabled={!proAvailable} />
         </div>
       </div>
 
