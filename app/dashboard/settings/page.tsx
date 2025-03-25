@@ -118,16 +118,16 @@ export default async function SettingsPage() {
     <div className="memberpanel-details-wrapper">
       <div id="columns">
         <div className="text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">These details are private, and will not be visible on your Dentalbio.</div>
-        <h2 className="text-lg font-semibold text-dark">Settings</h2>
+        <h2 className="text-lg font-semibold text-dark mb-3">Settings</h2>
 
         {/* Form to update user details */}
         <form action={updateUserDetails} className="mb-10 ml-2">
           <div className="mb-3 relative">
-            <h2 className="text-base text-dark">Title</h2>
+            <h6 className="mb-2 text-dark">Title</h6>
             <div className="relative">
               <select
                 name="title"
-                className="w-full appearance-none p-2 rounded-[26px] py-2 text-base px-3 text-neutral-800 pr-10"
+                className="w-full appearance-none rounded-[26px] py-2 text-base px-3 text-neutral-800 pr-10"
                 defaultValue={user?.title || ""}
               >
                 {titles.map((title) => (
@@ -146,10 +146,10 @@ export default async function SettingsPage() {
 
           {/* First Name */}
           <div className="mb-3">
-            <h2 className="text-base text-dark">First Name</h2>
+            <h6 className="mb-2 text-dark">First Name</h6>
             <input
               name="first_name"
-              className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
+              className="w-full rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
               defaultValue={user?.first_name || ""}
               placeholder="First Name"
             />
@@ -157,10 +157,10 @@ export default async function SettingsPage() {
 
           {/* Middle Name */}
           <div className="mb-3">
-            <h2 className="text-base text-dark">Middle Name (optional)</h2>
+            <h6 className="mb-2 text-dark">Middle Name (optional)</h6>
             <input
               name="middle_name"
-              className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
+              className="w-full rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
               defaultValue={user.middle_name || ""}
               placeholder="Middle Name (optional)"
             />
@@ -168,30 +168,30 @@ export default async function SettingsPage() {
 
           {/* Last Name */}
           <div className="mb-3">
-            <h2 className="text-base text-dark">Last Name</h2>
+            <h6 className="mb-2 text-dark">Last Name</h6>
             <input
               name="last_name"
-              className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
+              className="w-full rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
               defaultValue={user?.last_name || ""}
               placeholder="Last Name"
             />
           </div>
 
           <div className="mb-3">
-            <h2 className="text-base text-dark">Birthday</h2>
+            <h6 className="mb-2 text-dark">Birthday</h6>
             <input
               name="birthday"
-              className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
+              className="w-full rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
               defaultValue={user?.birthday || ""}
               type="date"
             />
           </div>
 
           <div className="mb-3">
-            <h2 className="text-base text-dark">Offer Code</h2>
+            <h6 className="mb-2 text-dark">Offer Code</h6>
             <input
               name="offer_code"
-              className="w-full p-2 rounded-[26px] py-2 text-base px-3 placeholder:text-neutral-500 text-neutral-800"
+              className="w-full rounded-[26px] text-base py-2 px-3 placeholder:text-neutral-500 text-neutral-800"
               defaultValue={user?.offer_code || ""}
               placeholder="Offer Code"
             />
