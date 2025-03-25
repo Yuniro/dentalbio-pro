@@ -5,6 +5,7 @@ import { formatCurrency } from "@/utils/functions/formatCurrency";
 import { ArrowSquareOut, CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 import React, { useEffect, useReducer, useState } from "react"
+import Switcher from "@/app/components/Switcher"
 
 type ProductCardProps = ProductType & {
   onUpdate: (product: ProductType, image: null) => void;
@@ -39,7 +40,7 @@ const InvidualProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <>
-      <div className="w-full px-6 py-3 shadow rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
+      <div className="w-full px-6 py-3 shadow-lg rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
         {/* Caret Buttons */}
         <div className="cursor-pointer">
           <div><CaretUp /></div>
@@ -80,18 +81,7 @@ const InvidualProductCard: React.FC<ProductCardProps> = ({
             <button className="enabled:hover:text-red-700" onClick={() => setIsOpenConfirmMessage(true)} disabled={!proAvailable}>
               <Trash size={20} />
             </button>
-
-            <div className="form-check form-switch custom-form-check">
-              <input
-                className="form-check-input cursor-pointer w-8"
-                type="checkbox"
-                role="switch"
-                // id={`flexSwitchCheckChecked-${link.link_id}`}
-                checked={isActive}
-                onChange={toggleIsActive}
-                disabled={!proAvailable}
-              />
-            </div>
+            <Switcher isChecked={isActive} onToggle={toggleIsActive} disabled={!proAvailable} />
           </div>
         </div>
       </div>
