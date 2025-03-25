@@ -2,6 +2,7 @@
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import { CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
 import React, { useEffect, useReducer, useState } from "react"
+import Switcher from '@/app/components/Switcher'
 
 type ReviewCardProps = {
   id?: string;
@@ -44,7 +45,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
 
   return (
     <>
-      <div className="w-full p-6 shadow rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
+      <div className="w-full p-6 shadow-lg rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
         {/* Caret Buttons */}
         <div className="cursor-pointer">
           <div><CaretUp /></div>
@@ -70,18 +71,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
           <button onClick={() => setIsOpenConfirmMessage(true)} className="enabled:hover:text-red-700" disabled={!proAvailable}>
             <Trash size={20} />
           </button>
-
-          <div className="form-check form-switch custom-form-check">
-            <input
-              className="form-check-input cursor-pointer"
-              type="checkbox"
-              role="switch"
-              // id={`flexSwitchCheckChecked-${link.link_id}`}
-              checked={isActive}
-              onChange={toggleIsActive}
-              disabled={!proAvailable}
-            />
-          </div>
+          <Switcher isChecked={isActive} onToggle={toggleIsActive} disabled={!proAvailable} />
         </div>
       </div>
 
