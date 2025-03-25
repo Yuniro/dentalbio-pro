@@ -43,7 +43,7 @@ const Modal = () => {
               </div>
             </div>
           </div>
-          <div className="modal-footer justify-content-center border-0">
+          <div className="modal-footer justify-center border-0">
             <button type="button" className="btn clear-btn" data-bs-dismiss="modal" onClick={clearImage}>
               Clear
             </button>

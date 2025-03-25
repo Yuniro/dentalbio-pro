@@ -151,7 +151,7 @@ export default function LinkItem({
       className="flex justify-between items-center mb-2 bg-transparent w-full"
     >
       {isEditing ? (
-        <div className="flex flex-column max-w-100 w-full">
+        <div className="flex flex-col max-w-100 w-full">
           <input
             type="text"
             value={newTitle}

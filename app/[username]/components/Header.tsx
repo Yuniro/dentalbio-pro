@@ -98,7 +98,7 @@ export default function Header({
       {/* Desktop View */}
       <div className="desktopview-header">
         <div
-          className={`flex items-center align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200" : ""
+          className={`flex items-center justify-between ${scrolled ? "scrolled-header bg-neutral-200" : ""
             } transition-all`}
           id="onscroll-header"
         >
@@ -116,7 +116,7 @@ export default function Header({
           </div>
 
           {/* Username and verification */}
-          <div className="flex items-center gap-[5px] justify-content-center">
+          <div className="flex items-center gap-[5px] justify-center">
             <h6 className="fw-medium">@{username}</h6>
             {isVerified && <VerificationBadge direction="right" />}
             {/* Verification icon - uncomment if needed */}
@@ -158,7 +158,7 @@ export default function Header({
       {/* Mobile View */}
       <div className="mobileview-header">
         <div
-          className={`flex align-items-center justify-content-between ${scrolled ? "scrolled-header bg-neutral-200 py-1 top-6" : "px-0"
+          className={`flex items-center justify-between ${scrolled ? "scrolled-header bg-neutral-200 py-1 top-6" : "px-0"
             } transition-all`}
           id="onscroll-header-mobile"
         >
@@ -177,22 +177,14 @@ export default function Header({
 
           {/* Username visible on scroll */}
           <div className={`${(scrolled || !useDentalBrand) ? "d-block" : "d-none"}`}>
-            <div className="flex align-items-center gap-[5px] justify-content-center">
+            <div className="flex items-center gap-[5px] justify-center">
               <h6 className="fw-medium max-w-32 truncate">@{username}</h6>
               {isVerified && <VerificationBadge direction="right" />}
             </div>
           </div>
 
           {/* Contact and modal button */}
-          <div className="flex align-items-center gap-2">
-            {/* {isOtherPage &&
-              <Link
-                href={`/${username}`}
-                className="contact-me-btn whitespace-nowrap no-underline"
-              >
-                <span>Back</span>
-              </Link>} */}
-            {/* {!scrolled && ( */}
+          <div className="flex items-center gap-2">
             <a href="#location" className="no-underline" onClick={e => handleScroll(e, "#location")} id="onscroll-hide-contact-btn">
               <FullRoundedButton className={`py-2 ${navState.Location ? "" : "bg-[#BFBFBF]"}`} buttonType={navState.Location ? "primary" : "ghost"}>
                 Contact me

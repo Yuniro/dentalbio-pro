@@ -203,7 +203,7 @@ export default function ProfileDetail({
       {locations && locations.length > 0 && (
         <div className="basedin-tabination-wrapper">
           <ul
-            className="nav nav-tabs border-0 justify-content-center align-items-center"
+            className="nav nav-tabs border-0 justify-center items-center"
             role="tablist"
           >
             <li className="based-in-text">Based in</li>

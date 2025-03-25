@@ -68,7 +68,7 @@ export default function WorkLocation({
                 latitude={location.locations.latitude}
                 longitude={location.locations.longitude}
               />
-              <div className="flex align-items-center justify-content-center map-button">
+              <div className="flex items-center justify-center map-button">
                 {(dentistry.booking_link_enabled && dentistry.booking_link) && (
                   <Link
                     href={dentistry.booking_link || ""}
@@ -99,7 +99,7 @@ export default function WorkLocation({
               </p>
             </div>)}
         </div>) :
-        <div className="flex align-items-center justify-content-center map-button">
+        <div className="flex items-center justify-center map-button">
           {(dentistry.booking_link_enabled && dentistry.booking_link) && (
             <Link
               href={dentistry.booking_link || ""}

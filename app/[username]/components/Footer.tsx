@@ -62,7 +62,7 @@ export default function Footer({
         </div>
 
         {useDentalBrand &&
-          <div className="relative align-items-center">
+          <div className="relative items-center">
             <div className="col-12 text-center">
               <div className="footer-logo">
                 <a href="/">
@@ -82,7 +82,7 @@ export default function Footer({
           </div>}
 
         {/* {useDentalBrand && */}
-        <div className="relative align-items-center">
+        <div className="relative items-center">
           <div className="">
             <div className="col-12 text-center mt-10">
               <img
