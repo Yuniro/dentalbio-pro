@@ -235,7 +235,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
         <div className='relative rounded-[26px] bg-white pt-[20px] pb-2 px-4 h-[50px] mb-4'>
           <label
             htmlFor={id}
-            className={`absolute top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || inputAddress ? '-translate-y-[7px] text-xs' : 'scale-100'} pl-5`}
+            className={`absolute top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || inputAddress ? '-translate-y-[7px] text-xs' : 'scale-100'} pl-7`}
           >
             Enter your address
           </label>
@@ -248,7 +248,7 @@ const GoogleMapAutocomplete: React.FC<GoogleMapAutocompleteProps> = ({
             type="text"
             id={id}
             name={id}
-            className="w-full pl-5 text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
+            className="w-full pl-7 text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal"
             placeholder=""
             value={inputAddress}
             onChange={handleAddressChange} // Update input state for manual entry
