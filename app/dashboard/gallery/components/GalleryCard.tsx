@@ -3,6 +3,7 @@ import BlogImage from "@/app/components/Image/BlogImage";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import { CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
 import React, { useEffect, useReducer, useState } from "react"
+import Switcher from '@/app/components/Switcher'
 
 type GalleryCardProps = {
   id: string;
@@ -80,18 +81,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({
               <button onClick={() => setIsOpenConfirmMessage(true)} className="enabled:hover:text-red-700" disabled={!proAvailable}>
                 <Trash size={20} />
               </button>
-
-              <div className="form-check form-switch custom-form-check">
-                <input
-                  className="form-check-input cursor-pointer"
-                  type="checkbox"
-                  role="switch"
-                  // id={`flexSwitchCheckChecked-${link.link_id}`}
-                  checked={isActive}
-                  onChange={toggleIsActive}
-                  disabled={!proAvailable}
-                />
-              </div>
+              <Switcher isChecked={isActive} onToggle={toggleIsActive} disabled={!proAvailable} />
             </div>
           </div>
           <div className="flex justify-around">
