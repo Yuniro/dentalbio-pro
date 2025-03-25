@@ -4,6 +4,7 @@ import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import LabeledInput from "@/app/dashboard/components/LabeledInput";
 import { CaretDown, CaretUp, PencilSimple, Spinner, Trash } from "@phosphor-icons/react/dist/ssr";
 import { useEffect, useReducer, useState } from "react";
+import Switcher from '@/app/components/Switcher'
 
 type BlogGroupProps = BlogGroupType & {
   onUpdate: ({ id, name, enabled }: { id: string, name?: string, enabled?: boolean }) => void;
@@ -103,18 +104,7 @@ const BlogGroup: React.FC<BlogGroupProps> = ({
             <button onClick={() => setIsOpenConfirmMessage(true)} className="enabled:hover:text-red-700" disabled={!groupEnabled}>
               <Trash size={20} />
             </button>
-
-            <div className="form-check form-switch custom-form-check">
-              <input
-                className="form-check-input cursor-pointer"
-                type="checkbox"
-                role="switch"
-                // id={`flexSwitchCheckChecked-${link.link_id}`}
-                checked={isActive}
-                onChange={toggleIsActive}
-                disabled={!groupEnabled}
-              />
-            </div>
+            <Switcher isChecked={isActive} onToggle={toggleIsActive} disabled={!groupEnabled} />
           </div>
         </div>}
 

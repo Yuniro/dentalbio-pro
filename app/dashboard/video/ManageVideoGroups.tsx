@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { arraysRankingAreEqual } from "@/utils/function_utils";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import ManageVideos from "./ManageVideos";
 import SkeletonLoader from "@/app/components/Loader/Loader";

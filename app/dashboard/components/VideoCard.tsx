@@ -1,8 +1,8 @@
 'use client'
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
-import { ArrowSquareOut, CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
+import { CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react/dist/ssr";
 import React, { useEffect, useReducer, useState } from "react"
+import Switcher from "@/app/components/Switcher"
 
 type VideoCardProps = VideoType & {
   onUpdate: (video: VideoType, image: null) => void;
@@ -36,7 +36,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   return (
     <>
-      <div className="w-full px-6 py-3 shadow rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
+      <div className="w-full px-6 py-3 shadow-lg rounded-[26px] flex items-center overflow-hidden gap-4 mb-4">
         {/* Caret Buttons */}
         <div className="cursor-pointer">
           <div><CaretUp /></div>
@@ -52,9 +52,6 @@ const VideoCard: React.FC<VideoCardProps> = ({
               <PencilSimple size={18} />
             </button>
           </div>
-
-          {/* Content Row */}
-          {/* <div className="truncate" dangerouslySetInnerHTML={{__html: content!}} /> */}
         </div>
 
         {/* Trash Button */}
@@ -62,26 +59,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
           <button onClick={() => setIsOpenConfirmMessage(true)} className="cursor-pointer hover:text-red-700" disabled={!proAvailable}>
             <Trash size={20} />
           </button>
-
-          {/* <Link
-            href={videoProps.link!}
-            target="_blank"
-            className="w-8 h-8 p-0.5 hover:bg-neutral-100 hover:text-neutral-700 text-neutral-900 flex items-center justify-center rounded-md transition-all"
-          >
-            <ArrowSquareOut size={20} />
-          </Link> */}
-
-          <div className="form-check form-switch custom-form-check">
-            <input
-              className="form-check-input cursor-pointer"
-              type="checkbox"
-              role="switch"
-              // id={`flexSwitchCheckChecked-${link.link_id}`}
-              checked={isActive}
-              onChange={toggleIsActive}
-              disabled={!proAvailable}
-            />
-          </div>
+          <Switcher isChecked={isActive} onToggle={toggleIsActive} disabled={!proAvailable} />
         </div>
       </div>
 
