@@ -6,6 +6,7 @@ import LimitedTextArea from "./LimitedTextArea"
 import SaveButton from "./SaveButton"
 import { positions } from "@/utils/global_constants"
 import React, { useState } from "react"
+import Switcher from '@/app/components/Switcher'
 
 type ProfileEditorProps = {
   dentistry: any;
@@ -131,9 +132,9 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
           />
         </LabeledInput>
-        <div className="relative inline-block w-11 h-5">
-          <input defaultChecked={dentistry.booking_link_enabled} id="switch-component-blue" type="checkbox" className="peer appearance-none w-8 h-5 bg-white rounded-full checked:bg-[#7d71e5] cursor-pointer transition-colors duration-300" />
-          <label htmlFor="switch-component-blue" className="absolute top-0 left-0 w-[14px] h-[14px] mt-[3px] bg-[#BFBFBF] rounded-full shadow-sm transition-transform duration-300 peer-checked:translate-x-4 peer-checked:border-grey-500 cursor-pointer">
+        <div className="relative inline-block w-8 h-5">
+          <input defaultChecked={dentistry.booking_link_enabled} id="switch-component-blue" type="checkbox" className="peer appearance-none w-8 h-5 bg-white border-grey-500 border-[1px] rounded-full checked:bg-[#7d71e5] cursor-pointer transition-colors duration-300" />
+          <label htmlFor="switch-component-blue" className="absolute top-0 left-[2px] w-[14px] h-[14px] mt-[3px] bg-[#86B7FE] rounded-full shadow-sm transition-transform duration-300 peer-checked:translate-x-4 peer-checked:border-grey-500 peer-checked:bg-white cursor-pointer">
           </label>
         </div>
       </div>
