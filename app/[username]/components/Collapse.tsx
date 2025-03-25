@@ -15,8 +15,8 @@ const Collapse: React.FC<CollapseProps> = ({ title, isOpen, onToggle, children }
         onClick={onToggle}
         className="w-full overflow-hidden text-left p-1 focus:outline-none"
       >
-        <div className="flex items-center justify-between">
-          <span className=' text-[20px] text-[#5046DD] truncate'>{title}</span>
+        <div className="flex items-center justify-between gap-3">
+          <span className='text-5 text-[#5046DD] truncate'>{title}</span>
           <span>
             {isOpen ? <Minus size={20} /> : <Plus size={20} />}
           </span>
