@@ -147,7 +147,7 @@ export default function LinkItem({
   return (
     <li
       ref={ref}
-      className="flex justify-between align-items-center mb-2 bg-transparent w-full"
+      className="flex justify-between items-center mb-2 bg-transparent w-full"
     >
       {isEditing ? (
         <div className="flex flex-column max-w-100 w-full">
@@ -183,7 +183,7 @@ export default function LinkItem({
       ) : (
         <>
           <div className="membar-cards w-full">
-            <div className="flex align-items-start gap-3 bg-transparent w-full p-4">
+            <div className="flex items-start gap-3 bg-transparent w-full p-4">
               {/* Drag Handle */}
               <div className="flex flex-col gap-0 cursor-move p-1 mt-2">
                 <CaretUp className="-mb-0.5" weight="bold" />
@@ -191,9 +191,9 @@ export default function LinkItem({
               </div>
               <div className="w-full">
                 {/* Member Card Actions */}
-                <div className="flex align-items-center justify-content-between gap-2 mb-3 member-cards-actions">
+                <div className="flex items-center justify-between gap-2 mb-3 member-cards-actions">
                   <div>
-                    <div className="flex align-items-center gap-2 member-heading">
+                    <div className="flex items-center gap-2 member-heading">
                       <p className="mb-0">{link.title}</p>
                       {/* Edit Icon */}
                       <PencilSimple
@@ -205,7 +205,7 @@ export default function LinkItem({
                     <p className="links-wrapper mb-0">{link.link}</p>
                   </div>
                   {/* Link and Switch */}
-                  <div className="flex gap-1 align-items-center">
+                  <div className="flex gap-1 items-center">
                     <button
                       onClick={handleDeleteLink}
                       className="w-8 h-8 p-0.5 hover:bg-red-100 hover:text-red-700 flex items-center justify-center rounded-md transition-all"
@@ -219,15 +219,10 @@ export default function LinkItem({
                     >
                       <ArrowSquareOut size={20} />
                     </Link>
-                    <div className="form-check form-switch custom-form-check ml-2">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        role="switch"
-                        id={`flexSwitchCheckChecked-${link.link_id}`}
-                        checked={isActive}
-                        onChange={handleToggleActive}
-                      />
+                    <div className="relative inline-block w-8 h-5">
+                      <input checked={isActive} onChange={handleToggleActive} id="switch-component-blue" type="checkbox" className="peer appearance-none w-8 h-5 bg-white border-grey-500 border-[1px] rounded-full checked:bg-[#7d71e5] cursor-pointer transition-colors duration-300" />
+                      <label htmlFor="switch-component-blue" className="absolute top-0 left-[2px] w-[14px] h-[14px] mt-[3px] bg-[#86B7FE] rounded-full shadow-sm transition-transform duration-300 peer-checked:translate-x-4 peer-checked:border-grey-500 peer-checked:bg-white cursor-pointer">
+                      </label>
                     </div>
                   </div>
                 </div>

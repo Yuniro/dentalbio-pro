@@ -83,7 +83,7 @@ export default function AddLinkForm({
         <form
           ref={formRef}
           onSubmit={handleSubmit}
-          className="flex flex-column max-w-100 w-full"
+          className="flex flex-col w-full"
         >
           <input
             type="text"

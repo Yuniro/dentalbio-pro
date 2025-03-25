@@ -230,7 +230,7 @@ export default function LinkGroup({ group, index, setGroups, groups }: any) {
       ) : (
         <>
           <div className="member-card-heading">
-            <div className="flex align-items-center justify-content-between gap-1">
+            <div className="flex items-center justify-between gap-1">
               {/* Move Group Icons */}
               <div className="flex">
                 <div className="p-1 rounded-md hover:bg-black hover:bg-opacity-5 transition-all">
@@ -246,7 +246,7 @@ export default function LinkGroup({ group, index, setGroups, groups }: any) {
                   />
                 </div>
               </div>
-              <div className="flex align-items-center gap-2 member-heading">
+              <div className="flex items-center gap-2 member-heading">
                 {/* Heading Text */}
                 <p className="mb-0">{group.heading}</p>
                 {/* Edit Icon */}
@@ -264,7 +264,7 @@ export default function LinkGroup({ group, index, setGroups, groups }: any) {
 
       {/* Links List */}
       <DndProvider backend={HTML5Backend}>
-        <ul className="pl-0 w-full">
+        <ul className="pl-0 w-full mb-2">
           {isLoading ? (
             <div>Loading...</div>
           ) : links.length > 0 ? (
