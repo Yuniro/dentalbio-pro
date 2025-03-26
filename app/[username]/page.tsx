@@ -1,7 +1,5 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./link-page-responsive.css";
-import "./bootstrap.min.css";
 import "./link-page.css";
 
 import { redirect } from "next/navigation";
