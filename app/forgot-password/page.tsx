@@ -85,9 +85,9 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="text-center flex flex-col justify-center items-center py-10 gap-5">
+    <div className="text-center flex flex-col items-center py-10 gap-5 h-screen">
       <h2 className="text-lg font-semibold text-dark">Forgot Password?</h2>
-      <form onSubmit={handlePasswordReset} className="space-y-5 w-full max-w-xl">
+      <form onSubmit={handlePasswordReset} className="w-full max-w-xl">
         {/* Email Input Field */}
         <div className="relative z-50 font-semibold left-1/2 top-5 transform -translate-x-1/2 max-w-xl w-full px-5 mt-5">
           <div className="max-w-xl w-full rounded-[40px] border-[0.6px] shadow-sm bg-white bg-opacity-90 backdrop-blur-lg border-neutral-300 py-4 px-3 flex items-center justify-between transition-all duration-300 ease-in-out">
