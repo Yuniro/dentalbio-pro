@@ -25,7 +25,6 @@
     "@types/react-paginate": "^7.1.4",
     "@types/react-stars": "^2.2.4",
     "@types/uuid": "^10.0.0",
-    "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",
     "contentful": "^10.15.1",
     "date-fns": "^4.1.0",
