@@ -3,10 +3,8 @@ import { notFound } from 'next/navigation'; // Used to show 404 if blog not foun
 import Header from '../../components/Header';
 import WorkLocation from '../../components/WorkLocation';
 import Footer from '../../components/Footer';
-import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../../link-page-responsive.css";
-import "../../bootstrap.min.css";
 import "../../link-page.css";
 import Link from 'next/link';
 import { formatDate } from '@/utils/formatDate';

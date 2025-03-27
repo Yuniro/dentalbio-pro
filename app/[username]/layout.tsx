@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import type { Metadata } from "next";
+import "./bootstrap.min.css";
 
 // Function to fetch user and dentistry data based on the username
 async function fetchUserAndDentistry(username: string) {

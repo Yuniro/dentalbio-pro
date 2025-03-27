@@ -1,14 +1,9 @@
 "use client";
-import "bootstrap/dist/css/bootstrap.min.css";
-// import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { DotsThreeCircle } from "phosphor-react";
-// import { DesktopModal, MobileModal } from "./Modals";
 import { createClient } from "@/utils/supabase/client";
 import ShareModal from "./ShareModal";
 import Link from "next/link";
-import { SealCheck } from "@phosphor-icons/react/dist/ssr";
 import VerificationBadge from "@/app/components/VerificationBadge";
 import { useNavbar } from "../../contexts/NavbarContext";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
@@ -104,7 +99,7 @@ export default function Header({
         >
           {/* Profile image shown on scroll */}
           <div
-            className={`onscroll-profile ${scrolled ? "d-block" : "d-none"}`}
+            className={`onscroll-profile ${scrolled ? "block" : "hidden"}`}
           >
             <Image
               src={profilePicUrl || "/placeholder.png"}
@@ -115,16 +110,9 @@ export default function Header({
             />
           </div>
 
-          {/* Username and verification */}
           <div className="flex items-center gap-[5px] justify-center">
             <h6 className="fw-medium">@{username}</h6>
             {isVerified && <VerificationBadge direction="right" />}
-            {/* Verification icon - uncomment if needed */}
-            {/* <Image
-              src="/assets/Verify.svg"
-              alt="check"
-              className="img-fluid w-auto"
-            /> */}
           </div>
 
 
@@ -139,17 +127,16 @@ export default function Header({
               </Link>}
             {navState.Location ?
               <a href="#location" className="no-underline" onClick={e => handleScroll(e, "#location")}>
-                <FullRoundedButton className="py-2">
+                <FullRoundedButton className="!py-[7px]">
                   Contact me
                 </FullRoundedButton>
               </a> :
               (contact_email &&
                 <a href="mailto:${contact_email}" className="no-underline" target="_blank">
-                  <FullRoundedButton className="py-2" >
+                  <FullRoundedButton className="!py-[7px]" >
                     Contact me
                   </FullRoundedButton>
                 </a>)}
-
             <ShareModal username={username} />
           </div>
         </div>
