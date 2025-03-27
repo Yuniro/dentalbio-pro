@@ -5,7 +5,7 @@ import VerificationBadge from "../..//components/VerificationBadge";
 import ReactPaginate from 'react-paginate';
 import { useAdmin } from "@/utils/functions/useAdmin";
 import Link from "next/link";
-import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, PaperPlane, ArrowLeft, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
+import { CaretDown, CloudArrowUp, Gear, Megaphone, Trash, ArrowLeft, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
 import FullRoundedButton from "../../components/Button/FullRoundedButton";
 import LabeledInput from "../../dashboard/components/LabeledInput";
 import ConfirmMessage from "../../components/Modal/ConfirmMessagel";
@@ -293,11 +293,11 @@ const UsersManagement: React.FC = () => {
           <h1 className="text-2xl font-bold">User Management</h1>
           <FullRoundedButton
             id="offerCode-button"
-            onClick={() => router.push('/dashboard')}
+            onClick={() => {setTargetUserId(""); router.push('/dashboard');}}
             className="shadow-md"
           >
             <ArrowLeft size={20} className="mr-1" />
-            Return
+            Dashboard
           </FullRoundedButton>
         </div>
 

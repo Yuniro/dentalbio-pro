@@ -2,7 +2,6 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 export const getEffectiveUserId = async ({ targetUserId, supabase }: { targetUserId?: string | null, supabase: SupabaseClient }) => {
-  console.log(targetUserId, 'targeUserId----------')
   const { data: authData, error: authError } = await supabase.auth.getUser();
 
   if (authError) {
