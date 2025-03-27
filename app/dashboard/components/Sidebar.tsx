@@ -193,7 +193,7 @@ const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boole
                 </p>
               </div>
             }
-            <div className="w-full flex flex-col overflow-y-auto">
+            <div className="py-5 w-full flex flex-col overflow-y-auto">
               <SidebarItems setIsOpen={handleClose}  proAvailable={proAvailable} premiumProAvailable={premiumProAvailable} />
             </div>
           </div>
