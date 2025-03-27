@@ -169,7 +169,7 @@ const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boole
             className={`fixed top-0 left-0 h-full w-[399px] bg-white shadow-lg transform ${isOpen ? "translate-x-0" : "-translate-x-full"
               } transition-transform duration-300 ease-in-out z-50`}
           >
-            <div className="block xxl:hidden w-full flex justify-end items-center p-3">
+            <div className="xxl:hidden w-full flex justify-end items-center p-3">
               <button
                 type="button"
                 className="text-gray-700"
@@ -180,7 +180,7 @@ const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boole
               </button>
             </div>
 
-            <div className="p-5 w-full flex flex-col overflow-y-auto">
+            <div className="w-full flex flex-col overflow-y-auto">
               <SidebarItems setIsOpen={handleClose} proAvailable={proAvailable} premiumProAvailable={premiumProAvailable} />
             </div>
           </div>
@@ -193,7 +193,7 @@ const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boole
                 </p>
               </div>
             }
-            <div className="p-5 w-full flex flex-col overflow-y-auto">
+            <div className="w-full flex flex-col overflow-y-auto">
               <SidebarItems setIsOpen={handleClose}  proAvailable={proAvailable} premiumProAvailable={premiumProAvailable} />
             </div>
           </div>
@@ -265,7 +265,7 @@ const SidebarItem = ({
   label,
   link,
   isActive,
-  enabled = true,
+  enabled,
   Icon,
   onClick,
 }: SidebarItemProps) => {
@@ -295,19 +295,19 @@ interface SidebarItemsProps {
   premiumProAvailable: boolean
 }
 
-const SidebarItems = ({ setIsOpen, proAvailable, premiumProAvailable }: SidebarItemsProps) => {
+const SidebarItems = ({ setIsOpen, proAvailable = false, premiumProAvailable = false }: SidebarItemsProps) => {
   const sidebarItems = [
     { label: "Bio", link: "/dashboard", enabled: true, Icon: House, },
     { label: "Locations", link: "/dashboard/location", enabled: true, Icon: MapPin, },
     { label: "Treatments / Services", link: "/dashboard/treatments", enabled: true, Icon: Heart, },
     { label: "Links", link: "/dashboard/links", enabled: true, Icon: LinkSimple, },
-    { label: "Blogs", link: "/dashboard/blog", enabled: {proAvailable}, Icon: Newspaper, },
-    { label: "Gallery", link: "/dashboard/gallery", enabled: {proAvailable}, Icon: Image, },
-    { label: "Reviews", link: "/dashboard/review", enabled: {proAvailable}, Icon: CheckSquare, },
-    { label: "Videos", link: "/dashboard/video", enabled: {proAvailable}, Icon: Video, },
-    { label: "Shop", link: "/dashboard/shop", enabled: {proAvailable}, Icon: ShoppingCartSimple, },
-    { label: "Verification", link: "/dashboard/verification", enabled: {proAvailable}, Icon: SealCheck, },
-    { label: "Domain Name", link: "/dashboard/domain", enabled: {premiumProAvailable}, Icon: Globe, },
+    { label: "Blogs", link: "/dashboard/blog", enabled: proAvailable, Icon: Newspaper, },
+    { label: "Gallery", link: "/dashboard/gallery", enabled: proAvailable, Icon: Image, },
+    { label: "Reviews", link: "/dashboard/review", enabled: proAvailable, Icon: CheckSquare, },
+    { label: "Videos", link: "/dashboard/video", enabled: proAvailable, Icon: Video, },
+    { label: "Shop", link: "/dashboard/shop", enabled: proAvailable, Icon: ShoppingCartSimple, },
+    { label: "Verification", link: "/dashboard/verification", enabled: proAvailable, Icon: SealCheck, },
+    { label: "Domain Name", link: "/dashboard/domain", enabled: premiumProAvailable, Icon: Globe, },
     { label: "Get One Month Free", link: "/dashboard/referral", enabled: true, Icon: LinkBreak, },
     { label: "Settings", link: "/dashboard/settings", enabled: true, Icon: Gear, },
   ];
@@ -325,7 +325,7 @@ const SidebarItems = ({ setIsOpen, proAvailable, premiumProAvailable }: SidebarI
           label={item.label}
           link={item.link}
           isActive={pathname === item.link}
-          enabled={item?.enabled ? true : false}
+          enabled={item.enabled}
           Icon={item.Icon}
           onClick={handleClose}
         />
