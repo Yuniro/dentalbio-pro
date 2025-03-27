@@ -2,12 +2,12 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 export const getEffectiveUserId = async ({ targetUserId, supabase }: { targetUserId?: string | null, supabase: SupabaseClient }) => {
+  console.log(targetUserId, 'targeUserId----------')
   const { data: authData, error: authError } = await supabase.auth.getUser();
 
   if (authError) {
     console.log('authError logged getEffectiveUserId))))))))))))))))))))))))))', authError)
-    redirect("/login");
-    return null;
+    return redirect("/login");
   }
 
   const email = authData.user.email;
@@ -21,8 +21,7 @@ export const getEffectiveUserId = async ({ targetUserId, supabase }: { targetUse
     .single();
 
   if (error) throw new Error('Error fetching user data');
-  if (targetUserId && user.role !== 'admin') throw new Error('Not authorized');
+  if (targetUserId && user.role !== 'admin') return user.id
 
   return targetUserId || user.id;
-  // return user.id;
 };
