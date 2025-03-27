@@ -41,7 +41,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
 
       {/* Position Dropdown */}
       <div className="mb-3 relative">
-        <h2 className="text-base text-dark">Position</h2>
+        <h2 className="text-base text-dark mb-3">Position</h2>
         <div className="relative">
           <select
             name="position"
