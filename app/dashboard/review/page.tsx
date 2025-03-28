@@ -2,15 +2,16 @@ import React from "react"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ManageReviews from "./ManageReviews";
-import { AdminServer } from "@/utils/functions/useAdminServer";
+// import { AdminServer } from "@/utils/functions/useAdminServer";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 import Link from 'next/link'
 
-const Review = async () => {
+const Review = async ({ searchParams }: { searchParams: { userId?: string } }) => {
   const supabase = createClient();
+  const targetUserId = searchParams.userId;
 
-  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
+  const userId = await getEffectiveUserId({ supabase, targetUserId });
 
   const { data: userData, error: userError } = await supabase
     .from("users")
@@ -38,7 +39,7 @@ const Review = async () => {
       <div className={`${proAvailable ? "" : "relative opacity-40"}`}>
         {!proAvailable &&
           <div className="absolute w-full h-full top-0 left-0 z-10" />}
-        <ManageReviews targetUserId={(userId === AdminServer.getTargetUserId()) && userId} enabled={proAvailable} />
+        <ManageReviews targetUserId={(userId === targetUserId) && userId} enabled={proAvailable} />
       </div>
     </div>
   )

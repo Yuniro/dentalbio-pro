@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from "react";
 import CopyButton from "./CopyButton";
 import RightPanelClient from "./RightPanelClient";
-import { useAdmin } from "@/utils/functions/useAdmin";
-import { useRouter } from "next/navigation";
+// import { useAdmin } from "@/utils/functions/useAdmin";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const RightPanel: React.FC = () => {
-  const { getTargetUserId } = useAdmin();
+  const searchParams = useSearchParams();
+  const targetUserId = searchParams.get('userId');
+  // const { getTargetUserId } = useAdmin();
   const [username, setUsername] = useState("");
   const router = useRouter();
 
@@ -18,7 +20,7 @@ const RightPanel: React.FC = () => {
   const fetchUserInfo = async () => {
     const response = await fetch('/api/user', {
       method: 'POST',
-      body: JSON.stringify({ targetUserId: getTargetUserId()! })
+      body: JSON.stringify({ targetUserId })
     });
     const data = await response.json();
 

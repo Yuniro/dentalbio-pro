@@ -5,18 +5,18 @@ import SaveButton from "../components/SaveButton";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { titles } from "@/utils/global_constants";
-import { AdminServer } from "@/utils/functions/useAdminServer";
+// import { AdminServer } from "@/utils/functions/useAdminServer";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import DeleteBio from "./DeleteBio";
 import DownGradeBio from"./DownGradeBio";
 import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 
 // Fetch authenticated user details
-async function getUserDetails() {
+async function getUserDetails(targetUserId: string) {
   "use server";
   const supabase = createClient();
 
-  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
+  const userId = await getEffectiveUserId({ supabase, targetUserId });
 
   if (!userId) {
     return redirect("/login");
@@ -38,8 +38,9 @@ async function getUserDetails() {
 // Server action to update user details
 async function updateUserDetails(formData: FormData) {
   "use server";
+  const targetUserId = formData.get('targetUserId') as string;
   const supabase = createClient();
-  const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
+  const userId = await getEffectiveUserId({ supabase, targetUserId });
 
   if (!userId) {
     return redirect("/login");
@@ -92,9 +93,9 @@ async function updateUserDetails(formData: FormData) {
   return redirect('/dashboard')
 }
 
-const handleDelete = async () => {
+const handleDelete = async (targetUserId: string) => {
   "use server"
-  const { userId } = await getAuthorizedUser();
+  const { userId } = await getAuthorizedUser(targetUserId as string);
 
   const response = await fetch('/api/dentistry', {
     method: 'DELETE',
@@ -111,8 +112,9 @@ const handleDelete = async () => {
 }
 
 // Main page component
-export default async function SettingsPage() {
-  const user = await getUserDetails(); // Fetch user details
+export default async function SettingsPage({ searchParams }: { searchParams: { userId?: string } }) {
+  const targetUserId = searchParams.userId;
+  const user = await getUserDetails(targetUserId as string); // Fetch user details
 
   return (
     <div className="memberpanel-details-wrapper">
@@ -122,6 +124,7 @@ export default async function SettingsPage() {
 
         {/* Form to update user details */}
         <form action={updateUserDetails} className="mb-10 ml-2">
+        <input type="hidden" name="targetUserId" value={targetUserId} />
           <div className="mb-3 relative">
             <h6 className="mb-2 text-dark">Title</h6>
             <div className="relative">
@@ -209,7 +212,7 @@ export default async function SettingsPage() {
 
         <DownGradeBio />
 
-        <DeleteBio handleDelete={handleDelete} />
+        <DeleteBio handleDelete={() => handleDelete(targetUserId as string)} />
       </div>
     </div>
   );

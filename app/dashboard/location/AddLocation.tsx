@@ -1,11 +1,11 @@
 'use client'
 import { createClient } from "@/utils/supabase/client";
 import GoogleMapAutocomplete from "./GoogleMapAutocomplete";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { getDentistryInfo } from "@/utils/userInfo";
 import { useState } from "react";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { useAdmin } from "@/utils/functions/useAdmin";
+// import { useAdmin } from "@/utils/functions/useAdmin";
 import { showErrorToast } from "@/utils/Toast";
 
 type AddLocationProps = {
@@ -14,14 +14,17 @@ type AddLocationProps = {
 const AddLocation: React.FC<AddLocationProps> = ({
   onAddressAdd
 }) => {
+  const searchParams = useSearchParams();
+  const targetUserId = searchParams.get('userId');
   const [address, setAddress] = useState<string>("");
-  const { getTargetUserId } = useAdmin();
+
+  // const { getTargetUserId } = useAdmin();
 
   // Save or update location data
   const saveLocation = async (formData: FormData) => {
     const supabase = createClient();
     
-    const userId = await getEffectiveUserId({ targetUserId: getTargetUserId(), supabase });
+    const userId = await getEffectiveUserId({ targetUserId: targetUserId, supabase });
 
     const dentistryData = await getDentistryInfo({ supabase, user_id: userId });
 

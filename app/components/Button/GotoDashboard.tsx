@@ -1,15 +1,15 @@
 'use client'
 import FullRoundedButton from "./FullRoundedButton";
-import { useAdmin } from "@/utils/functions/useAdmin";
+// import { useAdmin } from "@/utils/functions/useAdmin";
 import { useRouter } from "next/navigation";
 
 const GotoDashboard = () => {
-  const { setTargetUserId } = useAdmin();
+  // const { setTargetUserId } = useAdmin();
   const router = useRouter();
 
   const handleGotoDashBoard = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setTargetUserId("");
+    // setTargetUserId("");
     router.push("/dashboard");
   }
 

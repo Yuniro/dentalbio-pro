@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
 import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple, LinkBreak, List, X } from "phosphor-react";
 import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video, } from "@phosphor-icons/react/dist/ssr";
-import { useAdmin } from "@/utils/functions/useAdmin";
+// import { useAdmin } from "@/utils/functions/useAdmin";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import SignOutForm from "./Signout";
 
@@ -15,7 +15,10 @@ const COOKIE_USERNAME_KEY = "username";
 const COOKIE_DENTISTRY_ID_KEY = "dentistry_id";
 
 const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boolean }) => {
-  const { getTargetUserId } = useAdmin();
+  const searchParams = useSearchParams();
+  const targetUserId = searchParams.get('userId')
+
+  // const { getTargetUserId } = useAdmin();
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -66,7 +69,7 @@ const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boole
     const supabase = createClient();
     const response = await fetch('/api/user', {
       method: 'POST',
-      body: JSON.stringify({ targetUserId: getTargetUserId()! })
+      body: JSON.stringify({ targetUserId })
     });
     const userRecord = await response.json();
 
@@ -181,7 +184,7 @@ const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boole
             </div>
 
             <div className="w-full flex flex-col overflow-y-auto">
-              <SidebarItems setIsOpen={handleClose} proAvailable={proAvailable} premiumProAvailable={premiumProAvailable} />
+              <SidebarItems setIsOpen={handleClose} proAvailable={proAvailable} premiumProAvailable={premiumProAvailable} targetUserId={targetUserId as string} />
             </div>
           </div>
           <div className="hidden xxl:block">
@@ -194,7 +197,7 @@ const Sidebar = ({ isMessageStateForStudent }: { isMessageStateForStudent: boole
               </div>
             }
             <div className="py-5 w-full flex flex-col overflow-y-auto">
-              <SidebarItems setIsOpen={handleClose}  proAvailable={proAvailable} premiumProAvailable={premiumProAvailable} />
+              <SidebarItems setIsOpen={handleClose}  proAvailable={proAvailable} premiumProAvailable={premiumProAvailable} targetUserId={targetUserId as string} />
             </div>
           </div>
         </div>
@@ -292,24 +295,27 @@ const SidebarItem = ({
 interface SidebarItemsProps {
   setIsOpen: (isOpen: boolean) => void,
   proAvailable: boolean,
-  premiumProAvailable: boolean
+  premiumProAvailable: boolean,
+  targetUserId: string,
 }
 
-const SidebarItems = ({ setIsOpen, proAvailable = false, premiumProAvailable = false }: SidebarItemsProps) => {
+const SidebarItems = ({ setIsOpen, proAvailable = false, premiumProAvailable = false, targetUserId }: SidebarItemsProps) => {
+  const generateUrl = (url: string) => targetUserId ? `${url}?userId=${targetUserId}` : url;
+
   const sidebarItems = [
-    { label: "Bio", link: "/dashboard", enabled: true, Icon: House, },
-    { label: "Locations", link: "/dashboard/location", enabled: true, Icon: MapPin, },
-    { label: "Treatments / Services", link: "/dashboard/treatments", enabled: true, Icon: Heart, },
-    { label: "Links", link: "/dashboard/links", enabled: true, Icon: LinkSimple, },
-    { label: "Blogs", link: "/dashboard/blog", enabled: proAvailable, Icon: Newspaper, },
-    { label: "Gallery", link: "/dashboard/gallery", enabled: proAvailable, Icon: Image, },
-    { label: "Reviews", link: "/dashboard/review", enabled: proAvailable, Icon: CheckSquare, },
-    { label: "Videos", link: "/dashboard/video", enabled: proAvailable, Icon: Video, },
-    { label: "Shop", link: "/dashboard/shop", enabled: proAvailable, Icon: ShoppingCartSimple, },
-    { label: "Verification", link: "/dashboard/verification", enabled: proAvailable, Icon: SealCheck, },
-    { label: "Domain Name", link: "/dashboard/domain", enabled: premiumProAvailable, Icon: Globe, },
-    { label: "Get One Month Free", link: "/dashboard/referral", enabled: true, Icon: LinkBreak, },
-    { label: "Settings", link: "/dashboard/settings", enabled: true, Icon: Gear, },
+    { label: "Bio", link: generateUrl('/dashboard'), enabled: true, Icon: House, },
+    { label: "Locations", link: generateUrl("/dashboard/location"), enabled: true, Icon: MapPin, },
+    { label: "Treatments / Services", link: generateUrl("/dashboard/treatments"), enabled: true, Icon: Heart, },
+    { label: "Links", link: generateUrl("/dashboard/links"), enabled: true, Icon: LinkSimple, },
+    { label: "Blogs", link: generateUrl("/dashboard/blog"), enabled: proAvailable, Icon: Newspaper, },
+    { label: "Gallery", link: generateUrl("/dashboard/gallery"), enabled: proAvailable, Icon: Image, },
+    { label: "Reviews", link: generateUrl("/dashboard/review"), enabled: proAvailable, Icon: CheckSquare, },
+    { label: "Videos", link: generateUrl("/dashboard/video"), enabled: proAvailable, Icon: Video, },
+    { label: "Shop", link: generateUrl("/dashboard/shop"), enabled: proAvailable, Icon: ShoppingCartSimple, },
+    { label: "Verification", link: generateUrl("/dashboard/verification"), enabled: proAvailable, Icon: SealCheck, },
+    { label: "Domain Name", link: generateUrl("/dashboard/domain"), enabled: premiumProAvailable, Icon: Globe, },
+    { label: "Get One Month Free", link: generateUrl("/dashboard/referral"), enabled: true, Icon: LinkBreak, },
+    { label: "Settings", link: generateUrl("/dashboard/settings"), enabled: true, Icon: Gear, },
   ];
 
   const pathname = usePathname();

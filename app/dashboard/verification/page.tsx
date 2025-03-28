@@ -3,8 +3,10 @@ import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 import { getAuthorizedUser } from "@/utils/user/getAuthorizedUser";
 import Link from "next/link";
 
-const Verification = async () => {
-  const { subscriptionStatus, isMessageStateForStudent } = await getAuthorizedUser();
+const Verification = async ({ searchParams }: { searchParams: { userId?: string } }) => {
+  const targetUserId = searchParams.userId;
+  console.log('targetUserId----------', targetUserId)
+  const { subscriptionStatus, isMessageStateForStudent } = await getAuthorizedUser(targetUserId as string);
   const premiumProAvailable = subscriptionStatus === "PREMIUM PRO" || subscriptionStatus === "PRO";
 
   return (

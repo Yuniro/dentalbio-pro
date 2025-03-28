@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import VerifyButton from "./VerifyButton";
 import { CheckCircle } from "@phosphor-icons/react/dist/ssr";
 import { SealCheck } from "@phosphor-icons/react";
-import { redirect } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import { isWithinSevenDays } from "@/utils/functions/isWithinSevenDays";
 import { sendVerificationMail } from "@/utils/mails/sendVerificationMail";
-import { useAdmin } from "@/utils/functions/useAdmin";
+// import { useAdmin } from "@/utils/functions/useAdmin";
 
 type SessionType = "pending" | "approved" | "declined" | "not_started";
 
@@ -21,13 +21,15 @@ const VerifyStatus: React.FC<VerifyStatusProps> = ({ enabled }) => {
   const [userData, setUserData] = useState<UserType | null>(null);
   const [sessionStatus, setSessionStatus] = useState<SessionType | null>(null);
   const { triggerReload } = usePreview();
-  const { getTargetUserId } = useAdmin();
+  const searchParams = useSearchParams();
+  const targetUserId = searchParams.get('userId')
+  // const { getTargetUserId } = useAdmin();
 
   useEffect(() => {
     const fetchUserData = async () => {
       const response = await fetch('/api/user', {
         method: 'POST',
-        body: JSON.stringify({ targetUserId: getTargetUserId()! })
+        body: JSON.stringify({ targetUserId })
       });
       const data = await response.json();
 

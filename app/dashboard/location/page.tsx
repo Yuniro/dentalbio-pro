@@ -5,14 +5,14 @@ import { redirect } from "next/navigation";
 import MapLoader from "./MapLoader";
 import ManageLocations from "./ManageLocations";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { AdminServer } from "@/utils/functions/useAdminServer";
+// import { AdminServer } from "@/utils/functions/useAdminServer";
 
 // Utility function to fetch authenticated user, user ID, and dentistry ID
-async function fetchUserAndDentistry() {
+async function fetchUserAndDentistry(targetUserId: string) {
   "use server";
   const supabase = createClient();
 
-  const userId = await getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
+  const userId = await getEffectiveUserId({ targetUserId, supabase });
 
   const { data: userData, error: userError } = await supabase
     .from("users")
@@ -71,8 +71,9 @@ async function updateLocation(locationData: LocationType, location_id: string) {
 }
 
 // Main component
-export default async function Location() {
-  const { userData, dentistryId } = await fetchUserAndDentistry();
+export default async function Location({ searchParams }: { searchParams: { userId?: string } }) {
+  const targetUserId = searchParams.userId;
+  const { userData, dentistryId } = await fetchUserAndDentistry(targetUserId as string);
   const locations = await fetchLocation(dentistryId);
 
   if (!userData)

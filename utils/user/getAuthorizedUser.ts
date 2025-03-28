@@ -1,14 +1,14 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { AdminServer } from "@/utils/functions/useAdminServer";
+// import { AdminServer } from "@/utils/functions/useAdminServer";
 
-export async function getAuthorizedUser() {
+export async function getAuthorizedUser(targetUserId: string) {
   const supabase = createClient();
 
   const userId = await getEffectiveUserId({
     supabase,
-    targetUserId: AdminServer.getTargetUserId(),
+    targetUserId,
   });
 
   const { data: userData } = await supabase
@@ -33,7 +33,7 @@ export async function getAuthorizedUser() {
     userId,
     username: userData.username,
     subscriptionStatus: userData.subscription_status,
-    isAdmin: userId === AdminServer.getTargetUserId(),
+    isAdmin: userId === targetUserId,
     isMessageStateForStudent: isSixMonthsOrMore(userData)
   };
 }

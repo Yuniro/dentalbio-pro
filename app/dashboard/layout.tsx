@@ -13,10 +13,14 @@ export const metadata = {
 
 const RootLayout = async ({
   children,
+  searchParams
 }: {
   children: React.ReactNode;
+  searchParams: { userId?: string };
 }) => {
-  const { isMessageStateForStudent } = await getAuthorizedUser();
+  const targetUserId = searchParams?.userId;
+  console.log('targetUserId---------------------------', targetUserId)
+  const { isMessageStateForStudent } = await getAuthorizedUser(targetUserId as string);
   return (
     <div className="flex flex-col min-h-screen bg-[#f3f3f1] py-10">
       <div className="flex flex-1 container mx-auto px-4">

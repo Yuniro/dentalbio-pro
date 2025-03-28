@@ -13,16 +13,16 @@ import {
 import ProfilePictureUploader from "./ProfilePictureUploader";
 import LabeledInput from "./components/LabeledInput";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-import { AdminServer } from "@/utils/functions/useAdminServer";
+// import { AdminServer } from "@/utils/functions/useAdminServer";
 import { validateSocialMediaInput } from "@/utils/functions/validateSociaMediaInput";
 import { extractUsername } from "@/utils/functions/extractUsername";
 import ProfileEditor from "./components/ProfileEditor";
 
 // Fetch the authenticated user ID
-async function getUserId() {
+async function getUserId(targetUserId: string) {
   const supabase = createClient();
   try {
-    return getEffectiveUserId({ targetUserId: AdminServer.getTargetUserId(), supabase });
+    return getEffectiveUserId({ targetUserId, supabase });
   } catch (e) {
     console.log(')))00000000000000---------------------------', e)
     redirect("/login");
@@ -30,10 +30,9 @@ async function getUserId() {
 }
 
 // Get detailed user information
-async function getUserDetails() {
+async function getUserDetails(userId: string) {
   "use server";
   const supabase = createClient();
-  const userId = await getUserId();
 
   const { data: userRecord, error: userError } = await supabase
     .from("users")
@@ -144,8 +143,8 @@ async function getOrCreateSocialLinks(dentistryId: string) {
 // Server Action to save or update Dentistry
 async function saveDentistryDetails(formData: FormData) {
   "use server";
+  const userId = formData.get("userId") as string;
   const supabase = createClient();
-  const userId = await getUserId();
   const dentistry = await getOrCreateDentistry(userId);
 
   // Update dentistry fields
@@ -173,8 +172,8 @@ async function saveDentistryDetails(formData: FormData) {
 // Server Action to save or update Dentistry
 async function saveUserDetails(formData: FormData) {
   "use server";
+  const userId = formData.get("userId") as string;
   const supabase = createClient();
-  const userId = await getUserId();
 
   // Update dentistry fields
   const updatedUserData = {
@@ -197,10 +196,9 @@ async function saveUserDetails(formData: FormData) {
 // Server Action to save or update Social Links
 async function saveSocialLinks(formData: FormData) {
   "use server";
+  const userId = formData.get("userId") as string;
   const supabase = createClient();
-  const userId = await getUserId();
   const dentistry = await getOrCreateDentistry(userId);
-  const socialLinks = await getOrCreateSocialLinks(dentistry.dentistry_id);
 
   // Update social links fields
   const updatedSocialLinks = {
@@ -232,12 +230,13 @@ function getValidatedSocialInput(input: string, platform: Platform): string {
   return res.url ? res.url : "";
 }
 
-export default async function Profile() {
-  const userId = await getUserId();
+export default async function Profile({ searchParams }: { searchParams: { userId?: string } }) {
+  const targetUserId = searchParams.userId
+  const userId = await getUserId(targetUserId as string);
   const dentistry = await getOrCreateDentistry(userId);
 
   const socialLinks = await getOrCreateSocialLinks(dentistry.dentistry_id);
-  const user = await getUserDetails();
+  const user = await getUserDetails(userId);
 
   return (
     <div className="memberpanel-details-wrapper">
@@ -247,11 +246,12 @@ export default async function Profile() {
           action={onSaveUserAndDentistryData}
           className="mb-6 mt-10"
         >
-          <ProfileEditor user={user} dentistry={dentistry} />
+          <ProfileEditor user={user} dentistry={dentistry} userId={userId} />
         </form>
 
         {/* Social Links Form */}
         <form action={saveSocialLinks} className="mb-6 mt-10">
+        <input type="hidden" name="userId" value={userId} />
           <h2 className="text-lg font-semibold mb-3">Social Links</h2>
 
 

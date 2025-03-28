@@ -4,8 +4,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { ArrowsClockwise } from "phosphor-react";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
-import { useAdmin } from "@/utils/functions/useAdmin";
-import { useRouter } from "next/navigation";
+// import { useAdmin } from "@/utils/functions/useAdmin";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMessage } from "@/app/contexts/MessageContext";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import Link from "next/link";
@@ -20,14 +20,16 @@ const RightPanelClient = ({ username }: { username: string }) => {
   const { setNotificationMessage } = useMessage();
 
   const { reloadKey } = usePreview();
-  const { getTargetUserId } = useAdmin();
+  const searchParams = useSearchParams();
+  const targetUserId = searchParams.get('userId');
+  // const { getTargetUserId } = useAdmin();
   const router = useRouter();
   const { triggerReload } = usePreview();
 
   const handleUpdate = async () => {
     const response = await fetch("/api/user", {
       method: "PUT",
-      body: JSON.stringify({ targetUserId: getTargetUserId(), use_dental_brand: isUsingBrand })
+      body: JSON.stringify({ targetUserId, use_dental_brand: isUsingBrand })
     })
 
     const data = await response.json();
@@ -44,7 +46,7 @@ const RightPanelClient = ({ username }: { username: string }) => {
     const fetchUserData = async () => {
       const response = await fetch('/api/user', {
         method: "POST",
-        body: JSON.stringify({ targetUserId: getTargetUserId() })
+        body: JSON.stringify({ targetUserId })
       })
 
       const data = await response.json();

@@ -1,7 +1,7 @@
 import React from "react"
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { AdminServer } from "@/utils/functions/useAdminServer";
+// import { AdminServer } from "@/utils/functions/useAdminServer";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 import ReferralButton from "./ReferralButton";
@@ -13,10 +13,11 @@ export const metadata = {
     description: 'Get one month free on your Pro Plan for each friend you refer. Your friend will also receive one month free when they sign up using your link. There’s no limit to how many friends you can refer!'
 };
 
-const Referral = async () => {
+const Referral = async ({ searchParams }: { searchParams: { userId?: string } }) => {
     const supabase = createClient();
+    const targetUserId = searchParams.userId;
 
-    const userId = await getEffectiveUserId({ supabase, targetUserId: AdminServer.getTargetUserId() });
+    const userId = await getEffectiveUserId({ supabase, targetUserId });
 
     const { data: userData, error: userError } = await supabase
         .from("users")

@@ -2,13 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { useAdmin } from "@/utils/functions/useAdmin";
+// import { useAdmin } from "@/utils/functions/useAdmin";
 
 import { createClient } from "@/utils/supabase/server";
 
 export async function login(formData: FormData) {
   const supabase = createClient();
-    const { setTargetUserId } = useAdmin();
+
+  // const { setTargetUserId } = useAdmin();
 
   const data = {
     email: formData.get("email") as string,
@@ -21,8 +22,7 @@ export async function login(formData: FormData) {
     // Instead of redirecting, return the error message
     return { error: error.message };
   }
-  
+
   revalidatePath("/", "layout");
-  setTargetUserId('');
   redirect("/dashboard");
 }

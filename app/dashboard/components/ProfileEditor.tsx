@@ -11,9 +11,10 @@ import Switcher from '@/app/components/Switcher'
 type ProfileEditorProps = {
   dentistry: any;
   user: any;
+  userId: string;
 }
 
-const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
+const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry, userId }) => {
   const [locationTitle, setLocationTitle] = useState<string>(dentistry.location_title || "");
 
   const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -24,6 +25,7 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry }) => {
 
   return (
     <>
+      <input type="hidden" name="userId" value={userId} />
       <h2 className="text-lg font-semibold mb-3">Name</h2>
       <LabeledInput
         label="Profile Title"
