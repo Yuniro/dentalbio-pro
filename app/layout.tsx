@@ -1,7 +1,7 @@
 import { createClient } from "contentful";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import { PreviewProvider } from "./contexts/PreviewContext";
@@ -92,7 +92,7 @@ export default function RootLayout({
         <CombinedProviders>
           {children}
           <Message />
-          <ToastContainer />
+          <ToastContainer position="top-right" autoClose={2000} />
         </CombinedProviders>
       </body>
     </html>

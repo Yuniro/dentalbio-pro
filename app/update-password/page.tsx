@@ -7,6 +7,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import FullRoundedButton from "../components/Button/FullRoundedButton";
+import { toast } from 'react-toastify';
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -25,8 +26,12 @@ export default function UpdatePasswordPage() {
     });
 
     if (!error) {
-      router.push("/login");
-    }
+      toast.success("Password updated successfully!");
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000); // Redirect after 3 seconds
+    } else toast.error(`Failed to update password: ${error.message}`)
+    setIsLoading(false)
   }
 
   return (
