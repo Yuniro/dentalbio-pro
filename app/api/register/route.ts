@@ -128,6 +128,7 @@ export async function POST(request: Request) {
                     trial_end: trialMonths,
                     country,
                     title,
+                    inviteUserName
                 },
                 emailRedirectTo: redirectUrl,
             },
