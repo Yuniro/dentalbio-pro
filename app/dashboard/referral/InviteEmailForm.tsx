@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
-import { PaperPlane  } from "phosphor-react";
+import { PaperPlane, CheckCircle } from "phosphor-react";
 import { useMessage } from "@/app/contexts/MessageContext";
 import LabeledInput from '../components/LabeledInput';
 
@@ -15,9 +15,11 @@ const ReferralButton = ({ referralLink, name }: ReferralButtonProps) => {
     const { setNotificationMessage } = useMessage();
 
     const [email, setEmail] = useState("");
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSent, setIsSent] = useState(false);
 
-    const handleInvite = async () => {
+    const handleInvite = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             setIsLoading(true);
             const response = await fetch("/api/invite", {
@@ -31,13 +33,15 @@ const ReferralButton = ({ referralLink, name }: ReferralButtonProps) => {
             const data = await response.json();
 
             if (response.ok) {
-                setNotificationMessage({ message: "Invite link sent successfully!", type: "success" })
-            } else {
-                setNotificationMessage({ message: "Failed to send Invite!", type: "error" })
-            }
-            setIsLoading(false)
+                setIsSent(true);
+
+                setTimeout(() => {
+                    setIsSent(false);
+                }, 2000);
+            } 
+            setIsLoading(false);
         } catch (err) {
-            setNotificationMessage({ message: "An error occurred while sending the invite.", type: "error" })
+            setIsLoading(false);
         }
     };
 
@@ -57,8 +61,8 @@ const ReferralButton = ({ referralLink, name }: ReferralButtonProps) => {
                 />
                 <div className='flex justify-end'>
                     <FullRoundedButton isLoading={isLoading} type='submit' className="my-3 flex gap-2">
-                        <PaperPlane  size={24} />
-                        Send Referral Link
+                        {isSent ? <CheckCircle size={24} /> : isLoading ? null : <PaperPlane size={24} />}
+                        {isSent ? "Sent!" : "Send Referral Link"}
                     </FullRoundedButton>
                 </div>
             </form>

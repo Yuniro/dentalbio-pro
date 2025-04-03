@@ -2,30 +2,31 @@
 
 import React from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
-import { Copy } from "phosphor-react";
-import { useMessage } from "@/app/contexts/MessageContext";
+import { Copy, CheckCircle } from "phosphor-react";
 
 interface ReferralButtonProps {
     referralLink: string
 }
 
 const ReferralButton = ({ referralLink }: ReferralButtonProps) => {
-    const { setNotificationMessage } = useMessage();
-    const APP_URL = process.env.APP_URL;
+    const [isCopied, setIsCopied] = React.useState(false);
 
     const copyLink = async() => {
         try {
             await navigator.clipboard.writeText(referralLink);
-            setNotificationMessage({ message: "Referral link copied!", type: "success" });
+            setIsCopied(true);
+            setTimeout(() => {
+                setIsCopied(false);
+            }, 2000);
         } catch (err) {
-            setNotificationMessage({ message: "Failed to copy referral link. Please try again.", type: "error" });
+            setIsCopied(false);
         }
     };
     
     return (
         <FullRoundedButton onClick={copyLink} className="my-3 flex gap-2" type="button" buttonType="primary">
-            <Copy size={24} />
-            Copy Referral Link
+            {isCopied ? <CheckCircle size={24} /> : <Copy size={24} />}
+            {isCopied ? "Copied!" : "Copy Referral Link"}
         </FullRoundedButton>
     );
 };
