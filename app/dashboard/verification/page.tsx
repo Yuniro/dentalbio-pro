@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Verification = async ({ searchParams }: { searchParams: { userId?: string } }) => {
   const targetUserId = searchParams.userId;
-  console.log('targetUserId----------', targetUserId)
+  // console.log('targetUserId----------', targetUserId)
   const { subscriptionStatus, isMessageStateForStudent } = await getAuthorizedUser(targetUserId as string);
   const premiumProAvailable = subscriptionStatus === "PREMIUM PRO" || subscriptionStatus === "PRO";
 
