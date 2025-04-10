@@ -13,7 +13,6 @@ import {
 import ProfilePictureUploader from "./ProfilePictureUploader";
 import LabeledInput from "./components/LabeledInput";
 import { getEffectiveUserId } from "@/utils/user/getEffectiveUserId";
-// import { AdminServer } from "@/utils/functions/useAdminServer";
 import { validateSocialMediaInput } from "@/utils/functions/validateSociaMediaInput";
 import { extractUsername } from "@/utils/functions/extractUsername";
 import ProfileEditor from "./components/ProfileEditor";
@@ -24,7 +23,6 @@ async function getUserId(targetUserId: string) {
   try {
     return getEffectiveUserId({ targetUserId, supabase });
   } catch (e) {
-    console.log(')))00000000000000---------------------------', e)
     redirect("/login");
   }
 }
@@ -155,7 +153,6 @@ async function saveDentistryDetails(formData: FormData) {
     booking_link: formData.get("booking_link") as string,
     booking_link_enabled: formData.get("booking_link_enabled") === "on",
     contact_email: formData.get("contact_email") as string,
-    location_title: formData.get("location_title") as string,
   };
 
   const { error: dentistryError } = await supabase

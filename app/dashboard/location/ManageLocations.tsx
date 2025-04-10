@@ -7,12 +7,14 @@ import Link from 'next/link'
 
 type ManageLocationsProps = {
   locations: any[] | null;
+  location_title: string;
   updateLocation: (locationData: LocationType, location_id: string) => void;
   proAvailable: boolean;
 }
 
 const ManageLocations: React.FC<ManageLocationsProps> = ({
   locations,
+  location_title,
   updateLocation,
   proAvailable = false,
 }) => {
@@ -55,7 +57,7 @@ const ManageLocations: React.FC<ManageLocationsProps> = ({
 
   return (
     <>
-      <AddLocation onAddressAdd={addAddress} />
+      <AddLocation onAddressAdd={addAddress} location_title={location_title} />
       {!proAvailable &&
         <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">
           <Link href={'/upgrade'} target="_blank" className="no-underline cursor-pointer">

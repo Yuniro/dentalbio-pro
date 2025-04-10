@@ -15,13 +15,6 @@ type ProfileEditorProps = {
 }
 
 const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry, userId }) => {
-  const [locationTitle, setLocationTitle] = useState<string>(dentistry.location_title || "");
-
-  const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value === "Student") {
-      setLocationTitle("Where I study");
-    }
-  }
 
   return (
     <>
@@ -49,7 +42,6 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry, userId }
             name="position"
             className="w-full appearance-none p-2 rounded-[26px] h-[50px] py-2 text-base px-3 text-neutral-800 pr-10 outline-none cursor-pointer"
             defaultValue={user?.position || ""}
-            onChange={handlePositionChange}
           >
             {positions.map((position) => (
               <option key={position} value={position}>
@@ -64,18 +56,6 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ user, dentistry, userId }
           />
         </div>
       </div>
-
-      <LabeledInput
-        label="Location Title"
-        defaultValue={locationTitle}
-        name="location_title"
-        onChange={(e) => setLocationTitle(e.target.value)}
-        className="w-full text-base pl-7">
-        <Subtitles
-          size={24}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500"
-        />
-      </LabeledInput>
 
       <LabeledInput
         label="GDC / Professional Body Reg No. (optional)"

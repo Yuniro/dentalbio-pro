@@ -55,6 +55,19 @@ async function fetchLocation(dentistryId: string) {
   return locationError ? null : locations;
 }
 
+async function fetchLocationTitle(dentistryId: string) {
+  "use server";
+  const supabase = createClient();
+  const { data: response, error: dentistryError } = await supabase
+    .from("dentistries")
+    .select("location_title")
+    .eq("dentistry_id", dentistryId)
+    .single();
+
+  if (dentistryError) return ''
+  return response.location_title
+}
+
 // Save or update location data
 async function updateLocation(locationData: LocationType, location_id: string) {
   "use server";
@@ -75,6 +88,7 @@ export default async function Location({ searchParams }: { searchParams: { userI
   const targetUserId = searchParams.userId;
   const { userData, dentistryId } = await fetchUserAndDentistry(targetUserId as string);
   const locations = await fetchLocation(dentistryId);
+  const location_title = await fetchLocationTitle(dentistryId);
 
   if (!userData)
     return redirect("/dashboard");
@@ -84,7 +98,7 @@ export default async function Location({ searchParams }: { searchParams: { userI
   return (
     <div className="memberpanel-details-wrapper">
       <MapLoader />
-      <ManageLocations locations={locations} updateLocation={updateLocation} proAvailable={proAvailable}/>
+      <ManageLocations locations={locations} location_title={location_title as string} updateLocation={updateLocation} proAvailable={proAvailable} />
     </div>
   );
 }
