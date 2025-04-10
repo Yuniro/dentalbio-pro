@@ -46,6 +46,7 @@ export async function POST(request: Request) {
         title,
         redirectUrl,
         inviteUserName,
+        location
     } = await request.json();
 
     // Validate input data
@@ -128,7 +129,8 @@ export async function POST(request: Request) {
                     trial_end: trialMonths,
                     country,
                     title,
-                    inviteUserName
+                    inviteUserName,
+                    location
                 },
                 emailRedirectTo: redirectUrl,
             },

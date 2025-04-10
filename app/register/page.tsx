@@ -38,6 +38,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [subErrorMessage, setSubErrorMessage] = useState<string | null>(null);
+  const [location, setLocation] = useState<string | null>(null);
 
   // Handle input changes
   const handleInputChange = (key: string, value: string) => {
@@ -51,6 +52,8 @@ export default function Page() {
   useEffect(() => {
     const setInitialCountry = async () => {
       const country = await getUserLocation();
+
+      setLocation(country)
       setFormData(prev => ({ ...prev, country }))
     }
 
@@ -135,6 +138,7 @@ export default function Page() {
         title: formData.title,
         redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm`,
         inviteUserName,
+        location
       }),
     });
 

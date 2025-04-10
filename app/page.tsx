@@ -13,7 +13,6 @@ import Footer from "./components/Footer";
 import PromoBanner from "./components/PromoBanner";
 import { checkSession } from "@/utils/supabase/checkSession";
 import { redirect } from "next/navigation";
-import { getUserLocation } from "../utils/functions/getUserIp"
 
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "",
@@ -34,7 +33,7 @@ const insertUser = async () => {
   }
 
   const email = userData.user.email ?? "";
-  const { username, first_name, last_name, birthday, offer_code, title, country, position, trial_end, subscription_status, inviteUserName } =
+  const { username, first_name, last_name, birthday, offer_code, title, country, position, trial_end, subscription_status, inviteUserName, location } =
     userData.user.user_metadata;
 
   // Fetch the user's data including subscription status and username
@@ -95,10 +94,8 @@ const insertUser = async () => {
         hour: "2-digit",
         minute: "2-digit",
         timeZoneName: "short",
+        timeZone: "Europe/London",
       });
-
-      // Get user location
-      const userLocation = await getUserLocation();
 
       // Send the confirmation email with time and location
       const emailData = {
@@ -112,9 +109,9 @@ const insertUser = async () => {
         country,
         position,
         time: userTime,
-        location: userLocation || "Unknown",
+        location: location || "Unknown",
         trialMonths,
-        inviteUserName
+        inviteUserName,
       };
 
       const emailResponse = await fetch(`${process.env.APP_URL}/api/send`, {
