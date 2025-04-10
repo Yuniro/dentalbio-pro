@@ -132,7 +132,7 @@ export default function Header({
                 </FullRoundedButton>
               </a> :
               (contact_email &&
-                <a href="mailto:${contact_email}" className="no-underline" target="_blank">
+                <a href={`mailto:${contact_email}`} className="no-underline" target="_blank">
                   <FullRoundedButton className="!py-[7px]" >
                     Contact me
                   </FullRoundedButton>

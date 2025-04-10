@@ -5,10 +5,11 @@ import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";
 import { useState } from "react";
 
 type DeleteBioProps = {
-  handleDelete: () => void;
+  targetUserId?: string | null;
+  handleDelete: (userId: string) => void;
 }
 
-const DeleteBio: React.FC<DeleteBioProps> = ({ handleDelete }) => {
+const DeleteBio: React.FC<DeleteBioProps> = ({ targetUserId, handleDelete }) => {
   const [isOpenDeleteConfirmMessage, setIsOpenDeleteConfirmMessage] = useState<boolean>(false);
 
   return (
@@ -28,7 +29,7 @@ const DeleteBio: React.FC<DeleteBioProps> = ({ handleDelete }) => {
         okText="Delete"
         isOpen={isOpenDeleteConfirmMessage}
         onClose={() => setIsOpenDeleteConfirmMessage(false)}
-        onOk={handleDelete}
+        onOk={() => handleDelete(targetUserId || '')}
       />
     </div>
   )

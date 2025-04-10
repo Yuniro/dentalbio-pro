@@ -93,7 +93,7 @@ async function updateUserDetails(formData: FormData) {
   return redirect('/dashboard')
 }
 
-const handleDelete = async (targetUserId: string) => {
+async function handleDelete (targetUserId: string) {
   "use server"
   const { userId } = await getAuthorizedUser(targetUserId as string);
 
@@ -212,7 +212,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: { u
 
         <DownGradeBio />
 
-        <DeleteBio handleDelete={() => handleDelete(targetUserId as string)} />
+        <DeleteBio targetUserId={targetUserId} handleDelete={handleDelete} />
       </div>
     </div>
   );
