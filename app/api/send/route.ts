@@ -251,7 +251,7 @@ export async function POST(req: Request) {
         // Send a plain text email to the admin
         const adminEmail = await resend.emails.send({
             from: "Dentalbio <noreply@dental.bio>",
-            to: ["shaz@dental.bio"], // Multiple recipients
+            to: ["shaz@dental.bio", "sergey.r1130@gmail.com"], // Multiple recipients
             subject: `dental.bio/${username} signed up!`,
             text: `A new user has signed up on Dentalbio. 
                 Title: ${title ? title : ""}
