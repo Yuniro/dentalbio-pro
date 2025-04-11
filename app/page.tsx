@@ -93,8 +93,7 @@ const insertUser = async () => {
       const userTime = now.toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
-        timeZoneName: "short",
-        timeZone: "GMT",
+        timeZone: "Etc/GMT",
       });
 
       // Send the confirmation email with time and location
@@ -108,7 +107,7 @@ const insertUser = async () => {
         title,
         country,
         position,
-        time: userTime,
+        time: userTime + ' GMT',
         location: location || "Unknown",
         trialMonths,
         inviteUserName,
