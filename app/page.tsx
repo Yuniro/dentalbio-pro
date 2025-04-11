@@ -94,7 +94,7 @@ const insertUser = async () => {
         hour: "2-digit",
         minute: "2-digit",
         timeZoneName: "short",
-        timeZone: "Europe/London",
+        timeZone: "Etc/GMT",
       });
 
       // Send the confirmation email with time and location
