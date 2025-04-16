@@ -36,6 +36,12 @@ export async function POST(req: Request) {
 
     const supabase = createClient();
 
+    const { data: inviterEmail, error: emailCheckError } = await supabase
+        .from("users")
+        .select("email, first_name, last_name")
+        .eq("username", inviteUserName)
+        .single();
+
     try {
         // Send HTML email to the user
         const userEmail = await resend.emails.send({
@@ -110,7 +116,7 @@ export async function POST(req: Request) {
                                                 </p>
                                                 <p
                                                     style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin-top: 20px;">
-                                                    Signed up with ${inviteUserName}'s link? You've got a free 4-months Pro Plan.
+                                                    Signed up with ${inviterEmail?.first_name}'s link? You've got a free 4-months Pro Plan.
                                                 </p>
                                             </td>
                                         </tr>
@@ -136,12 +142,7 @@ export async function POST(req: Request) {
                 </html>`,
         });
 
-        if (inviteUserName) {
-            const { data: inviterEmail, error: emailCheckError } = await supabase
-                .from("users")
-                .select("email")
-                .eq("username", inviteUserName)
-                .single();
+        if (inviterEmail) {
 
             const sendToInviteUser = await resend.emails.send({
                 from: "Dentalbio <noreply@dental.bio>",
