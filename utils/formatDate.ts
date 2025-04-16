@@ -45,5 +45,5 @@ export function formatDateAsMMDDYYYY(input: string): string {
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
 
-  return `${month}/${day}/${year}`;
+  return year === 9999 ? 'forever' : `${month}/${day}/${year}`;
 }

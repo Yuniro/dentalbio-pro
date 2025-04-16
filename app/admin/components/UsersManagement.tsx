@@ -134,7 +134,7 @@ const UsersManagement: React.FC = () => {
     setIsFilterOpen(false);
   };
 
-  const handleUpdateUser = (id: string, subscription_status: string, current_period_end: Date) => {
+  const handleUpdateUser = (id: string, subscription_status: string, current_period_end: Date | null) => {
     setData((prev: any) => {
       const updatedData = prev.map((user: any) => {
         if (user.id === id) {
@@ -602,8 +602,8 @@ const UsersManagement: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-center">{row.current_period_end ? new Date(row.current_period_end).toLocaleDateString() : '-'}</td>
-                    <td className="px-4 py-3 text-center">{row.trial_end ? new Date(row.trial_end).toLocaleDateString() : '-'}</td>
+                    <td className="px-4 py-3 text-center">{row.current_period_end ? formatDateAsMMDDYYYY(row.current_period_end) : '-'}</td>
+                    <td className="px-4 py-3 text-center">{row.trial_end ? formatDateAsMMDDYYYY(row.trial_end) : '-'}</td>
                     <td className="px-4 py-3">
                       <div className="flex justify-center items-center gap-2">{row.isVerified ? <VerificationBadge /> : ''}</div>
                     </td>

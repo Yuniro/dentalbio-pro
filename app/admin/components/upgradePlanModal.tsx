@@ -3,11 +3,12 @@ import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import { CaretDown } from "phosphor-react";
 import LabeledInput from "@/app/dashboard/components/LabeledInput";
 import CustomDatePicker from "@/app/components/DatePicker/DatePicker";
+import SaveButton from "@/app/dashboard/components/SaveButton";
 
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (id: string, subscription_status: string, current_period_end: Date) => void;
+  onSuccess: (id: string, subscription_status: string, current_period_end: Date | null) => void;
   user: any;
 }
 
@@ -19,7 +20,7 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
 }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [period_end, setPeriodEnd] = useState<Date | null>(null);
-  const [planName, setPlanName] = useState<string>("PRO");
+  const [planName, setPlanName] = useState<string>("FREE");
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
@@ -29,17 +30,15 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
 
   const handleSubmit = async () => {
     setError('');
-    if (!period_end) {
-      setError('Please select the end date!')
-      return;
-    }
 
     setIsUploading(true);
     const userId = user.id;
 
+    const endDate = planName === 'FREE' ? null : period_end || new Date("9999-12-31");
+
     const response = await fetch("/api/subscribe", {
       method: "POST",
-      body: JSON.stringify({ id: userId, subscription_status: planName, current_period_end: period_end })
+      body: JSON.stringify({ id: userId, subscription_status: planName, current_period_end: endDate }),
     });
 
     const data = await response.json();
@@ -48,7 +47,7 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
       console.error(data.error);
       setError(error)
     } else {
-      onSuccess(userId, planName, period_end);
+      onSuccess(userId, planName, endDate);
       onClose();
     }
     setIsUploading(false);
@@ -151,9 +150,7 @@ const UpgradePlanModal: React.FC<ModalProps> = ({
 
               </div>
               <div className="flex justify-end gap-2 mt-4">
-                <FullRoundedButton isLoading={isUploading} type="submit">
-                  Upgrade
-                </FullRoundedButton>
+                <SaveButton text="Upgrade" loadingText="Upgrading" />
                 <FullRoundedButton type="button" buttonType="danger" onClick={onClose}>
                   Close
                 </FullRoundedButton>

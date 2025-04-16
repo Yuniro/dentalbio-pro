@@ -55,7 +55,7 @@ export const POST = async (request: Request) => {
 
     const { data, error: supabaseError } = await supabase
       .from("users")
-      .update({ subscription_status, current_period_end: current_period_end, subscription_id: null })
+      .update({ subscription_status, current_period_end: subscription_status === 'FREE' ? null : current_period_end, subscription_id: null })
       .eq("id", id)
       .select('*');
 
