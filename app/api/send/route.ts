@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     const supabase = createClient();
 
-    const { data: inviterEmail, error: emailCheckError } = await supabase
+    const { data: inviterData, error: emailCheckError } = await supabase
         .from("users")
         .select("email, first_name, last_name")
         .eq("username", inviteUserName)
@@ -102,21 +102,21 @@ export async function POST(req: Request) {
                                                 </h1>
                                                 <p
                                                     style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 50px 0 0 0;">
-                                                    Hello <b>${first_name} ${last_name}</b>,
+                                                    Hello <b style="text-transform: capitalize;">${first_name} ${last_name}</b>,
                                                 </p>
                                                 <p
                                                     style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin: 20px 0;">
                                                     Your registration was successful! 🚀 You have secured your Dentalbio username:
                                                 </p>
                                                 <h2 style="font-size: 24px; font-weight: bold; color: #5046db; margin: 10px 0;">
-                                                    dental.bio/<span style="color: #f1852f">${username}</span>
+                                                    dental.bio/<span style="color: #f1852f; text-transform: capitalize;">${username}</span>
                                                 </h2>
                                                 <p style="font-size: 16px; font-weight: 300; color: #1c1c21; line-height: 1.7;">
-                                                    Username: <span style="color: #f1852f">@${username}</span>
+                                                    Username: <span style="color: #f1852f; text-transform: capitalize;">@${username}</span>
                                                 </p>
                                                 <p
                                                     style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin-top: 20px;">
-                                                    Signed up with ${inviterEmail?.first_name}'s link? You've got a free 4-months Pro Plan.
+                                                    Signed up with <b style="text-transform: capitalize;">${inviterData?.first_name}</b>'s link? You've got a free 4-months Pro Plan.
                                                 </p>
                                             </td>
                                         </tr>
@@ -142,11 +142,11 @@ export async function POST(req: Request) {
                 </html>`,
         });
 
-        if (inviterEmail) {
+        if (inviterData) {
 
             const sendToInviteUser = await resend.emails.send({
                 from: "Dentalbio <noreply@dental.bio>",
-                to: inviterEmail?.email,
+                to: inviterData?.email,
                 subject: "You got free pro plan for 1 months",
                 html: `
                         <!DOCTYPE html>
@@ -205,11 +205,11 @@ export async function POST(req: Request) {
                                                         </h1>
                                                         <p
                                                             style="font-size: 16px; font-weight: 400; color: #1c1c21; line-height: 1.7; margin: 20px 0 0 0;">
-                                                            Hello <b>${inviteUserName} </b>!
+                                                            Hello <b style="text-transform: capitalize;">${inviterData.first_name} </b>!
                                                         </p>
                                                         <p
                                                             style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin: 20px 0;">
-                                                            We wanted to let you know that <b>${username}</b> has just signed up using your referral link! 
+                                                            We wanted to let you know that <b style="text-transform: capitalize;">${first_name}</b> has just signed up using your referral link! 
                                                             <br /><br />
                                                             You got 1 months Pro plan from the <b>Dentalbio</b> community.
                                                         </p>
