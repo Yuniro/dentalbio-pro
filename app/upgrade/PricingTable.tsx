@@ -214,9 +214,12 @@ const PricingTable: React.FC<PricingTableProps> = ({ email }) => {
     });
 
     const data = await response.json();
-    console.log(data);
-
-    setSubscriptionStatus(planName || "FREE");
+    
+    if (data.error) {
+      handleCreate(priceId);
+    } else {
+      setSubscriptionStatus(planName || "FREE");
+    }
   }
 
   const handleCreate = async (priceId: string) => {
