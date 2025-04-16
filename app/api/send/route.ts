@@ -110,7 +110,7 @@ export async function POST(req: Request) {
                                                 </p>
                                                 <p
                                                     style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin-top: 20px;">
-                                                    As a welcome gift, you're getting <b>${trialMonths} months of Pro Plan for FREE!</b> 🎁
+                                                    Signed up with ${inviteUserName}'s link? You've got a free 4-months Pro Plan.
                                                 </p>
                                             </td>
                                         </tr>

@@ -45,7 +45,7 @@ export const POST = async (request: Request) => {
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
 
       if (subscription.status !== 'canceled') {
-        const canceledSubscription = await stripe.subscriptions.cancel(subscriptionId);
+        await stripe.subscriptions.cancel(subscriptionId);
       } else {
         console.log('Subscription is already canceled.');
       }
