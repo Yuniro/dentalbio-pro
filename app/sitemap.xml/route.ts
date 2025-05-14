@@ -2,6 +2,15 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server'
 
+type BlogWithAuthor = {
+    slug?: string
+    blog_groups: {
+      users: {
+        username?: string
+      }[]
+    }[]
+ }
+
 export async function GET() {
     
     const supabase = createClient();
@@ -17,9 +26,7 @@ export async function GET() {
     .select(`
         slug,
         blog_groups (
-            user_id,
             users (
-                id,
                 username
             )
         )
@@ -34,7 +41,7 @@ export async function GET() {
     ...(users || []).map(user => ({
       loc: `${SITE_URL}/${user.username}`,
     })),
-    ...(blogs || []).map(post => ({
+    ...(blogs as BlogWithAuthor[]).map(post => ({
       loc: `${SITE_URL}/${post.blog_groups?.users?.username}/blog/${post.slug}`,
     })),
   ]
