@@ -2,14 +2,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server'
 
-type BlogWithAuthor = {
-    slug?: string
-    blog_groups: {
-      users: {
-        username?: string
-      }[]
-    }[]
- }
 
 export async function GET() {
     
@@ -25,15 +17,15 @@ export async function GET() {
     .from('blogs')
     .select(`
         slug,
-        blog_groups (
-            users (
+        blog_groups:blog_groups (
+            users:users (
                 username
             )
         )
     `)
 
   if (userError || blogError) {
-    return new Response('Failed to generate sitemap', { status: 500 })
+    return new NextResponse('Failed to generate sitemap', { status: 500 })
   }
 
   const urls = [
@@ -41,9 +33,9 @@ export async function GET() {
     ...(users || []).map(user => ({
       loc: `${SITE_URL}/${user.username}`,
     })),
-    ...(blogs as BlogWithAuthor[]).map(post => ({
-      loc: `${SITE_URL}/${post.blog_groups?.users?.username}/blog/${post.slug}`,
-    })),
+    ...(blogs || []).map(post =>
+            ({loc: `${SITE_URL}/${post?.blog_groups?.users?.username}/blog/${post.slug}`}),
+        ),
   ]
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -59,6 +51,9 @@ ${urls
   )
   .join('\n')}
 </urlset>`
+
+console.log(blogs)
+console.log(blogs[0]?.blog_groups?.users)
 
   return new NextResponse(xml, {
     status: 200,
