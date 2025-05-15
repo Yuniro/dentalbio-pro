@@ -10,7 +10,7 @@ const Video = async ({ searchParams }: { searchParams: { userId?: string } }) =>
   const proAvailable = ["PRO", "PREMIUM PRO"].includes(subscriptionStatus);
 
   return (
-    <div className='px-10'>
+    <div>
       {!proAvailable &&
         <>
           <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">

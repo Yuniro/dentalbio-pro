@@ -117,7 +117,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: { u
   const user = await getUserDetails(targetUserId as string); // Fetch user details
 
   return (
-    <div className="memberpanel-details-wrapper">
+    <div >
       <div id="columns">
         <div className="text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">These details are private, and will not be visible on your Dentalbio.</div>
         <h2 className="text-lg font-semibold text-dark mb-3">Settings</h2>

@@ -214,9 +214,9 @@ const ManageGalleries = ({ targetUserId, enabled = false }: { targetUserId: stri
     }, [galleries]);
 
   return (
-    <div>
+    <div className='py-10'>
     {enabled &&
-      <h4 className='mt-4 mb-6'>Gallery</h4>}
+      <h4 className='mb-6'>Gallery</h4>}
 
       <DndProvider backend={HTML5Backend}>
         {galleries ?

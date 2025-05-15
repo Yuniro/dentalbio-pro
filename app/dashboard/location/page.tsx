@@ -96,7 +96,7 @@ export default async function Location({ searchParams }: { searchParams: { userI
   const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
   return (
-    <div className="memberpanel-details-wrapper">
+    <div >
       <MapLoader />
       <ManageLocations locations={locations} location_title={location_title as string} updateLocation={updateLocation} proAvailable={proAvailable} />
     </div>

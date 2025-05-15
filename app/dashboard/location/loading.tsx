@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Loading() {
   return (
-    <div className="memberpanel-details-wrapper">
+    <div >
       <div id="columns">
         <SkeletonLoader/>
         <SkeletonLoader/>

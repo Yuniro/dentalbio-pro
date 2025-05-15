@@ -10,7 +10,7 @@ const Verification = async ({ searchParams }: { searchParams: { userId?: string 
   const premiumProAvailable = subscriptionStatus === "PREMIUM PRO" || subscriptionStatus === "PRO";
 
   return (
-    <div className='px-10'>
+    <div>
       {!premiumProAvailable &&
         <Link
           href={"/upgrade"}

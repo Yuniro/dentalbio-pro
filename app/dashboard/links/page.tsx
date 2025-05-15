@@ -39,7 +39,7 @@ export default async function LinksPage({ searchParams }: { searchParams: { user
   const dentistryId = await getDentistryId(userId); // Fetch dentistry ID
 
   return (
-    <div className="memberpanel-details-wrapper">
+    <div >
       <div id="columns">
         <AddLinkGroupForm dentistryId={dentistryId} />
         <ManageLinkGroups dentistryId={dentistryId} />

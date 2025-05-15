@@ -102,9 +102,9 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
 
   return (
     <form onSubmit={handleSubmit} className="mb-6 mt-10">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between pb-2 sm:pb-0">
         <h2 className="text-lg font-semibold mb-3">Add new {isService ? "service" : "treatment"}</h2>
-        <div className="flex justify-between items-center gap-2">
+        <div className="flex items-center gap-2">
           <label>Treatment</label>
           <Switcher isChecked={isService} onToggle={toggleIsService} />
           <label>Service</label>

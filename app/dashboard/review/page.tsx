@@ -25,7 +25,7 @@ const Review = async ({ searchParams }: { searchParams: { userId?: string } }) =
   const proAvailable = (userData.subscription_status === "PRO" || userData.subscription_status === "PREMIUM PRO");
 
   return (
-    <div className='px-10'>
+    <div>
       {!proAvailable &&
         <>
           <div className="flex justify-center gap-2 text-center bg-[#F7FAFC] p-2 rounded-[26px] text-gray-500 font-semibold my-4">

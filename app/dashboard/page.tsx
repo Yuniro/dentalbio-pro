@@ -236,7 +236,7 @@ export default async function Profile({ searchParams }: { searchParams: { userId
   const user = await getUserDetails(userId);
 
   return (
-    <div className="memberpanel-details-wrapper">
+    <div >
       <div id="columns">
         <ProfilePictureUploader dentistryId={dentistry.dentistry_id} />
         <form

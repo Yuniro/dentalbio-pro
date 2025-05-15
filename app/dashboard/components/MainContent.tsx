@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const MainContent = () => {
   return (
-    <div className="memberpanel-details-wrapper">
+    <div >
       <Link href={"/dashboard/links"} className=" no-underline">
         <div className="add-btn">
           <button>

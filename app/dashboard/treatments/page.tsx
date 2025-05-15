@@ -45,7 +45,7 @@ export default async function TreatmentsPage({ searchParams }: { searchParams: {
   const dentistryId = await getDentistryId(userId); // Fetch dentistry ID
 
   return (
-    <div className="memberpanel-details-wrapper">
+    <div >
       <div id="columns">
         {/* Pass the dentistryId to client-side components */}
         <AddTreatmentForm dentistryId={dentistryId} />
