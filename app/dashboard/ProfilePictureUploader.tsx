@@ -364,7 +364,7 @@ export default function ProfilePictureUploader({
       {showCropModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="rounded-lg">
-            <div className="bg-[#313338] rounded-t-lg p-4 relative w-[640px]">
+            <div className="bg-[#313338] rounded-t-lg p-4 relative w-[350px] sm:w-[425px] md:w-[640px]">
               <div
                 className="relative w-full h-[400px] rounded-md"
               >
