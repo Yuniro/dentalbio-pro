@@ -163,6 +163,8 @@ export default function ProfilePictureUploader({
         croppedAreaPixels
       );
 
+      setShowCropModal(false);
+
       // Delete existing profile pictures before uploading the new one
       await deleteProfilePicture();
 
@@ -184,7 +186,6 @@ export default function ProfilePictureUploader({
       fetchProfilePicture();
 
       // Close the modal and clear selected image
-      setShowCropModal(false);
       setImageSrc(null);
 
       // Reset the file input
