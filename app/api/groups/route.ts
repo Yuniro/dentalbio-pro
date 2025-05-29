@@ -72,12 +72,13 @@ export async function POST(request: Request) {
 
     if (targetUserId && userData.role !== "admin")
       return NextResponse.json({ error: "Not authorized" });
+    const insert_user_id  = targetUserId || userData.id;
 
-    const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: targetUserId || userData.id }) + 1;
+    const maxRank = await getMaxRank({ supabase, table: "blog-groups", field: "user_id", value: insert_user_id }) + 1;
 
     const { data, error } = await supabase
       .from('groups')
-      .insert([{ name, user_id: userData.id, rank: maxRank, enabled: true, type }])
+      .insert([{ name, user_id: insert_user_id, rank: maxRank, enabled: true, type }])
       .select(`*, ${type}(*)`)
       .single();
 
