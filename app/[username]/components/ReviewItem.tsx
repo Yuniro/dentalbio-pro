@@ -25,7 +25,7 @@ const ReviewItem: React.FC<ReviewType> = ({ ...reviewData }) => {
           count={5}
           size={20}
           color1="gray"
-          color2="#000000"
+          color2="#FFD700"
           edit={false}
           half={false}
           value={reviewData.stars}
