@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { DotsThreeCircle } from "phosphor-react";
 import { createClient } from "@/utils/supabase/client";
 import ShareModal from "./ShareModal";
 import SocialLinks from "./SocialLinks";

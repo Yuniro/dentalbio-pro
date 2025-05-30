@@ -1,5 +1,5 @@
 // src/components/Modal.tsx
-import { X } from "phosphor-react";
+import { X } from "@phosphor-icons/react";
 import React from "react";
 
 export default function Modal({

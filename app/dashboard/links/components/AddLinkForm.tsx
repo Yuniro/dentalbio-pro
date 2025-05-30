@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 
-import { LinkSimple } from "phosphor-react";
+import { LinkSimple } from "@phosphor-icons/react";
 
 export default function AddLinkForm({
   linkGroupId,

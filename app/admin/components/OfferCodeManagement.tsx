@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { PlusCircle, FileText, XCircle, PencilSimple, Trash } from "phosphor-react";
+import { PlusCircle, FileText, XCircle, PencilSimple, Trash } from "@phosphor-icons/react";
 import FullRoundedButton from "../../components/Button/FullRoundedButton";
 import LabeledInput from "../../dashboard/components/LabeledInput";
 

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 import AddLinkForm from "./AddLinkForm";
 import LinkItem from "./LinkItem";
-import { Trash, PencilSimple, ArrowUp, ArrowDown } from "phosphor-react";
+import { Trash, PencilSimple, ArrowUp, ArrowDown } from "@phosphor-icons/react";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";

@@ -1,4 +1,4 @@
-import { FacebookLogo, InstagramLogo, TiktokLogo, TwitterLogo } from 'phosphor-react';
+import { FacebookLogo, InstagramLogo, TiktokLogo, TwitterLogo } from '@phosphor-icons/react';
 import React from 'react'
 
 type SocialLinkProps = {

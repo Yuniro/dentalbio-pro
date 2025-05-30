@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { CaretRight, DotsThreeCircle } from "phosphor-react";
+import { CaretRight, DotsThreeCircle } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
 

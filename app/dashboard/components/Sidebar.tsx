@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Cookies from "js-cookie";
-import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple, LinkBreak, List, X } from "phosphor-react";
+import { Gear, MapPin, Heart, LinkSimple, House, ShoppingCartSimple, LinkBreak, List, X } from "@phosphor-icons/react";
 import { CheckSquare, Globe, Image, LockSimple, Newspaper, SealCheck, Video, } from "@phosphor-icons/react/dist/ssr";
 // import { useAdmin } from "@/utils/functions/useAdmin";
 import ConfirmMessage from "@/app/components/Modal/ConfirmMessagel";

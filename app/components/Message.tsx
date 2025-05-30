@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { CheckCircle, XCircle, Info } from 'phosphor-react'; // Import the required icons
+import { CheckCircle, XCircle, Info } from '@phosphor-icons/react'; // Import the required icons
 import FullRoundedButton from './Button/FullRoundedButton';
 import { useMessage } from '../contexts/MessageContext';
 

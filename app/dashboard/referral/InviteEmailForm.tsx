@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
-import { PaperPlane, CheckCircle } from "phosphor-react";
+import { PaperPlane, CheckCircle } from "@phosphor-icons/react";
 import { useMessage } from "@/app/contexts/MessageContext";
 import LabeledInput from '../components/LabeledInput';
 

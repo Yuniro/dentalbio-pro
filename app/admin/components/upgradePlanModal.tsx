@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
-import { CaretDown } from "phosphor-react";
+import { CaretDown } from "@phosphor-icons/react";
 import LabeledInput from "@/app/dashboard/components/LabeledInput";
 import CustomDatePicker from "@/app/components/DatePicker/DatePicker";
 import SaveButton from "@/app/dashboard/components/SaveButton";

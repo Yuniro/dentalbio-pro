@@ -2,7 +2,7 @@
 
 import React from "react";
 import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
-import { Copy, CheckCircle } from "phosphor-react";
+import { Copy, CheckCircle } from "@phosphor-icons/react";
 
 interface ReferralButtonProps {
     referralLink: string

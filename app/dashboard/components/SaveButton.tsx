@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useFormStatus } from "react-dom";
-import { Spinner } from "phosphor-react";
+import { Spinner } from "@phosphor-icons/react";
 
 export default function SaveButton({ text, loadingText }: { text?: string; loadingText?: string; }) {
   const status = useFormStatus();

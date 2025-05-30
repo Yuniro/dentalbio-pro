@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { ArrowsClockwise } from "phosphor-react";
+import { ArrowsClockwise } from "@phosphor-icons/react";
 import { usePreview } from "@/app/contexts/PreviewContext";
 import { LockSimple } from "@phosphor-icons/react/dist/ssr";
 // import { useAdmin } from "@/utils/functions/useAdmin";

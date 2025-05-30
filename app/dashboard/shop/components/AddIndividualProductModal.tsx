@@ -5,7 +5,7 @@ import FullRoundedButton from "@/app/components/Button/FullRoundedButton";
 import LabeledInput from "../../components/LabeledInput";
 import ImageUploader from "../../components/ImageUploader";
 import { currencies } from "@/utils/global_constants";
-import { CaretDown } from "phosphor-react";
+import { CaretDown } from "@phosphor-icons/react";
 
 type ModalProps = ProductType & {
   isOpen: boolean;

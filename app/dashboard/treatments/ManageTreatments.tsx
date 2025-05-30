@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { createClient } from "@/utils/supabase/client";
-import { CaretDown, CaretUp, PencilSimple, Trash } from "phosphor-react";
+import { CaretDown, CaretUp, PencilSimple, Trash } from "@phosphor-icons/react";
 import Modal from "./Modal"; // Modal component for popup
 import SaveButton from "../components/SaveButton";
 import SkeletonLoader from "@/app/components/Loader/Loader";

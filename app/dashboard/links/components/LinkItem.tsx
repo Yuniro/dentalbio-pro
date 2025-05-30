@@ -7,7 +7,7 @@ import {
   ArrowSquareOut,
   CaretUp,
   CaretDown,
-} from "phosphor-react";
+} from "@phosphor-icons/react";
 import { useDrag, useDrop } from "react-dnd";
 import Link from "next/link";
 import Switcher from '@/app/components/Switcher'
