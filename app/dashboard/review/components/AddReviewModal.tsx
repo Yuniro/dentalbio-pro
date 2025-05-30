@@ -42,7 +42,7 @@ const AddReviewModal: React.FC<ModalProps> = ({
         stars: 5,
         content: "",
         image_url: "",
-        created_at: null,
+        created_at: new Date(),
         platform: "",
       });
     }
