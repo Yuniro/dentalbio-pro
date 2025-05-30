@@ -2,9 +2,9 @@
 import React, { useReducer, useState } from "react";
 import SaveButton from "../components/SaveButton";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
 import LabeledInput from "../components/LabeledInput";
 import Switcher from '@/app/components/Switcher'
+import LimitedTextArea from "@/app/dashboard/components/LimitedTextArea";
 
 // Function for Captical First
 function toCapitalFirst(sentence: string): string {
@@ -15,9 +15,7 @@ function toCapitalFirst(sentence: string): string {
 export default function AddTreatmentForm({ dentistryId }: { dentistryId: string }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
   const [isService, toggleIsService] = useReducer((prevState) => !prevState, false);
-  const router = useRouter(); // Next.js router for refresh
 
   const maxLimit = 200;
 
@@ -28,16 +26,6 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
       setDescription(e.target.value);
     }
   }
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
-
-  const handleBlur = () => {
-    if (description === '') {
-      setIsFocused(false);
-    }
-  };
 
   // Function to handle the form submission
   const handleSubmit = async (event: React.FormEvent) => {
@@ -122,26 +110,15 @@ export default function AddTreatmentForm({ dentistryId }: { dentistryId: string 
           required
         />
       </div>
-      <div className="relative w-full mb-3 bg-white rounded-[26px] pt-[20px] pb-2 px-4 ">
-        <label
-          htmlFor="description"
-          className={`absolute top-[12px] text-gray-500 transition-all duration-100 ease-linear transform ${isFocused || description ? '-translate-y-[7px] text-xs' : 'scale-100'}`}
-        >
-          {isService ? "Service" : "Treatment"} Description
-        </label>
-        <textarea
-          name="description"
-          id="description"
-          className="w-full resize-none focus:outline-none text-base placeholder:text-neutral-500 text-neutral-800 placeholder:font-normal min-h-40"
-          // placeholder="Treatment Description"
-          value={description}
-          onChange={handleTextChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          required
-        />
-        <div className='text-right text-gray-500'>{description.length}/{maxLimit}</div>
-      </div>
+
+      <LimitedTextArea
+        placeholder={`${isService ? "Service" : "Treatment"} Description`}
+        name="description"
+        value={description}
+        onChange={handleTextChange}
+        limit={200}
+        required
+      />
       <div className="w-full flex justify-end">
         <SaveButton text={`Add ${isService ? "service" : "treatment"}`} />
       </div>
