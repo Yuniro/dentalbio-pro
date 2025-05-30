@@ -72,7 +72,7 @@ const SocialLinks: React.FC<SocialLinkProps> = ({
       )}
       {other_link && (
         <a
-          href={other_link}
+          href={other_link.startsWith("http") ? other_link : `https://${other_link}`}
           className="no-underline bg-neutral-800 rounded-full p-1"
           target="_blank"
         >
