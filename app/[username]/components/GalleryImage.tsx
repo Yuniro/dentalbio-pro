@@ -19,10 +19,10 @@ const GalleryImage: React.FC<GalleryImageProps> = ({
     <>
       <div
         className="w-[40%]">
-        <div className="w-full rounded-lg cursor-pointer overflow-hidden mb-3" onClick={() => setIsOpen(true)}>
+        <div className="w-full rounded-lg cursor-pointer overflow-hidden mb-3 " onClick={() => setIsOpen(true)}>
           <BlogImage
             src={src}
-            className="aspect-square hover:scale-110 transition-all duration-300"
+            className="W-full h-auto object-cover hover:scale-110 transition-all duration-300 aspect-[14/16]"
           />
         </div>
         <h5 className="text-[18px] font-medium mb-1">{title}</h5>
@@ -39,6 +39,7 @@ const GalleryImage: React.FC<GalleryImageProps> = ({
           >
             <BlogImage
               src={src}
+              className="max-w-full max-h-[95vh] object-contain rounded-lg shadow-lg"
             />
           </div>
         </div>}
