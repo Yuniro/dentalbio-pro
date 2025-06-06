@@ -154,6 +154,53 @@ export default function ProfilePictureUploader({
     });
   }
 
+  function resizeImage(file: File, maxWidth = 800, maxHeight = 800, quality = 0.8): Promise<File> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        img.src = reader.result as string;
+      };
+      reader.onerror = reject;
+  
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+  
+        // Calculate new dimensions while preserving aspect ratio
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width *= ratio;
+          height *= ratio;
+        }
+  
+        canvas.width = width;
+        canvas.height = height;
+  
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return reject("Canvas context not available");
+  
+        ctx.drawImage(img, 0, 0, width, height);
+  
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(new File([blob], file.name, { type: "image/jpeg" }));
+            } else {
+              reject("Image compression failed");
+            }
+          },
+          "image/jpeg",
+          quality // 0.0 - 1.0
+        );
+      };
+  
+      reader.readAsDataURL(file);
+    });
+  }
+  
+
   async function handleCropAndUpload() {
     try {
       setUploading(true);
@@ -162,6 +209,8 @@ export default function ProfilePictureUploader({
         imageSrc!,
         croppedAreaPixels
       );
+
+      const resizedImage = await resizeImage(croppedImageFile, 800, 800, 0.7);
 
       setShowCropModal(false);
 
@@ -175,7 +224,7 @@ export default function ProfilePictureUploader({
       // Upload the cropped image to the designated folder (dentistryId)
       const { error: uploadError } = await supabase.storage
         .from("profile-pics")
-        .upload(`${dentistryId}/${uniqueFileName}`, croppedImageFile, {
+        .upload(`${dentistryId}/${uniqueFileName}`, resizedImage, {
           cacheControl: "3600",
           upsert: true, // Replace existing file if same name
         });
