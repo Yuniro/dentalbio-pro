@@ -8,6 +8,9 @@ export default async function ConfirmPage() {
 
   // Get the session and user
   const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+  console.log(sessionData, sessionError)
+
   if (sessionError || !sessionData?.session) {
     return redirect("/error?message=session_error");
   }
