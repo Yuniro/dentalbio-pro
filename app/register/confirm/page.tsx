@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 
 import { redirect } from "next/navigation";
 import { getUserLocation } from "@/utils/functions/getUserIp";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default async function ConfirmPage() {
   const supabase = createClient();
@@ -21,24 +22,30 @@ export default async function ConfirmPage() {
     return redirect("/error?message=user_error");
   }
 
-  // Extract user metadata
-  const {
-    username,
-    first_name,
-    last_name,
-    birthday,
-    title,
-    country,
-    offer_code,
-    position,
-    email_verified,
-  } = user.user_metadata;
-
   const email = user.email;
 
-  if (!username || !email) {
+  if (!email) {
     return redirect("/error?message=missing_data");
   }
+
+  const { data: userData, error: userError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('email', email)
+    .single();
+
+  const {
+    username,
+    title,
+    country,
+    position,
+    first_name,
+    last_name,
+    trial_end,
+    created_at
+  } = userData;
+
+  const { inviteUserName, email_verified } = user.user_metadata;
 
   // Ensure that the user's email is verified
   if (!email_verified) {
@@ -53,53 +60,35 @@ export default async function ConfirmPage() {
     timeZoneName: "short",
   });
 
+  // Calculate trialMonths as the difference in months between today and trial_end
+  let trialMonths = 0;
+  if (trial_end) {
+    const today = new Date();
+    const end = new Date(trial_end);
+    trialMonths = (end.getFullYear() - today.getFullYear()) * 12 + (end.getMonth() - today.getMonth());
+    if (end.getDate() < today.getDate()) trialMonths--;
+    if (trialMonths < 0) trialMonths = 0;
+  }
+
   const userLocation = await getUserLocation();
 
   try {
-    // Check if the user already exists in your custom `users` table
-    const { data: existingUser, error: checkError } = await supabase
-      .from("users")
-      .select("id")
-      .or(`email.eq.${email},username.eq.${username}`)
-      .single();
-
-    if (checkError && checkError.code !== "PGRST116") {
-      return redirect("/error?message=check_error");
-    }
-
-    if (existingUser) {
-      return redirect("/error?message=user_exists");
-    }
-
-    // Insert the user into your custom `users` table
-    const { error: insertError } = await supabase.from("users").insert({
-      username,
-      email,
-      first_name,
-      last_name,
-      title,
-      birthday,
-      offer_code,
-      country,
-      position,
-      time_registered: userTime,
-      location_registered: userLocation,
-    });
-
-    if (insertError) {
-      return redirect(`/error?message=insert_error&details=${insertError.message}`);
-    }
-
     // Send the welcome email via API
     const emailData = {
       email,
-      firstName: first_name,
+      title,
+      country,
+      position,
       username,
-      time: userTime,
-      location: userLocation || "Unknown",
+      first_name,
+      last_name,
+      location: userLocation || "Unkown",
+      trialMonths,
+      time: created_at,
+      inviteUserName
     };
 
-    const emailResponse = await fetch("/api/send", {
+    const emailResponse = await fetch(`${baseUrl}/api/send`, {
       method: "POST",
       body: JSON.stringify(emailData),
       headers: {
@@ -110,11 +99,11 @@ export default async function ConfirmPage() {
     if (!emailResponse.ok) {
       return redirect("/error?message=email_error");
     }
-
-    // Redirect to the success page after email is successfully sent
-    return redirect("/dashboard");
   } catch (err) {
     console.error("Unexpected error:", err);
     return redirect("/error?message=unexpected_error");
   }
+
+  // Redirect to the success page after email is successfully sent
+  return redirect("/dashboard");
 }

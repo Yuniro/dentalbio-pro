@@ -2,16 +2,14 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 export const getEffectiveUserId = async ({ targetUserId, supabase }: { targetUserId?: string | null, supabase: SupabaseClient }) => {
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-
-  if (authError) {
-    // console.log('authError logged getEffectiveUserId))))))))))))))))))))))))))', authError)
+  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+  if (sessionError || !sessionData?.session) {
     return redirect("/login");
   }
 
-  const email = authData.user.email;
+  const { user: sessionUser } = sessionData.session;
 
-  // console.log('))))authDatalog for check double logged in', authData)
+  const email = sessionUser.email;
 
   const { data: user, error } = await supabase
     .from('users')

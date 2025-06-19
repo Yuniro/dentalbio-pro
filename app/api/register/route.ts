@@ -114,6 +114,7 @@ export async function POST(request: Request) {
         const trialMonths = referralUser?.email ? trialEndDate(1) : trialEndDate(0)
 
         // Sign up the user with Supabase
+        // The trigger will automatically insert data into public.users table
         const { error } = await supabase.auth.signUp({
             email,
             password,

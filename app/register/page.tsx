@@ -51,10 +51,9 @@ export default function Page() {
 
   useEffect(() => {
     const setInitialCountry = async () => {
-      const country = await getUserLocation();
-
-      setLocation(country)
-      setFormData(prev => ({ ...prev, country }))
+      const country: string = await getUserLocation();
+      setLocation(country);
+      setFormData(prev => ({ ...prev, country }));
     }
 
     setInitialCountry()
@@ -136,7 +135,7 @@ export default function Page() {
         offerCode: formData.offerCode,
         country: formData.country,
         title: formData.title,
-        redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/confirm`,
+        redirectUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/register/confirm`,
         inviteUserName,
         location
       }),
