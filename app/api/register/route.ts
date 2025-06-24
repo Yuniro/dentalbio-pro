@@ -175,8 +175,6 @@ export async function POST(request: Request) {
             //         proration_behavior: 'none', // No proration for extending the subscription
             //         trial_end: Math.floor(updatedEndDate.getTime() / 1000) as any, // Reset the billing cycle to now
             //     });
-
-            //     console.log("updatedSubscription----------test", updatedSubscription, 'updatedSubscription')
             // }
         }
         return NextResponse.json({ message: "User registered successfully." }, { status: 200 });

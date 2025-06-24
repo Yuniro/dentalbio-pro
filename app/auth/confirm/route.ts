@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type') as EmailOtpType | null
-  const next = searchParams.get('next') ?? '/'
+  const next = searchParams.get('next') ?? '/register/confirm'
 
   // Create a clone of the request's next URL to use for redirection
   const redirectTo = request.nextUrl.clone()

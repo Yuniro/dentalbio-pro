@@ -3,31 +3,28 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { getUserLocation } from "@/utils/functions/getUserIp";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+
 export default async function ConfirmPage() {
   const supabase = createClient();
 
   // Get the session and user
-  const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-  if (sessionError || !sessionData?.session) {
+  const { data: sessionData, error: sessionError } = await supabase.auth.getUser();
+  if (sessionError || !sessionData?.user) {
     return redirect("/error?message=session_error");
   }
 
-  const { user } = sessionData.session;
-
-  if (!user) {
-    return redirect("/error?message=user_error");
-  }
+  const { user } = sessionData;
 
   // Extract user metadata
   const {
+    title,
     username,
     first_name,
     last_name,
-    birthday,
-    title,
-    country,
-    offer_code,
     position,
+    country,
+    inviteUserName,
     email_verified,
   } = user.user_metadata;
 
@@ -44,7 +41,7 @@ export default async function ConfirmPage() {
 
   // Get user time and location server-side
   const now = new Date();
-  const userTime = now.toLocaleTimeString("en-GB", {
+  const time = now.toLocaleTimeString("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
     timeZoneName: "short",
@@ -52,66 +49,32 @@ export default async function ConfirmPage() {
 
   const userLocation = await getUserLocation();
 
-  try {
-    // Check if the user already exists in your custom `users` table
-    const { data: existingUser, error: checkError } = await supabase
-      .from("users")
-      .select("id")
-      .or(`email.eq.${email},username.eq.${username}`)
-      .single();
+  // Send the welcome email via API
+  const emailData = {
+    title,
+    email,
+    first_name,
+    last_name,
+    position,
+    username,
+    time,
+    country: country || "Unknown",
+    location: userLocation || "Unknown",
+    inviteUserName,
+  };
 
-    if (checkError && checkError.code !== "PGRST116") {
-      return redirect("/error?message=check_error");
-    }
+  const emailResponse = await fetch(`${baseUrl}/api/send`, {
+    method: "POST",
+    body: JSON.stringify(emailData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-    if (existingUser) {
-      return redirect("/error?message=user_exists");
-    }
-
-    // Insert the user into your custom `users` table
-    const { error: insertError } = await supabase.from("users").insert({
-      username,
-      email,
-      first_name,
-      last_name,
-      title,
-      birthday,
-      offer_code,
-      country,
-      position,
-      time_registered: userTime,
-      location_registered: userLocation,
-    });
-
-    if (insertError) {
-      return redirect(`/error?message=insert_error&details=${insertError.message}`);
-    }
-
-    // Send the welcome email via API
-    const emailData = {
-      email,
-      firstName: first_name,
-      username,
-      time: userTime,
-      location: userLocation || "Unknown",
-    };
-
-    const emailResponse = await fetch("/api/send", {
-      method: "POST",
-      body: JSON.stringify(emailData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!emailResponse.ok) {
-      return redirect("/error?message=email_error");
-    }
-
-    // Redirect to the success page after email is successfully sent
-    return redirect("/dashboard");
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return redirect("/error?message=unexpected_error");
+  if (!emailResponse.ok) {
+    return redirect("/error?message=email_error");
   }
+
+  // Redirect to the success page after email is successfully sent
+  return redirect("/dashboard");
 }

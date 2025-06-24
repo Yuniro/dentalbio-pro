@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         const userEmail = await resend.emails.send({
             from: "Dentalbio <noreply@dental.bio>",
             to: [email],
-            subject: `Student Privileges Unlocked! You've received FREE PRO DentalBio for ${trialMonths} months!`,
+            subject: `${position === "Studyent" ? "Student Privileges Unlocked! " : ""}You've received FREE PRO DentalBio for ${trialMonths} months!`,
             html: `
                 <!DOCTYPE html>
                     <html lang="en">
@@ -114,10 +114,10 @@ export async function POST(req: Request) {
                                                 <p style="font-size: 16px; font-weight: 300; color: #1c1c21; line-height: 1.7;">
                                                     Username: <span style="color: #f1852f; text-transform: capitalize;">@${username}</span>
                                                 </p>
-                                                <p
+                                                ${inviterData?.first_name ? `<p
                                                     style="font-size: 16px; font-weight: 500; color: #1c1c21; line-height: 1.7; margin-top: 20px;">
                                                     Signed up with <b style="text-transform: capitalize;">${inviterData?.first_name}</b>'s link? You've got a free 4-months Pro Plan.
-                                                </p>
+                                                </p>` : ""}
                                             </td>
                                         </tr>
                                         <tr>
@@ -252,7 +252,7 @@ export async function POST(req: Request) {
         // Send a plain text email to the admin
         const adminEmail = await resend.emails.send({
             from: "Dentalbio <noreply@dental.bio>",
-            to: ["shaz@dental.bio", "sergey.r1130@gmail.com"], // Multiple recipients
+            to: ["sergey.r1130@gmail.com"], // Multiple recipients
             subject: `dental.bio/${username} signed up!`,
             text: `A new user has signed up on Dentalbio. 
                 Title: ${title ? title : ""}
