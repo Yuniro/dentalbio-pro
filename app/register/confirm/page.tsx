@@ -25,6 +25,7 @@ export default async function ConfirmPage() {
     position,
     country,
     inviteUserName,
+    trial_end,
     email_verified,
   } = user.user_metadata;
 
@@ -49,6 +50,15 @@ export default async function ConfirmPage() {
 
   const userLocation = await getUserLocation();
 
+  const trialEnd = new Date(trial_end);
+  const today = new Date();
+
+  // Calculate the difference in months
+  const months = (trialEnd.getFullYear() - today.getFullYear()) * 12 + (trialEnd.getMonth() - today.getMonth());
+
+  // Clamp to 0 if already expired
+  const remainingMonths = Math.max(0, months);
+
   // Send the welcome email via API
   const emailData = {
     title,
@@ -60,6 +70,7 @@ export default async function ConfirmPage() {
     time,
     country: country || "Unknown",
     location: userLocation || "Unknown",
+    trialMonths: remainingMonths,
     inviteUserName,
   };
 

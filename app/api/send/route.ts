@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         const userEmail = await resend.emails.send({
             from: "Dentalbio <noreply@dental.bio>",
             to: [email],
-            subject: `${position === "Studyent" ? "Student Privileges Unlocked! " : ""}You've received FREE PRO DentalBio for ${trialMonths} months!`,
+            subject: `${position === "Student" ? "Student Privileges Unlocked! " : ""}You've received FREE PRO DentalBio for ${trialMonths} months!`,
             html: `
                 <!DOCTYPE html>
                     <html lang="en">

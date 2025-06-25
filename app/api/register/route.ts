@@ -8,6 +8,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2024-06-20',
 });
 
+const pricePro = process.env.PRICE_PRO_MONTHLY!
+
 const calculateAge = (birthday: Date) => {
     const today = new Date();
     const birthDate = new Date(birthday); // Convert birthday string to Date if necessary
@@ -92,8 +94,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Can't get offerCode from the admin" }, { status: 400 })
         }
 
-        const trialEndDate = (referralMonths: number) => {
-            return (calculateAge(birthday) <= 27 && position === "Student" && serverOfferCodes.some((offer: any) => offer.offer_code === offerCode)) ? addMonthsToCurrentDate(6 + referralMonths) : addMonthsToCurrentDate(3 + referralMonths)
+        const trialEndDate = () => {
+            return (calculateAge(birthday) <= 27 && position === "Student" && serverOfferCodes.some((offer: any) => offer.offer_code === offerCode)) ? 6 : 3
         }
 
         // Check if inviteUserName exists
@@ -111,7 +113,34 @@ export async function POST(request: Request) {
             referralUser = inviteUserData;
         }
 
-        const trialMonths = referralUser?.email ? trialEndDate(1) : trialEndDate(0)
+        const trialMonths = trialEndDate() + (referralUser?.email || 0);
+        const trial_end = addMonthsToCurrentDate(trialMonths)
+
+        const customers = await stripe.customers.list({
+            email: email,
+        })
+
+        let customer;
+        let subscription;
+
+        if (customers.data.length === 0) {
+            customer = await stripe.customers.create({
+                email,
+                name: (`${firstName} ${lastName}`).trim()
+            })
+
+            subscription = await stripe.subscriptions.create({
+                customer: customer.id,
+                items: [
+                    {
+                        price: pricePro,
+                    },
+                ],
+                trial_period_days: trialMonths * 30,
+            });
+        } else {
+            customer = customers.data[0];
+        }
 
         // Sign up the user with Supabase
         const { error } = await supabase.auth.signUp({
@@ -126,7 +155,10 @@ export async function POST(request: Request) {
                     position,
                     offer_code: offerCode,
                     subscription_status: "PRO",
-                    trial_end: trialMonths,
+                    customer_id: customer.id,
+                    subscription_id: subscription?.id || "",
+                    plan_id: pricePro,
+                    trial_end,
                     country,
                     title,
                     inviteUserName,
@@ -165,17 +197,19 @@ export async function POST(request: Request) {
 
             const subscriptionId = referralUser.subscription_id; // Assuming you have this field
 
-            // if (subscriptionId) {
-            //     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-            //     if (!subscription || subscription.status !== "active") {
-            //         console.error("No active subscription found.");
-            //         return;
-            //     }
-            //     const updatedSubscription = await stripe.subscriptions.update(subscription.id, {
-            //         proration_behavior: 'none', // No proration for extending the subscription
-            //         trial_end: Math.floor(updatedEndDate.getTime() / 1000) as any, // Reset the billing cycle to now
-            //     });
-            // }
+            if (subscriptionId) {
+                const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+                if (subscription.status === "active") {
+                    const currentPeriodEnd = subscription.current_period_end;
+                    const extendedAnchor = currentPeriodEnd + 30 * 24 * 60 * 60;
+
+                    await stripe.subscriptions.update(subscriptionId, {
+                        trial_end: extendedAnchor,
+                        proration_behavior: "none"
+                    });
+                }
+            }
         }
         return NextResponse.json({ message: "User registered successfully." }, { status: 200 });
     } catch (err) {
