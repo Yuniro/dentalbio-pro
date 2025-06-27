@@ -227,11 +227,13 @@ export default function Page() {
                 value={formData.firstName}
                 onChange={(value) => handleInputChange("firstName", value)}
                 placeholder="First Name"
+                name="firstName"
               />
               <CustomInput
                 value={formData.lastName}
                 onChange={(value) => handleInputChange("lastName", value)}
                 placeholder="Last Name"
+                name="lastName"
               />
               <CustomInput
                 value={formData.birthday}
@@ -257,12 +259,14 @@ export default function Page() {
                 value={formData.offerCode}
                 onChange={(value) => handleInputChange("offerCode", value)}
                 placeholder="Offer Code"
+                name="offerCode"
                 labelBottom="If you have received an offer code from your university or colleague, please enter it here."
               />
               <CustomInput
                 value={formData.email}
                 onChange={(value) => handleInputChange("email", value)}
                 placeholder="Email"
+                name="email"
                 type="email"
               />
               <CustomInput
