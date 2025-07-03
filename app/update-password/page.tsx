@@ -57,13 +57,13 @@ export default function UpdatePasswordPage() {
             />
           </div>
 
-          <button
-            className="mt-10 w-full text-2xl font-semibold bg-gradient-to-r from-[#d47e8b] via-[#d47e8b] to-[#e09f7e] text-white rounded-[40px] border-[0.6px] shadow-sm bg-opacity-90 backdrop-blur-lg border-transparent py-5 px-4 transition-all duration-300 ease-in-out hover:bg-opacity-80 focus:outline-none"
+          <FullRoundedButton
+            className="mt-10 w-full text-2xl font-semibold bg-gradient-to-r from-[#d47e8b] via-[#d47e8b] to-[#e09f7e] text-white rounded-[40px] border-[0.6px] shadow-sm bg-opacity-90 backdrop-blur-lg border-transparent !py-5 px-4 transition-all duration-300 ease-in-out hover:bg-opacity-80 focus:outline-none"
             isLoading={isLoading}
             type="submit"
           >
             Update Password
-          </button>
+          </FullRoundedButton>
         </div>
       </form>
 
