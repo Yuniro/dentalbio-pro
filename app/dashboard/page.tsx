@@ -151,7 +151,7 @@ async function saveDentistryDetails(formData: FormData) {
     about_text: formData.get("about_text") as string,
     phone: formData.get("phone") as string,
     booking_link: formData.get("booking_link") as string,
-    booking_link_enabled: formData.get("booking_link_enabled") === "on",
+    booking_link_enabled: formData.get("booking_link_enabled"),
     contact_email: formData.get("contact_email") as string,
   };
 
@@ -248,7 +248,7 @@ export default async function Profile({ searchParams }: { searchParams: { userId
 
         {/* Social Links Form */}
         <form action={saveSocialLinks} className="mb-6 mt-10">
-        <input type="hidden" name="userId" value={userId} />
+          <input type="hidden" name="userId" value={userId} />
           <h2 className="text-lg font-semibold mb-3">Social Links</h2>
 
 
