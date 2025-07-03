@@ -258,7 +258,11 @@ export default function ForgotPasswordPage() {
               disabled={loading || otpLoading || cooldown !== null}
               className="mt-4 max-w-xl w-full text-lg font-semibold bg-gradient-to-r from-[#d47e8b] via-[#d47e8b] to-[#e09f7e] text-white rounded-[40px] border-[0.6px] shadow-sm bg-opacity-90 backdrop-blur-lg border-transparent py-3 px-4 transition-all duration-300 ease-in-out hover:bg-opacity-80 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Resending..." : "Resend OTP"}
+              {loading
+                ? "Resending..."
+                : cooldown !== null
+                  ? `Try again in ${Math.ceil(cooldown / 1000)}s`
+                  : "Resend OTP"}
             </button>
             <button
               onClick={handleChangeEmail}
